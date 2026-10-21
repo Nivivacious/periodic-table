@@ -7,19 +7,22 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap">
 <style>
-/* Layout: a quiet header, then the real 18-column table with its key printed in the empty gap above the transition metals, as on a printed chart. Opening an element shows its playing card in a focused pop-up. Single dark look, by design. */
+/* Layout: glass pill nav over a cinematic hero (headline + floating deck of element cards), a trend marquee, then three numbered chapters: the real 18-column table, editor's picks as a card carousel, and the ten families. Cards open in a pop-up and flip in. Single dark look, by design. */
 :root {
-  --night: #141827;
-  --night-2: #1B2032;
-  --line: #2c3249;
-  --line-2: #3a415c;
+  --night: #11141f;
+  --night-2: #181c2b;
+  --surface: rgba(255, 255, 255, .035);
+  --glass: rgba(24, 28, 43, .62);
+  --line: rgba(244, 236, 220, .09);
+  --line-2: rgba(244, 236, 220, .16);
   --paper: #F4ECDC;
   --ink: #1E2233;
-  --muted: #8f95ad;
+  --muted: #8d93ab;
   --soft: #cfcabd;
   --gold: #F2B330;
+  --rani: #E0508F;
 
   --alkali: #D9412B;
   --alkaline: #E2902A;
@@ -38,6 +41,8 @@
 
   --tile: 4.3rem;
   --gap: 6px;
+  --gutter-l: max(24px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(24px, env(safe-area-inset-right, 0px));
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -47,37 +52,201 @@ body {
   font-family: var(--body);
   font-size: 18px;
   line-height: 1.5;
-  padding-left: max(20px, env(safe-area-inset-left, 0px));
-  padding-right: max(20px, env(safe-area-inset-right, 0px));
-  padding-block: 0 2.5rem;
+  margin: 0;
+  overflow-x: hidden;
 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--night); }
+/* Film grain over everything */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 70; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.band { padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
 .wrap { max-width: 1440px; margin: 0 auto; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+button { font: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-/* Header */
-.topbar {
-  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-  padding-block: 1.1rem; border-bottom: 1px solid var(--line);
-  font: 600 .7rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+/* ---------- Glass nav ---------- */
+.nav-shell { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; padding-top: 14px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); pointer-events: none; }
+.glassnav {
+  pointer-events: auto;
+  max-width: 1440px; margin: 0 auto;
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 8px 8px 8px 10px;
+  background: var(--glass); border: 1px solid var(--line-2); border-radius: 999px;
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
 }
-.topbar .count b { color: var(--paper); font-weight: 600; }
-.hero {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.5rem 3rem;
-  padding-block: 3rem 2.2rem;
+.brand { display: flex; align-items: center; gap: .65rem; color: var(--paper); text-decoration: none; }
+.brand .mono {
+  width: 34px; height: 40px; border-radius: 6px; background: var(--paper); color: var(--ink);
+  display: grid; grid-template-rows: auto 1fr; padding: 3px 4px; line-height: 1; box-shadow: inset 0 -3px 0 var(--rani);
 }
-h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.3rem, 5vw, 4.2rem); line-height: 1.02; margin: 0 0 .9rem; letter-spacing: -.01em; text-wrap: balance; }
-h1 em { color: var(--gold); }
-.lede { font-style: italic; font-size: 1.2rem; line-height: 1.45; color: var(--soft); margin: 0; max-width: 52ch; }
-.search { width: 17rem; max-width: 100%; display: grid; gap: .4rem; }
-.search label { font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.brand .mono i { font: 600 .42rem var(--sans); font-style: normal; color: #6b6658; }
+.brand .mono b { font: 600 1.05rem/1 var(--display); align-self: center; justify-self: center; color: var(--rani); }
+.brand span { font: 600 .74rem var(--sans); letter-spacing: .18em; text-transform: uppercase; }
+.navlinks { display: flex; gap: .2rem; margin-left: auto; }
+.navlinks button {
+  background: none; border: 0; color: var(--soft); cursor: pointer; border-radius: 999px;
+  font: 600 .72rem var(--sans); letter-spacing: .14em; text-transform: uppercase; padding: .6rem .9rem;
+}
+.navlinks button:hover { color: var(--paper); background: rgba(255,255,255,.06); }
+.pill {
+  display: inline-flex; align-items: center; gap: .55rem; cursor: pointer; border-radius: 999px; white-space: nowrap;
+  font: 600 .74rem var(--sans); letter-spacing: .14em; text-transform: uppercase; padding: .78rem 1.25rem;
+  border: 1px solid transparent; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.pill.solid { background: var(--paper); color: var(--ink); box-shadow: 0 0 0 1px rgba(255,255,255,.2), 0 12px 30px -10px rgba(242,179,48,.45); }
+.pill.solid:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(255,255,255,.3), 0 18px 40px -12px rgba(242,179,48,.6); }
+.pill.glass { background: rgba(255,255,255,.05); color: var(--paper); border-color: var(--line-2); backdrop-filter: blur(10px); }
+.pill.glass:hover { background: rgba(255,255,255,.1); }
+.pill .arrow { transition: transform .2s ease; }
+.pill:hover .arrow { transform: translateX(3px); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; isolation: isolate; overflow: hidden; margin-top: -70px; padding-top: 70px; }
+.glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; z-index: -1; pointer-events: none; }
+.glow.a { width: 46vw; height: 46vw; max-width: 640px; max-height: 640px; background: #5a2a6e; left: -10vw; top: 2vh; animation: drift 18s ease-in-out infinite alternate; }
+.glow.b { width: 38vw; height: 38vw; max-width: 560px; max-height: 560px; background: #8a3a22; right: -6vw; top: 18vh; opacity: .45; animation: drift 22s ease-in-out infinite alternate-reverse; }
+.glow.c { width: 30vw; height: 30vw; max-width: 420px; max-height: 420px; background: #1f4a7a; left: 38vw; bottom: -14vw; opacity: .5; animation: drift 26s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(4vw, 3vh) scale(1.12); } }
+.hero::after { content: ""; position: absolute; inset: auto 0 0; height: 140px; background: linear-gradient(transparent, var(--night)); z-index: -1; }
+.hero-in {
+  max-width: 1440px; margin: 0 auto; min-height: min(820px, 92vh);
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; gap: 2rem;
+  padding-block: 5.5rem 4rem;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: .6rem; width: max-content; max-width: 100%;
+  font: 600 .68rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--soft);
+  padding: .45rem .9rem .45rem .55rem; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.04);
+}
+.badge b { background: var(--gold); color: var(--ink); border-radius: 999px; padding: .18rem .55rem; font-weight: 700; letter-spacing: .12em; }
+.hero h1 {
+  font-family: var(--display); font-weight: 400; margin: 1.4rem 0 1.3rem; letter-spacing: -.025em;
+  font-size: clamp(3rem, 6vw, 6rem); line-height: .94; text-wrap: balance;
+}
+.hero h1 .l2 { display: block; }
+.hero h1 em {
+  font-style: italic; font-weight: 500; letter-spacing: -.03em;
+  background: linear-gradient(100deg, #F7D27A 0%, #F2B330 30%, #E86F9F 70%, #C58BE8 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 28px rgba(242, 140, 120, .35));
+}
+.hero .lede { font-style: italic; font-size: clamp(1.15rem, 1.6vw, 1.4rem); line-height: 1.45; color: var(--soft); margin: 0; max-width: 34rem; }
+.ctas { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2.1rem; }
+.stats { display: flex; gap: 2.4rem; margin-top: 2.8rem; flex-wrap: wrap; }
+.stats div { display: grid; }
+.stats b { font: 400 2.1rem/1 var(--display); }
+.stats span { font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: .45rem; }
+.rise { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+.rise.d1 { animation-delay: .08s; } .rise.d2 { animation-delay: .16s; } .rise.d3 { animation-delay: .24s; } .rise.d4 { animation-delay: .32s; }
+@keyframes rise { from { transform: translateY(18px); } to { transform: none; } }
+
+/* Floating deck */
+.deck { position: relative; height: 34rem; perspective: 1400px; }
+.deck-in { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .35s ease-out; }
+.deck .card { position: absolute; left: 50%; top: 50%; --w: 13.2rem; cursor: pointer; transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease; }
+.deck .card:hover { z-index: 9; }
+.float { animation: bob 7s ease-in-out infinite; }
+@keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+.deck-hint { position: absolute; bottom: -.4rem; left: 50%; transform: translateX(-50%); font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+/* ---------- Playing card ---------- */
+.card {
+  --c: var(--gold); --w: 15.5rem;
+  width: var(--w); aspect-ratio: 250 / 350;
+  background: var(--paper); color: var(--ink); border-radius: calc(var(--w) * .05);
+  padding: calc(var(--w) * .036); position: relative;
+  box-shadow: 0 30px 60px -24px rgba(0,0,0,.95), 0 0 0 1px rgba(0,0,0,.2);
+  font-size: calc(var(--w) / 15.5);
+}
+.card-in {
+  height: 100%; border: 1px solid var(--ink); border-radius: .45em; padding: .5em .5em .62em;
+  display: grid; grid-template-rows: auto 1fr auto; gap: .38em; position: relative;
+}
+.card .idx { position: absolute; display: grid; justify-items: center; line-height: 1; }
+.card .idx b { font: 600 1.25em var(--display); color: var(--c); }
+.card .idx span { font: 600 .55em var(--sans); letter-spacing: .1em; color: var(--ink); }
+.card .idx.tl { top: .5em; left: .5em; }
+.card .idx.br { bottom: .62em; right: .5em; transform: rotate(180deg); }
+.card .frame { margin: 0 1.6em; border: 1px solid var(--ink); border-radius: .2em; overflow: hidden; min-height: 0; }
+.card .frame svg { display: block; width: 100%; height: 100%; }
+.card .banner {
+  margin: 0 1.6em; text-align: center; border: 1px solid var(--ink); border-radius: .12em; background: var(--paper);
+  font: 600 .58em var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: .3em .2em;
+}
+.card .cap { text-align: center; font: italic .85em/1.2 var(--body); margin: 0 1.4em; }
+.glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: soft-light; opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(255,255,255,.85), rgba(255,255,255,0) 55%); }
+
+/* Card back */
+.card-back {
+  position: absolute; inset: 0; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg); background: var(--paper); padding: calc(var(--w) * .036);
+}
+.card-back .pat {
+  height: 100%; border-radius: .45em; border: 1px solid var(--ink); display: grid; place-items: center;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(0,0,0,0) 34%),
+    repeating-conic-gradient(from 45deg, #C93A78 0 25%, #b02f68 0 50%) 0 0 / 1.1em 1.1em;
+  box-shadow: inset 0 0 0 .5em var(--paper), inset 0 0 0 .58em var(--ink);
+}
+.card-back .seal { width: 3.4em; height: 4em; background: var(--paper); border: 1px solid var(--ink); border-radius: .3em; display: grid; place-items: center; font: 600 1.6em var(--display); color: #C93A78; }
+
+/* ---------- Marquee ---------- */
+.marquee { border-block: 1px solid var(--line); overflow: hidden; padding-block: 1.1rem; position: relative; }
+.marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none; }
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--night), transparent); }
+.marquee::after { right: 0; background: linear-gradient(-90deg, var(--night), transparent); }
+.track { display: flex; width: max-content; animation: slide 90s linear infinite; }
+.marquee:hover .track { animation-play-state: paused; }
+@keyframes slide { to { transform: translateX(-50%); } }
+.track span { display: inline-flex; align-items: baseline; gap: .55rem; padding: 0 1.4rem; font: italic 400 1.55rem/1 var(--display); color: var(--soft); white-space: nowrap; }
+.track span b { font: 600 .9rem var(--sans); font-style: normal; letter-spacing: .08em; color: var(--gold); }
+.track span::after { content: "✦"; font-style: normal; font-size: .8rem; color: var(--rani); margin-left: 1.4rem; }
+
+/* ---------- Chapters ---------- */
+section.chapter { padding-block: 6rem 2rem; scroll-margin-top: 80px; }
+.chap-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.5rem 3rem; margin-bottom: 2.4rem; }
+.chap-no { font: normal 600 .7rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: .8rem; margin: 0 0 1rem; }
+.chap-no::after { content: ""; width: 3rem; height: 1px; background: var(--line-2); }
+.chap-head h2 { font: 400 clamp(2.2rem, 4.6vw, 4rem)/1 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.chap-head h2 em { font-style: italic; color: var(--gold); }
+.chap-head p:not(.chap-no) { font-style: italic; color: var(--soft); margin: .9rem 0 0; max-width: 40rem; font-size: 1.15rem; }
+
+.tools { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .8rem 1.2rem; margin-top: .6rem; }
+.tools .segs { flex: 0 1 auto; min-width: 0; }
+.search { position: relative; width: 19rem; max-width: 100%; }
 .search input {
-  width: 100%; font: 500 .95rem var(--sans); letter-spacing: .02em; color: var(--paper);
-  background: transparent; border: 0; border-bottom: 1px solid var(--line-2); border-radius: 0; padding: .45rem 0;
+  width: 100%; font: 500 .9rem var(--sans); letter-spacing: .03em; color: var(--paper);
+  background: rgba(255,255,255,.04); border: 1px solid var(--line-2); border-radius: 999px; padding: .75rem 1.1rem .75rem 2.5rem;
 }
-.search input::placeholder { color: #5f6580; }
-.search input:focus-visible { outline: none; border-bottom-color: var(--gold); }
+.search input::placeholder { color: #69708c; }
+.search input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.search svg { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: .95rem; height: .95rem; stroke: var(--muted); fill: none; stroke-width: 2; }
+
+.segs { display: flex; gap: 4px; padding: 4px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03); overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+.segs::-webkit-scrollbar { display: none; }
+.seg {
+  --c: var(--paper);
+  flex: none; display: inline-flex; align-items: center; gap: .45rem; cursor: pointer;
+  font: 600 .7rem var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--soft);
+  background: transparent; border: 0; border-radius: 999px; padding: .55rem .85rem;
+}
+.seg i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--c); }
+.seg:hover { color: var(--paper); }
+.seg[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
 
 /* Table */
-.scroller { overflow-x: auto; padding: 6px 4px 14px; margin-inline: -4px; }
+.stage { position: relative; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); padding: 22px; overflow: hidden; }
+.stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s ease;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(242, 179, 48, .12), transparent 60%);
+}
+.stage:hover::before { opacity: 1; }
+.scroller { position: relative; overflow-x: auto; padding: 6px 4px 8px; margin-inline: -4px; }
 .table {
   display: grid;
   grid-template-columns: repeat(18, minmax(var(--tile), 1fr));
@@ -90,178 +259,269 @@ h1 em { color: var(--gold); }
   font: 600 .62rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); padding-right: .6rem;
 }
 .placeholder {
-  border: 1px dashed var(--line-2); border-radius: 4px; display: grid; place-items: center; text-align: center;
+  border: 1px dashed var(--line-2); border-radius: 6px; display: grid; place-items: center; text-align: center;
   font: 600 .62rem var(--sans); letter-spacing: .08em; color: var(--muted);
 }
-
 .el {
   --c: var(--muted);
   aspect-ratio: 1 / 1.42; min-width: 0; max-width: 100%;
   display: grid; grid-template-rows: auto 1fr auto; gap: 2px;
   padding: 4px 4px 5px;
   background: var(--paper);
-  border: 0; border-bottom: 3px solid var(--c); border-radius: 4px;
-  color: var(--ink); font: inherit; text-align: left; cursor: pointer;
-  transition: transform .18s ease, opacity .2s ease, box-shadow .18s ease;
+  border: 0; border-bottom: 3px solid var(--c); border-radius: 6px;
+  color: var(--ink); font: inherit; text-align: left; cursor: pointer; position: relative;
+  transition: transform .22s cubic-bezier(.2,.7,.2,1), opacity .25s ease, box-shadow .22s ease;
 }
 .el .top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 1px; }
 .el .num { font: 600 .56rem var(--sans); color: #6b6658; font-variant-numeric: tabular-nums; }
 .el .sym { font: 600 1.05rem/1 var(--display); color: var(--c); }
-.el .art { width: 100%; height: 100%; min-height: 0; display: block; border-radius: 2px; }
+.el .art { width: 100%; height: 100%; min-height: 0; display: block; border-radius: 3px; }
 .el .nm {
   font: 600 .56rem/1.12 var(--sans); letter-spacing: .02em; text-align: center; color: var(--ink);
   height: 2.25em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
-.el:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -12px rgba(0,0,0,.9); }
-.el:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.el.dim { opacity: .12; }
+.table .el:hover { transform: translateY(-4px) scale(1.06); z-index: 3; box-shadow: 0 18px 30px -14px rgba(0,0,0,.95), 0 0 0 2px var(--c), 0 0 26px -4px var(--c); }
+.el.dim { opacity: .1; }
 
-
-/* The key, printed in the table's top gap */
 .key {
   grid-column: 3 / 13; grid-row: 1 / 4;
   display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4rem; align-items: center;
-  padding: .4rem 1.6rem 1rem;
-  min-width: 0;
+  padding: .4rem 1.6rem 1rem; min-width: 0;
 }
 .how { display: grid; grid-template-columns: auto auto; gap: .5rem .9rem; align-items: center; }
 .how .el { width: 5.6rem; cursor: default; grid-row: 1 / span 3; }
-.how .el:hover { transform: none; box-shadow: none; }
 .how .el .sym { font-size: 1.35rem; }
 .how .el .num { font-size: .66rem; }
 .how .el .nm { font-size: .64rem; }
 .how p { margin: 0; font: 600 .62rem/1.3 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.how p span { display: block; font: italic 400 .95rem/1.2 var(--body); letter-spacing: 0; text-transform: none; color: var(--soft); }
-.families { display: grid; gap: .55rem; min-width: 0; }
-.families h2 { margin: 0; font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
-.legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .1rem 1.4rem; }
-.chip {
-  --c: var(--muted);
-  width: 100%; font: 500 .82rem var(--sans); letter-spacing: .04em; cursor: pointer; text-align: left;
-  display: flex; align-items: center; gap: .55rem;
-  color: var(--soft); background: transparent; border: 0; border-bottom: 1px solid transparent; padding: .28rem 0;
-}
-.chip::before { content: ""; flex: none; width: .7rem; height: .7rem; background: var(--c); border-radius: 2px; }
-.chip .n { margin-left: auto; color: #5f6580; font-variant-numeric: tabular-nums; font-size: .74rem; }
-.chip:hover { color: var(--paper); }
-.chip[aria-pressed="true"] { color: var(--paper); border-bottom-color: var(--c); }
-.chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.clear { justify-self: start; font: 600 .62rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); background: none; border: 0; padding: .2rem 0; cursor: pointer; }
-.clear:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.how p span { display: block; font: italic 400 .98rem/1.2 var(--body); letter-spacing: 0; text-transform: none; color: var(--soft); }
+.keylist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem 1.6rem; }
+.keylist li { display: flex; align-items: center; gap: .6rem; font: 500 .82rem var(--sans); letter-spacing: .04em; color: var(--soft); }
+.keylist li::before { content: ""; width: .7rem; height: .7rem; border-radius: 2px; background: var(--c); }
+.keylist li span { margin-left: auto; color: #5f6580; font-size: .74rem; font-variant-numeric: tabular-nums; }
 .mobile-key { display: none; }
 
-/* Pop-up card */
+/* Picks carousel */
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: 16.5rem; gap: 1.6rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 1rem 4px 2rem; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.pick { scroll-snap-align: start; display: grid; gap: 1rem; background: none; border: 0; padding: 0; color: inherit; text-align: left; cursor: pointer; }
+.pick .card { --w: 16.5rem; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease; }
+.pick:hover .card { transform: translateY(-8px) rotate(-1.2deg); box-shadow: 0 40px 70px -26px rgba(0,0,0,1); }
+.pick h3 { margin: 0; font: 400 1.5rem/1.1 var(--display); }
+.pick p { margin: .3rem 0 0; font-style: italic; color: var(--soft); font-size: 1.02rem; line-height: 1.35; }
+.pick small { font: 600 .64rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.rail-nav { display: flex; gap: .5rem; }
+.round { width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid var(--line-2); background: rgba(255,255,255,.04); color: var(--paper); cursor: pointer; display: grid; place-items: center; font: 500 1.05rem var(--sans); }
+.round:hover { background: var(--paper); color: var(--ink); }
+
+/* Families */
+.fams { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
+.fam {
+  --c: var(--muted);
+  position: relative; overflow: hidden; text-align: left; cursor: pointer; color: var(--paper);
+  border: 1px solid var(--line); border-radius: 22px; background: var(--surface); padding: 1.4rem 1.4rem 1.2rem;
+  display: grid; gap: 1rem; transition: border-color .3s ease, transform .3s ease, background .3s ease;
+}
+.fam::before { content: ""; position: absolute; width: 14rem; height: 14rem; border-radius: 50%; background: var(--c); filter: blur(60px); opacity: .18; right: -5rem; top: -6rem; transition: opacity .3s ease; }
+.fam:hover { border-color: color-mix(in oklab, var(--c) 60%, transparent); transform: translateY(-3px); }
+.fam:hover::before { opacity: .35; }
+.fam .row { display: flex; justify-content: space-between; align-items: baseline; position: relative; }
+.fam h3 { margin: 0; font: 400 1.6rem/1.05 var(--display); }
+.fam .count { font: 400 2.4rem/1 var(--display); color: var(--c); }
+.fam .minis { display: flex; position: relative; height: 6.4rem; }
+.fam .minis .el { width: 4.4rem; position: absolute; top: 0; box-shadow: 0 10px 20px -10px rgba(0,0,0,.9); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.fam .minis .el:nth-child(1) { left: 0; transform: rotate(-7deg); }
+.fam .minis .el:nth-child(2) { left: 3.2rem; transform: rotate(-1deg) translateY(-4px); z-index: 2; }
+.fam .minis .el:nth-child(3) { left: 6.4rem; transform: rotate(6deg); }
+.fam:hover .minis .el:nth-child(1) { transform: rotate(-12deg) translateX(-6px); }
+.fam:hover .minis .el:nth-child(3) { transform: rotate(11deg) translateX(8px); }
+.fam ul { list-style: none; margin: 0; padding: 0; position: relative; font: 500 .8rem/1.6 var(--sans); letter-spacing: .03em; color: var(--soft); }
+.fam ul b { color: var(--c); font-weight: 600; display: inline-block; min-width: 1.8rem; }
+.fam .go { position: relative; font: 600 .66rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.fam:hover .go { color: var(--paper); }
+
+/* ---------- Pop-up ---------- */
 dialog.sheet {
   border: 0; padding: 0; background: transparent; color: var(--paper);
-  width: min(880px, calc(100% - 32px)); max-width: none; max-height: calc(100% - 32px);
+  width: min(920px, calc(100% - 32px)); max-width: none; max-height: calc(100% - 32px); overflow: visible;
 }
-dialog.sheet::backdrop { background: rgba(9, 11, 20, .78); backdrop-filter: blur(3px); }
+dialog.sheet::backdrop { background: rgba(8, 10, 18, .8); backdrop-filter: blur(8px); }
+dialog.sheet[open] .sheet-in { animation: pop .45s cubic-bezier(.2,.8,.2,1); }
+@keyframes pop { from { transform: translateY(16px) scale(.98); } to { transform: none; } }
 .sheet-in {
-  position: relative;
-  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4rem; align-items: center;
-  background: var(--night-2); border: 1px solid var(--line); border-radius: 14px;
-  padding: 2.2rem 2.4rem 2.2rem 2.2rem;
-  box-shadow: 0 40px 80px -30px rgba(0,0,0,.9);
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.8rem; align-items: center;
+  background: linear-gradient(160deg, rgba(30,35,54,.96), rgba(19,22,34,.98)); border: 1px solid var(--line-2); border-radius: 26px;
+  padding: 2.6rem 2.8rem 2.6rem 2.6rem;
+  box-shadow: 0 50px 100px -40px rgba(0,0,0,1), inset 0 1px 0 rgba(255,255,255,.06);
 }
+.sheet-in::before { content: ""; position: absolute; width: 30rem; height: 30rem; border-radius: 50%; background: var(--fc, var(--gold)); filter: blur(90px); opacity: .22; left: -10rem; top: -10rem; pointer-events: none; }
 .close {
-  position: absolute; top: .8rem; right: .9rem; width: 2.2rem; height: 2.2rem; border-radius: 50%;
-  display: grid; place-items: center; background: transparent; border: 1px solid var(--line-2);
-  color: var(--paper); font: 400 1.2rem/1 var(--sans); cursor: pointer;
+  position: absolute; top: 1rem; right: 1rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; z-index: 3;
+  display: grid; place-items: center; background: rgba(255,255,255,.05); border: 1px solid var(--line-2);
+  color: var(--paper); font: 400 1.25rem/1 var(--sans); cursor: pointer;
 }
-.close:hover { border-color: var(--gold); color: var(--gold); }
-.close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.close:hover { background: var(--paper); color: var(--ink); }
+.c3d { perspective: 1200px; position: relative; }
+.flipper { transform-style: preserve-3d; transition: transform .15s ease-out; position: relative; }
+.flipper .card { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flipper.flip { animation: flip .7s cubic-bezier(.3,.7,.2,1); }
+@keyframes flip { from { transform: rotateY(-180deg) scale(.92); } to { transform: rotateY(0) scale(1); } }
+.c3d:hover .glare { opacity: .9; }
 
-.card {
-  --c: var(--gold);
-  width: 15.5rem; aspect-ratio: 250 / 350;
-  background: var(--paper); color: var(--ink); border-radius: 12px;
-  padding: 9px; position: relative;
-  box-shadow: 0 24px 50px -22px rgba(0,0,0,.95);
-}
-.card-in {
-  height: 100%; border: 1px solid var(--ink); border-radius: 7px; padding: 8px 8px 10px;
-  display: grid; grid-template-rows: auto 1fr auto; gap: 6px; position: relative;
-}
-.card .idx { position: absolute; display: grid; justify-items: center; line-height: 1; }
-.card .idx b { font: 600 1.25rem var(--display); color: var(--c); }
-.card .idx span { font: 600 .55rem var(--sans); letter-spacing: .1em; color: var(--ink); }
-.card .idx.tl { top: 8px; left: 8px; }
-.card .idx.br { bottom: 10px; right: 8px; transform: rotate(180deg); }
-.card .frame { margin: 0 1.6rem; border: 1px solid var(--ink); border-radius: 3px; overflow: hidden; min-height: 0; }
-.card .frame svg { display: block; width: 100%; height: 100%; }
-.card .banner {
-  margin: 0 1.6rem; text-align: center; border: 1px solid var(--ink); border-radius: 2px; background: var(--paper);
-  font: 600 .58rem var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 3px 2px;
-}
-.card .cap { text-align: center; font: italic .85rem/1.2 var(--body); margin: 0 1.4rem; }
-
-.info { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; align-content: center; min-width: 0; }
+.info { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; align-content: center; min-width: 0; position: relative; }
 .info .kicker { font: 600 .68rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
-.info .kicker b { color: var(--gold); font-weight: 600; }
-.info h2 { font: 400 clamp(2rem, 4vw, 3rem)/1.02 var(--display); margin: 0; text-wrap: balance; }
-.info .desc { font-style: italic; font-size: 1.25rem; line-height: 1.35; margin: 0; color: #e7e1d3; }
-.facts { display: grid; gap: .8rem; margin: .4rem 0 0; border-top: 1px solid var(--line); padding-top: .9rem; }
+.info .kicker b { color: var(--fc, var(--gold)); font-weight: 600; filter: brightness(1.35); }
+.info h2 { font: 400 clamp(2.2rem, 4.4vw, 3.4rem)/1 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.info .desc { font-style: italic; font-size: 1.28rem; line-height: 1.38; margin: 0; color: #e7e1d3; }
+.facts { display: grid; gap: .9rem; margin: .5rem 0 0; border-top: 1px solid var(--line-2); padding-top: 1rem; }
 .facts dt { font: 600 .64rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.facts dd { margin: .1rem 0 0; font-size: 1.1rem; line-height: 1.35; }
-.nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .6rem; }
-.nav button {
-  font: 600 .68rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--paper);
-  background: transparent; border: 1px solid var(--line-2); border-radius: 2px; padding: .6rem .95rem; cursor: pointer;
+.facts dd { margin: .15rem 0 0; font-size: 1.12rem; line-height: 1.35; }
+.sheet-nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .8rem; align-items: center; }
+.sheet-nav .count { margin-left: auto; font: 600 .66rem var(--sans); letter-spacing: .16em; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- Footer ---------- */
+footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; }
+.poster {
+  font: italic 400 clamp(4rem, 15vw, 15rem)/.85 var(--display); letter-spacing: -.04em; white-space: nowrap;
+  color: transparent; -webkit-text-stroke: 1px rgba(244, 236, 220, .28); margin: 3rem 0 0; text-align: center; user-select: none;
 }
-.nav button:hover { border-color: var(--gold); color: var(--gold); }
-.nav button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.poster span { color: var(--paper); -webkit-text-stroke: 0; }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .8rem 2rem; padding-block: 1.6rem 2.4rem; font: 500 .72rem var(--sans); letter-spacing: .08em; color: var(--muted); }
+.foot p { margin: 0; }
 
-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem; border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1.1rem; font: 500 .72rem var(--sans); letter-spacing: .06em; color: var(--muted); }
-footer p { margin: 0; max-width: 70ch; }
-
-/* Family colours come last so they win over the base --c on tiles, chips and cards */
+/* Family colours last so they win over base --c */
 .alkali { --c: var(--alkali); } .alkaline { --c: var(--alkaline); } .transition { --c: var(--transition); }
 .post { --c: var(--post); } .metalloid { --c: var(--metalloid); } .nonmetal { --c: var(--nonmetal); }
 .halogen { --c: var(--halogen); } .noble { --c: var(--noble); } .lanthanide { --c: var(--lanthanide); } .actinide { --c: var(--actinide); }
 
+@media (max-width: 1100px) {
+  .hero-in { grid-template-columns: minmax(0, 1fr); padding-block: 4.5rem 2rem; min-height: 0; }
+  .deck { height: 26rem; }
+  .deck .card { --w: 10.5rem; }
+}
 @media (max-width: 900px) {
-  .topbar > span:first-child { display: none; }
-  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem 1.4rem; }
+  :root { --tile: 4.1rem; }
+  .navlinks { display: none; }
+  .glassnav { justify-content: space-between; }
+  .brand span { display: none; }
+  .chap-head { grid-template-columns: minmax(0, 1fr); }
+  .tools { flex-direction: column; align-items: stretch; }
   .search { width: 100%; }
   .table .key { display: none; }
   .mobile-key { display: block; margin-bottom: 1.2rem; }
   .mobile-key .key { padding: 0; grid-template-columns: minmax(0, 1fr); }
   .mobile-key .how { display: none; }
-  :root { --tile: 4.1rem; }
-  .sheet-in { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 1.4rem; padding: 2.6rem 1.3rem 1.5rem; }
-  .card { width: 12.5rem; }
-  .info { justify-items: start; width: 100%; }
+  .stage { padding: 14px; border-radius: 16px; }
+  .sheet-in { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 1.6rem; padding: 3rem 1.4rem 1.6rem; }
+  .sheet-in .card { --w: 12.5rem; }
+  .info { width: 100%; }
+  section.chapter { padding-block: 4rem 1rem; }
+  .stats { gap: 1.6rem; }
 }
-@media (prefers-reduced-motion: reduce) { .el { transition: none; } .el:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <div class="topbar"><span>Periodic Table of Indian Fashion</span><span class="count"><b>118</b> trends · 2026</span></div>
-
-  <header class="hero">
-    <div>
-      <h1>The Periodic Table of <em>Indian Fashion</em></h1>
-      <p class="lede">Every element keeps its real symbol. Every symbol stands for a trend India is wearing right now, from H for Hyperfeminine to Og for Old-school Glam.</p>
+<div class="nav-shell">
+  <nav class="glassnav" aria-label="Main">
+    <a class="brand" href="#top" data-jump="top"><span class="mono"><i>0</i><b>If</b></span><span>Indian Fashion · Periodic Table</span></a>
+    <div class="navlinks">
+      <button type="button" data-jump="table">The Table</button>
+      <button type="button" data-jump="picks">Editor's Picks</button>
+      <button type="button" data-jump="families">Families</button>
     </div>
-    <div class="search">
-      <label for="q">Find an element</label>
-      <input id="q" type="search" placeholder="Trend, symbol or element">
-    </div>
-  </header>
-
-  <div class="mobile-key" id="mobileKey"></div>
-
-  <div class="scroller">
-    <div class="table" id="table"></div>
-  </div>
-
-  <footer>
-    <p>The symbols, numbers and families are the real periodic table. The trends, notes and drawings are ours.</p>
-    <p>Tap an element to open its card. Use ← → to flip through.</p>
-  </footer>
+    <button type="button" class="pill solid" data-deal>Deal me a card <span class="arrow">→</span></button>
+  </nav>
 </div>
+
+<header class="hero band" id="top">
+  <div class="glow a"></div><div class="glow b"></div><div class="glow c"></div>
+  <div class="hero-in">
+    <div>
+      <span class="badge rise"><b>Drop 01</b> 118 trends · 2026 edition</span>
+      <h1 class="rise d1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
+      <p class="lede rise d2">Every element keeps its real symbol, and every symbol stands for a trend India is wearing right now. H for Hyperfeminine, Sr for Saree Runners, Og for Old-school Glam.</p>
+      <div class="ctas rise d3">
+        <button type="button" class="pill solid" data-jump="table">Explore the table <span class="arrow">↓</span></button>
+        <button type="button" class="pill glass" data-deal>Deal me a card</button>
+      </div>
+      <div class="stats rise d4">
+        <div><b>118</b><span>Elements</span></div>
+        <div><b>10</b><span>Families</span></div>
+        <div><b>118</b><span>Illustrations</span></div>
+      </div>
+    </div>
+    <div class="deck" id="deck" aria-label="A hand of element cards">
+      <div class="deck-in" id="deckIn"></div>
+      <p class="deck-hint">Pick a card</p>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<main>
+  <section class="chapter band" id="table" aria-labelledby="h-table">
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 01 · The Table</p>
+          <h2 id="h-table">Every element, <em>a trend.</em></h2>
+          <p>Real symbols, real numbers, real families. Hover to lift a tile, tap to open its card.</p>
+        </div>
+        <div class="tools">
+          <label class="search" style="order:2"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend, symbol or element"></label>
+          <div class="segs" id="segs" role="group" aria-label="Filter by family"></div>
+        </div>
+      </div>
+      <div class="mobile-key" id="mobileKey"></div>
+      <div class="stage" id="stage">
+        <div class="scroller"><div class="table" id="tableGrid"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter band" id="picks" aria-labelledby="h-picks">
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 02 · Editor's Picks</p>
+          <h2 id="h-picks">Eight cards <em>worth holding.</em></h2>
+          <p>The trends we'd bet on this season, dealt face up.</p>
+        </div>
+        <div class="rail-nav"><button type="button" class="round" data-rail="-1" aria-label="Previous picks">←</button><button type="button" class="round" data-rail="1" aria-label="More picks">→</button></div>
+      </div>
+      <div class="rail" id="rail"></div>
+    </div>
+  </section>
+
+  <section class="chapter band" id="families" aria-labelledby="h-fam">
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 03 · Families</p>
+          <h2 id="h-fam">Ten families, <em>one wardrobe.</em></h2>
+          <p>Grouped exactly as chemistry groups them. Open a family to see only its elements on the table.</p>
+        </div>
+      </div>
+      <div class="fams" id="fams"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="band">
+  <div class="wrap">
+    <p class="poster" aria-hidden="true">Indian <span>Fashion</span></p>
+    <div class="foot">
+      <p>The symbols, numbers and families are the real periodic table. The trends, notes and drawings are ours.</p>
+      <p>Use ← → to flip through cards · Drop 01 · 2026</p>
+    </div>
+  </div>
+</footer>
 
 <dialog class="sheet" id="sheet" aria-label="Element card">
   <div class="sheet-in" id="sheetIn"></div>
@@ -805,6 +1065,8 @@ const SETS = {
   noble: [2, 10, 18, 36, 54, 86, 118], metalloid: [5, 14, 32, 33, 51, 52],
   post: [13, 31, 49, 50, 81, 82, 83, 84, 113, 114, 115, 116],
 };
+const PICKS = ["Sr", "Mo", "Lu", "Gd", "Rb", "Hs", "Br", "Og"];
+const DECK = ["Og", "Gd", "Sr", "B", "Mo"];
 function family(n) {
   for (const [k, v] of Object.entries(SETS)) if (v.includes(n)) return k;
   if (n >= 57 && n <= 71) return "lanthanide";
@@ -830,15 +1092,56 @@ function place(n) {
 
 const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n) }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
-const table = document.getElementById("table");
-const mobileKey = document.getElementById("mobileKey");
-const q = document.getElementById("q");
-const sheet = document.getElementById("sheet");
-const sheetIn = document.getElementById("sheetIn");
+const get = (s) => bySym.get(s.toLowerCase());
+const $ = (id) => document.getElementById(id);
+let uid = 0;
 let current = null, activeFam = null;
 
 const tileHTML = (e, id) => `<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
+const cardHTML = (e, extra = "") => `<div class="card ${e.fam}"${extra}>
+    <div class="card-in">
+      <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
+      <div class="idx br"><b>${e.sym}</b><span>${e.n}</span></div>
+      <div class="banner">${e.el}</div>
+      <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${scene("c" + (uid++) + e.sym, e.art)}</svg></div>
+      <p class="cap">${e.trend}</p>
+    </div>
+    <div class="glare"></div>
+  </div>`;
 
+// ---------- Hero deck ----------
+const deckIn = $("deckIn");
+const fan = [[-30, -16, 34], [-15, -8, 14], [0, 0, -4], [15, 8, 14], [30, 16, 34]];
+DECK.forEach((s, i) => {
+  const e = get(s), [rot, dx, dy] = fan[i];
+  const wrap = document.createElement("div");
+  wrap.innerHTML = cardHTML(e, ` role="button" tabindex="0" aria-label="Open ${e.trend}"`);
+  const c = wrap.firstElementChild;
+  const base = `translate(-50%, -50%) translate(${dx * 4.2}%, ${dy}px) rotate(${rot * .55}deg)`;
+  c.style.transform = base;
+  c.style.zIndex = i === 2 ? 5 : 5 - Math.abs(i - 2);
+  c.classList.add("float");
+  c.style.animationDelay = `${i * -1.3}s`;
+  c.addEventListener("mouseenter", () => c.style.transform = base + " translateY(-26px) scale(1.04)");
+  c.addEventListener("mouseleave", () => c.style.transform = base);
+  c.addEventListener("click", () => open(e));
+  c.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(e); } });
+  deckIn.appendChild(c);
+});
+const deck = $("deck");
+deck.addEventListener("pointermove", ev => {
+  const r = deck.getBoundingClientRect();
+  const x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
+  deckIn.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 10}deg)`;
+});
+deck.addEventListener("pointerleave", () => deckIn.style.transform = "");
+
+// ---------- Marquee ----------
+const items = els.map(e => `<span><b>${e.sym}</b>${e.trend}</span>`).join("");
+$("track").innerHTML = items + items;
+
+// ---------- Table ----------
+const grid = $("tableGrid");
 const tiles = new Map();
 for (const e of els) {
   const [row, colN] = place(e.n);
@@ -851,19 +1154,18 @@ for (const e of els) {
   b.innerHTML = tileHTML(e, "t" + e.sym);
   b.addEventListener("click", () => open(e));
   tiles.set(e.n, b);
-  table.appendChild(b);
+  grid.appendChild(b);
 }
-const add = (cls, style, html) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, style); d.innerHTML = html; table.appendChild(d); };
+const add = (cls, style, html) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, style); d.innerHTML = html; grid.appendChild(d); };
 add("placeholder", { gridRow: 6, gridColumn: 3 }, "57–71");
 add("placeholder", { gridRow: 7, gridColumn: 3 }, "89–103");
 add("gapline", { gridRow: 8 }, "");
 add("series", { gridRow: 9 }, "Lanthanides");
 add("series", { gridRow: 10 }, "Actinides");
 
-// Key: a sample tile with labels, plus the families as filters
-const sample = els[25];
 const counts = {};
 for (const e of els) counts[e.fam] = (counts[e.fam] || 0) + 1;
+const sample = get("Fe");
 const key = document.createElement("section");
 key.className = "key";
 key.setAttribute("aria-label", "Key");
@@ -874,19 +1176,22 @@ key.innerHTML = `
     <p>The illustration<span>the trend, drawn</span></p>
     <p>Trend<span>Fe stands for Futuristic Ethnic</span></p>
   </div>
-  <div class="families">
-    <h2>Families</h2>
-    <ul class="legend">${Object.entries(FAMILIES).map(([k, name]) => `<li><button type="button" class="chip ${k}" data-fam="${k}" aria-pressed="false">${name}<span class="n">${counts[k]}</span></button></li>`).join("")}</ul>
-    <button type="button" class="clear" hidden>Show all</button>
-  </div>`;
-key.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => setFam(activeFam === c.dataset.fam ? null : c.dataset.fam)));
-key.querySelector(".clear").addEventListener("click", () => setFam(null));
+  <ul class="keylist">${Object.entries(FAMILIES).map(([k, name]) => `<li class="${k}">${name}<span>${counts[k]}</span></li>`).join("")}</ul>`;
+const narrow = window.matchMedia("(max-width: 900px)");
+function placeKey() { (narrow.matches ? $("mobileKey") : grid).appendChild(key); }
+narrow.addEventListener("change", placeKey);
+placeKey();
+
+const segs = $("segs");
+segs.innerHTML = `<button type="button" class="seg" data-fam="" aria-pressed="true">All</button>` +
+  Object.entries(FAMILIES).map(([k, name]) => `<button type="button" class="seg ${k}" data-fam="${k}" aria-pressed="false"><i></i>${name}</button>`).join("");
+segs.querySelectorAll(".seg").forEach(s => s.addEventListener("click", () => setFam(s.dataset.fam || null)));
 function setFam(f) {
   activeFam = f;
-  key.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.fam === f)));
-  key.querySelector(".clear").hidden = !f;
+  segs.querySelectorAll(".seg").forEach(s => s.setAttribute("aria-pressed", String((s.dataset.fam || null) === f)));
   filter();
 }
+const q = $("q");
 function filter() {
   const term = q.value.trim().toLowerCase();
   for (const e of els) {
@@ -897,24 +1202,47 @@ function filter() {
 }
 q.addEventListener("input", filter);
 
-const narrow = window.matchMedia("(max-width: 900px)");
-function placeKey() { (narrow.matches ? mobileKey : table).appendChild(key); }
-narrow.addEventListener("change", placeKey);
-placeKey();
+const stage = $("stage");
+stage.addEventListener("pointermove", ev => {
+  const r = stage.getBoundingClientRect();
+  stage.style.setProperty("--mx", `${ev.clientX - r.left}px`);
+  stage.style.setProperty("--my", `${ev.clientY - r.top}px`);
+});
 
+// ---------- Picks ----------
+const rail = $("rail");
+rail.innerHTML = PICKS.map(s => { const e = get(s); return `<button type="button" class="pick" data-sym="${e.sym}">${cardHTML(e)}<div><small>No. ${e.n} · ${FAMILIES[e.fam]}</small><h3>${e.trend}</h3><p>${e.desc}</p></div></button>`; }).join("");
+rail.querySelectorAll(".pick").forEach(p => p.addEventListener("click", () => open(get(p.dataset.sym))));
+document.querySelectorAll("[data-rail]").forEach(b => b.addEventListener("click", () => rail.scrollBy({ left: Number(b.dataset.rail) * (rail.clientWidth * .8), behavior: "smooth" })));
+
+// ---------- Families ----------
+$("fams").innerHTML = Object.entries(FAMILIES).map(([k, name]) => {
+  const members = els.filter(e => e.fam === k);
+  const show = [members[0], members[Math.floor(members.length / 2)], members[members.length - 1]];
+  return `<button type="button" class="fam ${k}" data-fam="${k}">
+    <div class="row"><h3>${name}</h3><span class="count">${members.length}</span></div>
+    <div class="minis" aria-hidden="true">${show.map(e => `<div class="el ${e.fam}">${tileHTML(e, "f" + k + e.sym)}</div>`).join("")}</div>
+    <ul>${members.slice(0, 4).map(e => `<li><b>${e.sym}</b>${e.trend}</li>`).join("")}</ul>
+    <span class="go">See all ${members.length} on the table →</span>
+  </button>`;
+}).join("");
+document.querySelectorAll(".fam").forEach(f => f.addEventListener("click", () => { setFam(f.dataset.fam); jump("table"); }));
+
+// ---------- Jumps ----------
+function jump(id) {
+  const t = id === "top" ? document.body : $(id);
+  t.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+document.querySelectorAll("[data-jump]").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); jump(a.dataset.jump); }));
+
+// ---------- Pop-up card ----------
+const sheet = $("sheet"), sheetIn = $("sheetIn");
 function render(e) {
   current = e;
+  sheetIn.style.setProperty("--fc", `var(--${e.fam})`);
   sheetIn.innerHTML = `
     <button type="button" class="close" aria-label="Close">×</button>
-    <div class="card ${e.fam}">
-      <div class="card-in">
-        <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
-        <div class="idx br"><b>${e.sym}</b><span>${e.n}</span></div>
-        <div class="banner">${e.el}</div>
-        <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${scene("b" + e.sym, e.art)}</svg></div>
-        <p class="cap">${e.trend}</p>
-      </div>
-    </div>
+    <div class="c3d"><div class="flipper flip">${cardHTML(e)}</div></div>
     <div class="info">
       <p class="kicker">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -923,14 +1251,26 @@ function render(e) {
         <div><dt>Key pieces</dt><dd>${e.pieces}</dd></div>
         <div><dt>Try it</dt><dd>${e.tip}</dd></div>
       </dl>
-      <div class="nav">
-        <button type="button" data-go="-1">← Previous</button>
-        <button type="button" data-go="1">Next →</button>
-        <button type="button" data-go="r">Shuffle</button>
+      <div class="sheet-nav">
+        <button type="button" class="round" data-go="-1" aria-label="Previous element">←</button>
+        <button type="button" class="round" data-go="1" aria-label="Next element">→</button>
+        <button type="button" class="pill glass" data-go="r">Shuffle</button>
+        <span class="count">${String(e.n).padStart(3, "0")} / 118</span>
       </div>
     </div>`;
   sheetIn.querySelector(".close").addEventListener("click", () => sheet.close());
   sheetIn.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => go(btn.dataset.go)));
+  const c3d = sheetIn.querySelector(".c3d"), flipper = sheetIn.querySelector(".flipper"), glare = sheetIn.querySelector(".glare");
+  flipper.addEventListener("animationend", () => flipper.classList.remove("flip"), { once: true });
+  c3d.addEventListener("pointermove", ev => {
+    if (flipper.classList.contains("flip")) return;
+    const r = c3d.getBoundingClientRect();
+    const x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+    flipper.style.transform = `rotateY(${(x - .5) * 16}deg) rotateX(${(.5 - y) * 14}deg)`;
+    glare.style.setProperty("--gx", `${x * 100}%`);
+    glare.style.setProperty("--gy", `${y * 100}%`);
+  });
+  c3d.addEventListener("pointerleave", () => flipper.style.transform = "");
 }
 function open(e) {
   render(e);
@@ -940,15 +1280,16 @@ function go(dir) {
   if (dir === "r") { let r; do { r = els[Math.floor(Math.random() * els.length)]; } while (r === current); return render(r); }
   render(els[(current.n - 1 + Number(dir) + els.length) % els.length]);
 }
+document.querySelectorAll("[data-deal]").forEach(b => b.addEventListener("click", () => open(els[Math.floor(Math.random() * els.length)])));
 sheet.addEventListener("click", ev => { if (ev.target === sheet) sheet.close(); });
-sheet.addEventListener("close", () => current && tiles.get(current.n).focus({ preventScroll: true }));
+sheet.addEventListener("close", () => { const t = current && tiles.get(current.n); if (t) t.focus({ preventScroll: true }); });
 document.addEventListener("keydown", ev => {
   if (!sheet.open) return;
   if (ev.key === "ArrowRight") go(1);
   if (ev.key === "ArrowLeft") go(-1);
 });
 
-const fromHash = bySym.get(location.hash.slice(1).toLowerCase());
+const fromHash = location.hash && get(location.hash.slice(1));
 if (fromHash) open(fromHash);
 </script>
 </body>
