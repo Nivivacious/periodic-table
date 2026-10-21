@@ -287,6 +287,98 @@ html.vt-tab::view-transition-new(root) { animation: portal .8s cubic-bezier(.7,0
 .ink canvas { display: block; width: 100%; height: clamp(140px, 19vw, 300px); cursor: crosshair; touch-action: pan-y; }
 .ink-hint { position: absolute; right: 0; bottom: .8rem; margin: 0; font: 600 .62rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 
+/* Scroll progress in the nav */
+.glassnav { position: relative; }
+.progress { position: absolute; left: 22px; right: 22px; bottom: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #F2B330, #E0508F); transform-origin: left; transform: scaleX(0); pointer-events: none; }
+
+/* Cursor ring and hover preview (fine pointers only) */
+.cursor { position: fixed; left: 0; top: 0; z-index: 90; pointer-events: none; display: none; }
+.cursor span { display: grid; place-items: center; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; border: 1.5px solid rgba(242,179,48,.85); transition: width .25s ease, height .25s ease, margin .25s ease, background .25s ease, border-color .25s ease; font: 700 .55rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); }
+.cursor.big span { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: rgba(242,179,48,.92); border-color: transparent; }
+.cursor.press span { transform: scale(.85); }
+@media (pointer: fine) { .cursor { display: block; } }
+.peek { position: fixed; left: 0; top: 0; z-index: 85; width: 15rem; pointer-events: none; opacity: 0; transform: translate(-9999px, 0); transition: opacity .2s ease;
+  background: var(--paper); color: var(--ink); border-radius: 12px; padding: 8px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.95); }
+.peek.on { opacity: 1; }
+.peek img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-radius: 7px; }
+.peek b { display: block; font: 400 1.25rem/1.1 var(--display); margin: .5rem .2rem 0; }
+.peek small { display: block; font: 600 .58rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: #6b6658; margin: .45rem .2rem 0; }
+.peek p { margin: .3rem .2rem .2rem; font: italic .9rem/1.3 var(--body); }
+
+/* Period and group highlight */
+.table.hovering .el:not(.rc) { opacity: .45; }
+.table.hovering .el.rc { box-shadow: 0 0 0 1.5px var(--c); }
+.table.hovering .el.dim { opacity: .08; }
+
+/* Heart burst */
+.heart-p { position: fixed; z-index: 95; pointer-events: none; font-size: 15px; color: var(--rani); }
+
+/* Lab */
+.lab { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 1.6rem; align-items: start; }
+.bench { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 2rem; align-items: start; border: 1px solid var(--line); border-radius: 26px; background: var(--surface); padding: 2rem; position: sticky; top: 92px; }
+.flask-wrap { position: relative; border-radius: 20px; padding: .5rem; transition: background .25s ease; }
+.flask-wrap.over { background: rgba(242,179,48,.1); outline: 1.5px dashed rgba(242,179,48,.7); }
+.flask { width: 100%; height: auto; display: block; overflow: visible; }
+.flask-wrap.shake .flask { animation: shake .55s cubic-bezier(.36,.07,.19,.97); }
+@keyframes shake { 10%, 90% { transform: rotate(-2deg); } 20%, 80% { transform: rotate(3deg); } 30%, 50%, 70% { transform: rotate(-5deg); } 40%, 60% { transform: rotate(5deg); } }
+#liquid { transition: transform .9s cubic-bezier(.3,1.3,.5,1); }
+.wave { animation: wave 3.2s linear infinite; }
+@keyframes wave { to { transform: translateX(100px); } }
+.bubbles circle { fill: rgba(255,255,255,.55); animation: rise 2.6s ease-in infinite; }
+.bubbles circle:nth-child(2n) { animation-duration: 3.4s; animation-delay: -1s; }
+.bubbles circle:nth-child(3n) { animation-duration: 2.1s; animation-delay: -1.6s; }
+@keyframes rise { from { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } to { transform: translateY(-150px); opacity: 0; } }
+.drop-hint { text-align: center; margin: .4rem 0 0; font: 600 .62rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.readout { display: grid; gap: .6rem; min-width: 0; }
+.readout .chap-no { margin: 0; }
+.formula { margin: 0; font: 400 clamp(2.6rem, 5vw, 4.4rem)/1 var(--display); letter-spacing: -.02em; min-height: 1em; }
+.formula span { color: var(--c); }
+.formula i { font-style: normal; color: var(--muted); font-size: .5em; vertical-align: middle; margin: 0 .15em; }
+.lookname { margin: 0; font: italic 1.5rem/1.2 var(--body); color: var(--paper); }
+.lookname.empty { color: var(--muted); font-size: 1.15rem; }
+.recipe { margin: .2rem 0 0; padding-left: 1.2rem; display: grid; gap: .3rem; color: var(--soft); font-size: 1.05rem; }
+.recipe b { color: var(--paper); font-weight: 500; }
+.slots { display: flex; gap: .6rem; flex-wrap: wrap; min-height: 0; }
+.slot { --c: var(--muted); position: relative; width: 4.6rem; background: var(--paper); border-radius: 6px; border: 0; border-bottom: 3px solid var(--c); padding: 3px; display: grid; gap: 2px; cursor: pointer; animation: drop .5s cubic-bezier(.3,1.4,.5,1); }
+.slot img { width: 100%; aspect-ratio: 1; display: block; border-radius: 3px; }
+.slot span { font: 600 .5rem var(--sans); color: var(--ink); text-align: center; }
+.slot::after { content: "×"; position: absolute; top: -7px; right: -7px; width: 18px; height: 18px; border-radius: 50%; background: var(--night); color: var(--paper); border: 1px solid var(--line-2); font: 600 .7rem/16px var(--sans); text-align: center; }
+@keyframes drop { from { transform: translateY(-30px) scale(.6) rotate(-12deg); } to { transform: none; } }
+.shelf { display: grid; gap: 1rem; }
+.shelf .search { width: 100%; }
+.shelf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr)); gap: 6px; max-height: 38rem; overflow-y: auto; padding: 4px; }
+.sh { --c: var(--muted); position: relative; background: var(--paper); border: 0; border-bottom: 3px solid var(--c); border-radius: 6px; padding: 3px 3px 4px; display: grid; gap: 2px; cursor: grab; transition: transform .2s ease, opacity .2s ease; }
+.sh:hover { transform: translateY(-3px) rotate(-1.5deg); }
+.sh img { width: 100%; aspect-ratio: 1; display: block; border-radius: 3px; pointer-events: none; }
+.sh span { font: 600 .5rem/1.1 var(--sans); color: var(--ink); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.sh b { position: absolute; top: 4px; left: 6px; font: 600 .8rem var(--display); color: var(--c); background: rgba(244,236,220,.85); border-radius: 3px; padding: 0 3px; pointer-events: none; }
+.sh.in { outline: 2px solid var(--gold); outline-offset: 2px; }
+.sh.hide { display: none; }
+
+/* Quiz */
+.quiz { border: 1px solid var(--line); border-radius: 26px; background: var(--surface); padding: 2.4rem; min-height: 32rem; overflow: hidden; position: relative; }
+.qprog { display: flex; gap: .4rem; margin-bottom: 1.8rem; }
+.qprog i { flex: 1; height: 3px; border-radius: 3px; background: var(--line-2); overflow: hidden; position: relative; }
+.qprog i.done::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #F2B330, #E0508F); animation: fillin .5s ease both; }
+@keyframes fillin { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+.qstep { animation: qin .55s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes qin { from { transform: translateX(40px); } to { transform: none; } }
+.qnum { font: 600 .66rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.qtext { font: 400 clamp(1.9rem, 3.6vw, 3rem)/1.05 var(--display); margin: .5rem 0 1.6rem; text-wrap: balance; }
+.qopts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.qopt { position: relative; display: grid; gap: .7rem; text-align: left; cursor: pointer; color: var(--paper); background: rgba(255,255,255,.03); border: 1px solid var(--line-2); border-radius: 18px; padding: .8rem .8rem 1rem; transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease, background .25s ease; }
+.qopt:hover { transform: translateY(-5px); border-color: var(--gold); background: rgba(242,179,48,.06); }
+.qopt img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-radius: 10px; background: var(--paper); }
+.qopt span { font: 400 1.2rem/1.2 var(--display); }
+.qopt.picked { border-color: var(--gold); background: rgba(242,179,48,.14); transform: scale(.97); }
+.qresult { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.6rem; align-items: center; }
+.qresult .c3d .card { --w: 16rem; }
+.qresult h3 { margin: .3rem 0 0; font: 400 clamp(2.4rem, 5vw, 4rem)/1 var(--display); letter-spacing: -.02em; }
+.qresult h3 em { color: var(--gold); }
+.qresult p.desc { font-style: italic; font-size: 1.25rem; color: var(--soft); margin: .6rem 0 0; }
+
+@media (max-width: 1500px) { .brand span { display: none; } }
+
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; overflow: hidden; margin-top: -76px; padding-top: 76px; }
 .glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; z-index: -1; pointer-events: none; }
@@ -591,6 +683,13 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
   .src a, .src .d { grid-column: 2; }
   .iconbtn kbd { display: none; }
   .cols { display: none; }
+  .lab { grid-template-columns: minmax(0, 1fr); }
+  .bench { grid-template-columns: minmax(0, 1fr); position: static; padding: 1.3rem; }
+  .flask-wrap { max-width: 12rem; justify-self: center; }
+  .shelf-grid { max-height: 26rem; }
+  .qopts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quiz { padding: 1.4rem; }
+  .qresult { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
   .orb { width: 52px; }
   .home { padding-top: 2.5rem; }
   .pick.open { grid-template-columns: minmax(0, 1fr); justify-items: center; padding: 3rem 1.2rem 1.4rem; }
@@ -619,12 +718,15 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
 
 <div class="nav-shell">
   <nav class="glassnav" aria-label="Main">
+    <span class="progress" id="progress" aria-hidden="true"></span>
     <a class="brand" href="#table" data-view="table"><span class="mono"><i>0</i><b>If</b></span><span>Indian Fashion · Periodic Table</span></a>
     <div class="tabs" role="tablist" aria-label="Sections">
       <button type="button" role="tab" data-view="table">The Table</button>
       <button type="button" role="tab" data-view="orbit">Orbit</button>
+      <button type="button" role="tab" data-view="lab">Lab</button>
+      <button type="button" role="tab" data-view="quiz">Quiz</button>
       <button type="button" role="tab" data-view="genz">Gen Z</button>
-      <button type="button" role="tab" data-view="picks">Editor's Picks</button>
+      <button type="button" role="tab" data-view="picks">Picks</button>
       <button type="button" role="tab" data-view="families">Families</button>
       <button type="button" role="tab" data-view="sources">Sources</button>
       <button type="button" role="tab" data-view="wardrobe">Wardrobe <span class="wcount" id="wcount" hidden>0</span></button>
@@ -668,11 +770,75 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     </div>
   </section>
 
+  <section class="view chapter band" data-view="lab" id="v-lab" aria-labelledby="h-lab" hidden>
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 03 · The Lab</p>
+          <h2 id="h-lab">Mix your own <em>compound.</em></h2>
+          <p>Drop up to three elements into the flask. We'll write the formula and name the look.</p>
+        </div>
+      </div>
+      <div class="lab">
+        <div class="bench" id="bench">
+          <div class="flask-wrap" id="flaskWrap">
+            <svg class="flask" viewBox="0 0 200 240" aria-hidden="true">
+              <defs>
+                <clipPath id="flaskClip"><path d="M82,24 h36 v62 l52,112 q9,22 -14,22 h-112 q-23,0 -14,-22 l52,-112z"/></clipPath>
+                <linearGradient id="liqGrad" x1="0" x2="1" y1="0" y2="1"><stop id="lg0" offset="0" stop-color="#F2B330"/><stop id="lg1" offset=".5" stop-color="#E0508F"/><stop id="lg2" offset="1" stop-color="#8a6be0"/></linearGradient>
+              </defs>
+              <g clip-path="url(#flaskClip)">
+                <rect x="0" y="0" width="200" height="240" fill="rgba(255,255,255,.04)"/>
+                <g id="liquid" style="transform: translateY(240px)">
+                  <path class="wave" d="M-200,8 q25,-10 50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 v260 h-400z" fill="url(#liqGrad)"/>
+                  <g class="bubbles"><circle cx="70" cy="120" r="4"/><circle cx="96" cy="150" r="3"/><circle cx="120" cy="110" r="5"/><circle cx="140" cy="160" r="3"/><circle cx="84" cy="180" r="4"/><circle cx="110" cy="190" r="2.5"/><circle cx="130" cy="140" r="3.5"/></g>
+                </g>
+              </g>
+              <path d="M82,24 h36 v62 l52,112 q9,22 -14,22 h-112 q-23,0 -14,-22 l52,-112z" fill="none" stroke="#F4ECDC" stroke-width="2.4" stroke-linejoin="round"/>
+              <path d="M76,24 h48" stroke="#F4ECDC" stroke-width="5" stroke-linecap="round"/>
+              <path d="M70,150 l14,-30 M66,170 l6,-12" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <p class="drop-hint">Drop elements here</p>
+          </div>
+          <div class="readout">
+            <p class="chap-no">Formula</p>
+            <p class="formula" id="formula">—</p>
+            <p class="lookname" id="lookname">Pick up to three elements from the shelf.</p>
+            <ol class="recipe" id="recipe"></ol>
+            <div class="slots" id="slots"></div>
+            <div class="actions">
+              <button type="button" class="pill solid" id="labRandom">Random mix <span class="arrow">↻</span></button>
+              <button type="button" class="pill glass" id="labCopy">Copy formula</button>
+              <button type="button" class="pill glass" id="labClear">Empty flask</button>
+            </div>
+          </div>
+        </div>
+        <div class="shelf">
+          <label class="search"><span class="sr">Filter the shelf</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="shelfQ" type="search" placeholder="Filter the shelf"></label>
+          <div class="shelf-grid" id="shelf"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view chapter band" data-view="quiz" id="v-quiz" aria-labelledby="h-quiz" hidden>
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 04 · Quiz</p>
+          <h2 id="h-quiz">Which element <em>are you?</em></h2>
+          <p>Five questions. One card.</p>
+        </div>
+      </div>
+      <div class="quiz" id="quiz"></div>
+    </div>
+  </section>
+
   <section class="view chapter band" data-view="genz" id="v-genz" aria-labelledby="h-genz" hidden>
     <div class="wrap">
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 03 · Gen Z</p>
+          <p class="chap-no">Chapter 05 · Gen Z</p>
           <h2 id="h-genz">Gen Z, <em>decoded.</em></h2>
           <p id="genzLede"></p>
         </div>
@@ -687,7 +853,7 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     <div class="wrap">
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 04 · Editor's Picks</p>
+          <p class="chap-no">Chapter 06 · Editor's Picks</p>
           <h2 id="h-picks">Eight cards <em>worth holding.</em></h2>
           <p>The trends we'd bet on this season, dealt face up.</p>
         </div>
@@ -702,7 +868,7 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
       <div class="ink" id="inkWrap"><canvas id="ink" aria-label="ELEMENTAL. Move across the word to paint it in colour." role="img"></canvas><p class="ink-hint">Move across the word</p></div>
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 05 · Families</p>
+          <p class="chap-no">Chapter 07 · Families</p>
           <h2 id="h-fam">Ten families, <em>one wardrobe.</em></h2>
           <p>Grouped exactly as chemistry groups them. Open a family to see only its elements on the table.</p>
         </div>
@@ -733,7 +899,7 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     <div class="wrap">
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 06 · Sources</p>
+          <p class="chap-no">Chapter 08 · Sources</p>
           <h2 id="h-src">Who's <em>saying so.</em></h2>
           <p>Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p>
         </div>
@@ -753,6 +919,8 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
   </div>
 </footer>
 
+<div class="cursor" id="cursor" aria-hidden="true"><span></span></div>
+<div class="peek" id="peek" aria-hidden="true"></div>
 <dialog class="palette" id="palette" aria-label="Search">
   <div class="pal-in">
     <label class="pal-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="palq" type="search" placeholder="Search 118 trends, symbols, elements, magazines" autocomplete="off"><kbd>esc</kbd></label>
@@ -1722,7 +1890,21 @@ function onView(v) {
 let saved = [];
 try { saved = JSON.parse(localStorage.getItem("ptif-saved") || "[]"); } catch (err) { saved = []; }
 const isSaved = (e) => saved.includes(e.sym);
+function burst(el) {
+  if (!el || reduced) return;
+  const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  for (let i = 0; i < 12; i++) {
+    const h = document.createElement("span");
+    h.className = "heart-p"; h.textContent = "♥";
+    h.style.left = cx + "px"; h.style.top = cy + "px";
+    document.body.appendChild(h);
+    const a = (i / 12) * Math.PI * 2, d = 40 + Math.random() * 40;
+    h.animate([{ transform: "translate(-50%,-50%) scale(.4)", opacity: 1 }, { transform: `translate(calc(-50% + ${Math.cos(a) * d}px), calc(-50% + ${Math.sin(a) * d - 20}px)) scale(${0.8 + Math.random() * .7}) rotate(${(Math.random() - .5) * 60}deg)`, opacity: 0 }], { duration: 750 + Math.random() * 300, easing: "cubic-bezier(.2,.7,.2,1)" }).onfinish = () => h.remove();
+  }
+}
 function toggleSave(e) {
+  const was = isSaved(e);
+  if (!was) burst(document.activeElement && document.activeElement.matches("[data-save]") ? document.activeElement : null);
   saved = isSaved(e) ? saved.filter(s => s !== e.sym) : [...saved, e.sym];
   try { localStorage.setItem("ptif-saved", JSON.stringify(saved)); } catch (err) {}
   toast(isSaved(e) ? `Saved ${e.sym} · ${e.trend}` : `Removed ${e.sym} from your wardrobe`);
@@ -1829,7 +2011,7 @@ $("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s"
 $("srclist").querySelectorAll(".t").forEach(b => b.addEventListener("click", () => open(get(b.dataset.sym))));
 
 // ---------- Views ----------
-const VIEWS = ["table", "orbit", "genz", "picks", "families", "sources", "wardrobe"];
+const VIEWS = ["table", "orbit", "lab", "quiz", "genz", "picks", "families", "sources", "wardrobe"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "table";
   const cur = document.querySelector(".view:not([hidden])");
@@ -1847,6 +2029,7 @@ function show(v, opts = {}) {
   requestAnimationFrame(() => watch(document.querySelectorAll(`.view[data-view="${v}"] :is(.pick, .fam, .door, .src, .stage)`)));
   try { history.replaceState(null, "", v === "table" ? location.pathname + location.search : "#" + v); } catch (err) {}
   onView(v);
+  if (!opts.keepScroll) scramble(document.querySelector(`.view[data-view="${v}"] :is(h1, h2)`));
 }
 document.addEventListener("click", ev => {
   const t = ev.target.closest("[data-view]");
@@ -1950,6 +2133,198 @@ document.addEventListener("keydown", ev => {
   if ((ev.key === "k" && (ev.metaKey || ev.ctrlKey)) || (ev.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && !sheet.open)) { ev.preventDefault(); palette.open ? palette.close() : palOpen(); }
 });
 syncSaved();
+
+// ---------- Scroll progress ----------
+const prog = $("progress");
+addEventListener("scroll", () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  prog.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+}, { passive: true });
+
+// ---------- Cursor ring, magnetic buttons, hover preview ----------
+const fine = matchMedia("(pointer: fine)").matches;
+const cursor = $("cursor"), peek = $("peek");
+if (fine && !reduced) {
+  let mx = -100, my = -100, cx = -100, cy = -100;
+  addEventListener("pointermove", ev => { mx = ev.clientX; my = ev.clientY; }, { passive: true });
+  addEventListener("pointerdown", () => cursor.classList.add("press"));
+  addEventListener("pointerup", () => cursor.classList.remove("press"));
+  (function loop() {
+    cx += (mx - cx) * 0.2; cy += (my - cy) * 0.2;
+    cursor.style.transform = `translate(${cx}px, ${cy}px)`;
+    requestAnimationFrame(loop);
+  })();
+  document.addEventListener("pointerover", ev => {
+    const t = ev.target.closest(".el:not(.how .el), .orb, .pick, .sh, .qopt, .ccard, .fam, .deck .card");
+    cursor.classList.toggle("big", !!t);
+    cursor.firstElementChild.textContent = t ? (t.classList.contains("sh") ? "Add" : t.classList.contains("orb") ? "Drag" : t.classList.contains("qopt") ? "Pick" : "Open") : "";
+  });
+  // Magnetic pull on buttons
+  document.addEventListener("pointermove", ev => {
+    const b = ev.target.closest(".pill, .round, .iconbtn");
+    document.querySelectorAll(".mag").forEach(m => { if (m !== b) { m.style.transform = ""; m.classList.remove("mag"); } });
+    if (!b) return;
+    const r = b.getBoundingClientRect();
+    b.classList.add("mag");
+    b.style.transform = `translate(${((ev.clientX - r.left) / r.width - .5) * 10}px, ${((ev.clientY - r.top) / r.height - .5) * 8}px)`;
+  }, { passive: true });
+}
+
+// Hover preview and period/group highlight on the table
+for (const [n, t] of tiles) {
+  const e = els[n - 1];
+  t.dataset.row = t.style.gridRow; t.dataset.col = t.style.gridColumn;
+  t.addEventListener("pointerenter", ev => {
+    grid.classList.add("hovering");
+    for (const o of tiles.values()) o.classList.toggle("rc", o.dataset.row === t.dataset.row || o.dataset.col === t.dataset.col);
+    if (fine) {
+      peek.innerHTML = `<img src="${sceneImg(e)}" alt=""><small>No. ${e.n} · ${e.el}${e.z ? " · Gen Z" : ""}</small><b>${e.trend}</b><p>${e.desc}</p>`;
+      peek.classList.add("on");
+    }
+  });
+  t.addEventListener("pointermove", ev => {
+    if (!fine) return;
+    const w = peek.offsetWidth, h = peek.offsetHeight;
+    const x = ev.clientX + 24 + w > innerWidth ? ev.clientX - w - 24 : ev.clientX + 24;
+    const y = Math.min(innerHeight - h - 12, Math.max(12, ev.clientY - h / 2));
+    peek.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  t.addEventListener("pointerleave", () => { grid.classList.remove("hovering"); peek.classList.remove("on"); for (const o of tiles.values()) o.classList.remove("rc"); });
+  // Arrow keys move between tiles like a real grid
+  t.addEventListener("keydown", ev => {
+    const dirs = { ArrowRight: [0, 1], ArrowLeft: [0, -1], ArrowDown: [1, 0], ArrowUp: [-1, 0] };
+    if (!dirs[ev.key] || sheet.open) return;
+    ev.preventDefault(); ev.stopPropagation();
+    const [dr, dc] = dirs[ev.key], r0 = +t.dataset.row, c0 = +t.dataset.col;
+    let best = null, bd = 1e9;
+    for (const o of tiles.values()) {
+      const r = +o.dataset.row, c = +o.dataset.col;
+      const along = dr ? (r - r0) * dr : (c - c0) * dc;
+      if (along <= 0) continue;
+      const d = along * 10 + (dr ? Math.abs(c - c0) : Math.abs(r - r0)) * 3;
+      if (d < bd) { bd = d; best = o; }
+    }
+    if (best) best.focus();
+  });
+}
+
+// ---------- Headline scramble on tab change ----------
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ·✦*+";
+function scramble(h) {
+  if (!h || reduced) return;
+  const nodes = [];
+  const walk = (n) => n.nodeType === 3 ? nodes.push([n, n.textContent]) : n.childNodes.forEach(walk);
+  walk(h);
+  const start = performance.now(), dur = 700;
+  (function step(t) {
+    const p = Math.min(1, (t - start) / dur);
+    for (const [n, orig] of nodes) n.textContent = [...orig].map((ch, i) => ch === " " || i / orig.length < p ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join("");
+    if (p < 1) requestAnimationFrame(step); else nodes.forEach(([n, o]) => n.textContent = o);
+  })(start);
+}
+
+// ---------- The Lab ----------
+let mix = [];
+const shelf = $("shelf");
+shelf.innerHTML = els.map(e => `<button type="button" class="sh ${e.fam}" draggable="true" data-sym="${e.sym}" aria-label="Add ${e.trend}"><b>${e.sym}</b><img src="${sceneImg(e)}" alt=""><span>${e.trend}</span></button>`).join("");
+shelf.addEventListener("click", ev => { const b = ev.target.closest(".sh"); if (b) addToMix(get(b.dataset.sym)); });
+shelf.addEventListener("dragstart", ev => { const b = ev.target.closest(".sh"); if (b) { ev.dataTransfer.setData("text/plain", b.dataset.sym); ev.dataTransfer.effectAllowed = "copy"; } });
+const flaskWrap = $("flaskWrap");
+flaskWrap.addEventListener("dragover", ev => { ev.preventDefault(); flaskWrap.classList.add("over"); });
+flaskWrap.addEventListener("dragleave", () => flaskWrap.classList.remove("over"));
+flaskWrap.addEventListener("drop", ev => { ev.preventDefault(); flaskWrap.classList.remove("over"); const e = get(ev.dataTransfer.getData("text/plain") || ""); if (e) addToMix(e); });
+$("shelfQ").addEventListener("input", ev => {
+  const t = ev.target.value.trim().toLowerCase();
+  shelf.querySelectorAll(".sh").forEach(b => { const e = get(b.dataset.sym); b.classList.toggle("hide", !!t && !`${e.sym} ${e.trend} ${e.el}`.toLowerCase().includes(t)); });
+});
+function addToMix(e) {
+  if (mix.includes(e)) { toast(`${e.sym} is already in the flask`); return; }
+  if (mix.length >= 3) mix.shift();
+  mix.push(e);
+  flaskWrap.classList.remove("shake"); void flaskWrap.offsetWidth; flaskWrap.classList.add("shake");
+  renderMix();
+}
+const famColor = (e) => getComputedStyle(document.documentElement).getPropertyValue(`--${e.fam}`).trim();
+function lookName(list) {
+  if (list.length === 1) return list[0].trend;
+  const first = list[0].trend.split(/[\s-]/)[0], last = list[list.length - 1].trend.split(/[\s-]/).pop();
+  const mid = list.length === 3 ? " " + list[1].trend.split(/[\s-]/)[0] : "";
+  return `${first}${mid} ${first.toLowerCase() === last.toLowerCase() ? "Edit" : last}`;
+}
+function renderMix() {
+  shelf.querySelectorAll(".sh").forEach(b => b.classList.toggle("in", mix.some(e => e.sym === b.dataset.sym)));
+  $("liquid").style.transform = `translateY(${240 - (mix.length ? 70 + mix.length * 42 : 0)}px)`;
+  const cols = mix.length ? mix.map(famColor) : ["#F2B330"];
+  ["lg0", "lg1", "lg2"].forEach((id, i) => $(id).setAttribute("stop-color", cols[Math.min(i, cols.length - 1)]));
+  $("formula").innerHTML = mix.length ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>·</i>") : "—";
+  const ln = $("lookname");
+  ln.textContent = mix.length ? `“${lookName(mix)}”` : "Pick up to three elements from the shelf.";
+  ln.classList.toggle("empty", !mix.length);
+  $("recipe").innerHTML = mix.map(e => `<li><b>${e.pieces.split(",")[0].trim()}</b> from ${e.trend}</li>`).join("");
+  $("slots").innerHTML = mix.map(e => `<button type="button" class="slot ${e.fam}" data-sym="${e.sym}" aria-label="Remove ${e.trend}"><img src="${sceneImg(e)}" alt=""><span>${e.sym}</span></button>`).join("");
+  $("slots").querySelectorAll(".slot").forEach(s => s.addEventListener("click", () => { mix = mix.filter(e => e.sym !== s.dataset.sym); renderMix(); }));
+}
+$("labRandom").addEventListener("click", () => {
+  mix = [];
+  const pool = [...els].sort(() => Math.random() - .5).slice(0, 3);
+  pool.forEach((e, i) => setTimeout(() => addToMix(e), i * 260));
+});
+$("labClear").addEventListener("click", () => { mix = []; renderMix(); });
+$("labCopy").addEventListener("click", async () => {
+  if (!mix.length) return toast("Add an element first");
+  const text = `${mix.map(e => e.sym).join("·")} — “${lookName(mix)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
+  try { await navigator.clipboard.writeText(text); toast("Formula copied"); } catch (err) { toast("Copy isn't available here"); }
+});
+renderMix();
+
+// ---------- Quiz ----------
+const QUIZ = [
+  ["Your ideal Saturday night?", [["A concert, front row", ["Ho", "In", "Cn", "Ne", "Ga"]], ["A café and a paperback", ["Li", "Ac", "P", "Ca", "Er"]], ["A thrift run with friends", ["Tc", "Th", "Pa", "U", "Ar"]], ["A family function", ["Kr", "Se", "Zn", "Hg", "Na"]]]],
+  ["Pick a colour to live in.", [["Rani pink", ["Rh", "C", "Bi", "Ba"]], ["Cloud white", ["Cl", "Nb", "H", "Fm"]], ["Indigo and cobalt", ["Ce", "I", "Tl", "Db"]], ["All black", ["Al", "Rn", "Co", "Sc"]]]],
+  ["Your one statement piece?", [["XL jhumkas", ["Xe", "Sb", "Bi", "Mn"]], ["Worn-in sneakers", ["Sr", "Sn", "Th", "K"]], ["A corset", ["Cr", "Cs", "Sc", "Ho"]], ["A charm-heavy bag", ["Cm", "Am", "Ti", "Pb"]]]],
+  ["How do you wear a saree?", [["Pre-draped, out the door", ["Pd", "Ho", "Cs"]], ["Nani's, restyled", ["Na", "Zr", "Kr", "Cr"]], ["With trainers", ["Sr", "Se", "Hf"]], ["As a gown, obviously", ["Sg", "Re", "Og", "Md"]]]],
+  ["Describe your vibe.", [["Loud and chatpata", ["C", "Am", "Pr", "Dy"]], ["Quiet and crafted", ["Nb", "H", "Zr", "Mc"]], ["Soft and romantic", ["Fe", "Co", "Ba", "Re"]], ["Sporty and quick", ["B", "S", "Ra", "Tb"]]]],
+];
+let qStep = 0, qScore = {};
+const quizEl = $("quiz");
+function renderQuiz() {
+  const prog = `<div class="qprog">${QUIZ.map((_, i) => `<i class="${i < qStep ? "done" : ""}"></i>`).join("")}</div>`;
+  if (qStep >= QUIZ.length) {
+    const top = Math.max(...Object.values(qScore));
+    const winners = Object.keys(qScore).filter(k => qScore[k] === top);
+    const e = get(winners[Math.floor(Math.random() * winners.length)]);
+    quizEl.innerHTML = `${prog}<div class="qresult qstep">
+      <div class="c3d"><div class="flipper flip">${cardHTML(e)}</div></div>
+      <div>
+        <p class="qnum">You are No. ${e.n} · ${e.el}</p>
+        <h3>${e.sym} · <em>${e.trend}</em></h3>
+        <p class="desc">${e.desc}</p>
+        <div class="actions" style="margin-top:1.2rem">
+          <button type="button" class="pill solid" data-qopen>Open my card <span class="arrow">→</span></button>
+          <button type="button" class="pill glass" data-save="${e.sym}" aria-pressed="false">♡ Save</button>
+          <button type="button" class="pill glass" data-qagain>Take it again</button>
+        </div>
+      </div></div>`;
+    quizEl.querySelector("[data-qopen]").addEventListener("click", () => open(e));
+    quizEl.querySelector("[data-save]").addEventListener("click", () => toggleSave(e));
+    quizEl.querySelector("[data-qagain]").addEventListener("click", () => { qStep = 0; qScore = {}; renderQuiz(); });
+    syncSaved();
+    return;
+  }
+  const [q, opts] = QUIZ[qStep];
+  quizEl.innerHTML = `${prog}<div class="qstep"><p class="qnum">Question ${qStep + 1} of ${QUIZ.length}</p><p class="qtext">${q}</p>
+    <div class="qopts">${opts.map(([label, syms], i) => `<button type="button" class="qopt" data-i="${i}"><img src="${sceneImg(get(syms[0]))}" alt=""><span>${label}</span></button>`).join("")}</div></div>`;
+  quizEl.querySelectorAll(".qopt").forEach(b => b.addEventListener("click", () => {
+    b.classList.add("picked");
+    for (const s of opts[+b.dataset.i][1]) qScore[s] = (qScore[s] || 0) + 1;
+    setTimeout(() => {
+      qStep++; renderQuiz();
+      const r = quizEl.getBoundingClientRect();
+      if (r.top < 100) scrollBy({ top: r.top - 110, behavior: "smooth" });
+    }, 280);
+  }));
+}
+renderQuiz();
 
 const h = location.hash.slice(1);
 const fromHash = h && !VIEWS.includes(h) && get(h);
