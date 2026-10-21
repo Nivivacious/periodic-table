@@ -1,13 +1,57 @@
-# The Periodic Table of Indian Fashion
+# The Fashion Elements
 
-A single-page website: the real 118-element periodic table, where every element keeps its true symbol, number and family, and each symbol stands for a fashion trend with matching initials, named in 2025–26 fashion coverage.
+The Periodic Table of Indian Fashion, laid out as a magazine issue with museum-style exhibit cards. It uses the real 118-element periodic table. Every element keeps its true symbol, number and family, and each symbol stands for a fashion trend with matching initials, named in 2025–26 fashion coverage.
 
-- **Sourced trends.** Each card links to the article that named the trend: ELLE India, Harper's Bazaar India, Cosmopolitan India, Man's World India, Vogue, Harper's Bazaar, ELLE, Glamour, W, GQ, Marie Claire, Who What Wear, Coveteur, Pinterest Predicts, Depop and others. The full list is in the **Sources** tab.
-- **Gen Z slang × fashion.** 20 flip cards translate Gen Z and desi slang (Ate, Delulu, It's giving…, Jugaad, Paisa vasool, Rizz…) into the Gen Z trends they describe. 45 trends are flagged as Gen Z-led on the table.
-- **Tabs:** Home (all 118 elements orbiting as a draggable 3D sphere; "See the full table" flies every tile into its place on the periodic table) · The Table · Lab (mix up to three elements into a compound and get a named look) · Gen Z · Picks · Families · Sources · Wardrobe (your saved cards, stored in your browser).
-- **Interactions:** period and group highlighting with a hover preview, arrow-key navigation, a cursor ring, magnetic buttons, headline scramble, heart bursts on save, cards that flip and tilt, illustrations that animate on hover, ⌘K search, save and copy, expand-in-place cards, an ink-reveal headline and portal transitions between tabs.
-- Every illustration is drawn in code as inline SVG (no image files).
+- **Sourced trends.** Each card links to the article that named the trend. Sources include:
+  - ELLE India, Harper's Bazaar India, Cosmopolitan India and Man's World India
+  - Vogue, Harper's Bazaar, ELLE, Glamour, W, GQ and Marie Claire
+  - Who What Wear, Coveteur, Pinterest Predicts and Depop
 
-## Run it
+  The full list is in **Sources**.
+- **Look and feel.** Ivory paper, black ink and one rani-pink accent. There is a centred masthead and a quiet colophon. Cards are shown like museum exhibits, with placards.
 
-No build step. Open `index.html` in a browser, or enable GitHub Pages (Settings → Pages → deploy from the `main` branch).
+## Sections
+
+- **Cover.** All 118 elements orbit as a draggable 3D sphere. "See the full table" flies every tile into its place on the periodic table. Below it is the **Element of the day**, which changes daily.
+- **The Table.** The real periodic table, with:
+  - a **timeline** slider and play button that lights up trends in the month the press named them (Jan 2025 → Oct 2026)
+  - family filters and a Gen Z filter
+  - period and group highlighting
+  - arrow-key navigation
+- **The Story.** The 2026 story in five scrolls. Each chapter has a fan of cards and a **then-vs-now** drag slider.
+- **The Lab.** Mix up to three elements into a compound and get a named look.
+- **Gen Z.** 20 flip cards translate Gen Z and desi slang into the trends they describe. Also, 45 trends are flagged as Gen Z-led.
+- **Editor's Picks**, **Families** and **Wardrobe**. Wardrobe holds your saved cards, stored in your browser.
+
+## Exhibit cards
+
+- **Shop the look.** Hotspots on the illustration light up each piece.
+- **Share.** Makes a 1080×1920 story image you can download or share.
+- **Save and copy.** Saves the card to your Wardrobe or copies it.
+
+## Extras
+
+- **Opening curtain.** Plays once per visit.
+- **Ambient tanpura sound.** Off by default; turn it on from the masthead.
+- **Search.** Open it with ⌘K or `/`.
+
+Every illustration is drawn in code as inline SVG, so there are no image files.
+
+## Build
+
+The source lives in `src/`:
+
+| File | What it holds |
+|---|---|
+| `page.tpl.html` | markup and CSS |
+| `kit.js` | the illustration kit |
+| `data.js` | the 118 trends and their sources |
+| `app.js` | the logic |
+
+Rebuild `index.html` with:
+
+```
+python3 build.py
+```
+
+To view it, open `index.html` in a browser, or enable GitHub Pages: Settings → Pages → deploy from the `main` branch.
