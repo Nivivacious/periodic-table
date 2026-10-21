@@ -9,15 +9,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap">
 <style>
-/* Layout: the real 18-column periodic table on a night-navy ground; every element is a cream card with an illustrated trend. The selected card opens in the gap above the transition metals, like the key on a printed table. Single dark look, by design. */
+/* Layout: a quiet header, then the real 18-column table with its key printed in the empty gap above the transition metals, as on a printed chart. Opening an element shows its playing card in a focused pop-up. Single dark look, by design. */
 :root {
   --night: #141827;
-  --night-2: #1E2233;
-  --line: #333a52;
+  --night-2: #1B2032;
+  --line: #2c3249;
+  --line-2: #3a415c;
   --paper: #F4ECDC;
-  --paper-2: #EADFC8;
   --ink: #1E2233;
-  --muted: #9aa0b8;
+  --muted: #8f95ad;
+  --soft: #cfcabd;
   --gold: #F2B330;
 
   --alkali: #D9412B;
@@ -36,63 +37,61 @@
   --sans: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", sans-serif;
 
   --tile: 4.3rem;
+  --gap: 6px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+html, body { background: var(--night); }
 body {
-  background: var(--night);
-  background-image: radial-gradient(ellipse at 50% -10%, #232a45 0%, transparent 60%);
   color: var(--paper);
   font-family: var(--body);
   font-size: 18px;
   line-height: 1.5;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 2.5rem 3rem;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  padding-block: 0 2.5rem;
 }
-.wrap { max-width: 1480px; margin: 0 auto; display: grid; gap: 1.6rem; }
+.wrap { max-width: 1440px; margin: 0 auto; }
 
-header { display: grid; gap: .6rem; }
-.eyebrow { font-family: var(--sans); font-size: .72rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
-h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 1; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+/* Header */
+.topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding-block: 1.1rem; border-bottom: 1px solid var(--line);
+  font: 600 .7rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+}
+.topbar .count b { color: var(--paper); font-weight: 600; }
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.5rem 3rem;
+  padding-block: 3rem 2.2rem;
+}
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.3rem, 5vw, 4.2rem); line-height: 1.02; margin: 0 0 .9rem; letter-spacing: -.01em; text-wrap: balance; }
 h1 em { color: var(--gold); }
-.lede { font-style: italic; font-size: 1.2rem; color: #d6d1c4; margin: 0; max-width: 60ch; }
-
-.controls { display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; align-items: center; }
-.search { flex: 0 1 17rem; min-width: 0; }
+.lede { font-style: italic; font-size: 1.2rem; line-height: 1.45; color: var(--soft); margin: 0; max-width: 52ch; }
+.search { width: 17rem; max-width: 100%; display: grid; gap: .4rem; }
+.search label { font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
 .search input {
-  width: 100%; font: 500 .9rem var(--sans); letter-spacing: .02em; color: var(--paper);
-  background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: .55rem .8rem;
+  width: 100%; font: 500 .95rem var(--sans); letter-spacing: .02em; color: var(--paper);
+  background: transparent; border: 0; border-bottom: 1px solid var(--line-2); border-radius: 0; padding: .45rem 0;
 }
-.search input::placeholder { color: var(--muted); }
-.search input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.legend { display: flex; flex-wrap: wrap; gap: .35rem; list-style: none; margin: 0; padding: 0; }
-.chip {
-  --c: var(--muted);
-  font: 600 .7rem var(--sans); letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
-  display: inline-flex; align-items: center; gap: .45rem;
-  color: var(--paper); background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: .35rem .6rem;
-}
-.chip::before { content: ""; width: .55rem; height: .55rem; background: var(--c); border-radius: 1px; }
-.chip[aria-pressed="true"] { border-color: var(--c); background: color-mix(in oklab, var(--c) 30%, transparent); }
-.chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.search input::placeholder { color: #5f6580; }
+.search input:focus-visible { outline: none; border-bottom-color: var(--gold); }
 
-.mobile-slot { display: none; }
-.scroller { overflow-x: auto; padding: 4px 2px 10px; }
+/* Table */
+.scroller { overflow-x: auto; padding: 6px 4px 14px; margin-inline: -4px; }
 .table {
   display: grid;
   grid-template-columns: repeat(18, minmax(var(--tile), 1fr));
-  gap: 5px;
-  min-width: calc(18 * var(--tile) + 17 * 5px);
+  gap: var(--gap);
+  min-width: calc(18 * var(--tile) + 17 * var(--gap));
 }
-.gapline { grid-column: 1 / -1; height: .8rem; }
+.gapline { grid-column: 1 / -1; height: 1.1rem; }
 .series {
   grid-column: 1 / 3; align-self: center; justify-self: end; text-align: right;
-  font: 600 .66rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-right: .4rem;
+  font: 600 .62rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); padding-right: .6rem;
 }
 .placeholder {
-  border: 1px dashed var(--line); border-radius: 4px; display: grid; place-items: center; text-align: center;
-  font: 600 .66rem var(--sans); letter-spacing: .08em; color: var(--muted); padding: .3rem;
+  border: 1px dashed var(--line-2); border-radius: 4px; display: grid; place-items: center; text-align: center;
+  font: 600 .62rem var(--sans); letter-spacing: .08em; color: var(--muted);
 }
 
 .el {
@@ -103,7 +102,6 @@ h1 em { color: var(--gold); }
   background: var(--paper);
   border: 0; border-bottom: 3px solid var(--c); border-radius: 4px;
   color: var(--ink); font: inherit; text-align: left; cursor: pointer;
-  box-shadow: 0 1px 0 rgba(0,0,0,.25);
   transition: transform .18s ease, opacity .2s ease, box-shadow .18s ease;
 }
 .el .top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 1px; }
@@ -114,28 +112,71 @@ h1 em { color: var(--gold); }
   font: 600 .56rem/1.12 var(--sans); letter-spacing: .02em; text-align: center; color: var(--ink);
   height: 2.25em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
-.el:hover { transform: translateY(-3px); box-shadow: 0 10px 18px -10px rgba(0,0,0,.8); }
+.el:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -12px rgba(0,0,0,.9); }
 .el:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.el[aria-pressed="true"] { outline: 2px solid var(--gold); outline-offset: 2px; }
-.el.dim { opacity: .14; }
+.el.dim { opacity: .12; }
 
-.alkali { --c: var(--alkali); } .alkaline { --c: var(--alkaline); } .transition { --c: var(--transition); }
-.post { --c: var(--post); } .metalloid { --c: var(--metalloid); } .nonmetal { --c: var(--nonmetal); }
-.halogen { --c: var(--halogen); } .noble { --c: var(--noble); } .lanthanide { --c: var(--lanthanide); } .actinide { --c: var(--actinide); }
 
-/* The opened card */
-.detail {
+/* The key, printed in the table's top gap */
+.key {
   grid-column: 3 / 13; grid-row: 1 / 4;
-  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.6rem; align-items: start;
-  padding: 0 .6rem;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4rem; align-items: center;
+  padding: .4rem 1.6rem 1rem;
   min-width: 0;
 }
+.how { display: grid; grid-template-columns: auto auto; gap: .5rem .9rem; align-items: center; }
+.how .el { width: 5.6rem; cursor: default; grid-row: 1 / span 3; }
+.how .el:hover { transform: none; box-shadow: none; }
+.how .el .sym { font-size: 1.35rem; }
+.how .el .num { font-size: .66rem; }
+.how .el .nm { font-size: .64rem; }
+.how p { margin: 0; font: 600 .62rem/1.3 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.how p span { display: block; font: italic 400 .95rem/1.2 var(--body); letter-spacing: 0; text-transform: none; color: var(--soft); }
+.families { display: grid; gap: .55rem; min-width: 0; }
+.families h2 { margin: 0; font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .1rem 1.4rem; }
+.chip {
+  --c: var(--muted);
+  width: 100%; font: 500 .82rem var(--sans); letter-spacing: .04em; cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: .55rem;
+  color: var(--soft); background: transparent; border: 0; border-bottom: 1px solid transparent; padding: .28rem 0;
+}
+.chip::before { content: ""; flex: none; width: .7rem; height: .7rem; background: var(--c); border-radius: 2px; }
+.chip .n { margin-left: auto; color: #5f6580; font-variant-numeric: tabular-nums; font-size: .74rem; }
+.chip:hover { color: var(--paper); }
+.chip[aria-pressed="true"] { color: var(--paper); border-bottom-color: var(--c); }
+.chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.clear { justify-self: start; font: 600 .62rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); background: none; border: 0; padding: .2rem 0; cursor: pointer; }
+.clear:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.mobile-key { display: none; }
+
+/* Pop-up card */
+dialog.sheet {
+  border: 0; padding: 0; background: transparent; color: var(--paper);
+  width: min(880px, calc(100% - 32px)); max-width: none; max-height: calc(100% - 32px);
+}
+dialog.sheet::backdrop { background: rgba(9, 11, 20, .78); backdrop-filter: blur(3px); }
+.sheet-in {
+  position: relative;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4rem; align-items: center;
+  background: var(--night-2); border: 1px solid var(--line); border-radius: 14px;
+  padding: 2.2rem 2.4rem 2.2rem 2.2rem;
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.9);
+}
+.close {
+  position: absolute; top: .8rem; right: .9rem; width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  display: grid; place-items: center; background: transparent; border: 1px solid var(--line-2);
+  color: var(--paper); font: 400 1.2rem/1 var(--sans); cursor: pointer;
+}
+.close:hover { border-color: var(--gold); color: var(--gold); }
+.close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
 .card {
   --c: var(--gold);
-  width: 14.5rem; aspect-ratio: 250 / 350;
+  width: 15.5rem; aspect-ratio: 250 / 350;
   background: var(--paper); color: var(--ink); border-radius: 12px;
   padding: 9px; position: relative;
-  box-shadow: 0 18px 40px -18px rgba(0,0,0,.9);
+  box-shadow: 0 24px 50px -22px rgba(0,0,0,.95);
 }
 .card-in {
   height: 100%; border: 1px solid var(--ink); border-radius: 7px; padding: 8px 8px 10px;
@@ -152,42 +193,44 @@ h1 em { color: var(--gold); }
   margin: 0 1.6rem; text-align: center; border: 1px solid var(--ink); border-radius: 2px; background: var(--paper);
   font: 600 .58rem var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 3px 2px;
 }
-.card .cap { text-align: center; font: italic .82rem/1.2 var(--body); margin: 0 1.4rem; }
+.card .cap { text-align: center; font: italic .85rem/1.2 var(--body); margin: 0 1.4rem; }
 
-.info { display: grid; grid-template-columns: minmax(0, 1fr); gap: .55rem; align-content: start; min-width: 0; padding-top: .2rem; }
-.info .kicker { font: 600 .7rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.info { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; align-content: center; min-width: 0; }
+.info .kicker { font: 600 .68rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
 .info .kicker b { color: var(--gold); font-weight: 600; }
-.info h2 { font: 400 clamp(2rem, 3.4vw, 2.9rem)/1.02 var(--display); margin: 0; text-wrap: balance; }
-.info .desc { font-style: italic; font-size: 1.22rem; line-height: 1.35; margin: 0; max-width: 46ch; color: #e7e1d3; }
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .4rem 1.6rem; margin: .2rem 0 0; border-top: 1px solid var(--line); padding-top: .7rem; max-width: 46rem; }
-.facts dt { font: 600 .66rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.facts dd { margin: 0; font-size: 1.05rem; line-height: 1.35; }
-.nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .4rem; }
+.info h2 { font: 400 clamp(2rem, 4vw, 3rem)/1.02 var(--display); margin: 0; text-wrap: balance; }
+.info .desc { font-style: italic; font-size: 1.25rem; line-height: 1.35; margin: 0; color: #e7e1d3; }
+.facts { display: grid; gap: .8rem; margin: .4rem 0 0; border-top: 1px solid var(--line); padding-top: .9rem; }
+.facts dt { font: 600 .64rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: .1rem 0 0; font-size: 1.1rem; line-height: 1.35; }
+.nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .6rem; }
 .nav button {
-  font: 600 .7rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--paper);
-  background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: .55rem .9rem; cursor: pointer;
+  font: 600 .68rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--paper);
+  background: transparent; border: 1px solid var(--line-2); border-radius: 2px; padding: .6rem .95rem; cursor: pointer;
 }
 .nav button:hover { border-color: var(--gold); color: var(--gold); }
 .nav button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem; border-top: 1px solid var(--line); padding-top: 1rem; font: 500 .74rem var(--sans); letter-spacing: .06em; color: var(--muted); }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem; border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1.1rem; font: 500 .72rem var(--sans); letter-spacing: .06em; color: var(--muted); }
 footer p { margin: 0; max-width: 70ch; }
 
+/* Family colours come last so they win over the base --c on tiles, chips and cards */
+.alkali { --c: var(--alkali); } .alkaline { --c: var(--alkaline); } .transition { --c: var(--transition); }
+.post { --c: var(--post); } .metalloid { --c: var(--metalloid); } .nonmetal { --c: var(--nonmetal); }
+.halogen { --c: var(--halogen); } .noble { --c: var(--noble); } .lanthanide { --c: var(--lanthanide); } .actinide { --c: var(--actinide); }
+
 @media (max-width: 900px) {
-  .table .detail { display: none; }
-  .mobile-slot { display: block; }
-  .mobile-slot .detail { padding: 0; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; }
-  .card { width: 10.5rem; }
-  .card .frame, .card .banner { margin: 0 1.1rem; }
-  .card .cap { display: none; }
-  .info h2 { font-size: 1.7rem; }
-  .info .desc { font-size: 1.05rem; }
-  .facts { grid-column: 1 / -1; }
+  .topbar > span:first-child { display: none; }
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem 1.4rem; }
+  .search { width: 100%; }
+  .table .key { display: none; }
+  .mobile-key { display: block; margin-bottom: 1.2rem; }
+  .mobile-key .key { padding: 0; grid-template-columns: minmax(0, 1fr); }
+  .mobile-key .how { display: none; }
   :root { --tile: 4.1rem; }
-}
-@media (max-width: 520px) {
-  .mobile-slot .detail { grid-template-columns: minmax(0, 1fr); }
-  .card { width: 12rem; justify-self: start; }
+  .sheet-in { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 1.4rem; padding: 2.6rem 1.3rem 1.5rem; }
+  .card { width: 12.5rem; }
+  .info { justify-items: start; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .el { transition: none; } .el:hover { transform: none; } }
 </style>
@@ -195,18 +238,20 @@ footer p { margin: 0; max-width: 70ch; }
 <body>
 
 <div class="wrap">
-  <header>
-    <p class="eyebrow">118 elements · one country's wardrobe · 2026</p>
-    <h1>The Periodic Table of <em>Indian Fashion</em></h1>
-    <p class="lede">Every element keeps its real symbol, and every symbol stands for a trend India is wearing right now. H is for Hyperfeminine, Fe for Futuristic Ethnic, Ag for Avant-Garde.</p>
+  <div class="topbar"><span>Periodic Table of Indian Fashion</span><span class="count"><b>118</b> trends · 2026</span></div>
+
+  <header class="hero">
+    <div>
+      <h1>The Periodic Table of <em>Indian Fashion</em></h1>
+      <p class="lede">Every element keeps its real symbol. Every symbol stands for a trend India is wearing right now, from H for Hyperfeminine to Og for Old-school Glam.</p>
+    </div>
+    <div class="search">
+      <label for="q">Find an element</label>
+      <input id="q" type="search" placeholder="Trend, symbol or element">
+    </div>
   </header>
 
-  <div class="controls">
-    <div class="search"><input id="q" type="search" placeholder="Search a trend, symbol or element" aria-label="Search the table"></div>
-    <ul class="legend" id="legend"></ul>
-  </div>
-
-  <div class="mobile-slot" id="mobileSlot"></div>
+  <div class="mobile-key" id="mobileKey"></div>
 
   <div class="scroller">
     <div class="table" id="table"></div>
@@ -214,9 +259,13 @@ footer p { margin: 0; max-width: 70ch; }
 
   <footer>
     <p>The symbols, numbers and families are the real periodic table. The trends, notes and drawings are ours.</p>
-    <p>Tap any element to open its card. Use ← → to flip through.</p>
+    <p>Tap an element to open its card. Use ← → to flip through.</p>
   </footer>
 </div>
+
+<dialog class="sheet" id="sheet" aria-label="Element card">
+  <div class="sheet-in" id="sheetIn"></div>
+</dialog>
 
 <script>
 // Illustration kit: flat, cute fashion vignettes on a 100×100 stage.
@@ -489,7 +538,7 @@ const OBJ = {
   camera: (x = 82, y = 26) => `<rect x="${x - 8}" y="${y - 5}" width="16" height="11" rx="2" fill="${P.ink}"/><circle cx="${x}" cy="${y + 0.5}" r="3.6" fill="${P.sky}" stroke="${P.paper}" stroke-width=".8"/><rect x="${x + 3}" y="${y - 7}" width="4" height="2" fill="${P.ink}"/>`,
   phone: (x = 82, y = 30) => `<rect x="${x - 7}" y="${y - 12}" width="14" height="24" rx="2.4" fill="${P.ink}"/><rect x="${x - 5.6}" y="${y - 9.6}" width="11.2" height="18" fill="${P.pink}"/><path d="M${x - 2},${y - 4} l5,3 l-5,3Z" fill="${P.paper}"/>`,
   hand: (x = 50, y = 50) => `<g transform="translate(${x} ${y})"><path d="M-10,34 V6 L-15,-6 q-1,-4 2,-5 t5,3 l2,6 V-18 q0,-3 3,-3 t3,3 v14 V-22 q0,-3 3,-3 t3,3 v18 V-18 q0,-3 3,-3 t3,3 v24 l4,-6 q2,-3 4,-1 t0,5 l-8,15 v12Z" fill="${P.skin}" ${OL}/><g stroke="${P.kaapi}" stroke-width=".8" fill="none"><circle cx="1" cy="10" r="4"/><circle cx="1" cy="10" r="1.6"/><path d="M-3,10 q4,-6 8,0 M1,14 v4 M-2,-20 h4 M4,-22 v3 M10,-18 h3"/><path d="M-8,26 q9,4 18,0" stroke-dasharray="1 1.4"/></g></g>`,
-  eye: (x = 50, y = 50) => `<g transform="translate(${x} ${y})"><path d="M-30,0 Q0,-24 30,0 Q0,24 -30,0Z" fill="${P.white}" ${OL}/><circle r="10" fill="${P.kaapi}" ${OL}/><circle r="4.4" fill="${P.ink}"/><circle cx="3" cy="-3" r="1.6" fill="#fff"/><path d="M-32,1 Q0,-26 32,1" fill="none" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"/><path d="M-28,4 Q0,24 28,4" fill="none" stroke="${P.ink}" stroke-width="5" stroke-opacity=".4" stroke-linecap="round"/><path d="M30,0 l8,-6" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"/><path d="M-18,-12 l-3,-6 M-8,-16 l-1,-7 M4,-17 l1,-7 M16,-14 l3,-6" stroke="${P.ink}" stroke-width="1.2" stroke-linecap="round"/></g>`,
+  eye: (x = 50, y = 50, sc = 1) => `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-30,0 Q0,-24 30,0 Q0,24 -30,0Z" fill="${P.white}" ${OL}/><circle r="10" fill="${P.kaapi}" ${OL}/><circle r="4.4" fill="${P.ink}"/><circle cx="3" cy="-3" r="1.6" fill="#fff"/><path d="M-32,1 Q0,-26 32,1" fill="none" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"/><path d="M-28,4 Q0,24 28,4" fill="none" stroke="${P.ink}" stroke-width="5" stroke-opacity=".4" stroke-linecap="round"/><path d="M30,0 l8,-6" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"/><path d="M-18,-12 l-3,-6 M-8,-16 l-1,-7 M4,-17 l1,-7 M16,-14 l3,-6" stroke="${P.ink}" stroke-width="1.2" stroke-linecap="round"/></g>`,
   vinyl: (x = 82, y = 26) => `<circle cx="${x}" cy="${y}" r="10" fill="${P.ink}"/><circle cx="${x}" cy="${y}" r="3.4" fill="${P.red}"/><circle cx="${x}" cy="${y}" r="6.6" fill="none" stroke="#fff" stroke-width=".3" opacity=".4"/>`,
   tv: (x = 82, y = 28) => `<rect x="${x - 12}" y="${y - 9}" width="24" height="18" rx="3" fill="${P.kaapi}" ${OL}/><rect x="${x - 9}" y="${y - 6}" width="15" height="12" rx="2" fill="${P.sky}" ${OL}/><path d="M${x - 5},${y - 9} l-4,-6 M${x + 3},${y - 9} l4,-6" stroke="${P.ink}" stroke-width=".7"/>`,
 };
@@ -605,7 +654,7 @@ const ELEMENTS = [
   [49, "In", "Indium", "Indo-Noir", "All-black Indian wear, from black sarees to black sherwanis, for evening events.", "Black sarees, black bandhgalas, silver jewellery", "Wear black with one metallic accent.",
     { bg: "night", gr: "black", set: ["moon", "stars"], figs: [{ top: "blouse", c: "black", low: "saree", l: "black", pl: "sparkle", lay: ["pallu"], y: "black", b: "grey", h: "lowbun", a: ["bigjhumka"], ac: "grey" }] }],
   [50, "Sn", "Tin", "Sneaker Nation", "Sneaker culture is huge in India: limited drops, resale and chunky sneakers with everything.", "Chunky sneakers, limited editions, high-tops", "Make the sneakers the loudest part of the outfit.",
-    { bg: "blue", gr: "grey", set: ["confetti"], obj: [["sneaker", 50, 66, 1.6]] }],
+    { bg: "blue", gr: "grey", set: ["confetti"], obj: [["sneaker", 50, 72, 1.15]] }],
   [51, "Sb", "Antimony", "Soft Boy", "Men's fashion with pastels, pearls, knit vests and loose shirts, softer than the macho look.", "Pastel shirts, knit vests, pearl chains", "Add a pearl chain to a pastel shirt.",
     { bg: "mint", gr: "beige", set: ["plants"], figs: [{ top: "shirt", c: "pink", lay: ["vest"], y: "lav", py: "checks", low: "jeans", l: "beige", h: "short", sk: "skin3", hc: "hair2", a: ["pearls"], shoe: "sneaker" }] }],
   [52, "Te", "Tellurium", "Tonal Ethnic", "Kurta, pants and dupatta in shades of one colour, from light to dark.", "Tonal kurta sets, ombre dupattas", "Go one shade darker on the bottom half.",
@@ -699,7 +748,7 @@ const ELEMENTS = [
   [96, "Cm", "Curium", "Cottagecore Mood", "Romantic rural style: puff sleeves, florals, aprons and wicker baskets.", "Puff-sleeve dresses, floral prints, baskets", "Choose a floral dress with puff sleeves.",
     { bg: "sage", gr: "green", set: ["plants", ["sun", "yellow", 80, 18]], figs: [{ top: "dress", sl: "puff", c: "white", pt: "floral", h: "braid", a: ["flowerhair"], hold: "flowers", shoe: "jutti" }] }],
   [97, "Bk", "Berkelium", "Bold Kohl", "Smudged, lived-in kajal with bare skin. It replaced the full-glam face.", "Kohl pencil, kajal, tinted lip balm", "Smudge the lower line with a fingertip.",
-    { bg: "peach", gr: "kaapi", set: [], obj: [["eye", 50, 46]] }],
+    { bg: "peach", gr: "kaapi", set: [], obj: [["eye", 50, 50, .72]] }],
   [98, "Cf", "Californium", "Comfort First", "Soft fabrics, elastic waists and flat shoes chosen over stiff, tight clothes.", "Soft kurta sets, elastic trousers, slides", "Choose the softest fabric you can find.",
     { bg: "lav", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "tee", c: "sage", low: "palazzo", l: "grey", h: "lowbun", hold: "coffee", hc2: "kaapi", shoe: "kolhapuri" }] }],
   [99, "Es", "Einsteinium", "Eclectic Styling", "Mixing eras, cultures and prices in one look, like vintage, designer and street.", "Thrifted jackets, designer bags, ethnic jewellery", "Mix one old, one new and one ethnic piece.",
@@ -782,10 +831,13 @@ function place(n) {
 const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n) }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
 const table = document.getElementById("table");
-const legend = document.getElementById("legend");
-const mobileSlot = document.getElementById("mobileSlot");
+const mobileKey = document.getElementById("mobileKey");
 const q = document.getElementById("q");
+const sheet = document.getElementById("sheet");
+const sheetIn = document.getElementById("sheetIn");
 let current = null, activeFam = null;
+
+const tileHTML = (e, id) => `<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
 
 const tiles = new Map();
 for (const e of els) {
@@ -795,34 +847,45 @@ for (const e of els) {
   b.className = `el ${e.fam}`;
   b.style.gridRow = row;
   b.style.gridColumn = colN;
-  b.setAttribute("aria-pressed", "false");
   b.setAttribute("aria-label", `${e.n}, ${e.sym}, ${e.trend}`);
-  b.innerHTML = `<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene("t" + e.sym, e.art)}</svg><span class="nm">${e.trend}</span>`;
-  b.addEventListener("click", () => select(e));
+  b.innerHTML = tileHTML(e, "t" + e.sym);
+  b.addEventListener("click", () => open(e));
   tiles.set(e.n, b);
   table.appendChild(b);
 }
 const add = (cls, style, html) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, style); d.innerHTML = html; table.appendChild(d); };
-add("placeholder lanthanide", { gridRow: 6, gridColumn: 3 }, "57–71");
-add("placeholder actinide", { gridRow: 7, gridColumn: 3 }, "89–103");
+add("placeholder", { gridRow: 6, gridColumn: 3 }, "57–71");
+add("placeholder", { gridRow: 7, gridColumn: 3 }, "89–103");
 add("gapline", { gridRow: 8 }, "");
 add("series", { gridRow: 9 }, "Lanthanides");
 add("series", { gridRow: 10 }, "Actinides");
 
-for (const [key, name] of Object.entries(FAMILIES)) {
-  const li = document.createElement("li");
-  const c = document.createElement("button");
-  c.type = "button";
-  c.className = `chip ${key}`;
-  c.textContent = name;
-  c.setAttribute("aria-pressed", "false");
-  c.addEventListener("click", () => {
-    activeFam = activeFam === key ? null : key;
-    legend.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c && activeFam === key)));
-    filter();
-  });
-  li.appendChild(c);
-  legend.appendChild(li);
+// Key: a sample tile with labels, plus the families as filters
+const sample = els[25];
+const counts = {};
+for (const e of els) counts[e.fam] = (counts[e.fam] || 0) + 1;
+const key = document.createElement("section");
+key.className = "key";
+key.setAttribute("aria-label", "Key");
+key.innerHTML = `
+  <div class="how" aria-hidden="true">
+    <div class="el ${sample.fam}">${tileHTML(sample, "k" + sample.sym)}</div>
+    <p>Number &amp; symbol<span>26, Fe, as on any periodic table</span></p>
+    <p>The illustration<span>the trend, drawn</span></p>
+    <p>Trend<span>Fe stands for Futuristic Ethnic</span></p>
+  </div>
+  <div class="families">
+    <h2>Families</h2>
+    <ul class="legend">${Object.entries(FAMILIES).map(([k, name]) => `<li><button type="button" class="chip ${k}" data-fam="${k}" aria-pressed="false">${name}<span class="n">${counts[k]}</span></button></li>`).join("")}</ul>
+    <button type="button" class="clear" hidden>Show all</button>
+  </div>`;
+key.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => setFam(activeFam === c.dataset.fam ? null : c.dataset.fam)));
+key.querySelector(".clear").addEventListener("click", () => setFam(null));
+function setFam(f) {
+  activeFam = f;
+  key.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.fam === f)));
+  key.querySelector(".clear").hidden = !f;
+  filter();
 }
 function filter() {
   const term = q.value.trim().toLowerCase();
@@ -834,15 +897,15 @@ function filter() {
 }
 q.addEventListener("input", filter);
 
-const detail = document.createElement("section");
-detail.className = "detail";
-detail.setAttribute("aria-live", "polite");
+const narrow = window.matchMedia("(max-width: 900px)");
+function placeKey() { (narrow.matches ? mobileKey : table).appendChild(key); }
+narrow.addEventListener("change", placeKey);
+placeKey();
 
-function select(e) {
+function render(e) {
   current = e;
-  tiles.forEach(t => t.setAttribute("aria-pressed", "false"));
-  tiles.get(e.n).setAttribute("aria-pressed", "true");
-  detail.innerHTML = `
+  sheetIn.innerHTML = `
+    <button type="button" class="close" aria-label="Close">×</button>
     <div class="card ${e.fam}">
       <div class="card-in">
         <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
@@ -866,25 +929,27 @@ function select(e) {
         <button type="button" data-go="r">Shuffle</button>
       </div>
     </div>`;
-  detail.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => go(btn.dataset.go)));
+  sheetIn.querySelector(".close").addEventListener("click", () => sheet.close());
+  sheetIn.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => go(btn.dataset.go)));
+}
+function open(e) {
+  render(e);
+  if (!sheet.open) sheet.showModal();
 }
 function go(dir) {
-  if (dir === "r") { let r; do { r = els[Math.floor(Math.random() * els.length)]; } while (r === current); return select(r); }
-  const i = (current.n - 1 + Number(dir) + els.length) % els.length;
-  select(els[i]);
+  if (dir === "r") { let r; do { r = els[Math.floor(Math.random() * els.length)]; } while (r === current); return render(r); }
+  render(els[(current.n - 1 + Number(dir) + els.length) % els.length]);
 }
+sheet.addEventListener("click", ev => { if (ev.target === sheet) sheet.close(); });
+sheet.addEventListener("close", () => current && tiles.get(current.n).focus({ preventScroll: true }));
 document.addEventListener("keydown", ev => {
-  if (ev.target === q) return;
+  if (!sheet.open) return;
   if (ev.key === "ArrowRight") go(1);
   if (ev.key === "ArrowLeft") go(-1);
 });
 
-const narrow = window.matchMedia("(max-width: 900px)");
-function placeDetail() { (narrow.matches ? mobileSlot : table).appendChild(detail); }
-narrow.addEventListener("change", placeDetail);
-placeDetail();
 const fromHash = bySym.get(location.hash.slice(1).toLowerCase());
-select(fromHash || bySym.get("sr"));
+if (fromHash) open(fromHash);
 </script>
 </body>
 </html>
