@@ -379,6 +379,45 @@ html.vt-tab::view-transition-new(root) { animation: portal .8s cubic-bezier(.7,0
 
 @media (max-width: 1500px) { .brand span { display: none; } }
 
+/* Orbit homepage title */
+.orbit-title .badge { margin-bottom: 1.2rem; }
+.orbit-title h1 { margin: 0; font: 400 clamp(2.8rem, 6.6vw, 6.4rem)/.94 var(--display); letter-spacing: -.03em; text-shadow: 0 6px 40px rgba(0,0,0,.85); text-wrap: balance; }
+.orbit-title h1 .l2 { display: block; }
+.orbit-title h1 em { font-style: italic; font-weight: 500; background: linear-gradient(100deg, #F7D27A 0%, #F2B330 30%, #E86F9F 70%, #C58BE8 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: gshift 7s ease-in-out infinite alternate; }
+.orbit-title .sub { margin: 1rem 0 0; font-style: italic; font-size: 1.2rem; color: var(--soft); max-width: 34rem; }
+.orbit-title .ctas { justify-content: center; margin-top: 1.6rem; pointer-events: auto; }
+.orbit-title::before { height: 420px; width: min(900px, 96%); }
+.tabletitle { font: 400 clamp(2.2rem, 4.2vw, 3.8rem)/1 var(--display); letter-spacing: -.02em; margin: 0; }
+.tabletitle em { font-style: italic; color: var(--gold); }
+
+/* Fly-in from the sphere */
+.flylayer { position: fixed; inset: 0; z-index: 75; pointer-events: none; }
+.orb.fly { position: fixed; transform-origin: 0 0; will-change: transform; }
+.table.landing .el { opacity: 0; }
+.table .el { transition: opacity .35s ease, transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s ease; }
+
+/* Gen Z slang flip cards */
+.slang { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: 1.2rem; }
+.sl { --c: var(--muted); --rx: 0deg; --ry: 0deg; perspective: 1100px; height: 23rem; cursor: pointer; }
+.sl-in { position: relative; height: 100%; transform-style: preserve-3d; transition: transform .75s cubic-bezier(.3,.7,.2,1); transform: rotateX(var(--rx)) rotateY(var(--ry)); }
+.sl.flipped .sl-in { transform: rotateX(var(--rx)) rotateY(calc(180deg + var(--ry))); }
+.sl-front, .sl-back { position: absolute; inset: 0; border-radius: 22px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.sl-front { display: grid; align-content: space-between; padding: 1.4rem; border: 1px solid var(--line-2); background: radial-gradient(120% 80% at 100% 0%, color-mix(in oklab, var(--c) 45%, transparent), transparent 60%), linear-gradient(160deg, #1d2236, #141827); }
+.sl-ghost { position: absolute; right: -.4rem; bottom: -2.2rem; font: 600 11rem/1 var(--display); color: var(--c); opacity: .16; pointer-events: none; }
+.sl-tag { margin: 0; font: 600 .62rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); position: relative; }
+.sl-word { margin: 0; font: italic 500 clamp(2.4rem, 3.6vw, 3.2rem)/1 var(--display); letter-spacing: -.02em; position: relative; text-wrap: balance; }
+.sl-pos { margin: .5rem 0 0; font: italic 1.05rem var(--body); color: var(--soft); position: relative; }
+.sl-tap { margin: 0; font: 600 .62rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); position: relative; }
+.sl-back { transform: rotateY(180deg); background: var(--paper); color: var(--ink); display: grid; grid-template-rows: auto auto 1fr auto; gap: .55rem; padding: .7rem .7rem 1rem; border-bottom: 4px solid var(--c); }
+.sl-back img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-radius: 14px; }
+.sl-means { margin: .2rem .4rem 0; font: 600 .82rem/1.35 var(--sans); letter-spacing: .02em; }
+.sl-line { margin: 0 .4rem; font: italic 1.12rem/1.3 var(--body); }
+.sl-open { justify-self: start; margin: 0 .4rem; display: inline-flex; align-items: center; gap: .45rem; background: none; border: 1px solid var(--ink); border-radius: 999px; padding: .4rem .8rem; font: 600 .68rem var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
+.sl-open b { font: 600 .9rem var(--display); color: var(--c); text-transform: none; }
+.sl-open:hover { background: var(--ink); color: var(--paper); }
+.sl:focus-visible { outline: none; }
+.sl:focus-visible .sl-in { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 22px; }
+
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; overflow: hidden; margin-top: -76px; padding-top: 76px; }
 .glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; z-index: -1; pointer-events: none; }
@@ -719,12 +758,11 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
 <div class="nav-shell">
   <nav class="glassnav" aria-label="Main">
     <span class="progress" id="progress" aria-hidden="true"></span>
-    <a class="brand" href="#table" data-view="table"><span class="mono"><i>0</i><b>If</b></span><span>Indian Fashion · Periodic Table</span></a>
+    <a class="brand" href="#orbit" data-view="orbit"><span class="mono"><i>0</i><b>If</b></span><span>Indian Fashion · Periodic Table</span></a>
     <div class="tabs" role="tablist" aria-label="Sections">
+      <button type="button" role="tab" data-view="orbit">Home</button>
       <button type="button" role="tab" data-view="table">The Table</button>
-      <button type="button" role="tab" data-view="orbit">Orbit</button>
       <button type="button" role="tab" data-view="lab">Lab</button>
-      <button type="button" role="tab" data-view="quiz">Quiz</button>
       <button type="button" role="tab" data-view="genz">Gen Z</button>
       <button type="button" role="tab" data-view="picks">Picks</button>
       <button type="button" role="tab" data-view="families">Families</button>
@@ -737,14 +775,14 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
 </div>
 
 <main>
-  <section class="view chapter band home" data-view="table" id="v-table" aria-labelledby="h-table">
+  <section class="view chapter band home" data-view="table" id="v-table" aria-labelledby="h-table" hidden>
     <div class="glow a"></div><div class="glow b"></div>
     <div class="wrap">
       <div class="chap-head">
         <div>
-          <span class="badge"><b>Drop 01</b> 118 trends · 2026 edition</span>
-          <h1 id="h-table">The Periodic Table of <em>Indian Fashion</em></h1>
-          <p>Every element keeps its real symbol. Every symbol stands for a trend fashion editors are writing about in 2026. Tap a tile to open its card.</p>
+          <p class="chap-no">The full table</p>
+          <h2 id="h-table" class="tabletitle">All 118, <em>at a glance.</em></h2>
+          <p>Every element keeps its real symbol, number and family. Hover a tile to light up its period and group, tap it to open its card.</p>
         </div>
         <div class="tools">
           <label class="search" style="order:2"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend, symbol or element"></label>
@@ -758,13 +796,15 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     </div>
   </section>
 
-  <section class="view band orbitview" data-view="orbit" id="v-orbit" aria-labelledby="h-orbit" hidden>
+  <section class="view band orbitview" data-view="orbit" id="v-orbit" aria-labelledby="h-orbit">
     <div class="glow a"></div><div class="glow b"></div><div class="glow c"></div>
     <div class="orbit" id="orbit">
       <div class="sphere" id="sphere"></div>
       <div class="orbit-title">
-        <p class="chap-no">Chapter 02 · Orbit</p>
-        <h2 id="h-orbit">Every trend, <em>in orbit.</em></h2>
+        <span class="badge"><b>Drop 01</b> 118 trends · 2026 edition</span>
+        <h1 id="h-orbit">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
+        <p class="sub">Every real element symbol, matched to a trend fashion editors are writing about in 2026.</p>
+        <div class="ctas"><button type="button" class="pill solid" id="toTable">See the full table <span class="arrow">→</span></button><button type="button" class="pill glass" data-deal>Deal me a card</button></div>
         <p class="hint">Drag to spin · tap a tile to open it</p>
       </div>
     </div>
@@ -821,31 +861,18 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     </div>
   </section>
 
-  <section class="view chapter band" data-view="quiz" id="v-quiz" aria-labelledby="h-quiz" hidden>
-    <div class="wrap">
-      <div class="chap-head">
-        <div>
-          <p class="chap-no">Chapter 04 · Quiz</p>
-          <h2 id="h-quiz">Which element <em>are you?</em></h2>
-          <p>Five questions. One card.</p>
-        </div>
-      </div>
-      <div class="quiz" id="quiz"></div>
-    </div>
-  </section>
-
   <section class="view chapter band" data-view="genz" id="v-genz" aria-labelledby="h-genz" hidden>
     <div class="wrap">
       <div class="chap-head">
         <div>
           <p class="chap-no">Chapter 05 · Gen Z</p>
-          <h2 id="h-genz">Gen Z, <em>decoded.</em></h2>
-          <p id="genzLede"></p>
+          <h2 id="h-genz">Say it in <em>Gen Z.</em></h2>
+          <p id="genzLede">Gen Z slang, translated into fashion. Tap a card to flip it.</p>
         </div>
         <div class="cols" aria-hidden="true"><div class="col" id="col0"></div><div class="col rev" id="col1"></div><div class="col" id="col2"></div></div>
       </div>
-      <div class="sortbar"><div class="segs" id="zsort" role="group" aria-label="Sort"><button type="button" class="seg" data-sort="table" aria-pressed="true">Table order</button><button type="button" class="seg" data-sort="new" aria-pressed="false">Newest</button><button type="button" class="seg" data-sort="az" aria-pressed="false">A–Z</button></div><span class="hint">Tap a card to expand it</span></div>
-      <div class="zgrid" id="zgrid"></div>
+      <div class="sortbar"><div class="segs" id="slangFilter" role="group" aria-label="Filter slang"><button type="button" class="seg" data-o="" aria-pressed="true">All</button><button type="button" class="seg" data-o="Internet" aria-pressed="false">Internet</button><button type="button" class="seg" data-o="Desi" aria-pressed="false">Desi</button></div><button type="button" class="pill glass" id="flipAll">Flip all</button></div>
+      <div class="slang" id="slang"></div>
     </div>
   </section>
 
@@ -1758,6 +1785,7 @@ document.querySelectorAll(".fam").forEach(f => f.addEventListener("click", () =>
 // Gen Z elements
 const zEls = els.filter(e => e.z);
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fineTilt = matchMedia("(pointer: fine)").matches && !reduced;
 
 // Each scene as an image data URI: cheap to move in 3D and reuse
 const imgCache = new Map();
@@ -1802,6 +1830,7 @@ function orbitFrame() {
   orbitRAF = requestAnimationFrame(orbitFrame);
 }
 orbitEl.addEventListener("pointerdown", ev => {
+  if (ev.target.closest("button:not(.orb)")) return;
   dragging = { x: ev.clientX, y: ev.clientY, moved: 0, target: ev.target.closest(".orb") };
   orbitEl.setPointerCapture(ev.pointerId);
   orbitEl.classList.add("drag");
@@ -1988,32 +2017,78 @@ function renderWardrobe() {
   wg.querySelectorAll("[data-save]").forEach(b => { b.setAttribute("aria-pressed", "true"); b.textContent = "♥ Saved"; });
 }
 
-// ---------- Gen Z ----------
-$("genzLede").textContent = `${zEls.length} of the 118 trends are led by people under 25, according to the stories we sourced. They're marked with a Z on the table.`;
-const monthIdx = (d) => { const m = /([A-Za-z]+)\s+(\d{4})/.exec(d || ""); if (!m) return 0; const mi = "janfebmaraprmayjunjulaugsepoctnovdec".indexOf(m[1].slice(0, 3).toLowerCase()) / 3; return Number(m[2]) * 12 + (mi >= 0 ? mi : 0); };
-function renderZ(sort = "table") {
-  const list = [...zEls];
-  if (sort === "az") list.sort((a, b) => a.trend.localeCompare(b.trend));
-  if (sort === "new") list.sort((a, b) => monthIdx(b.src && b.src[3]) - monthIdx(a.src && a.src[3]));
-  $("zgrid").innerHTML = list.map(pickHTML).join("");
-  wireGrid($("zgrid"));
-  syncSaved();
-}
-renderZ();
-$("zsort").querySelectorAll(".seg").forEach(b => b.addEventListener("click", () => {
-  $("zsort").querySelectorAll(".seg").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-  const go = () => renderZ(b.dataset.sort);
-  document.startViewTransition ? document.startViewTransition(go) : go();
+// ---------- Gen Z slang x fashion ----------
+const SLANG = [
+  ["Ate", "verb", "Internet", "Did it perfectly. If it was really good, they 'left no crumbs'.", "Ho", "Pre-draped saree, corset blouse, concert night. She ate."],
+  ["Main character energy", "noun", "Internet", "Dressing like the whole story is about you.", "C", "Mirror-work bralette with cargos and a bold bindi? Main character energy."],
+  ["Delulu", "adjective", "Internet", "Lovingly delusional. Dreaming big on purpose.", "Fe", "Tulle skirt to a Monday meeting. Delulu is the solulu."],
+  ["It's giving…", "phrase", "Internet", "It's evoking something. Finish the sentence with the vibe.", "Dy", "Low-rise jeans and a mirror-work choli? It's giving 2003 Bollywood."],
+  ["No cap", "phrase", "Internet", "No lie. Completely serious.", "Bi", "No cap, a bindi goes with everything you own."],
+  ["Era", "noun", "Internet", "A phase you're fully committed to.", "Na", "I'm in my Nani's-saree era."],
+  ["Jugaad", "noun", "Desi", "A clever, make-it-work hack.", "Tm", "A screenshot and a trip to the local darzi. Peak jugaad."],
+  ["Aura points", "noun", "Internet", "An invisible score for how cool you seem.", "As", "Swapped the smartwatch for a tiny vintage dial. Plus a thousand aura."],
+  ["Rizz", "noun", "Internet", "Charm. The ability to pull people in.", "Rb", "Rekha-level kajal is pure rizz."],
+  ["Understood the assignment", "phrase", "Internet", "Got the brief exactly right.", "Ge", "Ikat scarf, cargos, oxidised jhumkas. Understood the assignment."],
+  ["Girl math", "noun", "Internet", "Logic that makes a purchase feel free.", "Tc", "A ₹300 thrifted blazer? That's basically money in the bank."],
+  ["Mogging", "verb", "Internet", "Outshining everyone standing next to you.", "Xe", "Those jhumkas are mogging the entire room."],
+  ["Pookie", "noun", "Internet", "Someone or something sweet and lovable.", "Ba", "Ribbon in the braid, ballet flats on. Pookie behaviour."],
+  ["Slay", "verb", "Internet", "To do something brilliantly, usually with style.", "Cs", "Corset saree at the college fest. Slay."],
+  ["Drip", "noun", "Internet", "A seriously good outfit or set of accessories.", "Sb", "Glass, kundan and oxidised bangles on one wrist. That's drip."],
+  ["Paisa vasool", "phrase", "Desi", "Worth every rupee you paid.", "Th", "Beaten-up Sambas from the thrift market. Full paisa vasool."],
+  ["Fit check", "noun", "Internet", "Showing off today's outfit, usually on camera.", "Ar", "Fit check: 90s jacket, nani's earrings, thrifted corset."],
+  ["Bindaas", "adjective", "Desi", "Carefree and fearless.", "Pu", "Blazer over a tulle skirt, totally bindaas."],
+  ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Li", "Lowkey carrying a real paperback everywhere."],
+  ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "B", "Football jersey plus hair bow: blokette, the newest core."],
+];
+const slangEl = $("slang");
+slangEl.innerHTML = SLANG.map(([w, pos, origin, mean, sym, line], i) => {
+  const e = get(sym);
+  return `<div class="sl ${e.fam}" data-o="${origin}" role="button" tabindex="0" aria-pressed="false" aria-label="${w}: tap to see the fashion translation">
+    <div class="sl-in">
+      <div class="sl-front">
+        <span class="sl-ghost" aria-hidden="true">${e.sym}</span>
+        <p class="sl-tag">${origin === "Desi" ? "Desi slang" : "Internet slang"} · ${String(i + 1).padStart(2, "0")}</p>
+        <p class="sl-word">${w}</p>
+        <p class="sl-pos">${pos}</p>
+        <p class="sl-tap">Tap to translate ↻</p>
+      </div>
+      <div class="sl-back">
+        <img src="${sceneImg(e)}" alt="">
+        <p class="sl-means">${mean}</p>
+        <p class="sl-line">“${line}”</p>
+        <button type="button" class="sl-open" data-sym="${e.sym}"><b>${e.sym}</b>${e.trend} →</button>
+      </div>
+    </div>
+  </div>`;
+}).join("");
+slangEl.querySelectorAll(".sl").forEach(c => {
+  const flip = () => { c.classList.toggle("flipped"); c.setAttribute("aria-pressed", String(c.classList.contains("flipped"))); };
+  c.addEventListener("click", ev => { if (ev.target.closest(".sl-open")) { ev.stopPropagation(); return open(get(ev.target.closest(".sl-open").dataset.sym)); } flip(); });
+  c.addEventListener("keydown", ev => { if ((ev.key === "Enter" || ev.key === " ") && ev.target === c) { ev.preventDefault(); flip(); } });
+  if (fineTilt) {
+    c.addEventListener("pointermove", ev => { const r = c.getBoundingClientRect(); c.style.setProperty("--rx", `${(.5 - (ev.clientY - r.top) / r.height) * 10}deg`); c.style.setProperty("--ry", `${((ev.clientX - r.left) / r.width - .5) * 12}deg`); });
+    c.addEventListener("pointerleave", () => { c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); });
+  }
+});
+$("slangFilter").querySelectorAll(".seg").forEach(b => b.addEventListener("click", () => {
+  $("slangFilter").querySelectorAll(".seg").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  slangEl.querySelectorAll(".sl").forEach(c => c.hidden = !!b.dataset.o && c.dataset.o !== b.dataset.o);
 }));
+let allFlipped = false;
+$("flipAll").addEventListener("click", ev => {
+  allFlipped = !allFlipped;
+  ev.currentTarget.textContent = allFlipped ? "Flip back" : "Flip all";
+  [...slangEl.querySelectorAll(".sl:not([hidden])")].forEach((c, i) => setTimeout(() => { c.classList.toggle("flipped", allFlipped); c.setAttribute("aria-pressed", String(allFlipped)); }, i * 45));
+});
 
 // ---------- Sources ----------
 $("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">GEN Z</span>` : ""}</span>${e.src ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a><span class="d">${e.src[3]}</span>` : `<span></span><span></span>`}</div>`).join("");
 $("srclist").querySelectorAll(".t").forEach(b => b.addEventListener("click", () => open(get(b.dataset.sym))));
 
 // ---------- Views ----------
-const VIEWS = ["table", "orbit", "lab", "quiz", "genz", "picks", "families", "sources", "wardrobe"];
+const VIEWS = ["orbit", "table", "lab", "genz", "picks", "families", "sources", "wardrobe"];
 function show(v, opts = {}) {
-  if (!VIEWS.includes(v)) v = "table";
+  if (!VIEWS.includes(v)) v = "orbit";
   const cur = document.querySelector(".view:not([hidden])");
   if (opts.x != null && document.startViewTransition && !reduced && cur && cur.dataset.view !== v) {
     const root = document.documentElement;
@@ -2027,7 +2102,7 @@ function show(v, opts = {}) {
   document.querySelectorAll(".tabs [data-view]").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === v)));
   if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
   requestAnimationFrame(() => watch(document.querySelectorAll(`.view[data-view="${v}"] :is(.pick, .fam, .door, .src, .stage)`)));
-  try { history.replaceState(null, "", v === "table" ? location.pathname + location.search : "#" + v); } catch (err) {}
+  try { history.replaceState(null, "", v === "orbit" ? location.pathname + location.search : "#" + v); } catch (err) {}
   onView(v);
   if (!opts.keepScroll) scramble(document.querySelector(`.view[data-view="${v}"] :is(h1, h2)`));
 }
@@ -2133,6 +2208,45 @@ document.addEventListener("keydown", ev => {
   if ((ev.key === "k" && (ev.metaKey || ev.ctrlKey)) || (ev.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && !sheet.open)) { ev.preventDefault(); palette.open ? palette.close() : palOpen(); }
 });
 syncSaved();
+
+// ---------- See the full table: tiles fly out of the sphere into the grid ----------
+function orbitToTable() {
+  if (reduced || !orbitRAF) return show("table");
+  orbitStop();
+  const starts = orbs.map(o => ({ o, r: o.b.getBoundingClientRect(), op: parseFloat(o.b.style.opacity) || 1 }));
+  const layer = document.createElement("div");
+  layer.className = "flylayer";
+  const clones = starts.map(({ o, r, op }) => {
+    const c = document.createElement("div");
+    c.className = `orb fly ${o.e.fam}`;
+    c.innerHTML = o.b.innerHTML;
+    Object.assign(c.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", opacity: Math.max(op, .35), transform: "none" });
+    layer.appendChild(c);
+    return c;
+  });
+  document.body.appendChild(layer);
+  grid.classList.add("landing");
+  show("table");
+  requestAnimationFrame(() => {
+    let left = clones.length;
+    starts.forEach(({ o, r }, i) => {
+      const t = tiles.get(o.e.n).getBoundingClientRect();
+      const dx = t.left - r.left, dy = t.top - r.top, sx = t.width / r.width;
+      const lift = -120 - Math.random() * 120;
+      clones[i].animate([
+        { transform: "translate(0,0) scale(1) rotate(0deg)", opacity: clones[i].style.opacity },
+        { transform: `translate(${dx * .5}px, ${dy * .5 + lift}px) scale(${(1 + sx) / 2 * 1.15}) rotate(${(Math.random() - .5) * 40}deg)`, opacity: 1, offset: .55 },
+        { transform: `translate(${dx}px, ${dy}px) scale(${sx}) rotate(0deg)`, opacity: 1 },
+      ], { duration: 1100, delay: (o.e.n % 18) * 22 + Math.floor((o.e.n - 1) / 18) * 30, easing: "cubic-bezier(.6,.05,.25,1)", fill: "forwards" }).onfinish = () => {
+        if (--left === 0) {
+          grid.classList.remove("landing");
+          layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 260, fill: "forwards" }).onfinish = () => layer.remove();
+        }
+      };
+    });
+  });
+}
+$("toTable").addEventListener("click", ev => { ev.stopPropagation(); orbitToTable(); });
 
 // ---------- Scroll progress ----------
 const prog = $("progress");
@@ -2276,55 +2390,6 @@ $("labCopy").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText(text); toast("Formula copied"); } catch (err) { toast("Copy isn't available here"); }
 });
 renderMix();
-
-// ---------- Quiz ----------
-const QUIZ = [
-  ["Your ideal Saturday night?", [["A concert, front row", ["Ho", "In", "Cn", "Ne", "Ga"]], ["A café and a paperback", ["Li", "Ac", "P", "Ca", "Er"]], ["A thrift run with friends", ["Tc", "Th", "Pa", "U", "Ar"]], ["A family function", ["Kr", "Se", "Zn", "Hg", "Na"]]]],
-  ["Pick a colour to live in.", [["Rani pink", ["Rh", "C", "Bi", "Ba"]], ["Cloud white", ["Cl", "Nb", "H", "Fm"]], ["Indigo and cobalt", ["Ce", "I", "Tl", "Db"]], ["All black", ["Al", "Rn", "Co", "Sc"]]]],
-  ["Your one statement piece?", [["XL jhumkas", ["Xe", "Sb", "Bi", "Mn"]], ["Worn-in sneakers", ["Sr", "Sn", "Th", "K"]], ["A corset", ["Cr", "Cs", "Sc", "Ho"]], ["A charm-heavy bag", ["Cm", "Am", "Ti", "Pb"]]]],
-  ["How do you wear a saree?", [["Pre-draped, out the door", ["Pd", "Ho", "Cs"]], ["Nani's, restyled", ["Na", "Zr", "Kr", "Cr"]], ["With trainers", ["Sr", "Se", "Hf"]], ["As a gown, obviously", ["Sg", "Re", "Og", "Md"]]]],
-  ["Describe your vibe.", [["Loud and chatpata", ["C", "Am", "Pr", "Dy"]], ["Quiet and crafted", ["Nb", "H", "Zr", "Mc"]], ["Soft and romantic", ["Fe", "Co", "Ba", "Re"]], ["Sporty and quick", ["B", "S", "Ra", "Tb"]]]],
-];
-let qStep = 0, qScore = {};
-const quizEl = $("quiz");
-function renderQuiz() {
-  const prog = `<div class="qprog">${QUIZ.map((_, i) => `<i class="${i < qStep ? "done" : ""}"></i>`).join("")}</div>`;
-  if (qStep >= QUIZ.length) {
-    const top = Math.max(...Object.values(qScore));
-    const winners = Object.keys(qScore).filter(k => qScore[k] === top);
-    const e = get(winners[Math.floor(Math.random() * winners.length)]);
-    quizEl.innerHTML = `${prog}<div class="qresult qstep">
-      <div class="c3d"><div class="flipper flip">${cardHTML(e)}</div></div>
-      <div>
-        <p class="qnum">You are No. ${e.n} · ${e.el}</p>
-        <h3>${e.sym} · <em>${e.trend}</em></h3>
-        <p class="desc">${e.desc}</p>
-        <div class="actions" style="margin-top:1.2rem">
-          <button type="button" class="pill solid" data-qopen>Open my card <span class="arrow">→</span></button>
-          <button type="button" class="pill glass" data-save="${e.sym}" aria-pressed="false">♡ Save</button>
-          <button type="button" class="pill glass" data-qagain>Take it again</button>
-        </div>
-      </div></div>`;
-    quizEl.querySelector("[data-qopen]").addEventListener("click", () => open(e));
-    quizEl.querySelector("[data-save]").addEventListener("click", () => toggleSave(e));
-    quizEl.querySelector("[data-qagain]").addEventListener("click", () => { qStep = 0; qScore = {}; renderQuiz(); });
-    syncSaved();
-    return;
-  }
-  const [q, opts] = QUIZ[qStep];
-  quizEl.innerHTML = `${prog}<div class="qstep"><p class="qnum">Question ${qStep + 1} of ${QUIZ.length}</p><p class="qtext">${q}</p>
-    <div class="qopts">${opts.map(([label, syms], i) => `<button type="button" class="qopt" data-i="${i}"><img src="${sceneImg(get(syms[0]))}" alt=""><span>${label}</span></button>`).join("")}</div></div>`;
-  quizEl.querySelectorAll(".qopt").forEach(b => b.addEventListener("click", () => {
-    b.classList.add("picked");
-    for (const s of opts[+b.dataset.i][1]) qScore[s] = (qScore[s] || 0) + 1;
-    setTimeout(() => {
-      qStep++; renderQuiz();
-      const r = quizEl.getBoundingClientRect();
-      if (r.top < 100) scrollBy({ top: r.top - 110, behavior: "smooth" });
-    }, 280);
-  }));
-}
-renderQuiz();
 
 const h = location.hash.slice(1);
 const fromHash = h && !VIEWS.includes(h) && get(h);
