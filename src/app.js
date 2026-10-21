@@ -31,7 +31,46 @@ function place(n) {
   }
 }
 const ROMAN = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"];
-const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
+
+// ---------- Edition: fashion or garbage ----------
+// The URL wins (?ed=garbage), then the last choice saved in this browser.
+const ED_KEYS = ["fashion", "garbage"];
+const edFromUrl = new URLSearchParams(location.search).get("ed");
+let edKey = ED_KEYS.includes(edFromUrl) ? edFromUrl : null;
+if (!edKey) { try { edKey = localStorage.getItem("ptif-edition"); } catch (err) {} }
+if (!ED_KEYS.includes(edKey)) edKey = "fashion";
+const isG = edKey === "garbage";
+const ED = isG ? {
+  key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
+  flag: { label: "Peak Bangalore", short: "PEAK BLR", led: "Peak Bangalore" },
+  tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
+  word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table",
+} : {
+  key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
+  flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
+  tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
+  word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
+};
+document.documentElement.dataset.ed = ED.key;
+try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {}
+if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_COPY[el.dataset.t]; if (v != null) el.innerHTML = v; }
+if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
+document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === ED.key)));
+document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.insertAdjacentHTML("beforeend", `${ED.otherLabel} <span class="arr">→</span>`); });
+function switchEdition(key) {
+  if (!ED_KEYS.includes(key) || key === ED.key) return;
+  try { localStorage.setItem("ptif-edition", key); } catch (err) {}
+  const u = new URL(location.href); u.searchParams.set("ed", key); u.hash = "";
+  document.documentElement.classList.add("switching");
+  setTimeout(() => location.assign(u.toString()), 260);
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-ed], [data-ed-switch]"); if (!b) return;
+  switchEdition(b.dataset.ed || ED.other);
+});
+
+const ELEMENTS_IN = isG ? GARBAGE : ELEMENTS;
+const els = ELEMENTS_IN.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
 const get = (s) => bySym.get(String(s).toLowerCase());
 const $ = (id) => document.getElementById(id);
@@ -72,7 +111,11 @@ function locate(piece) {
 }
 function hotspots(e) {
   const f = e.art.figs && e.art.figs[0];
-  if (!f) return [];
+  if (!f) {
+    const anchors = (e.art.obj || []).map(o => { const a = Array.isArray(o) ? o : [o]; return [typeof a[1] === "number" ? a[1] : 50, 72]; });
+    if (!anchors.length) return [];
+    return e.pieces.split(",").map(p => p.trim()).map((p, i) => { const [ax] = anchors[i % anchors.length]; return { p, i, loc: "obj", x: ax + (i >= anchors.length ? 6 : 0), y: 72 - Math.floor(i / anchors.length) * 8 }; });
+  }
   const x0 = f.x ?? 50, s = f.s ?? 1, flip = f.flip ? -1 : 1;
   const list = e.pieces.split(",").map(p => p.trim()).map((p, i) => ({ p, i, loc: locate(p) })).filter(o => o.loc);
   const byLoc = {};
@@ -86,7 +129,7 @@ function hotspots(e) {
 }
 
 // ---------- Shared markup ----------
-const tileHTML = (e, id) => `${e.z ? `<span class="zdot" title="Gen Z"></span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
+const tileHTML = (e, id) => `${e.z ? `<span class="zdot" title="${ED.flag.label}"></span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
 let uid = 0;
 function cardHTML(e, opts = {}) {
   const hs = opts.hot ? hotspots(e) : [];
@@ -163,11 +206,11 @@ $("soundBtn").addEventListener("click", () => {
 });
 
 // ---------- Saved ----------
-let saved = store.get("ptif-saved", []);
+let saved = store.get(isG ? "ptif-saved-garbage" : "ptif-saved", []);
 const isSaved = (e) => saved.includes(e.sym);
 function toggleSave(e) {
   saved = isSaved(e) ? saved.filter(s => s !== e.sym) : [...saved, e.sym];
-  store.set("ptif-saved", saved);
+  store.set(isG ? "ptif-saved-garbage" : "ptif-saved", saved);
   toast(isSaved(e) ? `Saved · ${e.sym} ${e.trend}` : `Removed · ${e.sym} ${e.trend}`);
   syncSaved();
 }
@@ -212,8 +255,8 @@ key.innerHTML = `
   <div class="how" aria-hidden="true">
     <div class="el ${sample.fam}">${tileHTML(sample, "k" + sample.sym)}</div>
     <p>Number &amp; symbol<span>26, Fe, as on any periodic table</span></p>
-    <p>The drawing<span>the trend, illustrated</span></p>
-    <p>Trend<span>Fe stands for Fairy-tale Everyday</span></p>
+    <p>The drawing<span>the ${ED.noun.toLowerCase()}, illustrated</span></p>
+    <p>${ED.noun}<span>${sample.sym} stands for ${sample.trend}</span></p>
   </div>
   <ul class="keylist">${Object.entries(FAMILIES).map(([k, name]) => `<li class="${k}">${name}<span>${counts[k]}</span></li>`).join("")}</ul>`;
 const narrow = matchMedia("(max-width: 980px)");
@@ -222,7 +265,7 @@ narrow.addEventListener("change", placeKey);
 placeKey();
 
 let activeFam = null, zOnly = false;
-$("filters").innerHTML = `<button type="button" class="filt" data-fam="" aria-pressed="true">All</button><button type="button" class="filt z" data-z aria-pressed="false"><i></i>Gen Z</button>` +
+$("filters").innerHTML = `<button type="button" class="filt" data-fam="" aria-pressed="true">All</button><button type="button" class="filt z" data-z aria-pressed="false"><i></i>${ED.flag.label}</button>` +
   Object.entries(FAMILIES).map(([k, name]) => `<button type="button" class="filt ${k}" data-fam="${k}" aria-pressed="false"><i></i>${name}</button>`).join("");
 $("filters").addEventListener("click", ev => {
   const b = ev.target.closest(".filt"); if (!b) return;
@@ -254,7 +297,7 @@ for (const [n, t] of tiles) {
     grid.classList.add("hovering");
     for (const o of tiles.values()) o.classList.toggle("rc", o.dataset.row === t.dataset.row || o.dataset.col === t.dataset.col);
     if (!fine) return;
-    peek.innerHTML = `<img src="${sceneImg(e)}" alt=""><p class="kicker">No. ${e.n} · ${e.el}${e.z ? " · Gen Z" : ""}</p><b>${e.trend}</b><p>${e.desc}</p>`;
+    peek.innerHTML = `<img src="${sceneImg(e)}" alt=""><p class="kicker">No. ${e.n} · ${e.el}${e.z ? " · " + ED.flag.label : ""}</p><b>${e.trend}</b><p>${e.desc}</p>`;
     peek.classList.add("on");
   });
   t.addEventListener("pointermove", ev => {
@@ -406,7 +449,7 @@ $("toTable").addEventListener("click", orbitToTable);
 {
   const e = els[Math.floor(Date.now() / 864e5) % els.length];
   const t = $("today");
-  t.innerHTML = `<img src="${sceneImg(e)}" alt=""><span><span class="kicker">Element of the day</span><b>${e.sym} · ${e.trend}</b><small>${e.src ? "via " + e.src[0] : e.el}</small></span>`;
+  t.innerHTML = `<img src="${sceneImg(e)}" alt=""><span><span class="kicker">Element of the day</span><b>${e.sym} · ${e.trend}</b><small>${e.src ? (isG ? "" : "via ") + e.src[0] : e.el}</small></span>`;
   t.setAttribute("aria-label", `Element of the day: ${e.trend}`);
   t.addEventListener("click", () => open(e));
 }
@@ -415,7 +458,7 @@ $("toTable").addEventListener("click", orbitToTable);
 const CLEAN_GIRL = { bg: "cream", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "palazzo", l: "beige", h: "lowbun", a: ["hoops"], ac: "gold", hold: "coffee", hc2: "beige", shoe: "jutti" }] };
 const RED_BRIDE = { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ top: "blouse", c: "red", pt: "zari", low: "lehenga", l: "red", pl: "zari", b: "gold", lay: ["veil"], y: "red", h: "bun", a: ["matha", "bignath", "choker"] }] };
 const ALL_PINK = { bg: "pink", gr: "hot", set: ["sparkles"], figs: [{ top: "corset", c: "hot", low: "skirt", l: "hot", h: "pony", hc: "yellow", a: ["hoops", "scrunchie"], ac: "white", shoe: "heel", hold: "clutch", hc2: "white" }] };
-const STORY = [
+const F_STORY = [
   { title: "Craft beat <em>the logo.</em>", text: "Visible handwork became the status symbol: chikankari, crochet, zari and handloom, worn without a single logo.", syms: ["H", "Nb", "Zr"] },
   { title: "Gen Z found the best vintage store <em>at home.</em>", text: "Instead of resale apps, young Indians raided their grandmothers' almirahs, then took screenshots to the local tailor.", syms: ["Na", "Tm", "U"] },
   { title: "Goodbye clean girl. Hello, <em>Indian Baddie.</em>", text: "The slick bun and bare skin gave way to kajal, bindis, kamarbandhs and mirror work, loud on purpose.", syms: ["Bk", "C", "Bi"], ba: [CLEAN_GIRL, "C", "Clean girl", "Indian Baddie"] },
@@ -423,6 +466,7 @@ const STORY = [
   { title: "The saree stopped waiting <em>for weddings.</em>", text: "Worn to work, to college and to concerts: pre-draped, with trainers, with a shirt as the blouse.", syms: ["Se", "Sr", "Pd"] },
   { title: "Weddings went <em>moody.</em>", text: "Plum, merlot and fig replaced bridal red, gothic alt-brides arrived, and the cocktail blazer stole couture week.", syms: ["Mo", "Al", "Zn"], ba: [RED_BRIDE, "Mo", "Bridal red", "Moody opulence"] },
 ];
+const STORY = isG ? G_STORY : F_STORY;
 const baHTML = ([before, afterSym, lb, la], id) => {
   const after = get(afterSym);
   return `<div class="ba-wrap"><div class="ba" id="${id}"><img src="${specImg("before" + id, before, "0 0 100 100")}" alt="${lb}"><img class="after" src="${sceneImg(after, "0 0 100 100")}" alt="${la}"><span class="line"></span><span class="knob" aria-hidden="true">↔</span><span class="tag l">Then · ${lb}</span><span class="tag r">Now · ${la}</span><input type="range" min="0" max="100" value="50" aria-label="Compare ${lb} and ${la}"></div><p class="ba-cap">Drag to compare</p></div>`;
@@ -430,7 +474,7 @@ const baHTML = ([before, afterSym, lb, la], id) => {
 let chNo = 0;
 $("chapters").innerHTML = STORY.map((c, i) => {
   const lead = get(c.syms[0]);
-  const via = lead.src ? `<p class="via">As reported by <a href="${lead.src[2]}" target="_blank" rel="noopener">${lead.src[0]}</a>, ${lead.src[3]}</p>` : "";
+  const via = lead.src ? `<p class="via">${ED.via(lead.src)}</p>` : "";
   if (c.interlude) return `<div class="interlude"><p class="kicker">Interlude · Colour</p><h3>${c.title}</h3>${baHTML(c.ba, "ba" + i)}${via}</div>`;
   chNo++;
   return `<article class="chapter">
@@ -496,7 +540,7 @@ $("labCopy").addEventListener("click", async () => {
 renderMix();
 
 // ---------- Gen Z slang × fashion ----------
-const SLANG = [
+const F_SLANG = [
   ["Ate", "verb", "Internet", "Did it perfectly. If it was really good, they 'left no crumbs'.", "Ho", "Pre-draped saree, corset blouse, concert night. She ate."],
   ["Main character energy", "noun", "Internet", "Dressing like the whole story is about you.", "C", "Mirror-work bralette with cargos and a bold bindi? Main character energy."],
   ["Delulu", "adjective", "Internet", "Lovingly delusional. Dreaming big on purpose.", "Fe", "Tulle skirt to a Monday meeting. Delulu is the solulu."],
@@ -518,6 +562,7 @@ const SLANG = [
   ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Li", "Lowkey carrying a real paperback everywhere."],
   ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "B", "Football jersey plus hair bow: blokette, the newest core."],
 ];
+const SLANG = isG ? G_SLANG : F_SLANG;
 const slangEl = $("slang");
 slangEl.innerHTML = SLANG.map(([w, pos, origin, mean, sym, line], i) => {
   const e = get(sym);
@@ -552,7 +597,7 @@ $("flipAll").addEventListener("click", ev => {
 }
 
 // ---------- Editor's Picks ----------
-const PICKS = ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
+const PICKS = isG ? G_PICKS : ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
 const pickHTML = (e, i) => `<button type="button" class="pick" data-sym="${e.sym}"><span class="pn">No. ${ROMAN[i] || i + 1}</span>${cardHTML(e)}<div><p class="kicker">${e.el} · ${e.src ? e.src[0] : FAMILIES[e.fam]}</p><h3>${e.trend}</h3><p>${e.desc}</p></div></button>`;
 $("picks").innerHTML = PICKS.map(get).map(pickHTML).join("");
 $("picks").addEventListener("click", ev => { const p = ev.target.closest(".pick"); if (p) open(get(p.dataset.sym)); });
@@ -583,7 +628,7 @@ function inkSize() {
 }
 function inkDraw() {
   ictx.clearRect(0, 0, inkW, inkH);
-  const word = "ELEMENTAL", fs = Math.min(inkH * 0.95, inkW / 5.4), cx = inkW / 2, cy = inkH * 0.56;
+  const word = ED.word, fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
   ictx.font = `400 ${fs}px "Bodoni Moda", Didot, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
   ictx.fillStyle = "#151515"; ictx.fillText(word, cx, cy);
   if (!blobs.length) return;
@@ -615,7 +660,7 @@ addEventListener("resize", () => { if (inkRAF) inkSize(); });
 if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
 
 // ---------- Sources ----------
-$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">Gen Z</span>` : ""}</span>${e.src ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a><span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
+$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a>` : `<span class="note">${e.src[0]} — ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
 $("srclist").addEventListener("click", ev => { const b = ev.target.closest(".t"); if (b) open(get(b.dataset.sym)); });
 
 // ---------- Wardrobe ----------
@@ -642,8 +687,8 @@ function render(e) {
       <p class="desc">${e.desc}</p>
       <dl class="facts">
         <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
-        <dt>Try it</dt><dd>${e.tip}</dd>
-        ${s ? `<dt>Source</dt><dd><a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>, ${s[3]}${e.z ? " · Gen Z-led" : ""}</dd>` : ""}
+        <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
       <div class="ex-actions"><button type="button" class="btn ghost" data-save="${e.sym}" aria-pressed="false">Save</button><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
@@ -699,7 +744,7 @@ async function shareImage(e) {
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
-  ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText("THE FASHION ELEMENTS  ·  ISSUE 01", W / 2, 120);
+  ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
   // Card
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
@@ -722,7 +767,7 @@ async function shareImage(e) {
   ctx.font = 'italic 42px "Cormorant Garamond", serif'; ctx.fillStyle = "#3A3833";
   y = wrap(ctx, e.desc, 90, y + 70, W - 180, 52);
   ctx.font = '600 24px "Archivo Narrow", sans-serif'; ctx.fillStyle = "#77716A";
-  if (e.src) ctx.fillText(`AS SEEN IN ${e.src[0].toUpperCase()} · ${e.src[3].toUpperCase()}`, 90, Math.min(H - 70, y + 80));
+  if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
   c.toBlob(async blob => {
     if (!blob) return toast("Couldn't make the image");
     const url = URL.createObjectURL(blob), file = new File([blob], `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, { type: "image/png" });
@@ -742,12 +787,12 @@ function palRender() {
   const t = palq.value.trim().toLowerCase();
   palRes = !t ? PICKS.map(get)
     : els.map(e => {
-      const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? "gen z genz" : ""}`.toLowerCase();
+      const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? ED.flagSearch : ""}`.toLowerCase();
       const sc = e.sym.toLowerCase() === t ? 100 : e.trend.toLowerCase().startsWith(t) ? 60 : e.trend.toLowerCase().includes(t) ? 40 : e.el.toLowerCase().startsWith(t) ? 30 : hay.includes(t) ? 10 : 0;
       return [sc, e];
     }).filter(x => x[0]).sort((a, b) => b[0] - a[0]).slice(0, 10).map(x => x[1]);
   palSel = 0;
-  pallist.innerHTML = palRes.length ? palRes.map((e, i) => `<li role="option" class="${e.fam}" data-i="${i}" aria-selected="${i === 0}"><span class="ps">${e.sym}</span><span><span class="pt">${e.trend}</span><span class="pm">No. ${e.n} · ${e.el}${e.src ? " · " + e.src[0] : ""}</span></span>${e.z ? `<span class="pz">GEN Z</span>` : "<span></span>"}</li>`).join("")
+  pallist.innerHTML = palRes.length ? palRes.map((e, i) => `<li role="option" class="${e.fam}" data-i="${i}" aria-selected="${i === 0}"><span class="ps">${e.sym}</span><span><span class="pt">${e.trend}</span><span class="pm">No. ${e.n} · ${e.el}${e.src ? " · " + e.src[0] : ""}</span></span>${e.z ? `<span class="pz">${ED.flag.short}</span>` : "<span></span>"}</li>`).join("")
     : `<li class="none">No trend matches “${palq.value}”.</li>`;
 }
 function palMove(d) {
@@ -787,7 +832,7 @@ function show(v, opts = {}) {
   v === "cover" ? orbitStart() : orbitStop();
   v === "families" ? requestAnimationFrame(inkStart) : inkStop();
   if (v !== "table") stopPlay();
-  try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : "#" + v); } catch (err) {}
+  try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
 document.addEventListener("click", ev => {
   const t = ev.target.closest("[data-view]");
@@ -806,7 +851,7 @@ addEventListener("scroll", () => {
 // ---------- Opening curtain (once per visit) ----------
 function curtain() {
   let seen = false;
-  try { seen = sessionStorage.getItem("ptif-curtain") === "1"; sessionStorage.setItem("ptif-curtain", "1"); } catch (err) {}
+  try { seen = sessionStorage.getItem("ptif-curtain-" + ED.key) === "1"; sessionStorage.setItem("ptif-curtain-" + ED.key, "1"); } catch (err) {}
   if (seen || reduced) return;
   const el = $("curtain"), num = $("curtainCount");
   el.hidden = false;

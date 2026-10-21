@@ -80,6 +80,16 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .mast-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding-block: .85rem .6rem; }
 .issue { font: 600 .62rem var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 .wordmark { font: 500 1.3rem/1 var(--display); letter-spacing: .34em; text-transform: uppercase; text-decoration: none; white-space: nowrap; padding-left: .34em; cursor: pointer; background: none; border: 0; }
+.mast-left { display: flex; align-items: center; gap: 1.1rem; min-width: 0; }
+.edswitch { display: inline-flex; border: 1px solid var(--ink); border-radius: 2px; overflow: hidden; }
+.edswitch button { background: none; border: 0; cursor: pointer; padding: .38rem .7rem; font: 600 .6rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); transition: background .4s var(--ease), color .4s var(--ease); }
+.edswitch button + button { border-left: 1px solid var(--ink); }
+.edswitch button:hover { color: var(--ink); }
+.edswitch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+html[data-ed="garbage"] { --accent: #2F6B4F; }
+html.switching body { opacity: 0; transition: opacity .25s ease; }
+.menu-ed { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); display: grid; gap: .6rem; justify-items: start; }
+.src .note { color: var(--ink-2); }
 .mast-tools { justify-self: end; display: flex; gap: 1.2rem; align-items: center; }
 .tool { background: none; border: 0; padding: .3rem 0; cursor: pointer; font: 600 .62rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); display: inline-flex; gap: .4rem; align-items: center; }
 .tool:hover { color: var(--accent); }
@@ -461,6 +471,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 @media (max-width: 980px) {
   .mast-top { grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; }
   .issue { display: none; }
+  .mast-left { display: none; }
   .wordmark { font-size: .9rem; letter-spacing: .16em; padding-left: 0; justify-self: start; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .mast-tools { gap: .8rem; }
   .tool .lbl { display: none; }
@@ -507,16 +518,16 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <body>
 
 <div class="curtain" id="curtain" hidden aria-hidden="true">
-  <div><p class="kicker">Issue 01 · Autumn/Winter 2026</p><p class="count" id="curtainCount">000</p><p class="of">elements of Indian fashion</p></div>
+  <div><p class="kicker">Issue 01 · Autumn/Winter 2026</p><p class="count" id="curtainCount">000</p><p class="of" data-t="curtainOf">elements of Indian fashion</p></div>
 </div>
 
 <header class="mast">
   <div class="mast-top band">
-    <span class="issue">Issue 01 · Autumn/Winter 2026</span>
-    <button type="button" class="wordmark" data-view="cover">The Fashion Elements</button>
+    <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
+    <button type="button" class="wordmark" data-view="cover" data-t="wordmark">The Fashion Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
-      <button type="button" class="tool" data-view="wardrobe"><span class="lbl">Wardrobe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg><span class="count" id="wcount">0</span></button>
+      <button type="button" class="tool" data-view="wardrobe"><span class="lbl" data-t="keptLbl">Wardrobe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg><span class="count" id="wcount">0</span></button>
       <button type="button" class="tool" id="soundBtn" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="soundWave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11" opacity=".25"/></svg><span class="lbl" id="soundLbl">Sound off</span></button>
       <button type="button" class="tool menu" id="openMenu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
@@ -526,10 +537,10 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" data-view="table">The Table</button>
     <button type="button" data-view="story">The Story</button>
     <button type="button" data-view="lab">The Lab</button>
-    <button type="button" data-view="genz">Gen Z</button>
+    <button type="button" data-view="genz" data-t="navGenz">Gen Z</button>
     <button type="button" data-view="picks">Editor's Picks</button>
     <button type="button" data-view="families">Families</button>
-    <button type="button" data-view="sources">Sources</button>
+    <button type="button" data-view="sources" data-t="navSources">Sources</button>
   </nav>
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
@@ -539,10 +550,10 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <div class="orbit" id="orbit">
       <div class="sphere" id="sphere"></div>
       <div class="cover-title">
-        <p class="kicker">The cover story · 118 trends</p>
-        <h1 id="h-cover">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
-        <p class="lede">Every real element symbol, matched to a trend the fashion press named in 2025 and 2026.</p>
-        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link" data-view="story">Read the story <span class="arr">→</span></button></div>
+        <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
+        <h1 id="h-cover" data-t="coverH1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
+        <p class="lede" data-t="coverLede">Every real element symbol, matched to a trend the fashion press named in 2025 and 2026.</p>
+        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link" data-view="story">Read the story <span class="arr">→</span></button><button type="button" class="link swap" data-ed-switch>See the garbage table <span class="arr">→</span></button></div>
       </div>
       <div class="cover-foot band">
         <button type="button" class="today" id="today"></button>
@@ -555,7 +566,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <div class="wrap">
       <div class="page-head">
         <div><p class="kicker">The Table</p><h2 class="h-lg" id="h-table">All 118, <em>at a glance.</em></h2><p class="lede">Real symbols, numbers and families. Hover a tile to light up its period and group. Tap it to open the exhibit.</p></div>
-        <label class="search"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend or symbol"></label>
+        <label class="search"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend or symbol" data-t-ph="tableSearch"></label>
       </div>
       <div class="tl" aria-label="Timeline">
         <button type="button" class="tl-play" id="tlPlay" aria-label="Play the year"><svg viewBox="0 0 10 10" aria-hidden="true"><path id="tlIcon" d="M2 1l7 4-7 4z"/></svg></button>
@@ -571,8 +582,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <section class="view band" data-view="story" aria-labelledby="h-story" hidden>
     <div class="wrap">
       <div class="story-intro">
-        <div><p class="kicker">The Story</p><h2 class="h-xl" id="h-story">What India <em>wore</em> this year.</h2></div>
-        <p class="lede">Five shifts that kept coming up in the fashion press between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.</p>
+        <div><p class="kicker">The Story</p><h2 class="h-xl" id="h-story" data-t="storyH2">What India <em>wore</em> this year.</h2></div>
+        <p class="lede" data-t="storyLede">Five shifts that kept coming up in the fashion press between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.</p>
       </div>
       <div id="chapters"></div>
     </div>
@@ -580,7 +591,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
   <section class="view page band" data-view="lab" aria-labelledby="h-lab" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab">Mix your own <em>compound.</em></h2><p class="lede">Drop up to three elements into the flask. We'll write the formula and name the look.</p></div></div>
+      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. We'll write the formula and name the look.</p></div></div>
       <div class="lab">
         <div class="bench">
           <div class="flask-wrap" id="flaskWrap">
@@ -621,7 +632,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <section class="view page band" data-view="genz" aria-labelledby="h-genz" hidden>
     <div class="wrap">
       <div class="page-head">
-        <div><p class="kicker">Gen Z</p><h2 class="h-lg" id="h-genz">Say it in <em>Gen Z.</em></h2><p class="lede">Twenty words, translated into fashion. Tap a card to flip it. The slang meanings and examples are ours. The trends are sourced.</p>
+        <div><p class="kicker" data-t="genzKicker">Gen Z</p><h2 class="h-lg" id="h-genz">Say it in <em>Gen Z.</em></h2><p class="lede" data-t="genzLede">Twenty words, translated into fashion. Tap a card to flip it. The slang meanings and examples are ours. The trends are sourced.</p>
           <div class="filters" id="slangFilter" style="margin-top:1.6rem"><button type="button" class="filt" data-o="" aria-pressed="true">All</button><button type="button" class="filt" data-o="Internet" aria-pressed="false">Internet slang</button><button type="button" class="filt" data-o="Desi" aria-pressed="false">Desi slang</button><button type="button" class="link" id="flipAll">Flip all</button></div></div>
         <div class="cols" aria-hidden="true"><div class="col" id="col0"></div><div class="col rev" id="col1"></div><div class="col" id="col2"></div></div>
       </div>
@@ -631,7 +642,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
   <section class="view page band" data-view="picks" aria-labelledby="h-picks" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Editor's Picks</p><h2 class="h-lg" id="h-picks">Eight cards <em>worth holding.</em></h2><p class="lede">The trends we'd bet on for the rest of the season.</p></div></div>
+      <div class="page-head"><div><p class="kicker">Editor's Picks</p><h2 class="h-lg" id="h-picks">Eight cards <em>worth holding.</em></h2><p class="lede" data-t="picksLede">The trends we'd bet on for the rest of the season.</p></div></div>
       <div class="picks" id="picks"></div>
     </div>
   </section>
@@ -639,21 +650,21 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <section class="view page band" data-view="families" aria-labelledby="h-fam" hidden>
     <div class="wrap">
       <div class="ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
-      <div class="page-head"><div><p class="kicker">Families</p><h2 class="h-lg" id="h-fam">Ten halls, <em>one wardrobe.</em></h2><p class="lede">Grouped exactly as chemistry groups them. Open a hall to see only its elements on the table.</p></div></div>
+      <div class="page-head"><div><p class="kicker">Families</p><h2 class="h-lg" id="h-fam" data-t="famH2">Ten halls, <em>one wardrobe.</em></h2><p class="lede">Grouped exactly as chemistry groups them. Open a hall to see only its elements on the table.</p></div></div>
       <div class="halls" id="halls"></div>
     </div>
   </section>
 
   <section class="view page band" data-view="sources" aria-labelledby="h-src" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Sources</p><h2 class="h-lg" id="h-src">Who's <em>saying so.</em></h2><p class="lede">Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p></div></div>
+      <div class="page-head"><div><p class="kicker" data-t="srcKicker">Sources</p><h2 class="h-lg" id="h-src" data-t="srcH2">Who's <em>saying so.</em></h2><p class="lede" data-t="srcLede">Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p></div></div>
       <div class="srclist" id="srclist"></div>
     </div>
   </section>
 
   <section class="view page band" data-view="wardrobe" aria-labelledby="h-ward" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Your Wardrobe</p><h2 class="h-lg" id="h-ward">The trends <em>you kept.</em></h2><p class="lede">Saved on this device only.</p></div></div>
+      <div class="page-head"><div><p class="kicker" data-t="wardKicker">Your Wardrobe</p><h2 class="h-lg" id="h-ward" data-t="wardH2">The trends <em>you kept.</em></h2><p class="lede">Saved on this device only.</p></div></div>
       <div class="picks" id="wgrid"></div>
       <div class="empty" id="wempty"><p class="h-lg">Nothing saved yet.</p><p>Open any element and choose Save. Your picks collect here.</p><button type="button" class="btn" data-deal>Deal me a card</button></div>
     </div>
@@ -662,8 +673,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
 <footer class="colophon band">
   <div class="wrap">
-    <span class="wm">The Fashion Elements</span>
-    <p>The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes, slang and drawings are ours.</p>
+    <span class="wm" data-t="colophonWm">The Fashion Elements</span>
+    <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes, slang and drawings are ours.</p>
     <small>Issue 01 · 2026</small>
   </div>
 </footer>
@@ -674,7 +685,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <dialog class="sheet" id="sheet" aria-label="Element"><div class="exhibit" id="exhibit"></div></dialog>
 <dialog class="sharebox" id="sharebox" aria-label="Share image"><div id="shareIn"></div></dialog>
 <dialog class="palette" id="palette" aria-label="Search">
-  <label class="pal-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="palq" type="search" placeholder="Search trends, symbols, magazines" autocomplete="off"><kbd>esc</kbd></label>
+  <label class="pal-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="palq" type="search" placeholder="Search trends, symbols, magazines" autocomplete="off" data-t-ph="palSearch"><kbd>esc</kbd></label>
   <ul class="pal-list" id="pallist" role="listbox" aria-label="Results"></ul>
   <p class="pal-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> to move</span><span><kbd>↵</kbd> to open</span></p>
 </dialog>
@@ -685,11 +696,12 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="mi" data-view="table"><i>ii.</i>The Table</button>
     <button type="button" class="mi" data-view="story"><i>iii.</i>The Story</button>
     <button type="button" class="mi" data-view="lab"><i>iv.</i>The Lab</button>
-    <button type="button" class="mi" data-view="genz"><i>v.</i>Gen Z</button>
+    <button type="button" class="mi" data-view="genz"><i>v.</i><span data-t="menuGenz">Gen Z</span></button>
     <button type="button" class="mi" data-view="picks"><i>vi.</i>Editor's Picks</button>
     <button type="button" class="mi" data-view="families"><i>vii.</i>Families</button>
-    <button type="button" class="mi" data-view="sources"><i>viii.</i>Sources</button>
-    <button type="button" class="mi" data-view="wardrobe"><i>ix.</i>Wardrobe</button>
+    <button type="button" class="mi" data-view="sources"><i>viii.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="wardrobe"><i>ix.</i><span data-t="menuWardrobe">Wardrobe</span></button>
+    <div class="menu-ed"><p class="kicker">Edition</p><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
   </div>
 </dialog>
 
@@ -986,9 +998,159 @@ function scene(id, o) {
   parts.push(`<rect y="84" width="100" height="16" fill="${col(o.gr || "beige")}"/><path d="M0,84 H100" stroke="${P.ink}" stroke-width=".6"/>`);
   for (const s of o.back || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
   for (const f of o.figs || []) parts.push(fig(id, f));
+  const z = o.zoom || 1;
+  if (z !== 1) parts.push(`<g transform="translate(50 84) scale(${z}) translate(-50 -84)">`);
   for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="ob">${OBJ[name](...args)}</g>`); }
+  if (z !== 1) parts.push("</g>");
   return parts.join("");
 }
+
+// The junk kit: things found on a Bangalore footpath, drawn to the same scale as the fashion figures.
+// Everything stands on the ground line at y=84 unless it says otherwise.
+const TXT = (x, y, t, size = 4, c = "ink", w = 700, extra = "") => `<text x="${x}" y="${y}" font-family="Archivo Narrow,sans-serif" font-size="${size}" font-weight="${w}" text-anchor="middle" fill="${col(c)}" ${extra}>${t}</text>`;
+const JUNK = {
+  // Bags, bins and boxes
+  bag: (x = 50, c = "black", s = 1) => `<g transform="translate(${x} 84) scale(${s})"><path d="M-11,0 Q-14,-10 -9,-17 L-3,-19 L-5,-24 L0,-21 L5,-25 L3,-19 L9,-17 Q14,-10 11,0Z" fill="${col(c)}" ${OL}/><path d="M-6,-8 q6,4 12,-2 M-8,-14 q4,3 8,0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".7"/></g>`,
+  bags: (x = 50) => [[-14, "black", .8], [0, "yellow", 1], [13, "black", .7]].map(([d, c, s]) => JUNK.bag(x + d, c, s)).join(""),
+  bin: (x = 50, c = "green", t = "BBMP") => `<path d="M${x - 10},84 L${x - 9},44 H${x + 9} L${x + 10},84Z" fill="${col(c)}" ${OL}/><path d="M${x - 12},44 H${x + 12} V40 Q${x},36 ${x - 12},40Z" fill="${col(c)}" ${OL}/><path d="M${x - 7},50 V78 M${x + 7},50 V78" stroke="#fff" stroke-opacity=".3" stroke-width=".8"/>${TXT(x, 64, t, 4.4, "paper")}<path d="M${x - 2},40 q2,-6 6,0" fill="none" stroke="${P.ink}" stroke-width=".8"/>`,
+  bins: (x = 50) => JUNK.bin(x - 13, "green", "WET") + JUNK.bin(x + 13, "blue", "DRY"),
+  box: (x = 50, c = "beige", t = "", s = 1, rot = 0) => `<g transform="translate(${x} 84) rotate(${rot}) scale(${s})"><path d="M-12,0 V-16 H12 V0Z" fill="${col(c)}" ${OL}/><path d="M-12,-16 L-9,-21 H9 L12,-16" fill="${col(c)}" ${OL}/><path d="M-12,-16 H12 M0,-16 V0" stroke="${P.ink}" stroke-width=".5" opacity=".5"/>${t ? TXT(0, -6, t, 3.6, "ink", 700) : ""}</g>`,
+  boxes: (x = 50) => JUNK.box(x - 9, "beige", "", 1.1) + JUNK.box(x + 8, "beige", "", .8, 0) + `<path d="M${x - 20},63 h22 v-13 h-22Z" fill="${P.beige}" ${OL}/><path d="M${x - 20},50 h22" stroke="${P.ink}" stroke-width=".5"/><path d="M${x - 17},57 h16" stroke="${P.sky}" stroke-width="1.6"/>`,
+  pizza: (x = 50, c = "beige") => `<path d="M${x - 14},84 H${x + 14} V78 H${x - 14}Z" fill="${col(c)}" ${OL}/><path d="M${x - 14},78 L${x - 10},50 H${x + 18} L${x + 14},78Z" fill="${col(c)}" ${OL}/><circle cx="${x + 4}" cy="64" r="7" fill="${P.yellow}" ${OL}/><circle cx="${x + 2}" cy="62" r="1.4" fill="${P.red}"/><circle cx="${x + 7}" cy="66" r="1.2" fill="${P.red}"/><path d="M${x - 10},81 h20" stroke="${P.red}" stroke-width="1.2"/>`,
+  foodbag: (x = 50, c = "red", t = "") => `<path d="M${x - 11},84 V58 Q${x},54 ${x + 11},58 V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 5},58 V50 Q${x},47 ${x + 5},50 V58" fill="none" stroke="${P.ink}" stroke-width=".8"/><path d="M${x - 11},70 h22" stroke="#fff" stroke-opacity=".5" stroke-width=".6"/>${t ? TXT(x, 76, t, 3.6, "paper") : ""}`,
+  paperbag: (x = 50, c = "beige", t = "") => `<path d="M${x - 10},84 V62 H${x + 10} V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 4},62 q4,-10 8,0" fill="none" stroke="${P.ink}" stroke-width=".8"/><path d="M${x - 10},62 L${x - 7},58 H${x + 7} L${x + 10},62" fill="none" stroke="${P.ink}" stroke-width=".5"/>${t ? TXT(x, 75, t, 3.4, "ink") : ""}`,
+  foil: (x = 50) => `<path d="M${x - 12},84 L${x - 10},72 H${x + 10} L${x + 12},84Z" fill="${P.grey}" ${OL}/><path d="M${x - 9},74 h18" stroke="#fff" stroke-width="1" opacity=".7"/><path d="M${x - 7},76 q3,-3 6,0 t6,0" fill="none" stroke="${P.yellow}" stroke-width="1.6"/><path d="M${x + 2},72 l6,-10 M${x + 8},62 l2,-2" stroke="${P.ink}" stroke-width=".8"/>`,
+  sack: (x = 50, c = "beige", t = "", s = 1) => `<g transform="translate(${x} 84) scale(${s})"><path d="M-12,0 Q-14,-18 -10,-28 L-4,-30 Q0,-33 4,-30 L10,-28 Q14,-18 12,0Z" fill="${col(c)}" ${OL}/><path d="M-8,-29 h16" stroke="${P.ink}" stroke-width=".8"/><path d="M-10,-6 q10,3 20,0 M-11,-14 q11,3 22,0" fill="none" stroke="${P.ink}" stroke-width=".4" opacity=".5"/>${t ? TXT(0, -14, t, 3.4, "ink") : ""}</g>`,
+  crate: (x = 50, c = "red") => `<path d="M${x - 13},84 V66 H${x + 13} V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 9},70 h18 M${x - 9},74 h18 M${x - 9},78 h18 M${x - 7},66 v18 M${x},66 v18 M${x + 7},66 v18" stroke="${P.ink}" stroke-width=".5" opacity=".6"/>`,
+  // Bottles, cups and plates
+  bottle: (x = 50, c = "sky", s = 1, crushed = false) => `<g transform="translate(${x} 84) scale(${s})">${crushed ? `<path d="M-6,0 L-5,-8 L-7,-14 L-4,-20 L-2,-26 H2 L4,-20 L6,-14 L5,-8 L6,0Z" fill="${col(c)}" ${OL}/><path d="M-4,-14 l8,0 M-5,-8 l10,-1" stroke="${P.ink}" stroke-width=".4"/>` : `<path d="M-6,0 V-20 Q-6,-24 -2,-26 V-30 H2 V-26 Q6,-24 6,-20 V0Z" fill="${col(c)}" ${OL}/><path d="M-6,-10 h12" stroke="#fff" stroke-width="2" opacity=".6"/>`}<rect x="-2.6" y="-33" width="5.2" height="3" fill="${P.blue}" ${OL}/></g>`,
+  bottles: (x = 50) => JUNK.bottle(x - 10, "sky", .8, true) + JUNK.bottle(x + 2, "sky", 1) + JUNK.bottle(x + 12, "mint", .7, true),
+  rum: (x = 50) => `<path d="M${x - 6},84 V60 Q${x - 6},56 ${x - 2},54 V46 H${x + 2} V54 Q${x + 6},56 ${x + 6},60 V84Z" fill="${P.kaapi}" ${OL}/><rect x="${x - 5}" y="64" width="10" height="10" fill="${P.red}" ${OL}/>${TXT(x, 71, "XXX", 3.4, "paper")}<rect x="${x - 2}" y="44" width="4" height="3" fill="${P.gold}" ${OL}/>`,
+  can20: (x = 50, c = "blue") => `<path d="M${x - 10},84 V54 Q${x - 10},48 ${x - 4},46 V40 H${x + 4} V46 Q${x + 10},48 ${x + 10},54 V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 10},62 h20 M${x - 10},70 h20" stroke="#fff" stroke-opacity=".4" stroke-width=".8"/><path d="M${x - 3},60 h6" stroke="#fff" stroke-width="3" opacity=".5"/><rect x="${x - 4}" y="38" width="8" height="3" fill="${P.white}" ${OL}/>`,
+  cup: (x = 50, c = "white", s = 1, lid = false, tip = false) => `<g transform="translate(${x} 84) ${tip ? "rotate(-70) translate(0 6)" : ""} scale(${s})"><path d="M-6,0 L-7.5,-16 H7.5 L6,0Z" fill="${col(c)}" ${OL}/>${lid ? `<path d="M-8,-16 H8 V-18.5 H-8Z" fill="${P.ink}"/><path d="M-1.5,-18.5 l1,-7" stroke="${P.ink}" stroke-width="1.2"/>` : `<path d="M-7.5,-16 H7.5" stroke="${P.ink}" stroke-width="1"/>`}<path d="M-6,-6 h12" stroke="${P.kaapi}" stroke-width="1.6" opacity=".6"/></g>`,
+  cups: (x = 50) => JUNK.cup(x - 12, "white", .8) + JUNK.cup(x, "white", 1, true) + JUNK.cup(x + 10, "white", .7, false, true),
+  kulhad: (x = 50) => `<path d="M${x - 7},84 Q${x - 9},74 ${x - 6},68 H${x + 6} Q${x + 9},74 ${x + 7},84Z" fill="${P.rust}" ${OL}/><path d="M${x - 6},68 H${x + 6}" stroke="${P.ink}" stroke-width="1"/><path d="M${x + 10},84 l4,-9 l5,9Z M${x + 15},84 l3,-5 l4,5Z" fill="${P.rust}" ${OL}/><path d="M${x - 2},72 l2,6" stroke="${P.ink}" stroke-width=".5"/>`,
+  tumbler: (x = 50) => `<path d="M${x - 5},84 L${x - 6},70 H${x + 6} L${x + 5},84Z" fill="${P.grey}" ${OL}/><path d="M${x - 6},70 H${x + 6}" stroke="${P.ink}" stroke-width="1"/><path d="M${x - 3},74 v7" stroke="#fff" stroke-width="1.2" opacity=".8"/><ellipse cx="${x + 12}" cy="81" rx="8" ry="3" fill="${P.grey}" ${OL}/>`,
+  plate: (x = 50, c = "white", s = 1) => `<g transform="translate(${x} 82) scale(${s})"><ellipse rx="14" ry="4" fill="${col(c)}" ${OL}/><ellipse rx="9" ry="2.2" fill="none" stroke="${P.ink}" stroke-width=".4"/><path d="M-5,-1 q3,-3 6,0 M2,0 q2,-2 4,0" fill="none" stroke="${P.yellow}" stroke-width="1.4"/></g>`,
+  plates: (x = 50) => `<g transform="translate(${x} 0)">${[0, -2.2, -4.4, -6.6].map((d) => `<ellipse cx="0" cy="${82 + d}" rx="13" ry="3.4" fill="${P.ivory}" ${OL}/>`).join("")}<ellipse cx="20" cy="82" rx="10" ry="3" fill="${P.ivory}" ${OL}/></g>`,
+  dona: (x = 50) => [[-10, 0], [2, -3], [12, 2]].map(([d, r]) => `<g transform="translate(${x + d} 82) rotate(${r})"><path d="M-7,0 L-5,-7 H5 L7,0Z" fill="${P.beige}" ${OL}/><path d="M-4,-4 h8" stroke="${P.green}" stroke-width="1"/></g>`).join(""),
+  banana: (x = 50) => `<path d="M${x - 22},82 Q${x},72 ${x + 22},82 Q${x},88 ${x - 22},82Z" fill="${P.green}" ${OL}/><path d="M${x - 20},82 H${x + 20}" stroke="${P.ink}" stroke-width=".6" opacity=".6"/><path d="M${x - 8},80 q4,-3 8,0 M${x + 2},79 q3,-2 6,0" fill="none" stroke="${P.yellow}" stroke-width="1.4"/><circle cx="${x - 4}" cy="78" r="1.6" fill="${P.white}" ${OL}/>`,
+  // Coconuts, peels and piles
+  coconut: (x = 50, c = "green") => `<path d="M${x - 9},84 Q${x - 12},66 ${x},60 Q${x + 12},66 ${x + 9},84Z" fill="${col(c)}" ${OL}/><path d="M${x - 4},62 L${x + 4},62 L${x},66Z" fill="${P.ivory}" ${OL}/><path d="M${x + 1},63 L${x + 7},48" stroke="${P.red}" stroke-width="1.4"/><path d="M${x - 6},74 q6,3 12,0" fill="none" stroke="${P.ink}" stroke-width=".5" opacity=".5"/>`,
+  husks: (x = 50) => `<path d="M${x - 24},84 Q${x - 20},70 ${x - 8},72 Q${x - 2},62 ${x + 8},70 Q${x + 18},66 ${x + 24},84Z" fill="${P.kaapi}" ${OL}/><path d="M${x - 14},84 q4,-10 10,-8 M${x + 4},84 q2,-10 10,-6 M${x - 6},78 q4,-6 8,-4" fill="none" stroke="${P.ink}" stroke-width=".5" opacity=".6"/><path d="M${x - 16},74 l4,-6 l4,6Z" fill="${P.green}" ${OL}/>`,
+  pile: (x = 50, c = "grey", w = 24, h = 14, pat = "") => `<path d="M${x - w},84 Q${x - w * .6},${84 - h * .7} ${x - w * .2},${84 - h} Q${x + w * .3},${84 - h * 1.15} ${x + w * .6},${84 - h * .6} Q${x + w * .9},${84 - h * .3} ${x + w},84Z" fill="${col(c)}" ${OL}/>${pat}`,
+  peels: (x = 50) => JUNK.pile(x, "yellow", 20, 10) + [[-10, 78], [-2, 72], [8, 76], [14, 80]].map(([d, y]) => `<path d="M${x + d},${y} q3,-4 7,-1 q-4,2 -7,1Z" fill="${P.orange}" ${OL}/>`).join("") + `<circle cx="${x - 4}" cy="80" r="1.2" fill="${P.ink}" opacity=".5"/><circle cx="${x + 4}" cy="74" r="1.2" fill="${P.ink}" opacity=".5"/>`,
+  leaves: (x = 50, burnt = false) => JUNK.pile(x, burnt ? "grey" : "rust", 22, 12) + [[-12, 76], [-4, 72], [6, 74], [14, 78]].map(([d, y]) => `<path d="M${x + d},${y} q2,-5 6,-4 q-1,5 -6,4Z" fill="${burnt ? P.black : P.kaapi}" ${OL}/>`).join("") + (burnt ? `<circle cx="${x - 2}" cy="78" r="1.4" fill="${P.orange}"/><circle cx="${x + 6}" cy="80" r="1" fill="${P.red}"/>` : ""),
+  smoke: (x = 50, y = 60, c = "grey") => [[0, 0, 5], [-4, -9, 6], [3, -18, 7], [-2, -28, 8]].map(([dx, dy, r]) => `<circle cx="${x + dx}" cy="${y + dy}" r="${r}" fill="${col(c)}" opacity=".55"/>`).join(""),
+  flowers: (x = 50, c = "orange") => JUNK.pile(x, c, 20, 9) + [[-14, 80], [-6, 75], [3, 74], [12, 78], [-9, 82], [7, 81]].map(([d, y]) => `<circle cx="${x + d}" cy="${y}" r="2.6" fill="${c === "pink" ? P.hot : P.yellow}" ${OL}/>`).join("") + `<path d="M${x - 16},83 q6,-8 14,-6" fill="none" stroke="${P.green}" stroke-width=".8"/>`,
+  garland: (x = 50, y = 30, c = "orange") => `<path d="M${x - 24},${y} Q${x},${y + 22} ${x + 24},${y}" fill="none" stroke="${P.green}" stroke-width="1"/>` + [-20, -14, -8, -2, 4, 10, 16, 20].map((d) => { const t = (d + 24) / 48, yy = y + 22 * 4 * t * (1 - t) * .5; return `<circle cx="${x + d}" cy="${yy + 1}" r="2.4" fill="${col(c)}" ${OL}/>`; }).join(""),
+  rangoli: (x = 50) => `<path d="M${x - 14},84 q14,-10 28,0Z" fill="${P.hot}" ${OL}/><path d="M${x - 8},84 q8,-7 16,0Z" fill="${P.yellow}" ${OL}/><path d="M${x - 3},84 q3,-4 6,0Z" fill="${P.white}" ${OL}/><path d="M${x + 16},82 q4,-3 8,0Z M${x - 24},83 q4,-2 8,0Z" fill="${P.green}" ${OL}/><ellipse cx="${x + 24}" cy="80" rx="3" ry="4" fill="${P.ivory}" ${OL}/>`,
+  bagasse: (x = 50) => JUNK.pile(x, "beige", 24, 13) + [[-16, 80, 20], [-6, 74, -15], [6, 76, 30], [14, 79, -25]].map(([d, y, r]) => `<rect x="${x + d - 5}" y="${y - 1}" width="10" height="2" fill="${P.yellow}" ${OL} transform="rotate(${r} ${x + d} ${y})"/>`).join(""),
+  hair: (x = 50) => `<path d="M${x - 12},84 Q${x - 10},76 ${x - 2},78 Q${x + 4},72 ${x + 12},84Z" fill="${P.hair}" ${OL}/><path d="M${x - 8},82 q4,-4 8,-1 M${x - 2},80 q4,-4 8,0" fill="none" stroke="${P.grey}" stroke-width=".5"/><path d="M${x + 14},84 V58 M${x + 8},58 H${x + 26} L${x + 20},50 H${x + 14}Z" fill="${P.beige}" ${OL}/>`,
+  // Street furniture that was not meant to be street furniture
+  chair: (x = 50, c = "white", broken = true) => `<g transform="translate(${x} 84)"><path d="M-10,0 V-22 M10,0 V-22 ${broken ? "M-10,-22 L-6,-6" : "M-10,-22 V-6"} M10,-22 V-6" stroke="${P.ink}" stroke-width="1.2"/><path d="M-11,-24 H11 V-20 H-11Z" fill="${col(c)}" ${OL}/><path d="M-10,-24 V-44 Q0,-48 10,-44 V-24Z" fill="${col(c)}" ${OL}/><path d="M-6,-40 v14 M0,-42 v18 M6,-40 v14" stroke="${P.ink}" stroke-width=".4" opacity=".5"/>${broken ? `<path d="M-14,0 l6,-10" stroke="${P.ink}" stroke-width="1.2"/>` : ""}</g>`,
+  sofa: (x = 50, c = "maroon") => `<g transform="translate(${x} 84)"><path d="M-26,0 V-22 H26 V0Z" fill="${col(c)}" ${OL}/><path d="M-26,-22 V-34 H-18 V-22 M18,-22 V-34 H26 V-22" fill="${col(c)}" ${OL}/><path d="M-18,-22 V-40 H18 V-22Z" fill="${col(c)}" ${OL}/><path d="M-18,-22 H18 M0,-22 V-40" stroke="${P.ink}" stroke-width=".5"/><path d="M-16,-20 H-2 V-10 H-16Z" fill="${P.beige}" ${OL}/><path d="M2,-12 q6,-6 14,-2" fill="none" stroke="${P.ink}" stroke-width=".5" stroke-dasharray="1 1"/><path d="M-24,0 v3 M24,0 v3" stroke="${P.ink}" stroke-width="1.4"/></g>`,
+  mattress: (x = 50, c = "sky") => `<g transform="translate(${x} 84) rotate(-12)"><path d="M-30,0 H30 V-12 H-30Z" fill="${col(c)}" ${OL}/><path d="M-24,-6 h48" stroke="${P.ink}" stroke-width=".4" stroke-dasharray="1.5 1.5"/>${[-20, -8, 4, 16].map((d) => `<circle cx="${d}" cy="-3" r=".8" fill="${P.ink}"/><circle cx="${d + 6}" cy="-9" r=".8" fill="${P.ink}"/>`).join("")}<path d="M10,-12 q4,-6 10,0" fill="${P.kaapi}" ${OL}/></g>`,
+  fridge: (x = 50, c = "white") => `<path d="M${x - 11},84 V36 H${x + 11} V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 11},52 H${x + 11}" stroke="${P.ink}" stroke-width=".8"/><path d="M${x + 7},42 v6 M${x + 7},58 v12" stroke="${P.ink}" stroke-width="1.4"/><path d="M${x - 11},52 L${x - 20},46 L${x - 20},40 L${x - 11},36" fill="${P.ivory}" ${OL}/><path d="M${x - 6},60 h4 M${x - 6},64 h6" stroke="${P.rust}" stroke-width="1"/>`,
+  ac: (x = 50) => `<path d="M${x - 14},84 V64 H${x + 14} V84Z" fill="${P.grey}" ${OL}/><circle cx="${x - 3}" cy="74" r="7" fill="${P.ivory}" ${OL}/><path d="M${x - 3},67 v14 M${x - 10},74 h14 M${x - 8},69 l10,10 M${x + 2},69 l-10,10" stroke="${P.ink}" stroke-width=".5"/><path d="M${x + 7},68 h5 M${x + 7},72 h5 M${x + 7},76 h5 M${x + 7},80 h5" stroke="${P.ink}" stroke-width=".6"/><path d="M${x + 14},70 q6,-2 8,4" fill="none" stroke="${P.rust}" stroke-width="1.2"/>`,
+  oldtv: (x = 50) => `<path d="M${x - 14},84 V58 H${x + 14} V84Z" fill="${P.kaapi}" ${OL}/><path d="M${x - 11},61 H${x + 9} V79 H${x - 11}Z" fill="${P.grey}" ${OL}/><path d="M${x - 9},64 l16,12 M${x - 4},62 l10,8" stroke="${P.ink}" stroke-width=".5"/><path d="M${x + 11},64 v3 M${x + 11},70 v3" stroke="${P.ink}" stroke-width="1.2"/>`,
+  battery: (x = 50) => `<path d="M${x - 12},84 V66 H${x + 12} V84Z" fill="${P.black}" ${OL}/><path d="M${x - 8},66 v-4 h3 v4 M${x + 5},66 v-4 h3 v4" fill="${P.red}" ${OL}/>${TXT(x, 77, "12V", 4, "yellow")}<path d="M${x - 12},80 q4,4 8,2" fill="none" stroke="${P.white}" stroke-width="1.4" opacity=".7"/>`,
+  cylinder: (x = 50, c = "red") => `<path d="M${x - 9},84 V50 Q${x - 9},44 ${x},44 Q${x + 9},44 ${x + 9},50 V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 4},44 V40 H${x + 4} V44" fill="none" stroke="${P.ink}" stroke-width="1.2"/><path d="M${x - 6},40 h12" stroke="${P.ink}" stroke-width="1.4"/><path d="M${x - 9},70 h18" stroke="#fff" stroke-opacity=".35" stroke-width=".8"/>`,
+  tyre: (x = 50, planted = true) => `<circle cx="${x}" cy="72" r="12" fill="${P.black}" ${OL}/><circle cx="${x}" cy="72" r="6" fill="${P.paper}" ${OL}/><circle cx="${x}" cy="72" r="12" fill="none" stroke="${P.white}" stroke-width="1.2" stroke-dasharray="1 2" opacity=".6"/>${planted ? `<path d="M${x - 3},66 q-4,-10 2,-16 q2,10 -2,16 M${x + 1},66 q6,-8 4,-14 q-2,8 -4,14" fill="${P.green}" ${OL}/>` : ""}`,
+  // Signs, flex and paper
+  sign: (x = 50, c = "white", lines = ["NO", "PARKING"], w = 22, h = 14, lean = 0) => `<g transform="translate(${x} 84) rotate(${lean})"><path d="M0,0 V-${h + 6}" stroke="${P.ink}" stroke-width="1.2"/><path d="M${-w / 2},-${h + 6} h${w} v-${h} h-${w}Z" fill="${col(c)}" ${OL}/>${lines.map((t, i) => TXT(0, -(h + 6) - h + 4.6 + i * 4.6 + (lines.length === 1 ? 2.2 : 0), t, 3.6, "ink")).join("")}</g>`,
+  flex: (x = 50, c = "yellow", lines = ["HAPPY", "BIRTHDAY"], w = 36, sag = 0) => `<path d="M${x - w / 2},84 V40 M${x + w / 2},84 V${44 + sag}" stroke="${P.kaapi}" stroke-width="1.2"/><path d="M${x - w / 2},42 H${x + w / 2 - 2} L${x + w / 2},${46 + sag} Q${x},${64 + sag} ${x - w / 2},64Z" fill="${col(c)}" ${OL}/>${lines.map((t, i) => TXT(x - 2, 50 + i * 5.2 + sag / 2, t, 4.2, "ink", 800)).join("")}<circle cx="${x + w / 2 - 6}" cy="${54 + sag / 2}" r="3.6" fill="${P.skin}" ${OL}/><path d="M${x + w / 2 - 10},${59 + sag / 2} q4,3 8,0 v4 h-8Z" fill="${P.white}" ${OL}/>`,
+  hoarding: (x = 50) => `<path d="M${x - 10},84 V30 M${x + 10},84 V30 M${x - 30},30 H${x + 30} V10 H${x - 30}Z" fill="none" stroke="${P.ink}" stroke-width="1.2"/><path d="M${x - 30},30 L${x + 30},10 M${x - 30},10 L${x + 30},30 M${x - 30},20 H${x + 30}" stroke="${P.ink}" stroke-width=".5" opacity=".5"/><path d="M${x + 16},10 q4,14 -2,20 q-2,-6 2,-20Z" fill="${P.red}" ${OL}/><path d="M${x - 26},30 q-2,8 -6,10 q0,-6 6,-10Z" fill="${P.yellow}" ${OL}/><path d="M${x - 6},84 L${x - 16},60 M${x - 10},84 L${x - 20},60 M${x - 8},72 h-6 M${x - 12},78 h-6" stroke="${P.ink}" stroke-width=".8"/>`,
+  posters: (x = 50) => `<path d="M${x - 24},84 V34 H${x + 24} V84Z" fill="${P.beige}" ${OL}/>` + [[-20, 38, 16, 20, "red", 3], [-6, 40, 14, 16, "yellow", -2], [6, 44, 16, 22, "sky", 1], [-14, 58, 18, 14, "white", -3], [2, 64, 14, 16, "hot", 2]].map(([dx, y, w, h, c, r]) => `<rect x="${x + dx}" y="${y}" width="${w}" height="${h}" fill="${col(c)}" ${OL} transform="rotate(${r} ${x + dx + w / 2} ${y + h / 2})"/><path d="M${x + dx + 2},${y + 4} h${w - 4} M${x + dx + 2},${y + 7} h${w - 6}" stroke="${P.ink}" stroke-width=".6" transform="rotate(${r} ${x + dx + w / 2} ${y + h / 2})"/>`).join("") + `<path d="M${x + 12},44 q6,6 2,14" fill="${P.beige}" ${OL}/>`,
+  newspaper: (x = 50) => `<path d="M${x - 14},84 V72 H${x + 14} V84Z" fill="${P.ivory}" ${OL}/><path d="M${x - 14},78 h28 M${x - 12},74 h10 M${x + 2},74 h10 M${x - 12},81 h24" stroke="${P.ink}" stroke-width=".5" opacity=".6"/><path d="M${x - 14},72 L${x - 10},70 H${x + 12} L${x + 14},72" fill="${P.ivory}" ${OL}/><path d="M${x - 2},70 V84 M${x - 14},78 H${x + 14}" stroke="${P.kaapi}" stroke-width="1"/>`,
+  papers: (x = 50) => [[-10, 80, -8], [0, 78, 6], [8, 81, -3], [-4, 83, 2]].map(([d, y, r]) => `<rect x="${x + d - 6}" y="${y - 8}" width="12" height="8" fill="${P.white}" ${OL} transform="rotate(${r} ${x + d} ${y})"/><path d="M${x + d - 4},${y - 5} h8 M${x + d - 4},${y - 3} h6" stroke="${P.ink}" stroke-width=".4" transform="rotate(${r} ${x + d} ${y})"/>`).join(""),
+  receipts: (x = 50) => `<path d="M${x - 4},84 Q${x - 12},70 ${x - 2},60 Q${x + 8},50 ${x},40 Q${x - 6},30 ${x + 4},24" fill="none" stroke="${P.white}" stroke-width="5"/><path d="M${x - 4},84 Q${x - 12},70 ${x - 2},60 Q${x + 8},50 ${x},40 Q${x - 6},30 ${x + 4},24" fill="none" stroke="${P.ink}" stroke-width="5.8" opacity=".9" stroke-dasharray=".4 1.4" stroke-dashoffset="0"/><path d="M${x - 4},84 Q${x - 12},70 ${x - 2},60 Q${x + 8},50 ${x},40 Q${x - 6},30 ${x + 4},24" fill="none" stroke="${P.white}" stroke-width="4.6"/>`,
+  tarp: (x = 50, c = "blue") => `<path d="M${x - 26},84 L${x - 20},52 L${x + 22},48 L${x + 26},84Z" fill="${col(c)}" ${OL}/><path d="M${x - 20},52 L${x - 4},84 M${x + 22},48 L${x + 6},84" stroke="${P.ink}" stroke-width=".5" opacity=".5"/><circle cx="${x - 18}" cy="56" r="1.2" fill="${P.grey}" ${OL}/><circle cx="${x + 20}" cy="52" r="1.2" fill="${P.grey}" ${OL}/><path d="M${x - 2},62 l4,8 l-6,-2Z" fill="${P.paper}" ${OL}/>`,
+  sheet: (x = 50, c = "grey") => `<path d="M${x - 20},84 L${x + 4},40 L${x + 14},40 L${x - 10},84Z" fill="${col(c)}" ${OL}/><path d="M${x - 14},84 L${x + 8},44 M${x - 8},80 L${x + 10},46" stroke="${P.ink}" stroke-width=".5" opacity=".5"/><path d="M${x - 12},84 L${x + 10},50 L${x + 20},50 L${x - 2},84Z" fill="${col(c)}" ${OL} opacity=".9"/><circle cx="${x + 4}" cy="66" r="1.6" fill="${P.rust}"/><circle cx="${x + 10}" cy="58" r="1.2" fill="${P.rust}"/>`,
+  // Construction
+  rubble: (x = 50) => JUNK.pile(x, "grey", 24, 12) + `<path d="M${x - 14},84 l3,-8 l7,2 l-2,6Z M${x + 2},76 l5,-5 l6,3 l-3,6Z M${x - 4},80 l2,-5 l6,1 l-1,4Z" fill="${P.ivory}" ${OL}/><path d="M${x + 12},84 L${x + 20},62 M${x + 16},84 L${x + 24},66" stroke="${P.rust}" stroke-width="1"/>`,
+  bricks: (x = 50) => [[-16, 0, 0], [-4, 0, 0], [8, 0, 0], [-10, -6, 0], [2, -6, 0], [-4, -12, 0], [18, -2, -20]].map(([dx, dy, r]) => `<rect x="${x + dx - 6}" y="${84 + dy - 6}" width="12" height="6" fill="${P.rust}" ${OL} transform="rotate(${r} ${x + dx} ${84 + dy - 3})"/>`).join("") + `<path d="M${x - 10},84 l-1,-1 M${x + 4},80 l1,1" stroke="${P.ink}" stroke-width=".4"/>`,
+  rebar: (x = 50) => `<path d="M${x - 12},84 V72 H${x + 12} V84Z" fill="${P.grey}" ${OL}/>` + [-8, -3, 2, 7].map((d, i) => `<path d="M${x + d},72 L${x + d + (i % 2 ? 3 : -2)},${50 + i * 4}" stroke="${P.rust}" stroke-width="1.4" stroke-linecap="round"/>`).join("") + `<path d="M${x + 5},52 l3,-3 l2,3" fill="none" stroke="${P.rust}" stroke-width="1.4"/>`,
+  slab: (x = 50) => `<path d="M${x - 24},84 L${x - 20},74 L${x + 10},72 L${x + 26},84Z" fill="${P.grey}" ${OL}/><path d="M${x - 10},84 L${x - 12},76 M${x + 8},84 L${x + 4},73" stroke="${P.ink}" stroke-width=".5"/><path d="M${x - 24},84 Q${x - 10},90 ${x + 4},86" fill="none" stroke="${P.ink}" stroke-width=".6"/><path d="M${x - 16},88 q4,-3 8,0" fill="${P.black}" opacity=".5"/>`,
+  barricade: (x = 50, c = "yellow") => `<path d="M${x - 22},84 V60 M${x + 22},84 V60" stroke="${P.ink}" stroke-width="1.4"/><path d="M${x - 24},60 H${x + 24} V50 H${x - 24}Z" fill="${col(c)}" ${OL}/>${[-20, -10, 0, 10].map((d) => `<path d="M${x + d},60 l6,-10 h4 l-6,10Z" fill="${P.ink}"/>`).join("")}<path d="M${x - 24},70 H${x + 24}" stroke="${P.ink}" stroke-width=".8"/>${TXT(x, 77, "METRO WORK", 3.4, "ink")}`,
+  cone: (x = 50, c = "orange", s = 1, down = false) => `<g transform="translate(${x} 84) ${down ? "rotate(-80) translate(0 8)" : ""} scale(${s})"><path d="M-10,0 H10 V-3 H-10Z" fill="${P.black}" ${OL}/><path d="M-6,-3 L-2,-30 H2 L6,-3Z" fill="${col(c)}" ${OL}/><path d="M-4.4,-12 h8.8 M-3.2,-20 h6.4" stroke="#fff" stroke-width="2.4"/></g>`,
+  sandbag: (x = 50) => [[-12, 0], [2, 0], [-5, -7], [14, 0]].map(([d, y]) => `<path d="M${x + d - 8},${84 + y} q0,-8 8,-8 q8,0 8,8Z" fill="${P.beige}" ${OL}/><path d="M${x + d - 6},${80 + y} q6,2 12,0" fill="none" stroke="${P.ink}" stroke-width=".4"/>`).join(""),
+  spool: (x = 50) => `<circle cx="${x}" cy="66" r="18" fill="${P.beige}" ${OL}/><circle cx="${x}" cy="66" r="12" fill="${P.kaapi}" ${OL}/><circle cx="${x}" cy="66" r="3" fill="${P.beige}" ${OL}/><path d="M${x - 12},56 L${x + 12},76 M${x + 12},56 L${x - 12},76" stroke="${P.ink}" stroke-width=".5" opacity=".5"/><path d="M${x + 12},70 q10,6 14,14" fill="none" stroke="${P.black}" stroke-width="1.6"/>`,
+  mixer: (x = 50) => `<ellipse cx="${x}" cy="60" rx="14" ry="12" fill="${P.yellow}" ${OL}/><path d="M${x - 8},70 V84 M${x + 8},70 V84 M${x - 12},84 H${x + 12}" stroke="${P.ink}" stroke-width="1.4"/><ellipse cx="${x + 10}" cy="56" rx="4" ry="6" fill="${P.ink}"/><circle cx="${x - 12}" cy="84" r="3" fill="${P.black}" ${OL}/><circle cx="${x + 12}" cy="84" r="3" fill="${P.black}" ${OL}/>`,
+  // Poles, wires and nails
+  pole: (x = 50, nails = false) => `<path d="M${x - 2},84 V14 H${x + 2} V84Z" fill="${P.grey}" ${OL}/>` + (nails ? [20, 26, 31, 38, 44, 50, 57, 63, 70].map((y, i) => `<path d="M${x + (i % 2 ? 2 : -2)},${y} l${i % 2 ? 5 : -5},${(i % 3) - 1}" stroke="${P.ink}" stroke-width=".8"/><circle cx="${x + (i % 2 ? 7 : -7)}" cy="${y + (i % 3) - 1}" r=".8" fill="${P.ink}"/>`).join("") : ""),
+  tree: (x = 50, nails = false) => `<path d="M${x - 6},84 Q${x - 5},50 ${x - 8},34 H${x + 8} Q${x + 5},50 ${x + 6},84Z" fill="${P.kaapi}" ${OL}/><ellipse cx="${x}" cy="26" rx="22" ry="14" fill="${P.green}" ${OL}/>` + (nails ? [40, 46, 51, 58, 64, 70, 76].map((y, i) => `<path d="M${x + (i % 2 ? 4 : -4)},${y} l${i % 2 ? 6 : -6},${(i % 3) - 1}" stroke="${P.grey}" stroke-width="1"/>`).join("") + `<rect x="${x - 14}" y="52" width="10" height="6" fill="${P.white}" ${OL}/><rect x="${x + 5}" y="60" width="10" height="7" fill="${P.yellow}" ${OL}/>` : ""),
+  cables: (x = 50, y = 40) => `<path d="M${x - 30},${y - 10} Q${x - 10},${y + 30} ${x},${y} T${x + 30},${y - 8} M${x - 30},${y - 6} Q${x},${y + 36} ${x + 30},${y - 2} M${x - 30},${y - 14} Q${x + 6},${y + 20} ${x + 30},${y - 14}" fill="none" stroke="${P.black}" stroke-width="1"/>` + [[-4, 12], [4, 16], [0, 22]].map(([dx, dy]) => `<ellipse cx="${x + dx}" cy="${y + dy}" rx="8" ry="4" fill="none" stroke="${P.black}" stroke-width="1"/>`).join("") + `<path d="M${x + 2},${y + 26} Q${x + 6},${84 - 4} ${x + 4},84" fill="none" stroke="${P.black}" stroke-width="1"/>`,
+  earphones: (x = 50) => `<path d="M${x - 10},84 q-6,-8 2,-12 q8,-4 4,-12 q-4,-6 4,-10 q6,-2 2,-8" fill="none" stroke="${P.white}" stroke-width="1.2"/><path d="M${x - 10},84 q-6,-8 2,-12 q8,-4 4,-12 q-4,-6 4,-10 q6,-2 2,-8" fill="none" stroke="${P.ink}" stroke-width=".3"/><circle cx="${x + 2}" cy="41" r="2" fill="${P.white}" ${OL}/><circle cx="${x - 8}" cy="72" r="2" fill="${P.white}" ${OL}/><path d="M${x - 10},84 h-4 v-3 h4" fill="none" stroke="${P.ink}" stroke-width=".8"/>`,
+  tube: (x = 50) => `<path d="M${x - 14},84 L${x + 12},34" stroke="${P.white}" stroke-width="4" stroke-linecap="round"/><path d="M${x - 14},84 L${x + 12},34" stroke="${P.ink}" stroke-width="4.8" stroke-linecap="round" opacity=".15"/><path d="M${x - 13},82 l1,-1 M${x + 11},36 l1,-1" stroke="${P.grey}" stroke-width="2"/>`,
+  // Bodies: vehicles and parts of them
+  scooter: (x = 50) => `<circle cx="${x - 16}" cy="76" r="8" fill="none" stroke="${P.ink}" stroke-width="1.4"/><circle cx="${x + 16}" cy="76" r="8" fill="none" stroke="${P.ink}" stroke-width="1.4" stroke-dasharray="3 3"/><path d="M${x - 16},76 L${x - 4},56 L${x + 10},56 L${x + 16},76" fill="none" stroke="${P.rust}" stroke-width="1.6"/><path d="M${x - 4},56 L${x - 10},44 M${x - 14},44 h8" stroke="${P.rust}" stroke-width="1.4"/><path d="M${x - 2},62 L${x + 12},62 L${x + 8},70 H${x - 4}Z" fill="${P.grey}" ${OL}/><path d="M${x + 22},84 q-4,-6 2,-8" fill="none" stroke="${P.green}" stroke-width=".8"/>`,
+  cycle: (x = 50) => `<circle cx="${x - 14}" cy="74" r="10" fill="none" stroke="${P.ink}" stroke-width="1.2"/>${[0, 45, 90, 135].map((a) => `<path d="M${x - 14 - 10 * Math.cos(a * Math.PI / 180)},${74 - 10 * Math.sin(a * Math.PI / 180)} L${x - 14 + 10 * Math.cos(a * Math.PI / 180)},${74 + 10 * Math.sin(a * Math.PI / 180)}" stroke="${P.ink}" stroke-width=".4"/>`).join("")}<path d="M${x - 14},74 L${x - 2},56 L${x + 10},56 L${x + 16},74 M${x - 2},56 L${x + 2},74 M${x - 4},50 h8 M${x - 2},56 V50" fill="none" stroke="${P.red}" stroke-width="1.4"/><path d="M${x + 16},74 l6,10 M${x + 16},74 l-6,10" stroke="${P.ink}" stroke-width="1.2"/><path d="M${x + 8},52 h6 l-2,-3 h-4Z" fill="${P.black}" ${OL}/>`,
+  autoseat: (x = 50, c = "black") => `<path d="M${x - 14},84 V70 Q${x - 14},62 ${x - 6},62 H${x + 14} V84Z" fill="${col(c)}" ${OL}/><path d="M${x - 10},62 V40 Q${x - 10},36 ${x - 6},36 H${x + 10} V62Z" fill="${col(c)}" ${OL}/><path d="M${x - 4},66 h12 M${x - 4},72 h12 M${x - 4},78 h12" stroke="${P.yellow}" stroke-width="1.4"/><path d="M${x - 2},44 l6,8 M${x + 4},44 l-6,8" stroke="${P.yellow}" stroke-width="1"/><path d="M${x + 2},48 q6,-2 4,8 q-4,2 -4,-8Z" fill="${P.yellow}" ${OL}/>`,
+  helmet: (x = 50, c = "black") => `<path d="M${x - 12},80 Q${x - 12},60 ${x},60 Q${x + 12},60 ${x + 12},80 Z" fill="${col(c)}" ${OL}/><path d="M${x - 10},80 H${x + 12}" stroke="${P.ink}" stroke-width="1.4"/><path d="M${x - 6},70 H${x + 10} V76 H${x - 6}Z" fill="${P.sky}" ${OL}/><path d="M${x - 2},62 q6,-2 10,4" fill="none" stroke="#fff" stroke-width="1" opacity=".6"/><path d="M${x + 8},80 q2,6 -2,6" fill="none" stroke="${P.ink}" stroke-width=".8"/>`,
+  chappal: (x = 50, c = "blue") => `<g transform="translate(${x} 82) rotate(-20)"><path d="M-12,0 Q-13,-6 -8,-7 H8 Q13,-6 12,0 Q0,4 -12,0Z" fill="${P.white}" ${OL}/><path d="M-10,-1 Q-11,-5 -7,-5.5 H7 Q11,-5 10,-1 Q0,2 -10,-1Z" fill="${col(c)}" ${OL}/><path d="M2,-5 L4,-12 M2,-5 L-4,-10 M2,-5 L8,-10" stroke="${col(c)}" stroke-width="1.6" stroke-linecap="round"/></g>`,
+  tubes: (x = 50) => `<path d="M${x - 20},40 H${x + 20}" stroke="${P.ink}" stroke-width="1"/>` + [-14, -4, 6, 16].map((d, i) => `<ellipse cx="${x + d}" cy="${58 + (i % 2) * 4}" rx="6" ry="${16 + (i % 2) * 3}" fill="none" stroke="${P.black}" stroke-width="2.4"/>`).join("") + `<path d="M${x - 2},84 q4,-6 10,-2" fill="none" stroke="${P.ink}" stroke-width=".8"/>`,
+  mannequin: (x = 50) => `<path d="M${x - 8},84 H${x + 8} M${x},84 V58" stroke="${P.ink}" stroke-width="1.4"/><path d="M${x - 9},58 Q${x - 11},46 ${x - 8},34 Q${x - 4},28 ${x},28 Q${x + 4},28 ${x + 8},34 Q${x + 11},46 ${x + 9},58 Q${x},62 ${x - 9},58Z" fill="${P.ivory}" ${OL}/><path d="M${x - 3},28 h6 v-3 h-6Z" fill="${P.ivory}" ${OL}/><path d="M${x - 8},40 q8,-4 16,0" fill="none" stroke="${P.ink}" stroke-width=".5"/>`,
+  // Festivals and food leftovers
+  idol: (x = 50) => `<path d="M${x - 12},84 Q${x - 14},70 ${x - 6},62 Q${x - 8},50 ${x},48 Q${x + 8},50 ${x + 6},62 Q${x + 14},70 ${x + 12},84Z" fill="${P.beige}" ${OL}/><path d="M${x - 6},62 Q${x - 2},72 ${x - 8},80 M${x + 4},56 Q${x + 2},64 ${x + 8},70" fill="none" stroke="${P.ink}" stroke-width=".5" opacity=".6"/><path d="M${x - 3},54 q3,8 -2,14" fill="none" stroke="${P.beige}" stroke-width="2"/><path d="M${x - 14},84 Q${x},78 ${x + 14},84" fill="none" stroke="${P.blue}" stroke-width="1.4"/><circle cx="${x - 4}" cy="60" r="1.4" fill="${P.hot}"/><circle cx="${x + 6}" cy="58" r="1.4" fill="${P.yellow}"/>`,
+  crackers: (x = 50) => `<path d="M${x - 14},84 V72 H${x + 2} V84Z" fill="${P.red}" ${OL}/><path d="M${x - 14},72 L${x - 10},66 H${x + 6} L${x + 2},72" fill="${P.yellow}" ${OL}/>${TXT(x - 6, 79, "1000", 3.2, "paper")}<path d="M${x + 4},84 l2,-6 l2,6 M${x + 10},84 l1,-4 l2,4 M${x + 16},84 l2,-5 l2,5" fill="${P.grey}" ${OL}/>` + [[8, 78], [14, 72], [20, 80], [4, 68]].map(([d, y]) => `<path d="M${x + d},${y} l1,-3 l1,3Z" fill="${P.ink}"/><path d="M${x + d},${y} l3,2" stroke="${P.ink}" stroke-width=".5"/>`).join(""),
+  agarbatti: (x = 50) => JUNK.tree(x) + [[-5, 50, -15], [0, 48, 0], [5, 50, 15], [-2, 56, -5]].map(([d, y, r]) => `<path d="M${x + d},${y} v${-14}" stroke="${P.kaapi}" stroke-width=".8" transform="rotate(${r} ${x + d} ${y})"/><circle cx="${x + d}" cy="${y - 14}" r=".8" fill="${P.red}" transform="rotate(${r} ${x + d} ${y})"/>`).join("") + JUNK.smoke(x, 30, "paper").replace(/opacity="\.55"/g, 'opacity=".4"') + `<path d="M${x - 10},56 H${x + 10} V60 H${x - 10}Z" fill="${P.red}" ${OL}/>`,
+  godtile: (x = 50) => `<path d="M${x - 24},84 V40 H${x + 24} V84Z" fill="${P.beige}" ${OL}/><rect x="${x - 10}" y="48" width="20" height="24" fill="${P.white}" ${OL}/><rect x="${x - 7}" y="51" width="14" height="18" fill="${P.sky}" ${OL}/><path d="M${x - 7},69 L${x - 2},60 L${x + 7},62" fill="none" stroke="${P.ink}" stroke-width=".5"/><circle cx="${x + 2}" cy="57" r="2.4" fill="${P.yellow}" ${OL}/><path d="M${x - 10},72 l6,-6 l4,6 l10,-8 l0,8" fill="${P.white}" ${OL}/><path d="M${x + 4},72 l-14,12" stroke="${P.ink}" stroke-width=".4"/>`,
+  prasad: (x = 50) => `<path d="M${x - 10},84 Q${x - 12},70 ${x - 6},68 L${x - 2},62 H${x + 2} L${x + 6},68 Q${x + 12},70 ${x + 10},84Z" fill="${P.ivory}" ${OL} opacity=".9"/><circle cx="${x - 2}" cy="76" r="4" fill="${P.yellow}" ${OL}/><circle cx="${x + 4}" cy="79" r="3" fill="${P.orange}" ${OL}/><path d="M${x - 3},62 l3,-5 l3,5" fill="none" stroke="${P.red}" stroke-width=".8"/>`,
+  cake: (x = 50) => `<path d="M${x - 12},84 V72 H${x + 12} V84Z" fill="${P.ivory}" ${OL}/><path d="M${x - 12},72 Q${x - 8},76 ${x - 4},72 T${x + 4},72 T${x + 12},72 V70 H${x - 12}Z" fill="${P.hot}" ${OL}/><path d="M${x + 12},72 L${x + 20},84 L${x + 6},84Z" fill="${P.ivory}" ${OL}/><path d="M${x - 6},70 v-7 M${x + 2},70 v-9" stroke="${P.sky}" stroke-width="1.2"/><circle cx="${x - 6}" cy="62" r="1" fill="${P.orange}"/><path d="M${x - 16},84 q4,-3 8,0" fill="${P.hot}" ${OL}/>`,
+  balloons: (x = 50, y = 30) => [[-10, 0, "red"], [2, -6, "yellow"], [12, 2, "blue"]].map(([dx, dy, c]) => `<ellipse cx="${x + dx}" cy="${y + dy}" rx="6" ry="8" fill="${col(c)}" ${OL}/><path d="M${x + dx},${y + dy + 8} q-2,10 2,20 q-2,10 0,${84 - y - dy - 38}" fill="none" stroke="${P.ink}" stroke-width=".5"/>`).join("") + `<path d="M${x - 14},84 q3,-6 6,-2 q2,-4 6,-1" fill="${P.red}" ${OL}/>`,
+  xmas: (x = 50) => `<path d="M${x - 3},84 V72 H${x + 3} V84Z" fill="${P.kaapi}" ${OL}/><path d="M${x - 14},72 L${x},50 L${x + 14},72Z M${x - 10},60 L${x},44 L${x + 10},60Z" fill="${P.olive}" ${OL}/><path d="M${x - 8},70 l2,8 M${x + 6},68 l1,8 M${x + 2},58 l3,10" stroke="${P.kaapi}" stroke-width=".6"/><circle cx="${x - 5}" cy="66" r="1.6" fill="${P.red}" ${OL}/><circle cx="${x + 4}" cy="56" r="1.4" fill="${P.gold}" ${OL}/><path d="M${x + 10},80 l2,-3 l2,3Z" fill="${P.red}" ${OL}/><path d="M${x},44 l-2,-4 h4Z" fill="${P.gold}" ${OL}/>`,
+  mango: (x = 50) => JUNK.peels(x) + `<path d="M${x + 16},80 q-6,-10 2,-12 q6,2 2,12Z" fill="${P.haldi}" ${OL}/>`,
+  eggs: (x = 50) => [[-12, 0, 0], [-2, 0, 40], [8, 1, -30], [-7, -4, 90], [3, -5, 10]].map(([d, y, r]) => `<path d="M-4,0 Q-4,-6 0,-6 Q4,-6 4,0Z" fill="${P.ivory}" ${OL} transform="translate(${x + d} ${84 + y}) rotate(${r})"/>`).join("") + `<path d="M${x + 12},84 l3,-4 l3,4Z" fill="${P.yellow}" ${OL}/>`,
+  eggtray: (x = 50) => `<path d="M${x - 16},84 V74 H${x + 16} V84Z" fill="${P.grey}" ${OL}/>` + [-12, -6, 0, 6, 12].map((d) => `<ellipse cx="${x + d}" cy="74" rx="2.6" ry="1.6" fill="${P.paper}" ${OL}/>`).join("") + `<path d="M${x + 4},74 q0,-4 3,-4" fill="none" stroke="${P.ivory}" stroke-width="2"/>`,
+  thermocol: (x = 50) => `<path d="M${x - 14},84 V64 H${x + 6} V84Z" fill="${P.white}" ${OL}/><path d="M${x - 14},64 L${x - 10},58 H${x + 10} L${x + 6},64" fill="${P.white}" ${OL}/><path d="M${x + 6},64 L${x + 10},58 V78 L${x + 6},84" fill="${P.ivory}" ${OL}/>` + [[-8, 70], [-2, 76], [2, 68], [-10, 80]].map(([d, y]) => `<circle cx="${x + d}" cy="${y}" r=".8" fill="${P.grey}"/>`).join("") + [[14, 80], [18, 76], [22, 82], [16, 70]].map(([d, y]) => `<circle cx="${x + d}" cy="${y}" r="1.4" fill="${P.white}" ${OL}/>`).join(""),
+  snacks: (x = 50) => [[-12, 0, "yellow", -10], [0, 0, "red", 8], [11, 0, "green", -4]].map(([d, y, c, r]) => `<g transform="translate(${x + d} ${84 + y}) rotate(${r})"><path d="M-6,0 L-7,-14 Q0,-16 7,-14 L6,0Z" fill="${col(c)}" ${OL}/><path d="M-5,-10 h10" stroke="#fff" stroke-width="1.4" opacity=".7"/><path d="M-7,-14 l1,-2 M7,-14 l-1,-2" stroke="${P.ink}" stroke-width=".4"/></g>`).join(""),
+  tetra: (x = 50) => [[-8, 0, "green", 0], [4, 0, "orange", -8]].map(([d, y, c, r]) => `<g transform="translate(${x + d} ${84 + y}) rotate(${r})"><path d="M-5,0 V-18 H5 V0Z" fill="${col(c)}" ${OL}/><path d="M-5,-18 L-3,-21 H3 L5,-18" fill="${col(c)}" ${OL}/><path d="M-3,-8 h6" stroke="#fff" stroke-width="2"/><path d="M3,-21 l1,-5" stroke="${P.ink}" stroke-width=".8"/></g>`).join(""),
+  noodles: (x = 50) => JUNK.cup(x, "yellow", 1.2) + `<path d="M${x - 4},66 q-6,-6 -2,-12 q4,4 2,12 M${x + 2},66 q6,-8 4,-12" fill="none" stroke="${P.haldi}" stroke-width="1.6"/><path d="M${x + 8},84 l2,-8 l2,8 M${x + 12},80 h-3" stroke="${P.white}" stroke-width="1.2"/>`,
+  lassi: (x = 50) => JUNK.cup(x, "white", 1.1) + `<path d="M${x + 1},66 L${x + 6},46" stroke="${P.red}" stroke-width="1.4"/><path d="M${x - 5},72 h10" stroke="${P.hot}" stroke-width="2"/><path d="M${x - 8},80 q-6,-2 -4,-6" fill="none" stroke="${P.white}" stroke-width="1.6"/>`,
+  chips: (x = 50) => `<path d="M${x - 8},84 L${x},58 L${x + 8},84Z" fill="${P.ivory}" ${OL}/><path d="M${x - 2},78 h4 M${x - 3},74 h6" stroke="${P.ink}" stroke-width=".3"/>` + [[-4, 60], [2, 56], [-1, 62]].map(([d, y]) => `<path d="M${x + d},${y} q3,-1 4,2 q-3,1 -4,-2Z" fill="${P.yellow}" ${OL}/>`).join("") + `<path d="M${x + 12},84 q2,-4 5,-1" fill="${P.yellow}" ${OL}/>`,
+  biryani: (x = 50) => [[-10, 0, 0], [8, 0, -6]].map(([d, y, r]) => `<g transform="translate(${x + d} ${84 + y}) rotate(${r})"><path d="M-9,0 L-8,-10 H8 L9,0Z" fill="${P.grey}" ${OL}/><path d="M-8,-10 H8 V-12 H-8Z" fill="${P.white}" ${OL}/><path d="M-5,-5 q2,-2 4,0 t4,0" fill="none" stroke="${P.haldi}" stroke-width="1.4"/></g>`).join("") + `<path d="M${x - 4},84 l2,-5 l2,5" fill="${P.kaapi}" ${OL}/>`,
+  cutlery: (x = 50) => `<path d="M${x - 10},84 L${x + 8},70" stroke="${P.white}" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="${x + 9}" cy="69" rx="2.6" ry="1.8" fill="${P.white}" ${OL} transform="rotate(-40 ${x + 9} 69)"/><path d="M${x - 4},84 L${x + 14},78 l-2,-4 l-18,6Z" fill="${P.red}" ${OL}/><path d="M${x + 2},82 l8,-3" stroke="#fff" stroke-width=".8"/><path d="M${x + 16},84 q-1,-6 4,-6 q4,0 2,6Z" fill="${P.green}" ${OL}/>`,
+  nandini: (x = 50) => `<path d="M${x - 10},84 Q${x - 12},70 ${x},70 Q${x + 12},70 ${x + 10},84Z" fill="${P.sky}" ${OL}/><path d="M${x - 8},76 h16" stroke="${P.blue}" stroke-width="1.6"/>${TXT(x, 82, "MILK", 3.2, "blue")}<path d="M${x + 12},80 l6,-3 l-1,4Z M${x - 16},82 l4,-4 l1,4Z" fill="${P.sky}" ${OL}/>`,
+  // Small and single
+  lanyard: (x = 50) => `<path d="M${x - 6},84 Q${x - 10},70 ${x},62 Q${x + 10},70 ${x + 6},84" fill="none" stroke="${P.blue}" stroke-width="1.6"/><rect x="${x - 6}" y="60" width="12" height="8" rx="1" fill="${P.white}" ${OL}/><circle cx="${x - 3}" cy="64" r="1.6" fill="${P.skin}"/><path d="M${x},63 h4 M${x},65.5 h3" stroke="${P.ink}" stroke-width=".5"/>`,
+  mask: (x = 50) => `<path d="M${x - 10},80 Q${x},86 ${x + 10},80 L${x + 9},72 Q${x},76 ${x - 9},72Z" fill="${P.sky}" ${OL}/><path d="M${x - 10},80 q-6,-4 -4,-10 M${x + 10},80 q6,-4 4,-10" fill="none" stroke="${P.ink}" stroke-width=".6"/><path d="M${x - 8},76 h16 M${x - 8},78.5 h16" stroke="${P.ink}" stroke-width=".3"/>`,
+  glove: (x = 50) => `<path d="M${x - 6},84 V74 L${x - 9},66 q0,-2 2,-1 l3,6 V62 q0,-2 2,-2 t2,2 v8 V60 q0,-2 2,-2 t2,2 v10 l4,-6 q2,-2 3,0 l-6,12 V84Z" fill="${P.sky}" ${OL}/>`,
+  toothbrush: (x = 50) => `<g transform="translate(${x} 82) rotate(-30)"><rect x="-14" y="-1.5" width="28" height="3" rx="1.5" fill="${P.sky}" ${OL}/><path d="M6,-1.5 h8 v-3 h-8Z" fill="${P.white}" ${OL}/><path d="M7,-4.5 v-1 M9,-4.5 v-1 M11,-4.5 v-1 M13,-4.5 v-1" stroke="${P.ink}" stroke-width=".5"/></g>`,
+  tiffin: (x = 50) => `<path d="M${x - 8},84 V70 H${x + 8} V84Z" fill="${P.grey}" ${OL}/><path d="M${x - 9},70 H${x + 9} V68 H${x - 9}Z" fill="${P.grey}" ${OL}/><path d="M${x - 8},77 h16" stroke="${P.ink}" stroke-width=".6"/><path d="M${x - 4},68 q4,-6 8,0" fill="none" stroke="${P.ink}" stroke-width=".8"/><path d="M${x - 5},74 v6" stroke="#fff" stroke-width="1.2" opacity=".8"/>`,
+  lock: (x = 50) => `<rect x="${x - 7}" y="70" width="14" height="12" rx="1.5" fill="${P.rust}" ${OL}/><path d="M${x - 4},70 v-5 a4,4 0 0 1 8,0 v5" fill="none" stroke="${P.rust}" stroke-width="2"/><circle cx="${x}" cy="76" r="1.4" fill="${P.ink}"/><path d="M${x},76 v3" stroke="${P.ink}" stroke-width="1"/><path d="M${x - 16},84 V50 H${x - 14} V84Z" fill="${P.grey}" ${OL}/><path d="M${x - 14},66 h7" stroke="${P.grey}" stroke-width="1.6"/>`,
+  rattrap: (x = 50) => `<path d="M${x - 12},84 V68 H${x + 12} V84Z" fill="none" stroke="${P.grey}" stroke-width="1"/>${[-9, -6, -3, 0, 3, 6, 9].map((d) => `<path d="M${x + d},68 V84" stroke="${P.grey}" stroke-width=".5"/>`).join("")}<path d="M${x - 12},72 h24 M${x - 12},76 h24 M${x - 12},80 h24" stroke="${P.grey}" stroke-width=".5"/><path d="M${x + 12},84 L${x + 20},70" stroke="${P.grey}" stroke-width="1"/><path d="M${x - 2},82 q0,-3 3,-3 q3,0 3,3Z" fill="${P.yellow}" ${OL}/>`,
+  umbrella: (x = 50) => `<path d="M${x - 2},84 Q${x},64 ${x + 2},46" fill="none" stroke="${P.ink}" stroke-width="1"/><path d="M${x + 2},46 L${x - 18},58 Q${x - 10},50 ${x - 4},54 Q${x + 2},44 ${x + 8},54 Q${x + 14},50 ${x + 22},58Z" fill="${P.black}" ${OL}/><path d="M${x - 18},58 l-4,-10 M${x + 22},58 l6,-10" stroke="${P.grey}" stroke-width=".8"/><path d="M${x - 2},84 q-3,0 -3,-3" fill="none" stroke="${P.ink}" stroke-width="1"/>`,
+  bindi: (x = 50) => `<g transform="translate(${x} 82) rotate(-8)"><rect x="-10" y="-14" width="20" height="14" fill="${P.white}" ${OL}/>${[-6, -2, 2, 6].map((d) => [-10, -6, -2].map((y) => `<circle cx="${d}" cy="${y - .5}" r="1.3" fill="${(d + y) % 4 === 0 ? P.white : P.maroon}" stroke="${P.ink}" stroke-width=".2"/>`).join("")).join("")}</g>`,
+  card: (x = 50) => `<g transform="translate(${x} 82) rotate(6)"><rect x="-10" y="-6" width="20" height="12" fill="${P.white}" ${OL}/><path d="M-7,-2 h10 M-7,1 h8 M-7,3.5 h12" stroke="${P.ink}" stroke-width=".5"/><circle cx="6" cy="-2.5" r="1.4" fill="${P.rani}"/></g><path d="M${x - 14},84 q4,-2 8,0" fill="${P.black}" opacity=".4"/>`,
+  screen: (x = 50) => `<g transform="translate(${x} 80) rotate(-14)"><rect x="-8" y="-16" width="16" height="30" rx="2" fill="${P.black}" ${OL}/><rect x="-6.5" y="-13.5" width="13" height="23" fill="${P.sky}"/><path d="M-5,-10 L5,2 M-2,-12 L6,-4 M-6,0 L2,8" stroke="${P.white}" stroke-width=".6"/><path d="M-3,-6 l4,6 l-2,-5" fill="none" stroke="${P.white}" stroke-width=".4"/></g>`,
+  ewaste: (x = 50) => `<path d="M${x - 14},84 V74 H${x + 2} V84Z" fill="${P.grey}" ${OL}/><path d="M${x - 12},76 h12 M${x - 12},79 h12" stroke="${P.ink}" stroke-width=".4"/><path d="M${x + 2},84 V70 H${x + 14} V84Z" fill="${P.black}" ${OL}/><circle cx="${x + 8}" cy="77" r="2.4" fill="none" stroke="${P.grey}" stroke-width=".6"/><path d="M${x - 8},74 q0,-10 8,-8 q6,2 4,6" fill="none" stroke="${P.ink}" stroke-width="1"/><path d="M${x - 6},74 h-6 v-4 h3" fill="none" stroke="${P.red}" stroke-width=".8"/><path d="M${x + 14},78 l6,-4 l-2,6Z" fill="${P.green}" ${OL}/>`,
+  hose: (x = 50) => `<path d="M${x - 24},84 Q${x - 14},64 ${x - 2},72 T${x + 14},70 Q${x + 24},68 ${x + 24},84" fill="none" stroke="${P.green}" stroke-width="3"/><path d="M${x - 24},84 Q${x - 14},64 ${x - 2},72 T${x + 14},70 Q${x + 24},68 ${x + 24},84" fill="none" stroke="${P.ink}" stroke-width=".4" opacity=".5"/><path d="M${x + 2},72 l0,-5 M${x + 4},71 l1,-5" stroke="${P.sky}" stroke-width="1"/><ellipse cx="${x - 2}" cy="84" rx="10" ry="2" fill="${P.sky}" opacity=".6"/>`,
+  mop: (x = 50) => `<path d="M${x},84 L${x + 6},34" stroke="${P.kaapi}" stroke-width="1.2"/><path d="M${x - 8},84 Q${x - 6},70 ${x},72 Q${x + 6},70 ${x + 8},84Z" fill="${P.grey}" ${OL}/><path d="M${x - 5},80 v4 M${x - 2},78 v6 M${x + 2},78 v6 M${x + 5},80 v4" stroke="${P.ink}" stroke-width=".5"/><path d="M${x - 16},84 h8 v-10 h-8Z" fill="${P.blue}" ${OL}/>`,
+  gate: (x = 50) => `<path d="M${x - 24},84 V50 H${x - 20} V84 M${x + 20},84 V50 H${x + 24} V84" fill="${P.grey}" ${OL}/><g transform="rotate(-6 ${x - 20} 84)"><path d="M${x - 20},82 H${x + 18} V54 H${x - 20}Z" fill="none" stroke="${P.rust}" stroke-width="1.4"/>${[-14, -8, -2, 4, 10].map((d) => `<path d="M${x + d},54 V82" stroke="${P.rust}" stroke-width="1.2"/>`).join("")}<path d="M${x - 20},62 H${x + 18} M${x - 20},74 H${x + 18}" stroke="${P.rust}" stroke-width="1.2"/><circle cx="${x + 12}" cy="68" r="1.6" fill="${P.rust}"/></g>`,
+  ribbon: (x = 50) => `<path d="M${x - 24},84 V52 M${x + 24},84 V52" stroke="${P.grey}" stroke-width="1.2"/><path d="M${x - 24},52 Q${x - 10},60 ${x - 2},72 Q${x},78 ${x + 2},84" fill="none" stroke="${P.red}" stroke-width="2.4"/><path d="M${x + 24},52 Q${x + 14},56 ${x + 8},62 Q${x + 2},68 ${x + 6},74" fill="none" stroke="${P.red}" stroke-width="2.4"/><path d="M${x + 4},74 q-4,4 2,6 q6,-2 2,-6Z" fill="${P.red}" ${OL}/><path d="M${x - 14},84 h10 v-4 h-10Z" fill="${P.ivory}" ${OL}/>`,
+  foam: (x = 50) => [[-18, 78, 7], [-6, 74, 9], [8, 76, 8], [18, 80, 5], [-12, 70, 4], [2, 66, 5], [14, 70, 4]].map(([d, y, r]) => `<circle cx="${x + d}" cy="${y}" r="${r}" fill="${P.white}" ${OL}/>`).join("") + [[-8, 60, 2], [6, 58, 1.6], [-2, 54, 1.2]].map(([d, y, r]) => `<circle cx="${x + d}" cy="${y}" r="${r}" fill="${P.white}" ${OL}/>`).join(""),
+  stain: (x = 50) => `<path d="M${x - 10},84 q-2,-6 4,-8 q4,-4 8,0 q6,0 4,6 q2,2 -4,2Z" fill="${P.red}" ${OL} opacity=".85"/><path d="M${x - 4},76 q-4,-10 -2,-16 M${x + 2},76 q0,-8 4,-10" fill="none" stroke="${P.red}" stroke-width="1.2"/><circle cx="${x - 8}" cy="66" r="1.2" fill="${P.red}"/><circle cx="${x + 8}" cy="68" r="1" fill="${P.red}"/>`,
+  rubberbands: (x = 50) => [[-10, 80, 3, "red"], [-2, 78, 2.6, "yellow"], [6, 81, 3, "green"], [12, 77, 2.2, "red"], [0, 83, 2, "blue"], [-14, 76, 2, "green"]].map(([d, y, r, c]) => `<ellipse cx="${x + d}" cy="${y}" rx="${r}" ry="${r * .55}" fill="none" stroke="${col(c)}" stroke-width="1"/>`).join(""),
+  cigs: (x = 50) => [[-10, 82, 20], [-3, 83, -30], [4, 81, 60], [10, 83, 10], [0, 80, -70]].map(([d, y, r]) => `<g transform="translate(${x + d} ${y}) rotate(${r})"><rect x="-4" y="-1" width="8" height="2" fill="${P.white}" ${OL}/><rect x="2" y="-1" width="2" height="2" fill="${P.orange}"/></g>`).join("") + `<path d="M${x - 16},82 q6,-10 10,-14" fill="none" stroke="${P.grey}" stroke-width=".6" opacity=".6"/>`,
+  tissues: (x = 50) => [[-14, 80, 10], [-6, 78, -20], [2, 81, 30], [10, 77, -10], [16, 82, 50], [-2, 74, 70]].map(([d, y, r]) => `<path d="M-5,-3 q3,-3 6,0 q2,3 0,5 q-4,2 -6,0Z" fill="${P.white}" ${OL} transform="translate(${x + d} ${y}) rotate(${r})"/>`).join(""),
+  atm: (x = 50) => `<path d="M${x - 16},84 V40 H${x + 16} V84Z" fill="${P.grey}" ${OL}/><rect x="${x - 10}" y="46" width="20" height="12" fill="${P.sky}" ${OL}/><path d="M${x - 8},66 h16" stroke="${P.ink}" stroke-width="1.6"/>` + [[-12, 80, 10], [-4, 82, -14], [6, 80, 20], [14, 83, -6]].map(([d, y, r]) => `<rect x="-3" y="-4" width="6" height="8" fill="${P.white}" ${OL} transform="translate(${x + d} ${y}) rotate(${r})"/>`).join(""),
+  stickers: (x = 50) => `<path d="M${x - 16},84 V30 H${x + 16} V84Z" fill="${P.olive}" ${OL}/>` + [[-10, 36, 8, 6], [2, 40, 10, 6], [-6, 50, 12, 8], [6, 60, 8, 8], [-12, 64, 10, 6], [-2, 72, 12, 6]].map(([dx, y, w, h]) => `<rect x="${x + dx}" y="${y}" width="${w}" height="${h}" fill="${P.white}" ${OL}/><path d="M${x + dx + 1},${y + 2} h${w - 2} M${x + dx + 1},${y + h - 2} h${w - 4}" stroke="${P.red}" stroke-width=".6"/>`).join(""),
+  zeroleaflet: (x = 50) => `<g transform="translate(${x} 82) rotate(-4)"><rect x="-12" y="-16" width="24" height="16" fill="${P.white}" ${OL}/><path d="M-9,-12 h18 M-9,-9 h14 M-9,-6 h18 M-9,-3 h10" stroke="${P.ink}" stroke-width=".6"/><circle cx="7" cy="-5" r="3" fill="${P.green}" ${OL}/></g><path d="M${x - 20},84 q4,-3 8,0 M${x + 14},84 q3,-3 7,0" fill="${P.black}" ${OL}/>`,
+  wall: (c = "ivory") => `<path d="M0,84 V30 H100 V84Z" fill="${col(c)}" ${OL}/><path d="M0,42 H100 M0,56 H100 M0,70 H100 M20,30 V42 M60,30 V42 M40,42 V56 M80,42 V56 M20,56 V70 M60,56 V70 M40,70 V84 M80,70 V84" stroke="${P.ink}" stroke-width=".3" opacity=".25"/>`,
+  wallstain: (x = 50) => `<path d="M${x - 8},58 q-2,-6 4,-8 q4,-4 8,0 q6,0 4,6 q2,2 -4,2 q-4,6 -8,2 q-4,0 -4,-2Z" fill="${P.red}" ${OL} opacity=".9"/><path d="M${x - 2},60 q-1,10 1,22 M${x + 4},58 q2,8 0,16" fill="none" stroke="${P.red}" stroke-width="1.4"/><circle cx="${x - 10}" cy="48" r="1.2" fill="${P.red}"/><circle cx="${x + 10}" cy="52" r="1" fill="${P.red}"/><circle cx="${x + 2}" cy="46" r=".8" fill="${P.red}"/>`,
+  cds: (x = 50) => `<path d="M${x - 30},84 V36 M${x + 30},84 V36" stroke="${P.kaapi}" stroke-width="1.2"/><path d="M${x - 30},38 Q${x},48 ${x + 30},38" fill="none" stroke="${P.ink}" stroke-width=".5"/>` + [-20, -8, 4, 16].map((d, i) => { const t = (d + 30) / 60, y = 38 + 40 * t * (1 - t); return `<path d="M${x + d},${y} v6" stroke="${P.ink}" stroke-width=".4"/><circle cx="${x + d}" cy="${y + 11}" r="5" fill="${P.white}" ${OL}/><path d="M${x + d - 3.5},${y + 8} a5,5 0 0 1 7,0" fill="none" stroke="${i % 2 ? P.hot : P.sky}" stroke-width="1.6" opacity=".8"/><path d="M${x + d - 3.5},${y + 14} a5,5 0 0 0 7,0" fill="none" stroke="${i % 2 ? P.yellow : P.green}" stroke-width="1.6" opacity=".8"/><circle cx="${x + d}" cy="${y + 11}" r="1.4" fill="${P.paper}" ${OL}/>`; }).join(""),
+  coil: (x = 50) => `<path d="M${x - 6},84 h12 l-2,-3 h-8Z" fill="${P.grey}" ${OL}/><path d="M${x},81 V74" stroke="${P.ink}" stroke-width="1"/><path d="M${x},74 m0,0 a1.5,1.5 0 0 1 1.5,-1.5 a3,3 0 0 1 3,3 a4.5,4.5 0 0 1 -4.5,4.5 a6,6 0 0 1 -6,-6 a7.5,7.5 0 0 1 7.5,-7.5 a9,9 0 0 1 9,9" fill="none" stroke="${P.green}" stroke-width="1.6"/><path d="M${x + 9},75 q2,-2 2,-4" fill="none" stroke="${P.grey}" stroke-width="1.2"/><path d="M${x - 10},84 q0,-3 4,-2 q4,1 2,2Z" fill="${P.grey}" opacity=".8"/>`,
+  // Animals and people who use the above
+  cow: (x = 50, c = "white") => `<g transform="translate(${x} 84)"><path d="M-18,0 V-12 M-12,0 V-12 M10,0 V-12 M16,0 V-12" stroke="${col(c)}" stroke-width="3.4" stroke-linecap="round"/><path d="M-18,0 V-12 M-12,0 V-12 M10,0 V-12 M16,0 V-12" stroke="${P.ink}" stroke-width="4.4" stroke-linecap="round" opacity=".12"/><path d="M-20,-12 Q-22,-30 -8,-30 H12 Q22,-30 20,-12Z" fill="${col(c)}" ${OL}/><path d="M18,-28 Q22,-22 20,-16 Q24,-12 30,-14 Q32,-26 24,-30Z" fill="${col(c)}" ${OL}/><path d="M22,-30 q-2,-6 2,-7 M28,-30 q4,-5 1,-8" fill="none" stroke="${P.ink}" stroke-width="1"/><circle cx="26" cy="-24" r=".9" fill="${P.ink}"/><path d="M-20,-14 q-4,8 -2,14" fill="none" stroke="${P.ink}" stroke-width="1"/><path d="M-10,-26 q4,4 8,0 M2,-20 q3,3 6,0" fill="none" stroke="${P.grey}" stroke-width="2"/><ellipse cx="-4" cy="-12" rx="6" ry="3" fill="${P.pink}" ${OL}/><path d="M24,-12 h12" stroke="${P.kaapi}" stroke-width=".8"/></g>`,
+  dog: (x = 50, c = "beige") => `<g transform="translate(${x} 84)"><path d="M-14,0 Q-16,-12 -4,-12 H10 Q18,-12 16,0Z" fill="${col(c)}" ${OL}/><path d="M10,-12 Q12,-18 18,-18 Q24,-18 24,-12 Q22,-6 16,-6Z" fill="${col(c)}" ${OL}/><path d="M18,-18 l-2,-5 l4,3" fill="${col(c)}" ${OL}/><circle cx="21" cy="-13" r=".8" fill="${P.ink}"/><path d="M-14,-4 q-8,-6 -6,-14" fill="none" stroke="${col(c)}" stroke-width="2"/><path d="M-10,0 v-3 M0,0 v-3 M8,0 v-3" stroke="${P.ink}" stroke-width=".6"/><path d="M-6,-12 q6,-6 12,0" fill="none" stroke="${P.ink}" stroke-width=".4" stroke-dasharray="1 1"/></g>`,
+  crow: (x = 50, y = 40) => `<g transform="translate(${x} ${y})"><path d="M-6,0 Q-4,-6 2,-6 Q6,-6 6,-2 L10,-3 L6,0 Q4,2 -6,2 L-12,4 L-8,0Z" fill="${P.black}" ${OL}/><circle cx="3.5" cy="-3.5" r=".6" fill="#fff"/><path d="M-2,2 v4 M1,2 v4" stroke="${P.ink}" stroke-width=".8"/></g>`,
+  crows: (x = 50, y = 40) => JUNK.crow(x - 10, y) + JUNK.crow(x + 12, y + 3),
+  pigeon: (x = 50, y = 40) => `<g transform="translate(${x} ${y})"><path d="M-6,0 Q-4,-5 2,-5 Q6,-5 6,-2 L8,-2.5 L6,0 Q3,2 -6,2 L-10,3 L-7,0Z" fill="${P.grey}" ${OL}/><circle cx="3.5" cy="-3" r=".5" fill="${P.ink}"/><path d="M-1,2 v3 M2,2 v3" stroke="${P.rust}" stroke-width=".8"/></g>`,
+  puddle: (x = 50, c = "sky", w = 18) => `<ellipse cx="${x}" cy="85" rx="${w}" ry="3" fill="${col(c)}" opacity=".8"/><ellipse cx="${x - 3}" cy="84.5" rx="${w * .4}" ry="1" fill="#fff" opacity=".5"/>`,
+  sitter: (x = 50, s = .78) => fig("sit" + x, { x, s, top: "shirt", c: "sky", low: "jeans", l: "denim", h: "buzz", sk: "skin2", shoe: "sneaker", hold: "coffee", hc2: "white" }),
+};
+Object.assign(OBJ, JUNK);
 
 // [number, symbol, element, trend, what it is, key pieces, try it, scene, { z: Gen Z-led, src: [publication, headline, url, date] }]
 // Sources were checked by hand; global ones were resolved from research notes into full [publication, headline, url, date] entries.
@@ -1368,6 +1530,430 @@ const ELEMENTS = [
     { src: ["ELLE", "Why Opera-Inspired Fashion Is the Next Biggest 2026 Trend", "https://www.elle.com/fashion/trend-reports/a70886109/opera-fashion-trend-2026/", "Mar 2026"] }],
 ];
 
+// The garbage edition. Same shape as data.js:
+// [number, symbol, element, find, what it is, what's in it, field tip, scene, { z: Peak Bangalore, src: [where, field note, "", when] }]
+// Field notes are ours. We walked, we looked, we wrote it down.
+const GARBAGE = [
+  [1, "H", "Hydrogen", "Hoarding", "A billboard with the ad gone. Just the ribs, facing the flyover, waiting for the next election.", "Steel frame, two strips of old flex, one ladder, two crows", "Count the crows. It is always two.",
+    { bg: "sky", gr: "grey", set: ["skyline"], obj: [["hoarding", 50], ["crows", 50, 14]] },
+    { src: ["Hebbal flyover", "Frame bare since the May storm took the flex", "", "May 2025"] }],
+  [2, "He", "Helium", "Half-Eaten Cake", "Midnight birthday on the flyover. The cake got cut, the face got smeared, the rest stayed on the kerb.", "Pineapple cake, one candle, cream on the divider, a knife nobody wanted back", "Never step on the cream. It is slipperier than it looks.",
+    { bg: "night", gr: "grey", set: ["stars", "skyline"], obj: [["cake", 44], ["balloons", 67, 34]] },
+    { z: true, src: ["Richmond Circle flyover", "Three bikes, one cake, 11:58 pm", "", "Feb 2025"] }],
+  [3, "Li", "Lithium", "Lime Soda Bottle", "Glass bottle from the juice cart, left on the wall with a straw still in. Somebody will collect it. Nobody knows who.", "Goli soda bottle, bent straw, salt on the rim, a wasp", "Leave it. The cart man counts them at closing.",
+    { bg: "haldi", gr: "beige", set: ["sun"], zoom: 1.3, obj: [["bottle", 46, "mint", 1.1], ["coconut", 62, "green"]] },
+    { src: ["Gandhi Bazaar", "Six bottles on one compound wall", "", "Apr 2025"] }],
+  [4, "Be", "Beryllium", "Bellandur Foam", "The lake blows bubbles across the road in the rain. White, tall, and not the kind you want on your scooter.", "Lake froth, detergent, a shoe print through it, a traffic jam", "Roll the windows up before the bridge.",
+    { bg: "grey", gr: "sky", set: ["clouds", "waves"], obj: [["foam", 50], ["cone", 70, "orange", .8]] },
+    { z: true, src: ["Bellandur bridge", "Foam crossed two lanes during the evening rain", "", "Jul 2025"] }],
+  [5, "B", "Boron", "Banana Leaf", "Folded in half after lunch, exactly as the etiquette says. Then placed exactly where the etiquette does not say.", "Used banana leaf, two grains of rice, a smear of payasam, an ant line", "Fold toward you if the meal was good. Everybody did.",
+    { bg: "green", gr: "kaapi", set: ["plants"], obj: [["banana", 50], ["cup", 69, "white", .8]] },
+    { src: ["Basavanagudi", "Wedding hall gate, Sunday afternoon", "", "Jan 2025"] }],
+  [6, "C", "Carbon", "Cigarette Butts", "A constellation outside every bar, mapped by whoever stood there longest. The ground remembers.", "Filters, one matchbox, a lighter that works, ash", "Count them to know how long the wait for the table was.",
+    { bg: "night", gr: "grey", set: ["signs"], zoom: 1.6, obj: [["cigs", 48], ["bottle", 62, "kaapi", .8]] },
+    { src: ["Church Street", "Outside the pub with the queue", "", "Mar 2025"] }],
+  [7, "N", "Nitrogen", "Namma Metro Ticket", "A paper QR ticket, scanned once, dropped by the exit. Soft from the rain, still legible, still valid for nothing.", "Paper ticket, QR code, a shoe print, the word Majestic", "Check the time stamp. It is always rush hour.",
+    { bg: "lav", gr: "grey", set: ["arches"], obj: [["papers", 50], ["barricade", 70, "yellow"]] },
+    { z: true, src: ["Majestic interchange", "Exit gate, under the escalator", "", "Sep 2025"] }],
+  [8, "O", "Oxygen", "Old Monk Bottle", "Empty, upright, placed with care on a park wall. Someone had a good night and some manners.", "Dark rum bottle, cap screwed back on, a plastic cup, a paper plate", "Do not knock it over. Respect the ritual.",
+    { bg: "indigo", gr: "green", set: ["moon", "stars"], obj: [["rum", 50], ["cup", 70, "white", .8, false, true]] },
+    { src: ["Cubbon Park", "Wall behind the bandstand, Sunday morning", "", "Jan 2026"] }],
+  [9, "F", "Fluorine", "Footpath Slab", "A granite slab tilted like a trapdoor over the drain. Step on the wrong end and the other end says hello.", "Granite slab, open drain, a gap the width of a foot, one chappal that found it", "Walk on the road. Everyone else does.",
+    { bg: "beige", gr: "grey", set: ["skyline"], obj: [["slab", 50], ["chappal", 70, "red"]] },
+    { z: true, src: ["Indiranagar 100 Feet Road", "Outside the new brewery, tilted for a year", "", "Feb 2025"] }],
+  [10, "Ne", "Neon", "Newspaper Bundle", "Tied with jute, left for the raddiwala, rained on before he came. Now a brick of yesterday.", "Deccan Herald, jute twine, a free supplement, water", "Lift it once. You will not lift it twice.",
+    { bg: "peach", gr: "beige", set: ["window2"], obj: [["newspaper", 50], ["rubberbands", 67]] },
+    { src: ["Malleshwaram 8th Cross", "Gate pillar, Sunday, before the rain", "", "Jun 2025"] }],
+  [11, "Na", "Sodium", "Nandini Packet", "The milk packet corner. Snipped, flicked, found in every drain in the city. Half a litre of blue, one square centimetre of evidence.", "Packet corner, a full packet nobody opened, a cat", "The cat knows which house.",
+    { bg: "sky", gr: "beige", set: ["window"], zoom: 1.6, obj: [["nandini", 50], ["puddle", 50, "white", 12]] },
+    { z: true, src: ["Jayanagar 4th Block", "Twenty-two corners in one storm drain grille", "", "Mar 2025"] }],
+  [12, "Mg", "Magnesium", "Mango Peels", "April to June, the footpath turns yellow. Badami skins, Raspuri stones, and a sweetness the flies arrive for.", "Mango skins, stones sucked clean, a crate, flies", "Buy from the cart that made this pile. They are selling the ripe ones.",
+    { bg: "haldi", gr: "beige", set: ["sun"], obj: [["mango", 46], ["crate", 69, "yellow"]] },
+    { src: ["Russell Market", "The mango row, late April", "", "Apr 2026"] }],
+  [13, "Al", "Aluminium", "Aloo Bonda Paper", "Greasy newspaper in a cone shape, translucent where the oil went. The bonda is long gone. The smell stays.", "Oil-soaked newspaper, a green chilli, chutney drips, a toothpick", "Read the paper through the oil. It is a classified ad.",
+    { bg: "orange", gr: "kaapi", set: ["signs"], zoom: 1.3, obj: [["chips", 48], ["papers", 64]] },
+    { src: ["VV Puram food street", "Outside the bonda shop, evening", "", "Aug 2025"] }],
+  [14, "Si", "Silicon", "Silk Offcuts", "Tailor's scraps outside Chickpete. Zari threads, blouse-piece edges, colours you could not buy in a shop.", "Silk strips, zari thread, a cut sleeve, lining fabric", "Pick one. Nobody minds. It becomes a bookmark.",
+    { bg: "rani", gr: "kaapi", set: ["bunting"], obj: [["pile", 50, "hot", 20, 10], ["pile", 70, "gold", 10, 6]] },
+    { src: ["Chickpete", "Outside a second-floor tailor, swept out at noon", "", "Oct 2025"] }],
+  [15, "P", "Phosphorus", "Plastic Chair", "Three legs good, one leg bad. Still at the chai stall, still in use, propped against the wall with trust.", "White plastic chair, a missing leg, a brick where the leg was, a man in it", "Sit anyway. The brick holds.",
+    { bg: "beige", gr: "kaapi", set: ["signs"], obj: [["chair", 42, "white"], ["cups", 67]] },
+    { z: true, src: ["Shivajinagar", "Chai stall behind the bus stand", "", "May 2025"] }],
+  [16, "S", "Sulphur", "Sofa", "A three-seater on the footpath. Cushions gone, one spring up, and a man eating lunch on it like it is his.", "Maroon sofa, missing cushion, a spring, a watchman's lunch", "Do not sit. It is taken.",
+    { bg: "peach", gr: "grey", set: ["window"], obj: [["sofa", 38, "maroon"], ["sitter", 72]] },
+    { z: true, src: ["Koramangala 5th Block", "Four months, same spot, outside the PG", "", "Nov 2025"] }],
+  [17, "Cl", "Chlorine", "Cable Loops", "The overhead spaghetti came down in the rain. Now it loops on the footpath like a jump rope nobody will touch.", "Fibre cable, a cable TV line, zip ties, a BESCOM pole", "Step over, not on. Just in case.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["pole", 24], ["cables", 50, 36]] },
+    { src: ["BTM Layout", "Pole outside the bakery, since the storm", "", "Jun 2026"] }],
+  [18, "Ar", "Argon", "Areca Plates", "After the wedding lunch, a tower of areca leaf plates. Biodegradable, which means they will degrade here.", "Areca plates, a sweet nobody finished, a plastic spoon that ruins the point", "Compost it. The hall will not.",
+    { bg: "yellow", gr: "beige", set: ["marigold"], obj: [["plates", 46], ["cutlery", 69]] },
+    { src: ["Rajajinagar", "Choultry gate, Sunday", "", "Feb 2026"] }],
+  [19, "K", "Potassium", "Kulhad", "Clay chai cup, drunk and dropped. Shards near every stall that went artisanal this year.", "Kulhad, clay shards, a tea ring, a straw for some reason", "Break it clean. It is the whole idea.",
+    { bg: "kaapi", gr: "beige", set: ["signs"], zoom: 1.5, obj: [["kulhad", 48], ["cup", 64, "white", .7]] },
+    { z: true, src: ["Indiranagar 12th Main", "New chai place, old habit", "", "Dec 2025"] }],
+  [20, "Ca", "Calcium", "Cane Basket", "A vegetable basket with the bottom gone, upside down, used as a stool, a dustbin and a hat for a dog.", "Cane basket, broken weave, a coriander stem, a dog", "Turn it over. Something is living under it.",
+    { bg: "green", gr: "kaapi", set: ["plants"], obj: [["crate", 46, "kaapi"], ["dog", 67, "beige"]] },
+    { src: ["KR Market", "Flower side, early morning", "", "Mar 2026"] }],
+  [21, "Sc", "Scandium", "Scooter Carcass", "A scooter that stopped one day and never started. Tyres gone, seat gone, number plate gone. The frame stays, politely.", "Rusted frame, one rim, a seat spring, a creeper growing through", "Check the plant. It is doing better than the scooter.",
+    { bg: "beige", gr: "grey", set: ["window2"], obj: [["scooter", 50], ["bag", 70, "black", .7]] },
+    { z: true, src: ["Ejipura", "Side lane, three monsoons", "", "Aug 2025"] }],
+  [22, "Ti", "Titanium", "Tyre Planter", "An old tyre, painted white, with a plant in it. Half garden, half excuse. The plant is a croton. The plant is always a croton.", "Truck tyre, white paint, a croton, a cigarette butt in the soil", "Water it. Nobody else is.",
+    { bg: "mint", gr: "beige", set: ["sun", "plants"], obj: [["tyre", 50], ["puddle", 69, "sky", 8]] },
+    { src: ["Jayanagar 3rd Block", "Outside a bank, painted for Independence Day", "", "Aug 2025"] }],
+  [23, "V", "Vanadium", "Vegetable Rejects", "The tomatoes that did not make it. Market floor at 6 pm, soft, red, and already someone's cow's dinner.", "Split tomatoes, cabbage leaves, a bruised brinjal, a cow", "Walk wide. The cow has priority.",
+    { bg: "red", gr: "kaapi", set: ["bunting"], obj: [["pile", 40, "red", 16, 9], ["cow", 70, "white"]] },
+    { src: ["KR Market", "Vegetable side, closing time", "", "Jan 2025"] }],
+  [24, "Cr", "Chromium", "Cracker Boxes", "Diwali morning. Red boxes, burnt string, a smell of sulphur and victory. The watchman is sweeping. He will sweep till Tuesday.", "Lakshmi bomb box, burnt sparkler wires, a flower pot shell, ash", "Pick up the duds with a stick, not your hand.",
+    { bg: "night", gr: "grey", set: ["stars", "diyas"], obj: [["crackers", 50], ["smoke", 70, 60]] },
+    { src: ["Sadashivanagar", "Apartment gate, the morning after", "", "Oct 2025"] }],
+  [25, "Mn", "Manganese", "Mannequin", "Headless, armless, bolted to a stand, standing outside the shop that fired her. She faces the road. She has seen things.", "Fibreglass torso, iron stand, a size tag, a shawl someone gave her", "Do not make eye contact. She has no eyes. It still works.",
+    { bg: "pink", gr: "grey", set: ["window"], obj: [["mannequin", 50], ["bag", 69, "black", .8]] },
+    { z: true, src: ["Commercial Street", "Behind the saree shop, facing traffic", "", "Nov 2025"] }],
+  [26, "Fe", "Iron", "Festival Flowers", "A hill of marigold the day after. Still orange, still sweet, slowly turning into a different thing.", "Marigold garlands, jasmine strings, a banana stem, a bee", "Smell it on day one only.",
+    { bg: "orange", gr: "kaapi", set: ["marigold"], obj: [["flowers", 50, "orange"], ["garland", 69, 24, "yellow"]] },
+    { src: ["Ulsoor", "Temple side road, after Varamahalakshmi", "", "Aug 2025"] }],
+  [27, "Co", "Cobalt", "Construction Debris", "Malba. Broken tiles, cement lumps, a tap. Dumped at night by a truck that does not exist on paper.", "Cement chunks, floor tiles, a bathroom tap, a broken mirror", "If the mirror is intact, someone will take it by noon.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["rubble", 50], ["sack", 70, "beige", "", .8]] },
+    { z: true, src: ["Sarjapur Road", "Vacant plot, every Tuesday", "", "Mar 2025"] }],
+  [28, "Ni", "Nickel", "Nimbu Mirchi", "The lemon and chilli charm from under an auto, fallen off at the signal. Protection expired. Please renew.", "Lemon, seven chillies, black thread, a dusty signal", "Do not pick it up. It is somebody's bad luck now.",
+    { bg: "yellow", gr: "grey", set: ["signs"], zoom: 1.7, obj: [["pile", 50, "haldi", 7, 5], ["chappal", 62, "green"]] },
+    { src: ["Silk Board junction", "Under the signal, where everything falls off", "", "Apr 2025"] }],
+  [29, "Cu", "Copper", "Cutlery Sachet", "A plastic spoon, a napkin, a sauce sachet, all still sealed. Dinner came with it. Dinner did not need it.", "Plastic spoon, ketchup sachet, a napkin, the cover they came in", "Keep the sachet. There is never ketchup when you want it.",
+    { bg: "red", gr: "beige", set: ["window2"], zoom: 1.4, obj: [["cutlery", 46], ["foodbag", 64, "red"]] },
+    { z: true, src: ["HSR Layout 27th Main", "PG dustbin overflow, Friday night", "", "Jun 2025"] }],
+  [30, "Zn", "Zinc", "Zomato Bag", "The red bag. Torn, rained on, flattened into the kerb like a flag of a country that only exists after 9 pm.", "Red delivery bag, a bill, a free mint, a rubber band", "Look for the bill. It is always biryani.",
+    { bg: "red", gr: "grey", set: ["skyline"], obj: [["foodbag", 50, "red", "FOOD"], ["biryani", 69]] },
+    { z: true, src: ["Marathahalli", "Outside the tech park gate, 10 pm", "", "Feb 2025"] }],
+  [31, "Ga", "Gallium", "Ganesha, Immersed", "The idol after the lake. Half clay, half a shape you recognise, dissolving on the steps where it was left with love.", "Clay idol, flower remains, a paper crown, a candle", "The clay ones go back to the earth. The others are still there.",
+    { bg: "sky", gr: "beige", set: ["waves"], obj: [["idol", 50], ["flowers", 69, "pink"]] },
+    { src: ["Ulsoor Lake", "The steps, the week after Chaturthi", "", "Sep 2025"] }],
+  [32, "Ge", "Germanium", "Gate Notice", "A laminated society notice fallen off the gate. 'Strictly for residents.' Now it is strictly for the road.", "Laminated sheet, cello tape, an A4 font, the word strictly", "Read it. It is about parking. It is always about parking.",
+    { bg: "beige", gr: "grey", set: ["window"], zoom: 1.2, obj: [["sign", 48, "white", ["RESIDENTS", "ONLY"], 24, 14, -14], ["papers", 66]] },
+    { z: true, src: ["Whitefield", "Apartment gate, after a windy night", "", "Jul 2025"] }],
+  [33, "As", "Arsenic", "Ash Heap", "Dry leaves, set on fire at 6 am by someone who was told not to. Still smoking at 9. The whole lane smells like a decision.", "Leaf ash, a half-burnt bag, an orange ember, a broom", "If it is still warm, it is still a crime.",
+    { bg: "peach", gr: "grey", set: ["sun"], obj: [["leaves", 50, true], ["smoke", 50, 66]] },
+    { src: ["Banashankari 2nd Stage", "Corner plot, every winter morning", "", "Dec 2025"] }],
+  [34, "Se", "Selenium", "Seat, BMTC", "A bus seat cushion, green rexine, lying on the footpath as if it got off at the wrong stop.", "Green cushion, a torn corner, foam, the bus it came from, long gone", "Sit. For once there is a seat.",
+    { bg: "green", gr: "grey", set: ["signs"], obj: [["autoseat", 50, "olive"], ["papers", 70]] },
+    { src: ["Majestic bus stand", "Platform 14, under the sign", "", "Jan 2026"] }],
+  [35, "Br", "Bromine", "Brick Stack", "Bricks delivered for a wall that has not started. Half the stack walked off. The rest wait with dignity.", "Red bricks, a plastic sheet, a lizard, a brick being used as a chair", "Borrow one. Everyone else did.",
+    { bg: "rust", gr: "beige", set: ["skyline"], obj: [["bricks", 46], ["sack", 70, "grey", "CEMENT", .8]] },
+    { src: ["Hennur", "Plot corner, since the bhoomi pooja", "", "May 2025"] }],
+  [36, "Kr", "Krypton", "KR Market Crate", "A plastic crate with one side out, filled with onion skins and moving on its own. That is a rat.", "Blue crate, onion skins, a weighing stone, a rat", "Do not look inside. You have been told.",
+    { bg: "indigo", gr: "kaapi", set: ["bunting"], obj: [["crate", 50, "blue"], ["sack", 69, "beige", "", .7]] },
+    { src: ["KR Market", "Lower level, Saturday 7 am", "", "Jul 2025"] }],
+  [37, "Rb", "Rubidium", "Rubber Chappal", "One slipper. Always one. The other is in a different ward, and they will never meet again.", "One Hawaii slipper, size 8, blue strap, a mystery", "Do not look for the pair. People have tried.",
+    { bg: "sky", gr: "beige", set: ["sun"], zoom: 1.7, obj: [["chappal", 50, "blue"], ["puddle", 50, "sky", 14]] },
+    { z: true, src: ["Yelahanka", "Road median, outside the air force gate", "", "Mar 2025"] }],
+  [38, "Sr", "Strontium", "Scrap Rate Board", "Chalk on a plank outside the raddi shop. Newspaper 14. Plastic 10. Copper, ask. The real stock exchange.", "Wooden board, chalk, a weighing scale, a stack of flattened cartons", "Note the copper price. It is the only one that goes up.",
+    { bg: "beige", gr: "kaapi", set: ["window2"], obj: [["sign", 44, "black", ["PAPER 14", "PLASTIC 10"], 28, 14, 0], ["boxes", 70]] },
+    { src: ["Shivajinagar", "Raddi shop, rates change on Mondays", "", "Apr 2026"] }],
+  [39, "Y", "Yttrium", "Yoga Mat", "A rolled yoga mat on a park bench, left for three days. The owner found peace and did not come back.", "Purple mat, a strap, dew, a pigeon", "Leave it. Somebody is on a journey.",
+    { bg: "lav", gr: "green", set: ["sun", "plants"], obj: [["mattress", 50, "lav"], ["pigeon", 69, 70]] },
+    { z: true, src: ["Cubbon Park", "Bench near the library, Sunday to Wednesday", "", "Feb 2026"] }],
+  [40, "Zr", "Zirconium", "Zero-Waste Leaflet", "A leaflet about going zero waste, printed on glossy paper, dropped on the road outside the event about going zero waste.", "Glossy A5, a QR code, a green logo, a tyre mark", "Scan the code. The event is over.",
+    { bg: "mint", gr: "grey", set: ["signs"], obj: [["zeroleaflet", 50], ["cup", 69, "white", .8, true]] },
+    { z: true, src: ["Indiranagar", "Outside a sustainability pop-up", "", "Sep 2025"] }],
+  [41, "Nb", "Niobium", "Night Biryani Boxes", "After 1 am the foil boxes come out. Rice stuck to the lid, a bone, a lemon wedge nobody squeezed.", "Foil boxes, raita cups, a bone, a lemon wedge", "The bone tells you the shop. Big bone, big shop.",
+    { bg: "night", gr: "grey", set: ["moon", "signs"], obj: [["biryani", 46], ["foil", 69]] },
+    { z: true, src: ["Shivajinagar", "Outside the biryani shop that never closes", "", "Jun 2025"] }],
+  [42, "Mo", "Molybdenum", "Mop, Retired", "A mop standing against the wall like it finished a shift and is waiting for a drop. It has been waiting a while.", "Grey mop, bent handle, a blue bucket, a puddle it did not make", "Do not use it. It has earned the rest.",
+    { bg: "sky", gr: "grey", set: ["window"], obj: [["mop", 50], ["puddle", 68, "sky", 10]] },
+    { src: ["Frazer Town", "Outside a bakery, three mornings", "", "Oct 2025"] }],
+  [43, "Tc", "Technetium", "Tender Coconut", "Drunk, scooped, and stacked into a green pyramid outside the hospital. The husk is 80 percent of the coconut.", "Green husks, a straw, a scoop-spoon, a mountain", "Buy the one with the straw in. It is still full.",
+    { bg: "green", gr: "beige", set: ["palm"], obj: [["husks", 46], ["coconut", 70, "green"]] },
+    { src: ["Bannerghatta Road", "Outside the hospital gate, all day", "", "May 2025"] }],
+  [44, "Ru", "Ruthenium", "Rubber Bands", "Newspaper rubber bands, red and yellow, scattered like confetti on every gate. The paper boy is a generous man.", "Red rubber bands, yellow rubber bands, a paper, a gate", "Collect them. You will need one tomorrow.",
+    { bg: "haldi", gr: "beige", set: ["window2"], zoom: 1.5, obj: [["rubberbands", 44], ["newspaper", 62]] },
+    { src: ["Malleshwaram", "Every gate on 15th Cross, 6 am", "", "Jan 2025"] }],
+  [45, "Rh", "Rhodium", "Rose Heap", "Rose petals outside the wedding hall, driven over twice. Pink in the morning. Brown by lunch.", "Rose petals, a thrown garland, confetti, a tyre print", "Walk through it before noon.",
+    { bg: "pink", gr: "grey", set: ["bunting"], zoom: 1.3, obj: [["flowers", 50, "pink"], ["garland", 64, 20, "pink"]] },
+    { src: ["Palace Grounds", "Gate 2, after the Sunday wedding", "", "Dec 2025"] }],
+  [46, "Pd", "Palladium", "Parcel Dabba", "The foil box from a parcel. Rice stuck in the corners, curry on the lid, a spoon bent trying.", "Foil box, paper lid, a bent spoon, three grains of rice", "Press the lid flat. It goes in the dry bin.",
+    { bg: "orange", gr: "beige", set: ["signs"], zoom: 1.4, obj: [["foil", 46], ["cutlery", 64]] },
+    { src: ["Domlur", "Outside the darshini, lunch rush", "", "Aug 2025"] }],
+  [47, "Ag", "Silver", "Agarbatti Stubs", "Incense sticks pushed into the base of a peepal tree, burnt down to the bamboo. The tree is a shrine now. The tree did not ask.", "Burnt agarbatti, a kumkum packet, a brick platform, a coconut half", "Smell it from the auto. You will.",
+    { bg: "peach", gr: "kaapi", set: ["sun"], zoom: 1.2, obj: [["agarbatti", 50], ["pile", 70, "grey", 6, 4]] },
+    { src: ["Basavanagudi", "Peepal tree, Bull Temple Road", "", "Feb 2025"] }],
+  [48, "Cd", "Cadmium", "CD, Scratched", "Old CDs on a string over a tomato patch to scare pigeons. They scare nothing. They are beautiful in the sun.", "Scratched CDs, nylon string, a bamboo pole, a brave pigeon", "Stand where the rainbow lands.",
+    { bg: "sky", gr: "green", set: ["sun", "plants"], obj: [["cds", 50], ["pigeon", 68, 74]] },
+    { src: ["Yeshwanthpur", "Terrace garden visible from the flyover", "", "Mar 2026"] }],
+  [49, "In", "Indium", "Inverter Battery", "A dead car battery outside the hardware shop, placed with the terminals up so you know it is dead.", "Lead-acid battery, white powder, a cable stub, a sticker", "Do not touch the white powder.",
+    { bg: "grey", gr: "beige", set: ["signs"], obj: [["battery", 50], ["ewaste", 70]] },
+    { src: ["SP Road", "Outside the electricals shop, since March", "", "Apr 2025"] }],
+  [50, "Sn", "Tin", "Snack Packets", "Lays, Kurkure, a chocolate wrapper, all wedged in the storm drain grille like the drain is a vending machine in reverse.", "Chips packets, a chocolate wrapper, a drain grille, rainwater", "When it rains, this is where the road floods.",
+    { bg: "yellow", gr: "grey", set: ["skyline"], zoom: 1.3, obj: [["snacks", 50], ["puddle", 50, "sky", 20]] },
+    { z: true, src: ["Koramangala 80 Feet Road", "Grille outside the college", "", "Jul 2025"] }],
+  [51, "Sb", "Antimony", "Sandbags", "Monsoon sandbags from last year, still stacked, split, growing grass. The flood came. The flood went. The bags stayed.", "Jute bags, sand, grass, a frog", "If the grass is tall, the bags are old.",
+    { bg: "grey", gr: "green", set: ["clouds"], obj: [["sandbag", 50], ["puddle", 69, "sky", 10]] },
+    { src: ["Bellandur", "Low lane behind the tech park", "", "Oct 2025"] }],
+  [52, "Te", "Tellurium", "Tetra Pak", "Frooti and Real packs, straws in, crushed in the middle. Someone was thirsty and in a hurry.", "Juice cartons, bent straws, a school bag strap, ants", "The ants got there first.",
+    { bg: "orange", gr: "beige", set: ["sun"], zoom: 1.4, obj: [["tetra", 46], ["snacks", 64]] },
+    { src: ["Jayanagar", "Outside the school gate, 3.30 pm", "", "Feb 2025"] }],
+  [53, "I", "Iodine", "ID Lanyard", "An office lanyard on the road, card face down. Someone is at the gate right now explaining this.", "Blue lanyard, access card, a photo from a better day, a tyre mark", "Flip it. You will know the company.",
+    { bg: "blue", gr: "grey", set: ["skyline"], zoom: 1.5, obj: [["lanyard", 48], ["cup", 62, "white", .8, true]] },
+    { z: true, src: ["Outer Ring Road", "Bus stop outside the tech park", "", "Mar 2025"] }],
+  [54, "Xe", "Xenon", "Xerox Pile", "Photocopied notes outside the college, stapled, highlighted, abandoned the day after the exam.", "Stapled notes, a highlighter, a question paper, a pen cap", "Read page one. It is always definitions.",
+    { bg: "ivory", gr: "grey", set: ["books"], obj: [["papers", 50], ["box", 70, "beige", "", .8]] },
+    { z: true, src: ["Jayanagar 4th Block", "Outside the Xerox shop, exam week", "", "Nov 2025"] }],
+  [55, "Cs", "Caesium", "Cement Sacks", "Empty cement bags folded into a stack. They will become a tarpaulin, a mat, a roof. Nothing on a site is waste yet.", "Cement bags, cement dust, a trowel, a lunch box", "Do not breathe in near the stack.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["sack", 42, "grey", "CEMENT"], ["sack", 62, "grey", "", .8], ["mixer", 71]] },
+    { src: ["Kadugodi", "Site gate, every weekday", "", "Jun 2025"] }],
+  [56, "Ba", "Barium", "Bisleri Bottle", "A litre bottle, crushed, cap on, rolling toward the drain with purpose.", "PET bottle, a blue cap, a label half off, momentum", "Cap off before the bin. It is a different plastic.",
+    { bg: "sky", gr: "grey", set: ["sun"], zoom: 1.4, obj: [["bottles", 50]] },
+    { src: ["MG Road", "Boulevard, under the metro line", "", "Jan 2025"] }],
+  [57, "La", "Lanthanum", "Lassi Cup", "A thick plastic cup with a pink ring inside and a straw bent in half. Someone enjoyed that.", "Plastic cup, straw, a pink ring, a wasp", "Do not reuse. The wasp claimed it.",
+    { bg: "pink", gr: "beige", set: ["sun"], zoom: 1.3, obj: [["lassi", 48], ["cup", 64, "white", .7, false, true]] },
+    { src: ["Gandhi Bazaar", "Outside the juice shop, summer", "", "Apr 2025"] }],
+  [58, "Ce", "Cerium", "Cello Tape Core", "A brown cardboard ring. Nothing left of the tape. Everything left of the packing.", "Cardboard core, a strip of tape stuck to the road, a box, a cutter", "Roll it. It goes further than you expect.",
+    { bg: "beige", gr: "grey", set: ["window2"], obj: [["boxes", 50], ["tyre", 70, false]] },
+    { src: ["Whitefield", "Outside a PG on moving day", "", "Jun 2026"] }],
+  [59, "Pr", "Praseodymium", "Prasad Packet", "A clear cover with laddu crumbs, tied, placed on a wall by someone who could not eat it and could not throw it.", "Plastic cover, laddu crumbs, a kumkum smear, a knot", "Eat the crumbs. It is prasad. It is fine.",
+    { bg: "haldi", gr: "beige", set: ["diyas"], zoom: 1.4, obj: [["prasad", 48], ["garland", 62, 30, "orange"]] },
+    { src: ["Malleshwaram", "Temple compound wall, Friday", "", "Sep 2025"] }],
+  [60, "Nd", "Neodymium", "Noodle Cup", "A cup noodle with the fork still in. Finished at a bus stop, left at a bus stop, it is a bus stop noodle now.", "Paper cup, plastic fork, two noodles, a seasoning sachet", "The fork is the clue. Nobody brings a fork from home.",
+    { bg: "yellow", gr: "grey", set: ["signs"], zoom: 1.3, obj: [["noodles", 48], ["bottle", 64, "sky", .8, true]] },
+    { z: true, src: ["Electronic City", "Bus stop outside phase 1", "", "Jul 2026"] }],
+  [61, "Pm", "Promethium", "Plastic Mala", "An office garland. Plastic marigolds, used for a photo, a farewell and a new year, now on the footpath, still cheerful.", "Plastic flowers, a green thread, a festoon, an HR email", "It does not rot. It will be here for your farewell too.",
+    { bg: "orange", gr: "grey", set: ["window"], obj: [["garland", 50, 40, "orange"], ["bag", 50, "yellow", .9]] },
+    { src: ["Whitefield ITPL", "Service road behind the tech park", "", "Jan 2026"] }],
+  [62, "Sm", "Samarium", "Smashed Screen", "A phone screen guard, shattered into a web, peeled off and dropped at the repair shop door. The phone lives. The guard did its job.", "Tempered glass, a crack web, a sticker, the shop's bench", "Hold it to the light. It is a map.",
+    { bg: "grey", gr: "beige", set: ["signs"], zoom: 1.3, obj: [["screen", 46], ["ewaste", 64]] },
+    { z: true, src: ["SP Road", "Outside the repair stall", "", "Mar 2025"] }],
+  [63, "Eu", "Europium", "E-waste, Unlabelled", "A router, a tangle of chargers, a keyboard missing the E. Left on the step like a donation to nobody.", "Dead router, three chargers, a keyboard, a mouse without a ball", "The chargers work. They always work.",
+    { bg: "indigo", gr: "grey", set: ["window2"], obj: [["ewaste", 46], ["oldtv", 69]] },
+    { z: true, src: ["Koramangala 4th Block", "PG step, end of the month", "", "May 2026"] }],
+  [64, "Gd", "Gadolinium", "God Tile", "Tiles of gods on the compound wall to stop people urinating. One has cracked and fallen. The wall is unprotected.", "Ceramic god tile, a crack, a compound wall, a smell that explains the tile", "Do not stand too close to the gap.",
+    { bg: "beige", gr: "grey", set: ["godtile"], zoom: 1.3, obj: [["pile", 50, "white", 6, 3]] },
+    { src: ["Shanthinagar", "Side wall of a parking lot", "", "Feb 2025"] }],
+  [65, "Tb", "Terbium", "Toothbrush", "A single toothbrush in the middle of a footpath. Nobody drops a toothbrush. Yet here it is.", "Toothbrush, blue, worn bristles, a question", "Do not pick it up. Do not ask.",
+    { bg: "sky", gr: "beige", set: ["sun"], zoom: 1.8, obj: [["toothbrush", 50], ["puddle", 50, "sky", 10]] },
+    { z: true, src: ["Kammanahalli", "Footpath outside the bakery, Tuesday", "", "Aug 2025"] }],
+  [66, "Dy", "Dysprosium", "Dying Christmas Tree", "A plastic tree with the lights still on it, out by January 7, leaning on the gate like it wants to come back in.", "Plastic tree, a string of lights, one bauble, tinsel on the road", "Take the lights. They work until Diwali.",
+    { bg: "night", gr: "grey", set: ["stars"], obj: [["xmas", 50], ["box", 70, "red", "", .8]] },
+    { src: ["Cooke Town", "Gate pillar, first week of January", "", "Jan 2026"] }],
+  [67, "Ho", "Holmium", "Hot Chips Cone", "The paper cone from the chips cart, folded from a notebook page. Someone's homework is now salt and oil.", "Paper cone, one chip, chilli powder, a notebook margin", "Read the homework. It is maths.",
+    { bg: "haldi", gr: "kaapi", set: ["bunting"], zoom: 1.3, obj: [["chips", 48], ["papers", 64]] },
+    { src: ["Yeshwanthpur", "Chips cart outside the station", "", "Nov 2025"] }],
+  [68, "Er", "Erbium", "Egg Tray", "Pulp egg trays stacked outside the condiment shop, soft from the rain, used as a dog bed by evening.", "Pulp trays, a shell, a dog, rain", "The dog was here first.",
+    { bg: "beige", gr: "grey", set: ["window2"], obj: [["eggtray", 46], ["dog", 68, "grey"]] },
+    { src: ["Frazer Town", "Mosque Road, outside the egg shop", "", "Mar 2026"] }],
+  [69, "Tm", "Thulium", "Tiffin Box, Mystery", "A steel tiffin on a wall. Closed. Clean. No owner. Nobody opens it. Nobody moves it. It has been there since Monday.", "Steel tiffin, a tight lid, a wall, a city that will not touch it", "Do not open it. Nobody has.",
+    { bg: "mint", gr: "beige", set: ["window"], obj: [["tiffin", 50], ["crow", 68, 60]] },
+    { z: true, src: ["JP Nagar", "Compound wall by the bus stop", "", "Apr 2025"] }],
+  [70, "Yb", "Ytterbium", "Yellow Bag", "The yellow plastic cover. Thin, loud, found in trees, drains, lakes, and the hand of every man carrying lunch.", "Yellow cover, a knot, a receipt inside, a breeze", "If it is in a tree, it is staying.",
+    { bg: "yellow", gr: "grey", set: ["plants"], obj: [["bag", 50, "yellow", 1.1], ["bag", 67, "yellow", .7]] },
+    { z: true, src: ["Every lane", "Specifically, the tree outside the fish market", "", "Jan 2025"] }],
+  [71, "Lu", "Lutetium", "Lunch Plate", "A paper plate with turmeric rice stuck in a crescent. The crescent is where the thumb went.", "Paper plate, rice, a pickle smear, a thumbprint", "Fold it twice. It still will not fit the bin.",
+    { bg: "haldi", gr: "beige", set: ["sun"], zoom: 1.5, obj: [["plate", 48, "white", 1.2], ["cup", 64, "white", .8]] },
+    { src: ["Peenya", "Factory gate, 1 pm", "", "Jun 2025"] }],
+  [72, "Hf", "Hafnium", "Hair Fall", "Barber's sweepings in a cover outside the saloon. Black, grey, one streak of henna. The whole street's week in one bag.", "Hair, a cover, a comb with no teeth, talcum dust", "Do not open the cover. You know what it is.",
+    { bg: "sky", gr: "grey", set: ["mirror"], obj: [["hair", 50], ["bag", 70, "black", .9]] },
+    { src: ["Rajajinagar", "Outside the saloon with the blue door", "", "Oct 2025"] }],
+  [73, "Ta", "Tantalum", "Tarpaulin", "A blue tarp tied over nothing in particular, flapping since the monsoon. It covers a pile that no longer exists.", "Blue tarpaulin, nylon rope, two bricks, wind", "Do not untie it. The bricks will leave.",
+    { bg: "grey", gr: "beige", set: ["clouds"], obj: [["tarp", 50, "blue"], ["bricks", 71]] },
+    { src: ["Nagarbhavi", "Half-built house, since July", "", "Sep 2025"] }],
+  [74, "W", "Tungsten", "Water Can", "A 20-litre can with a cracked base, left by the gate for a supplier who switched routes. It is a stool now.", "Blue can, a crack, a cap, a watchman using it as a seat", "Knock on it. If it echoes, it is empty and it is furniture.",
+    { bg: "blue", gr: "grey", set: ["window2"], obj: [["can20", 50, "blue"], ["bottle", 69, "sky", .8]] },
+    { z: true, src: ["Hebbal", "Apartment gate, security cabin", "", "Feb 2026"] }],
+  [75, "Re", "Rhenium", "Receipt Ribbon", "A thermal receipt unrolled across the footpath like a ribbon. Ten items, one of which was a water bottle for 20 rupees.", "Thermal paper, faded ink, a UPI reference, a breeze", "Read it before the sun erases it.",
+    { bg: "ivory", gr: "grey", set: ["signs"], zoom: 1.3, obj: [["receipts", 48], ["papers", 64]] },
+    { z: true, src: ["Brigade Road", "Outside the supermarket, pavement", "", "May 2025"] }],
+  [76, "Os", "Osmium", "Onion Sack", "A jute sack with onion skins and one onion, sprouting green, winning.", "Jute sack, onion skins, a sprouting onion, a stencil that says 50 KG", "Take the onion. It wants to live.",
+    { bg: "rust", gr: "kaapi", set: ["bunting"], obj: [["sack", 50, "beige", "50 KG"], ["peels", 70]] },
+    { src: ["KR Market", "Onion lane, after the trucks", "", "Jan 2026"] }],
+  [77, "Ir", "Iridium", "Iron Rebar", "Rods sticking out of a concrete block at exactly ankle height, with a plastic bottle on each end as safety.", "Rebar, a concrete footing, a bottle cap on each rod, red paint", "The bottles mean someone cared once.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["rebar", 50], ["cone", 70, "orange", .8, true]] },
+    { src: ["Hosur Road", "Service road, since the flyover", "", "Mar 2025"] }],
+  [78, "Pt", "Platinum", "Pani Puri Dona", "Leaf cups from the pani puri cart, stacked by hand, knocked over by wind, chased by a boy with a stick.", "Leaf donas, a sev crumb, a mint leaf, the cart", "Eat before the wind comes.",
+    { bg: "green", gr: "beige", set: ["bunting"], zoom: 1.4, obj: [["dona", 48], ["cup", 66, "white", .7]] },
+    { src: ["Jayanagar 4th Block", "Outside the complex, 6 pm", "", "Apr 2025"] }],
+  [79, "Au", "Gold", "Auto Seat", "An auto back seat, out of the auto, on the footpath, waiting for the mechanic. Yellow piping, black rexine, a lifetime of passengers.", "Black rexine seat, yellow piping, a spring, a coin from 2009", "Check under the cushion. There is always a coin.",
+    { bg: "yellow", gr: "grey", set: ["signs"], obj: [["autoseat", 50], ["tyre", 70, false]] },
+    { z: true, src: ["Wilson Garden", "Mechanic's lane, every afternoon", "", "Aug 2025"] }],
+  [80, "Hg", "Mercury", "Hospital Glove", "One latex glove on the road outside the clinic, fingers up, waving.", "Blue latex glove, a cotton ball, a strip of tablets, a prescription", "Do not. Just do not.",
+    { bg: "sky", gr: "grey", set: ["window"], zoom: 1.6, obj: [["glove", 46], ["mask", 60]] },
+    { src: ["Bannerghatta Road", "Outside the clinic, morning", "", "Jun 2025"] }],
+  [81, "Tl", "Thallium", "Tube Light", "A four-foot fluorescent tube leaning on the gate, intact, glowing a little with the memory of an office.", "Tube light, a starter, a cardboard sleeve, a gate", "It will break when you walk past. Walk fast.",
+    { bg: "ivory", gr: "grey", set: ["window2"], zoom: 1.2, obj: [["tube", 50], ["box", 68, "beige", "", .8]] },
+    { src: ["Rajajinagar", "Outside an old office being emptied", "", "Feb 2025"] }],
+  [82, "Pb", "Lead", "Paper Bag", "The quick-commerce paper bag. Brown, handles up, delivered in ten minutes, abandoned in twelve.", "Brown paper bag, a printed logo, a bill, a single banana", "The banana was the whole order.",
+    { bg: "beige", gr: "grey", set: ["skyline"], obj: [["paperbag", 50, "beige", "10 MIN"], ["bottle", 69, "sky", .8]] },
+    { z: true, src: ["HSR Layout", "Outside a gated society, Sunday", "", "Jul 2026"] }],
+  [83, "Bi", "Bismuth", "Bindi Sheet", "A bindi card with twelve gone and three left, outside the fancy store. The three left are the big ones.", "Bindi card, three maroon bindis, glue, a shop step", "Take one. You will need it at a wedding.",
+    { bg: "maroon", gr: "beige", set: ["bunting"], zoom: 1.6, obj: [["bindi", 48], ["papers", 62]] },
+    { src: ["Commercial Street", "Fancy store steps", "", "Oct 2025"] }],
+  [84, "Po", "Polonium", "Poster Layers", "Fifteen years of film posters on one wall, peeling in strips. Every layer a different hero. Same wall.", "Film posters, political posters, a tuition ad, glue", "Peel one. Underneath is a 2011 release.",
+    { bg: "beige", gr: "grey", set: ["posters"], obj: [["papers", 70]] },
+    { src: ["Majestic", "Wall opposite the theatre", "", "Mar 2025"] }],
+  [85, "At", "Astatine", "ATM Slips", "Balance receipts on the ATM floor. Everyone checked. Nobody wanted to keep the proof.", "Thermal slips, a balance, a pen on a string, a guard asleep", "Do not read. It is rude. Everyone reads.",
+    { bg: "grey", gr: "beige", set: ["window"], obj: [["atm", 50]] },
+    { z: true, src: ["Indiranagar", "ATM near the metro station", "", "Jan 2025"] }],
+  [86, "Rn", "Radon", "Ribbon, Inaugurated", "The red ribbon from the opening. Cut, dropped, trodden. The shop is open. The ribbon is on the floor of history.", "Red satin ribbon, scissors marks, a rose, a camera flash somewhere", "Pick it up before the dog does.",
+    { bg: "pink", gr: "grey", set: ["bunting", "sparkles"], obj: [["ribbon", 50], ["flowers", 70, "pink"]] },
+    { src: ["Jayanagar", "New phone shop, opening day", "", "Nov 2025"] }],
+  [87, "Fr", "Francium", "Fridge", "A single-door fridge on the footpath with the door open. Empty. Still cold somehow. A dog sleeps in front of it.", "White fridge, a missing shelf, a magnet, a dog", "Close the door. Save the dog some electricity.",
+    { bg: "sky", gr: "grey", set: ["window2"], obj: [["fridge", 48], ["dog", 69, "beige"]] },
+    { z: true, src: ["Koramangala 6th Block", "Outside a flat that moved to Hyderabad", "", "Dec 2025"] }],
+  [88, "Ra", "Radium", "Rat Trap", "A cage trap beside the pile, baited with a vada. The vada is gone. The cage is open. The rat won.", "Wire cage, a vada stub, a trap that did not, footprints", "Reset it. Lose again.",
+    { bg: "grey", gr: "kaapi", set: ["window2"], obj: [["rattrap", 50], ["bag", 70, "black", .8]] },
+    { src: ["Chickpete", "Behind the godown", "", "Jun 2025"] }],
+  [89, "Ac", "Actinium", "AC Unit", "An outdoor AC unit on the footpath, fan facing up, like it is waiting for a lift. The pipe still drips.", "AC outdoor unit, copper pipe, a drip, a receipt from the installer", "The copper is gone by morning.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["ac", 50], ["box", 70, "beige", "", .8]] },
+    { src: ["Marathahalli", "Service lane behind the showroom", "", "Apr 2026"] }],
+  [90, "Th", "Thorium", "Thermocol", "Packing foam, broken into pieces, blowing down the lane like snow for a city that has never seen snow.", "Thermocol blocks, white beads, a TV-shaped gap, wind", "Do not chase it. It wins.",
+    { bg: "sky", gr: "grey", set: ["clouds"], obj: [["thermocol", 46], ["boxes", 70]] },
+    { z: true, src: ["Whitefield", "Delivery day, every apartment", "", "May 2025"] }],
+  [91, "Pa", "Protactinium", "Paan Stain", "The red splash on a white wall, at exactly mouth height from a moving bike. Precision. Tradition.", "Paan spit, a white wall, a 'Do Not Spit' sign, the spit on the sign", "Lean on a different wall.",
+    { bg: "ivory", gr: "grey", set: ["wall"], zoom: 1.2, obj: [["wallstain", 44], ["wallstain", 64], ["sign", 56, "white", ["DO NOT", "SPIT"], 20, 12, 0]] },
+    { src: ["Avenue Road", "Compound wall, under the sign", "", "Feb 2025"] }],
+  [92, "U", "Uranium", "Umbrella, Inside Out", "A three-fold umbrella after one gust on Residency Road. Spokes up, cloth down, still holding the shape of surrender.", "Black umbrella, bent spokes, a button, rain", "Buy the next one from the man who appears when it rains.",
+    { bg: "grey", gr: "sky", set: ["clouds"], obj: [["umbrella", 50], ["puddle", 50, "sky", 16]] },
+    { src: ["Residency Road", "Pavement, first monsoon week", "", "Jun 2025"] }],
+  [93, "Np", "Neptunium", "No Parking Board", "A homemade sign. 'NO PARKING IN FRONT OF GATE.' Written on a plank, placed in front of the gate, with a car parked on it.", "Wooden plank, red paint, a spelling, a parked car", "Park elsewhere. The board means it.",
+    { bg: "beige", gr: "grey", set: ["window"], zoom: 1.3, obj: [["sign", 50, "white", ["NO PARKING", "INFRONT GATE"], 30, 14, 6]] },
+    { z: true, src: ["Vijayanagar", "Every gate, every lane", "", "Jan 2025"] }],
+  [94, "Pu", "Plutonium", "Puncture Tubes", "Inner tubes hung on a rope outside the puncture shop, patched a dozen times, black and swinging.", "Rubber tubes, patches, a bucket of water, a bike on its side", "Watch the man find the hole. It is a skill.",
+    { bg: "kaapi", gr: "grey", set: ["signs"], obj: [["tubes", 50], ["tyre", 70, false]] },
+    { src: ["Mysore Road", "Puncture shop, under the tree", "", "Jul 2025"] }],
+  [95, "Am", "Americium", "Amazon Box", "A cardboard box with the smile tape, flattened by a scooter, outside a PG. Something arrived. Something always arrives.", "Cardboard box, smile tape, bubble wrap, a return label", "Pop the bubble wrap. You deserve it.",
+    { bg: "beige", gr: "grey", set: ["window2"], obj: [["box", 46, "beige", "", 1.2], ["boxes", 70]] },
+    { z: true, src: ["Marathahalli", "PG gate, Monday morning", "", "Sep 2025"] }],
+  [96, "Cm", "Curium", "Cycle, Minus Wheel", "A cycle chained to a pole with one wheel. The other wheel left in 2023. The lock is still doing its job.", "Cycle frame, one wheel, a rusted lock, a pole", "Check the lock. It is the only working part.",
+    { bg: "sky", gr: "grey", set: ["window"], obj: [["cycle", 50], ["pole", 70]] },
+    { src: ["Richmond Town", "Pole outside the school", "", "Feb 2026"] }],
+  [97, "Bk", "Berkelium", "Bakery Box", "An Iyengar bakery box, string still on, empty but for crumbs of honey cake and one dilkush edge.", "Cardboard box, cotton string, honey cake crumbs, a dilkush edge", "Eat the edge. It is the best part.",
+    { bg: "haldi", gr: "beige", set: ["window2"], obj: [["box", 50, "ivory", "BAKERY", 1.1], ["cup", 70, "white", .8]] },
+    { src: ["Malleshwaram", "Outside the bakery, 5 pm", "", "Mar 2025"] }],
+  [98, "Cf", "Californium", "Cable Spool", "A wooden spool the size of a table, left by the fibre crew. By evening it is a table. By weekend it is a carrom board.", "Wooden spool, cable stub, a chai glass, a carrom striker", "Join the game. Lose gracefully.",
+    { bg: "peach", gr: "grey", set: ["skyline"], obj: [["spool", 44], ["cups", 70]] },
+    { z: true, src: ["Thanisandra", "Side road, after the fibre work", "", "Oct 2025"] }],
+  [99, "Es", "Einsteinium", "Egg Shells", "Shells outside the omelette cart, white crescents in a semicircle, crunching under the next customer.", "Egg shells, a bread crust, onion skins, a gas stove", "Order a double. The pile grows.",
+    { bg: "night", gr: "kaapi", set: ["moon", "signs"], zoom: 1.5, obj: [["eggs", 46], ["cylinder", 64, "red"]] },
+    { src: ["Shivajinagar", "Omelette cart, 11 pm", "", "Aug 2025"] }],
+  [100, "Fm", "Fermium", "Face Mask", "A surgical mask on the road, blue side up, straps out. Three years late. Still here.", "Blue mask, elastic straps, a nose wire, dust", "Leave it. It is a fossil now.",
+    { bg: "sky", gr: "grey", set: ["sun"], zoom: 1.7, obj: [["mask", 48], ["glove", 62]] },
+    { src: ["Malleshwaram", "Outside the pharmacy", "", "Jan 2025"] }],
+  [101, "Md", "Mendelevium", "Mattress, Dumped", "A single mattress propped on a lamp post, stained in the shape of a decade. The lamp post is now a bedroom.", "Foam mattress, a floral cover, a stain, a lamp post", "Do not sit. Do not lie. Do not.",
+    { bg: "beige", gr: "grey", set: ["window"], obj: [["mattress", 50, "sky"], ["pole", 71]] },
+    { z: true, src: ["BTM Layout", "PG lane, end of month", "", "Apr 2025"] }],
+  [102, "No", "Nobelium", "Notice, Official", "A BBMP notice pasted on the wall, torn at the bottom, stamped, unreadable, and important.", "A4 notice, a stamp, glue, a torn corner", "Photograph it. Someone will ask.",
+    { bg: "beige", gr: "grey", set: ["stickers"], obj: [["papers", 67]] },
+    { src: ["Shanthinagar", "Wall outside the ward office", "", "May 2025"] }],
+  [103, "Lr", "Lawrencium", "Lock, Rusted", "A padlock on a grill gate that has not opened in years. Nobody has the key. Nobody needs it.", "Padlock, rust, a grill gate, a notice behind it", "Do not try. People have.",
+    { bg: "grey", gr: "beige", set: ["window2"], obj: [["lock", 50], ["gate", 50]] },
+    { src: ["Cottonpet", "Shuttered shop, since the owner moved", "", "Jun 2025"] }],
+  [104, "Rf", "Rutherfordium", "Roof Sheet", "A tin roof sheet blown off in the storm, bent in half, leaning on a wall. The chai stall it covered is still open.", "Tin sheet, rust spots, two nails, a chai stall under the sky", "Do not stand under it. It flies.",
+    { bg: "grey", gr: "beige", set: ["clouds"], obj: [["sheet", 50], ["cups", 70]] },
+    { src: ["Kengeri", "Stall near the bus stop, after the storm", "", "May 2026"] }],
+  [105, "Db", "Dubnium", "Dustbin, BBMP", "Two bins, green and blue. The green one is full of plastic. The blue one is full of banana peels. The system is a suggestion.", "Green bin, blue bin, a lid on the ground, a crow checking both", "Read the label. Then ignore it like everyone else.",
+    { bg: "green", gr: "grey", set: ["skyline"], obj: [["bins", 50], ["crow", 70, 44]] },
+    { src: ["Jayanagar", "Outside the park gate", "", "Jan 2025"] }],
+  [106, "Sg", "Seaborgium", "Sugarcane Bagasse", "Crushed cane outside the juice stall. Yellow, wet, sweet, and a wasp paradise by afternoon.", "Crushed cane, a lemon half, ginger, wasps", "Drink early. Wasps have a shift too.",
+    { bg: "haldi", gr: "kaapi", set: ["sun"], obj: [["bagasse", 50], ["cup", 70, "white", .8]] },
+    { src: ["Yelahanka", "Juice stall near the signal, April", "", "Apr 2026"] }],
+  [107, "Bh", "Bohrium", "Bike Helmet", "A single helmet on a divider. Not dropped, placed. The owner rode off without it, which explains a lot.", "Black helmet, a cracked visor, a sticker, a divider", "Leave it. He will remember at the signal.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["helmet", 50], ["cone", 69, "orange", .8]] },
+    { z: true, src: ["Hosur Road", "Divider near the signal", "", "Feb 2025"] }],
+  [108, "Hs", "Hassium", "Hose, Severed", "A green garden hose cut in half, one half still attached to the tap, water running into the road at 7 am.", "Green hose, a brass tap, running water, a man washing a car", "The car is cleaner than the road.",
+    { bg: "mint", gr: "grey", set: ["plants"], obj: [["hose", 50], ["puddle", 70, "sky", 16]] },
+    { src: ["Sadashivanagar", "Compound tap, every morning", "", "Mar 2025"] }],
+  [109, "Mt", "Meitnerium", "Metro Barricade", "A yellow barricade that says METRO WORK on a road where metro work finished in 2019. It is a landmark now.", "Yellow barricade, black stripes, a faded sign, a tea stall using it as a wall", "Take a left at the barricade. Everyone does.",
+    { bg: "yellow", gr: "grey", set: ["skyline"], obj: [["barricade", 50], ["cone", 71, "orange", .8, true]] },
+    { z: true, src: ["Kanakapura Road", "Median, since the line opened", "", "Jul 2025"] }],
+  [110, "Ds", "Darmstadtium", "Drain Slab", "The drain cover is missing. In its place, a plank, a branch and a traffic cone, arranged by neighbours into a shrine of caution.", "Open drain, a plank, a branch, a cone", "The cone is doing its best.",
+    { bg: "grey", gr: "beige", set: ["skyline"], obj: [["slab", 46], ["cone", 69, "orange", .9]] },
+    { src: ["Hennur Main Road", "Outside the supermarket, two months", "", "Sep 2025"] }],
+  [111, "Rg", "Roentgenium", "Rangoli Powder", "Rangoli from the morning, driven over by the afternoon, smeared into a pink and white tyre track down the lane.", "Rangoli powder, a tyre track, a flower, a doorstep", "Step around it till noon. After that it is the road's.",
+    { bg: "pink", gr: "beige", set: ["diyas"], zoom: 1.6, obj: [["rangoli", 50]] },
+    { src: ["Basavanagudi", "Doorstep, every morning, gone by two", "", "Jan 2026"] }],
+  [112, "Cn", "Copernicium", "Cone, Traffic", "An orange cone on its side in a lane where no work is happening. It fell off a truck, or it is on strike.", "Orange cone, a reflective strip, dust, no work in sight", "Stand it up. Feel civic.",
+    { bg: "orange", gr: "grey", set: ["skyline"], obj: [["cone", 50, "orange", 1.1, true], ["cone", 69, "orange", .8]] },
+    { z: true, src: ["Outer Ring Road", "Service lane, no explanation", "", "Jun 2025"] }],
+  [113, "Nh", "Nihonium", "Nail Hedgehog", "A tree trunk full of nails from a decade of posters. The posters are gone. The nails stay. The tree is a hedgehog now.", "Peepal trunk, two hundred nails, a tuition flyer, a wire", "Do not lean. It is sharp.",
+    { bg: "green", gr: "kaapi", set: ["sun"], obj: [["tree", 50, true], ["papers", 70]] },
+    { src: ["Hanumanthanagar", "Tree outside the bus stop", "", "Aug 2025"] }],
+  [114, "Fl", "Flerovium", "Flex Banner", "Happy Birthday Anna. Thirty feet wide, one face, two hundred small faces, strung across the junction for a man who is forty.", "Flex sheet, bamboo poles, a face, a sag", "Find the birthday boy. Top left, biggest.",
+    { bg: "sky", gr: "grey", set: ["skyline"], obj: [["flex", 50, "yellow", ["HAPPY", "BIRTHDAY"], 40, 4]] },
+    { z: true, src: ["Chamrajpet", "Across the main road, three days", "", "Mar 2026"] }],
+  [115, "Mc", "Moscovium", "Mosquito Coil", "The tin stand and ash spiral outside the watchman's cabin. One coil a night. The mosquitoes attend anyway.", "Coil stand, ash spiral, a matchbox, a mosquito", "Light it at six. Lose by eight.",
+    { bg: "night", gr: "grey", set: ["moon"], zoom: 1.3, obj: [["coil", 44], ["smoke", 44, 68, "paper"], ["chair", 66, "white", false]] },
+    { src: ["Hebbal", "Security cabin, dusk", "", "Oct 2025"] }],
+  [116, "Lv", "Livermorium", "Lost Visiting Card", "A visiting card on the road. Regional Manager. Two numbers. A fold where a wallet used to be.", "Visiting card, a logo, two numbers, a shoe print", "Call it. Tell him where it is.",
+    { bg: "ivory", gr: "grey", set: ["signs"], zoom: 1.6, obj: [["card", 48], ["receipts", 60]] },
+    { src: ["MG Road", "Outside the old office block", "", "Feb 2025"] }],
+  [117, "Ts", "Tennessine", "Tissue Snow", "Paper napkins outside the chaat stall, blown into a drift along the wall. Every one has one wipe on it.", "Paper napkins, chutney, a wind, a sweeper's sigh", "Take two. Return none.",
+    { bg: "sky", gr: "beige", set: ["bunting"], zoom: 1.4, obj: [["tissues", 48], ["dona", 66]] },
+    { src: ["Jayanagar 4th Block", "Outside the chaat stall, evening", "", "Dec 2025"] }],
+  [118, "Og", "Oganesson", "Old Gate", "A rusted iron gate, off its hinge, leaning against the new compound wall it was replaced by. The house kept it out of guilt.", "Iron gate, rust, a hinge, a bougainvillea trying", "Push it. Gently. It remembers.",
+    { bg: "peach", gr: "kaapi", set: ["plants"], obj: [["gate", 50]] },
+    { src: ["Malleshwaram", "Old house, 11th Cross", "", "Oct 2026"] }],
+];
+
+// The story of the year, garbage edition
+const G_STORY = [
+  { title: "The bag changed <em>colour.</em>", text: "Black covers went. Yellow covers came. Then the paper bag arrived in ten minutes and left in twelve.", syms: ["Yb", "Pb", "Am"], ba: [{ bg: "beige", gr: "grey", set: ["skyline"], obj: [["bag", 42, "black", 1.1], ["bag", 60, "black", .8]] }, "Pb", "Black cover", "Paper bag"] },
+  { title: "Dinner stopped coming on a <em>leaf.</em>", text: "The banana leaf folded itself away. Dinner now arrives in a foil box, inside a red bag, at 1 am.", syms: ["B", "Zn", "Nb"], ba: [{ bg: "green", gr: "kaapi", set: ["plants"], obj: [["banana", 50], ["cup", 69, "white", .8]] }, "Zn", "Banana leaf", "Red bag"] },
+  { title: "The lake learned to <em>foam.</em>", text: "Bellandur blows bubbles across the road in the rain. Ulsoor takes the idols. Both are still called lakes.", syms: ["Be", "Ga", "Sb"], ba: [{ bg: "sky", gr: "sky", set: ["sun", "waves"], obj: [["pigeon", 70, 60]] }, "Be", "Lake", "Foam"] },
+  { interlude: true, title: "And the footpath grew a <em>sofa.</em>", syms: ["S"], ba: [{ bg: "peach", gr: "grey", set: ["window"], obj: [["cup", 68, "white", .8]] }, "S", "Footpath", "Living room"] },
+  { title: "The festival left its <em>flowers.</em>", text: "Marigold on Monday. Ash on Diwali morning. Rangoli under the tyres by two. The city celebrates, then sweeps.", syms: ["Fe", "Cr", "Rg"] },
+  { title: "The city kept building. The city kept <em>not finishing.</em>", text: "Rebar at ankle height. A barricade from 2019. A slab that tilts. Nothing is done, and nothing is removed.", syms: ["Ir", "Mt", "F"], ba: [{ bg: "beige", gr: "grey", set: ["skyline"], obj: [["cone", 70, "orange", .8]] }, "F", "Footpath", "Trapdoor"] },
+];
+
+// Slang, translated into garbage
+const G_SLANG = [
+  ["Ate", "verb", "Internet", "Did it perfectly. If it was really good, they 'left no crumbs'.", "He", "Midnight cake on the flyover. They ate. They left crumbs."],
+  ["Main character energy", "noun", "Internet", "Acting like the whole story is about you.", "Fl", "Thirty feet of your own face across the junction. Main character energy."],
+  ["Delulu", "adjective", "Internet", "Lovingly delusional. Dreaming big on purpose.", "Np", "A plank that says NO PARKING, with a car on it. Delulu."],
+  ["It's giving…", "phrase", "Internet", "It's evoking something. Finish the sentence with the vibe.", "S", "Sofa, spring up, man eating lunch on it? It's giving living room."],
+  ["No cap", "phrase", "Internet", "No lie. Completely serious.", "Ba", "No cap, the bottle has a cap. Take it off before the bin."],
+  ["Era", "noun", "Internet", "A phase you're fully committed to.", "Dy", "Lights on till January 7. Christmas tree is in its leaning era."],
+  ["Jugaad", "noun", "Desi", "A clever, make-it-work hack.", "P", "Three legs and a brick. Peak jugaad. The chair holds."],
+  ["Aura points", "noun", "Internet", "An invisible score for how cool you seem.", "O", "Finished the bottle, screwed the cap back on, placed it upright. Plus a thousand aura."],
+  ["Rizz", "noun", "Internet", "Charm. The ability to pull people in.", "Mn", "No head, no arms, facing traffic. She still has rizz."],
+  ["Understood the assignment", "phrase", "Internet", "Got the brief exactly right.", "Db", "Plastic in the green bin, peels in the blue. Did not understand the assignment."],
+  ["Girl math", "noun", "Internet", "Logic that makes a purchase feel free.", "Pb", "A banana, delivered in ten minutes. Girl math says the bag was free."],
+  ["Mogging", "verb", "Internet", "Outshining everyone standing next to you.", "H", "Bare frame, no ad, two crows. Still mogging the whole flyover."],
+  ["Pookie", "noun", "Internet", "Someone or something sweet and lovable.", "Fr", "Fridge door open, dog asleep in the cold. Pookie behaviour."],
+  ["Slay", "verb", "Internet", "To do something brilliantly, usually with style.", "Pa", "Mouth height, from a moving bike, onto the sign. Slay. Unfortunately."],
+  ["Drip", "noun", "Internet", "A seriously good outfit or set of accessories.", "Ac", "Copper pipe, still dripping. That's drip. Literally."],
+  ["Paisa vasool", "phrase", "Desi", "Worth every rupee you paid.", "Sr", "Copper, ask. Paper, 14. The raddi board is the only honest market."],
+  ["Fit check", "noun", "Internet", "Showing off today's outfit, usually on camera.", "Rb", "Fit check: one Hawaii slipper, size 8. The other is in a different ward."],
+  ["Bindaas", "adjective", "Desi", "Carefree and fearless.", "Bh", "Rode off without the helmet. Bindaas. Also, the problem."],
+  ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Tm", "Steel tiffin on a wall since Monday. Lowkey the scariest thing in JP Nagar."],
+  ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "Th", "Packing foam blowing down the lane. Snowcore, Whitefield edition."],
+];
+
+const G_PICKS = ["S", "Be", "Tm", "Np", "Rb", "Fl", "Db", "Og"];
+
+// Copy that changes with the edition. Keys match data-t attributes in the page.
+const G_COPY = {
+  curtainOf: "elements of Bangalore garbage",
+  wordmark: "The Garbage Elements",
+  keptLbl: "Pile",
+  navGenz: "Slang", navSources: "Field Notes", menuGenz: "Slang", menuSources: "Field Notes", menuWardrobe: "Pile",
+  coverKicker: "The cover story · 118 finds",
+  coverH1: 'The Periodic Table <span class="l2">of <em>Bangalore Garbage</em></span>',
+  coverLede: "Every real element symbol, matched to something we found on a Bangalore footpath in 2025 and 2026.",
+  tableSearch: "Search a find or symbol",
+  storyH2: "What Bangalore <em>threw</em> this year.",
+  storyLede: "Five things we kept finding on footpaths between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.",
+  labH2: "Mix your own <em>pile.</em>",
+  labLede: "Drop up to three elements into the flask. We'll write the formula and name the pile.",
+  genzKicker: "Slang",
+  genzLede: "Twenty words, translated into garbage. Tap a card to flip it. The meanings and examples are ours. The finds are real.",
+  picksLede: "The finds we'd bet on still being there next week.",
+  famH2: "Ten halls, <em>one footpath.</em>",
+  srcKicker: "Field Notes",
+  srcH2: "Where we <em>saw it.</em>",
+  srcLede: "Every find on the table was seen on a Bangalore road in 2025–26. Here is where, and when.",
+  wardKicker: "Your Pile",
+  wardH2: "The finds <em>you kept.</em>",
+  colophonWm: "The Garbage Elements",
+  colophonP: "The symbols, numbers and families are the real periodic table. Every find was seen on a Bangalore road in 2025–26, listed under Field Notes. Notes, slang and drawings are ours. The city did the rest.",
+  palSearch: "Search finds, symbols, neighbourhoods",
+};
+
 // ---------- Data ----------
 const FAMILIES = {
   alkali: "Alkali metals", alkaline: "Alkaline earth", transition: "Transition metals", post: "Post-transition",
@@ -1401,7 +1987,46 @@ function place(n) {
   }
 }
 const ROMAN = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"];
-const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
+
+// ---------- Edition: fashion or garbage ----------
+// The URL wins (?ed=garbage), then the last choice saved in this browser.
+const ED_KEYS = ["fashion", "garbage"];
+const edFromUrl = new URLSearchParams(location.search).get("ed");
+let edKey = ED_KEYS.includes(edFromUrl) ? edFromUrl : null;
+if (!edKey) { try { edKey = localStorage.getItem("ptif-edition"); } catch (err) {} }
+if (!ED_KEYS.includes(edKey)) edKey = "fashion";
+const isG = edKey === "garbage";
+const ED = isG ? {
+  key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
+  flag: { label: "Peak Bangalore", short: "PEAK BLR", led: "Peak Bangalore" },
+  tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
+  word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table",
+} : {
+  key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
+  flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
+  tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
+  word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
+};
+document.documentElement.dataset.ed = ED.key;
+try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {}
+if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_COPY[el.dataset.t]; if (v != null) el.innerHTML = v; }
+if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
+document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === ED.key)));
+document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.insertAdjacentHTML("beforeend", `${ED.otherLabel} <span class="arr">→</span>`); });
+function switchEdition(key) {
+  if (!ED_KEYS.includes(key) || key === ED.key) return;
+  try { localStorage.setItem("ptif-edition", key); } catch (err) {}
+  const u = new URL(location.href); u.searchParams.set("ed", key); u.hash = "";
+  document.documentElement.classList.add("switching");
+  setTimeout(() => location.assign(u.toString()), 260);
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-ed], [data-ed-switch]"); if (!b) return;
+  switchEdition(b.dataset.ed || ED.other);
+});
+
+const ELEMENTS_IN = isG ? GARBAGE : ELEMENTS;
+const els = ELEMENTS_IN.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
 const get = (s) => bySym.get(String(s).toLowerCase());
 const $ = (id) => document.getElementById(id);
@@ -1442,7 +2067,11 @@ function locate(piece) {
 }
 function hotspots(e) {
   const f = e.art.figs && e.art.figs[0];
-  if (!f) return [];
+  if (!f) {
+    const anchors = (e.art.obj || []).map(o => { const a = Array.isArray(o) ? o : [o]; return [typeof a[1] === "number" ? a[1] : 50, 72]; });
+    if (!anchors.length) return [];
+    return e.pieces.split(",").map(p => p.trim()).map((p, i) => { const [ax] = anchors[i % anchors.length]; return { p, i, loc: "obj", x: ax + (i >= anchors.length ? 6 : 0), y: 72 - Math.floor(i / anchors.length) * 8 }; });
+  }
   const x0 = f.x ?? 50, s = f.s ?? 1, flip = f.flip ? -1 : 1;
   const list = e.pieces.split(",").map(p => p.trim()).map((p, i) => ({ p, i, loc: locate(p) })).filter(o => o.loc);
   const byLoc = {};
@@ -1456,7 +2085,7 @@ function hotspots(e) {
 }
 
 // ---------- Shared markup ----------
-const tileHTML = (e, id) => `${e.z ? `<span class="zdot" title="Gen Z"></span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
+const tileHTML = (e, id) => `${e.z ? `<span class="zdot" title="${ED.flag.label}"></span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
 let uid = 0;
 function cardHTML(e, opts = {}) {
   const hs = opts.hot ? hotspots(e) : [];
@@ -1533,11 +2162,11 @@ $("soundBtn").addEventListener("click", () => {
 });
 
 // ---------- Saved ----------
-let saved = store.get("ptif-saved", []);
+let saved = store.get(isG ? "ptif-saved-garbage" : "ptif-saved", []);
 const isSaved = (e) => saved.includes(e.sym);
 function toggleSave(e) {
   saved = isSaved(e) ? saved.filter(s => s !== e.sym) : [...saved, e.sym];
-  store.set("ptif-saved", saved);
+  store.set(isG ? "ptif-saved-garbage" : "ptif-saved", saved);
   toast(isSaved(e) ? `Saved · ${e.sym} ${e.trend}` : `Removed · ${e.sym} ${e.trend}`);
   syncSaved();
 }
@@ -1582,8 +2211,8 @@ key.innerHTML = `
   <div class="how" aria-hidden="true">
     <div class="el ${sample.fam}">${tileHTML(sample, "k" + sample.sym)}</div>
     <p>Number &amp; symbol<span>26, Fe, as on any periodic table</span></p>
-    <p>The drawing<span>the trend, illustrated</span></p>
-    <p>Trend<span>Fe stands for Fairy-tale Everyday</span></p>
+    <p>The drawing<span>the ${ED.noun.toLowerCase()}, illustrated</span></p>
+    <p>${ED.noun}<span>${sample.sym} stands for ${sample.trend}</span></p>
   </div>
   <ul class="keylist">${Object.entries(FAMILIES).map(([k, name]) => `<li class="${k}">${name}<span>${counts[k]}</span></li>`).join("")}</ul>`;
 const narrow = matchMedia("(max-width: 980px)");
@@ -1592,7 +2221,7 @@ narrow.addEventListener("change", placeKey);
 placeKey();
 
 let activeFam = null, zOnly = false;
-$("filters").innerHTML = `<button type="button" class="filt" data-fam="" aria-pressed="true">All</button><button type="button" class="filt z" data-z aria-pressed="false"><i></i>Gen Z</button>` +
+$("filters").innerHTML = `<button type="button" class="filt" data-fam="" aria-pressed="true">All</button><button type="button" class="filt z" data-z aria-pressed="false"><i></i>${ED.flag.label}</button>` +
   Object.entries(FAMILIES).map(([k, name]) => `<button type="button" class="filt ${k}" data-fam="${k}" aria-pressed="false"><i></i>${name}</button>`).join("");
 $("filters").addEventListener("click", ev => {
   const b = ev.target.closest(".filt"); if (!b) return;
@@ -1624,7 +2253,7 @@ for (const [n, t] of tiles) {
     grid.classList.add("hovering");
     for (const o of tiles.values()) o.classList.toggle("rc", o.dataset.row === t.dataset.row || o.dataset.col === t.dataset.col);
     if (!fine) return;
-    peek.innerHTML = `<img src="${sceneImg(e)}" alt=""><p class="kicker">No. ${e.n} · ${e.el}${e.z ? " · Gen Z" : ""}</p><b>${e.trend}</b><p>${e.desc}</p>`;
+    peek.innerHTML = `<img src="${sceneImg(e)}" alt=""><p class="kicker">No. ${e.n} · ${e.el}${e.z ? " · " + ED.flag.label : ""}</p><b>${e.trend}</b><p>${e.desc}</p>`;
     peek.classList.add("on");
   });
   t.addEventListener("pointermove", ev => {
@@ -1776,7 +2405,7 @@ $("toTable").addEventListener("click", orbitToTable);
 {
   const e = els[Math.floor(Date.now() / 864e5) % els.length];
   const t = $("today");
-  t.innerHTML = `<img src="${sceneImg(e)}" alt=""><span><span class="kicker">Element of the day</span><b>${e.sym} · ${e.trend}</b><small>${e.src ? "via " + e.src[0] : e.el}</small></span>`;
+  t.innerHTML = `<img src="${sceneImg(e)}" alt=""><span><span class="kicker">Element of the day</span><b>${e.sym} · ${e.trend}</b><small>${e.src ? (isG ? "" : "via ") + e.src[0] : e.el}</small></span>`;
   t.setAttribute("aria-label", `Element of the day: ${e.trend}`);
   t.addEventListener("click", () => open(e));
 }
@@ -1785,7 +2414,7 @@ $("toTable").addEventListener("click", orbitToTable);
 const CLEAN_GIRL = { bg: "cream", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "palazzo", l: "beige", h: "lowbun", a: ["hoops"], ac: "gold", hold: "coffee", hc2: "beige", shoe: "jutti" }] };
 const RED_BRIDE = { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ top: "blouse", c: "red", pt: "zari", low: "lehenga", l: "red", pl: "zari", b: "gold", lay: ["veil"], y: "red", h: "bun", a: ["matha", "bignath", "choker"] }] };
 const ALL_PINK = { bg: "pink", gr: "hot", set: ["sparkles"], figs: [{ top: "corset", c: "hot", low: "skirt", l: "hot", h: "pony", hc: "yellow", a: ["hoops", "scrunchie"], ac: "white", shoe: "heel", hold: "clutch", hc2: "white" }] };
-const STORY = [
+const F_STORY = [
   { title: "Craft beat <em>the logo.</em>", text: "Visible handwork became the status symbol: chikankari, crochet, zari and handloom, worn without a single logo.", syms: ["H", "Nb", "Zr"] },
   { title: "Gen Z found the best vintage store <em>at home.</em>", text: "Instead of resale apps, young Indians raided their grandmothers' almirahs, then took screenshots to the local tailor.", syms: ["Na", "Tm", "U"] },
   { title: "Goodbye clean girl. Hello, <em>Indian Baddie.</em>", text: "The slick bun and bare skin gave way to kajal, bindis, kamarbandhs and mirror work, loud on purpose.", syms: ["Bk", "C", "Bi"], ba: [CLEAN_GIRL, "C", "Clean girl", "Indian Baddie"] },
@@ -1793,6 +2422,7 @@ const STORY = [
   { title: "The saree stopped waiting <em>for weddings.</em>", text: "Worn to work, to college and to concerts: pre-draped, with trainers, with a shirt as the blouse.", syms: ["Se", "Sr", "Pd"] },
   { title: "Weddings went <em>moody.</em>", text: "Plum, merlot and fig replaced bridal red, gothic alt-brides arrived, and the cocktail blazer stole couture week.", syms: ["Mo", "Al", "Zn"], ba: [RED_BRIDE, "Mo", "Bridal red", "Moody opulence"] },
 ];
+const STORY = isG ? G_STORY : F_STORY;
 const baHTML = ([before, afterSym, lb, la], id) => {
   const after = get(afterSym);
   return `<div class="ba-wrap"><div class="ba" id="${id}"><img src="${specImg("before" + id, before, "0 0 100 100")}" alt="${lb}"><img class="after" src="${sceneImg(after, "0 0 100 100")}" alt="${la}"><span class="line"></span><span class="knob" aria-hidden="true">↔</span><span class="tag l">Then · ${lb}</span><span class="tag r">Now · ${la}</span><input type="range" min="0" max="100" value="50" aria-label="Compare ${lb} and ${la}"></div><p class="ba-cap">Drag to compare</p></div>`;
@@ -1800,7 +2430,7 @@ const baHTML = ([before, afterSym, lb, la], id) => {
 let chNo = 0;
 $("chapters").innerHTML = STORY.map((c, i) => {
   const lead = get(c.syms[0]);
-  const via = lead.src ? `<p class="via">As reported by <a href="${lead.src[2]}" target="_blank" rel="noopener">${lead.src[0]}</a>, ${lead.src[3]}</p>` : "";
+  const via = lead.src ? `<p class="via">${ED.via(lead.src)}</p>` : "";
   if (c.interlude) return `<div class="interlude"><p class="kicker">Interlude · Colour</p><h3>${c.title}</h3>${baHTML(c.ba, "ba" + i)}${via}</div>`;
   chNo++;
   return `<article class="chapter">
@@ -1866,7 +2496,7 @@ $("labCopy").addEventListener("click", async () => {
 renderMix();
 
 // ---------- Gen Z slang × fashion ----------
-const SLANG = [
+const F_SLANG = [
   ["Ate", "verb", "Internet", "Did it perfectly. If it was really good, they 'left no crumbs'.", "Ho", "Pre-draped saree, corset blouse, concert night. She ate."],
   ["Main character energy", "noun", "Internet", "Dressing like the whole story is about you.", "C", "Mirror-work bralette with cargos and a bold bindi? Main character energy."],
   ["Delulu", "adjective", "Internet", "Lovingly delusional. Dreaming big on purpose.", "Fe", "Tulle skirt to a Monday meeting. Delulu is the solulu."],
@@ -1888,6 +2518,7 @@ const SLANG = [
   ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Li", "Lowkey carrying a real paperback everywhere."],
   ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "B", "Football jersey plus hair bow: blokette, the newest core."],
 ];
+const SLANG = isG ? G_SLANG : F_SLANG;
 const slangEl = $("slang");
 slangEl.innerHTML = SLANG.map(([w, pos, origin, mean, sym, line], i) => {
   const e = get(sym);
@@ -1922,7 +2553,7 @@ $("flipAll").addEventListener("click", ev => {
 }
 
 // ---------- Editor's Picks ----------
-const PICKS = ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
+const PICKS = isG ? G_PICKS : ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
 const pickHTML = (e, i) => `<button type="button" class="pick" data-sym="${e.sym}"><span class="pn">No. ${ROMAN[i] || i + 1}</span>${cardHTML(e)}<div><p class="kicker">${e.el} · ${e.src ? e.src[0] : FAMILIES[e.fam]}</p><h3>${e.trend}</h3><p>${e.desc}</p></div></button>`;
 $("picks").innerHTML = PICKS.map(get).map(pickHTML).join("");
 $("picks").addEventListener("click", ev => { const p = ev.target.closest(".pick"); if (p) open(get(p.dataset.sym)); });
@@ -1953,7 +2584,7 @@ function inkSize() {
 }
 function inkDraw() {
   ictx.clearRect(0, 0, inkW, inkH);
-  const word = "ELEMENTAL", fs = Math.min(inkH * 0.95, inkW / 5.4), cx = inkW / 2, cy = inkH * 0.56;
+  const word = ED.word, fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
   ictx.font = `400 ${fs}px "Bodoni Moda", Didot, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
   ictx.fillStyle = "#151515"; ictx.fillText(word, cx, cy);
   if (!blobs.length) return;
@@ -1985,7 +2616,7 @@ addEventListener("resize", () => { if (inkRAF) inkSize(); });
 if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
 
 // ---------- Sources ----------
-$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">Gen Z</span>` : ""}</span>${e.src ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a><span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
+$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a>` : `<span class="note">${e.src[0]} — ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
 $("srclist").addEventListener("click", ev => { const b = ev.target.closest(".t"); if (b) open(get(b.dataset.sym)); });
 
 // ---------- Wardrobe ----------
@@ -2012,8 +2643,8 @@ function render(e) {
       <p class="desc">${e.desc}</p>
       <dl class="facts">
         <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
-        <dt>Try it</dt><dd>${e.tip}</dd>
-        ${s ? `<dt>Source</dt><dd><a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>, ${s[3]}${e.z ? " · Gen Z-led" : ""}</dd>` : ""}
+        <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
       <div class="ex-actions"><button type="button" class="btn ghost" data-save="${e.sym}" aria-pressed="false">Save</button><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
@@ -2069,7 +2700,7 @@ async function shareImage(e) {
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
-  ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText("THE FASHION ELEMENTS  ·  ISSUE 01", W / 2, 120);
+  ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
   // Card
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
@@ -2092,7 +2723,7 @@ async function shareImage(e) {
   ctx.font = 'italic 42px "Cormorant Garamond", serif'; ctx.fillStyle = "#3A3833";
   y = wrap(ctx, e.desc, 90, y + 70, W - 180, 52);
   ctx.font = '600 24px "Archivo Narrow", sans-serif'; ctx.fillStyle = "#77716A";
-  if (e.src) ctx.fillText(`AS SEEN IN ${e.src[0].toUpperCase()} · ${e.src[3].toUpperCase()}`, 90, Math.min(H - 70, y + 80));
+  if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
   c.toBlob(async blob => {
     if (!blob) return toast("Couldn't make the image");
     const url = URL.createObjectURL(blob), file = new File([blob], `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, { type: "image/png" });
@@ -2112,12 +2743,12 @@ function palRender() {
   const t = palq.value.trim().toLowerCase();
   palRes = !t ? PICKS.map(get)
     : els.map(e => {
-      const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? "gen z genz" : ""}`.toLowerCase();
+      const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? ED.flagSearch : ""}`.toLowerCase();
       const sc = e.sym.toLowerCase() === t ? 100 : e.trend.toLowerCase().startsWith(t) ? 60 : e.trend.toLowerCase().includes(t) ? 40 : e.el.toLowerCase().startsWith(t) ? 30 : hay.includes(t) ? 10 : 0;
       return [sc, e];
     }).filter(x => x[0]).sort((a, b) => b[0] - a[0]).slice(0, 10).map(x => x[1]);
   palSel = 0;
-  pallist.innerHTML = palRes.length ? palRes.map((e, i) => `<li role="option" class="${e.fam}" data-i="${i}" aria-selected="${i === 0}"><span class="ps">${e.sym}</span><span><span class="pt">${e.trend}</span><span class="pm">No. ${e.n} · ${e.el}${e.src ? " · " + e.src[0] : ""}</span></span>${e.z ? `<span class="pz">GEN Z</span>` : "<span></span>"}</li>`).join("")
+  pallist.innerHTML = palRes.length ? palRes.map((e, i) => `<li role="option" class="${e.fam}" data-i="${i}" aria-selected="${i === 0}"><span class="ps">${e.sym}</span><span><span class="pt">${e.trend}</span><span class="pm">No. ${e.n} · ${e.el}${e.src ? " · " + e.src[0] : ""}</span></span>${e.z ? `<span class="pz">${ED.flag.short}</span>` : "<span></span>"}</li>`).join("")
     : `<li class="none">No trend matches “${palq.value}”.</li>`;
 }
 function palMove(d) {
@@ -2157,7 +2788,7 @@ function show(v, opts = {}) {
   v === "cover" ? orbitStart() : orbitStop();
   v === "families" ? requestAnimationFrame(inkStart) : inkStop();
   if (v !== "table") stopPlay();
-  try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : "#" + v); } catch (err) {}
+  try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
 document.addEventListener("click", ev => {
   const t = ev.target.closest("[data-view]");
@@ -2176,7 +2807,7 @@ addEventListener("scroll", () => {
 // ---------- Opening curtain (once per visit) ----------
 function curtain() {
   let seen = false;
-  try { seen = sessionStorage.getItem("ptif-curtain") === "1"; sessionStorage.setItem("ptif-curtain", "1"); } catch (err) {}
+  try { seen = sessionStorage.getItem("ptif-curtain-" + ED.key) === "1"; sessionStorage.setItem("ptif-curtain-" + ED.key, "1"); } catch (err) {}
   if (seen || reduced) return;
   const el = $("curtain"), num = $("curtainCount");
   el.hidden = false;

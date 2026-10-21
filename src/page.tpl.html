@@ -75,6 +75,16 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .mast-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding-block: .85rem .6rem; }
 .issue { font: 600 .62rem var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 .wordmark { font: 500 1.3rem/1 var(--display); letter-spacing: .34em; text-transform: uppercase; text-decoration: none; white-space: nowrap; padding-left: .34em; cursor: pointer; background: none; border: 0; }
+.mast-left { display: flex; align-items: center; gap: 1.1rem; min-width: 0; }
+.edswitch { display: inline-flex; border: 1px solid var(--ink); border-radius: 2px; overflow: hidden; }
+.edswitch button { background: none; border: 0; cursor: pointer; padding: .38rem .7rem; font: 600 .6rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); transition: background .4s var(--ease), color .4s var(--ease); }
+.edswitch button + button { border-left: 1px solid var(--ink); }
+.edswitch button:hover { color: var(--ink); }
+.edswitch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+html[data-ed="garbage"] { --accent: #2F6B4F; }
+html.switching body { opacity: 0; transition: opacity .25s ease; }
+.menu-ed { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); display: grid; gap: .6rem; justify-items: start; }
+.src .note { color: var(--ink-2); }
 .mast-tools { justify-self: end; display: flex; gap: 1.2rem; align-items: center; }
 .tool { background: none; border: 0; padding: .3rem 0; cursor: pointer; font: 600 .62rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); display: inline-flex; gap: .4rem; align-items: center; }
 .tool:hover { color: var(--accent); }
@@ -456,6 +466,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 @media (max-width: 980px) {
   .mast-top { grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; }
   .issue { display: none; }
+  .mast-left { display: none; }
   .wordmark { font-size: .9rem; letter-spacing: .16em; padding-left: 0; justify-self: start; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .mast-tools { gap: .8rem; }
   .tool .lbl { display: none; }
@@ -500,16 +511,16 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 </style>
 
 <div class="curtain" id="curtain" hidden aria-hidden="true">
-  <div><p class="kicker">Issue 01 · Autumn/Winter 2026</p><p class="count" id="curtainCount">000</p><p class="of">elements of Indian fashion</p></div>
+  <div><p class="kicker">Issue 01 · Autumn/Winter 2026</p><p class="count" id="curtainCount">000</p><p class="of" data-t="curtainOf">elements of Indian fashion</p></div>
 </div>
 
 <header class="mast">
   <div class="mast-top band">
-    <span class="issue">Issue 01 · Autumn/Winter 2026</span>
-    <button type="button" class="wordmark" data-view="cover">The Fashion Elements</button>
+    <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
+    <button type="button" class="wordmark" data-view="cover" data-t="wordmark">The Fashion Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
-      <button type="button" class="tool" data-view="wardrobe"><span class="lbl">Wardrobe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg><span class="count" id="wcount">0</span></button>
+      <button type="button" class="tool" data-view="wardrobe"><span class="lbl" data-t="keptLbl">Wardrobe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg><span class="count" id="wcount">0</span></button>
       <button type="button" class="tool" id="soundBtn" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="soundWave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11" opacity=".25"/></svg><span class="lbl" id="soundLbl">Sound off</span></button>
       <button type="button" class="tool menu" id="openMenu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
@@ -519,10 +530,10 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" data-view="table">The Table</button>
     <button type="button" data-view="story">The Story</button>
     <button type="button" data-view="lab">The Lab</button>
-    <button type="button" data-view="genz">Gen Z</button>
+    <button type="button" data-view="genz" data-t="navGenz">Gen Z</button>
     <button type="button" data-view="picks">Editor's Picks</button>
     <button type="button" data-view="families">Families</button>
-    <button type="button" data-view="sources">Sources</button>
+    <button type="button" data-view="sources" data-t="navSources">Sources</button>
   </nav>
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
@@ -532,10 +543,10 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <div class="orbit" id="orbit">
       <div class="sphere" id="sphere"></div>
       <div class="cover-title">
-        <p class="kicker">The cover story · 118 trends</p>
-        <h1 id="h-cover">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
-        <p class="lede">Every real element symbol, matched to a trend the fashion press named in 2025 and 2026.</p>
-        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link" data-view="story">Read the story <span class="arr">→</span></button></div>
+        <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
+        <h1 id="h-cover" data-t="coverH1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
+        <p class="lede" data-t="coverLede">Every real element symbol, matched to a trend the fashion press named in 2025 and 2026.</p>
+        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link" data-view="story">Read the story <span class="arr">→</span></button><button type="button" class="link swap" data-ed-switch>See the garbage table <span class="arr">→</span></button></div>
       </div>
       <div class="cover-foot band">
         <button type="button" class="today" id="today"></button>
@@ -548,7 +559,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <div class="wrap">
       <div class="page-head">
         <div><p class="kicker">The Table</p><h2 class="h-lg" id="h-table">All 118, <em>at a glance.</em></h2><p class="lede">Real symbols, numbers and families. Hover a tile to light up its period and group. Tap it to open the exhibit.</p></div>
-        <label class="search"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend or symbol"></label>
+        <label class="search"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend or symbol" data-t-ph="tableSearch"></label>
       </div>
       <div class="tl" aria-label="Timeline">
         <button type="button" class="tl-play" id="tlPlay" aria-label="Play the year"><svg viewBox="0 0 10 10" aria-hidden="true"><path id="tlIcon" d="M2 1l7 4-7 4z"/></svg></button>
@@ -564,8 +575,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <section class="view band" data-view="story" aria-labelledby="h-story" hidden>
     <div class="wrap">
       <div class="story-intro">
-        <div><p class="kicker">The Story</p><h2 class="h-xl" id="h-story">What India <em>wore</em> this year.</h2></div>
-        <p class="lede">Five shifts that kept coming up in the fashion press between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.</p>
+        <div><p class="kicker">The Story</p><h2 class="h-xl" id="h-story" data-t="storyH2">What India <em>wore</em> this year.</h2></div>
+        <p class="lede" data-t="storyLede">Five shifts that kept coming up in the fashion press between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.</p>
       </div>
       <div id="chapters"></div>
     </div>
@@ -573,7 +584,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
   <section class="view page band" data-view="lab" aria-labelledby="h-lab" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab">Mix your own <em>compound.</em></h2><p class="lede">Drop up to three elements into the flask. We'll write the formula and name the look.</p></div></div>
+      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. We'll write the formula and name the look.</p></div></div>
       <div class="lab">
         <div class="bench">
           <div class="flask-wrap" id="flaskWrap">
@@ -614,7 +625,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <section class="view page band" data-view="genz" aria-labelledby="h-genz" hidden>
     <div class="wrap">
       <div class="page-head">
-        <div><p class="kicker">Gen Z</p><h2 class="h-lg" id="h-genz">Say it in <em>Gen Z.</em></h2><p class="lede">Twenty words, translated into fashion. Tap a card to flip it. The slang meanings and examples are ours. The trends are sourced.</p>
+        <div><p class="kicker" data-t="genzKicker">Gen Z</p><h2 class="h-lg" id="h-genz">Say it in <em>Gen Z.</em></h2><p class="lede" data-t="genzLede">Twenty words, translated into fashion. Tap a card to flip it. The slang meanings and examples are ours. The trends are sourced.</p>
           <div class="filters" id="slangFilter" style="margin-top:1.6rem"><button type="button" class="filt" data-o="" aria-pressed="true">All</button><button type="button" class="filt" data-o="Internet" aria-pressed="false">Internet slang</button><button type="button" class="filt" data-o="Desi" aria-pressed="false">Desi slang</button><button type="button" class="link" id="flipAll">Flip all</button></div></div>
         <div class="cols" aria-hidden="true"><div class="col" id="col0"></div><div class="col rev" id="col1"></div><div class="col" id="col2"></div></div>
       </div>
@@ -624,7 +635,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
   <section class="view page band" data-view="picks" aria-labelledby="h-picks" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Editor's Picks</p><h2 class="h-lg" id="h-picks">Eight cards <em>worth holding.</em></h2><p class="lede">The trends we'd bet on for the rest of the season.</p></div></div>
+      <div class="page-head"><div><p class="kicker">Editor's Picks</p><h2 class="h-lg" id="h-picks">Eight cards <em>worth holding.</em></h2><p class="lede" data-t="picksLede">The trends we'd bet on for the rest of the season.</p></div></div>
       <div class="picks" id="picks"></div>
     </div>
   </section>
@@ -632,21 +643,21 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <section class="view page band" data-view="families" aria-labelledby="h-fam" hidden>
     <div class="wrap">
       <div class="ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
-      <div class="page-head"><div><p class="kicker">Families</p><h2 class="h-lg" id="h-fam">Ten halls, <em>one wardrobe.</em></h2><p class="lede">Grouped exactly as chemistry groups them. Open a hall to see only its elements on the table.</p></div></div>
+      <div class="page-head"><div><p class="kicker">Families</p><h2 class="h-lg" id="h-fam" data-t="famH2">Ten halls, <em>one wardrobe.</em></h2><p class="lede">Grouped exactly as chemistry groups them. Open a hall to see only its elements on the table.</p></div></div>
       <div class="halls" id="halls"></div>
     </div>
   </section>
 
   <section class="view page band" data-view="sources" aria-labelledby="h-src" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Sources</p><h2 class="h-lg" id="h-src">Who's <em>saying so.</em></h2><p class="lede">Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p></div></div>
+      <div class="page-head"><div><p class="kicker" data-t="srcKicker">Sources</p><h2 class="h-lg" id="h-src" data-t="srcH2">Who's <em>saying so.</em></h2><p class="lede" data-t="srcLede">Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p></div></div>
       <div class="srclist" id="srclist"></div>
     </div>
   </section>
 
   <section class="view page band" data-view="wardrobe" aria-labelledby="h-ward" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Your Wardrobe</p><h2 class="h-lg" id="h-ward">The trends <em>you kept.</em></h2><p class="lede">Saved on this device only.</p></div></div>
+      <div class="page-head"><div><p class="kicker" data-t="wardKicker">Your Wardrobe</p><h2 class="h-lg" id="h-ward" data-t="wardH2">The trends <em>you kept.</em></h2><p class="lede">Saved on this device only.</p></div></div>
       <div class="picks" id="wgrid"></div>
       <div class="empty" id="wempty"><p class="h-lg">Nothing saved yet.</p><p>Open any element and choose Save. Your picks collect here.</p><button type="button" class="btn" data-deal>Deal me a card</button></div>
     </div>
@@ -655,8 +666,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
 <footer class="colophon band">
   <div class="wrap">
-    <span class="wm">The Fashion Elements</span>
-    <p>The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes, slang and drawings are ours.</p>
+    <span class="wm" data-t="colophonWm">The Fashion Elements</span>
+    <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes, slang and drawings are ours.</p>
     <small>Issue 01 · 2026</small>
   </div>
 </footer>
@@ -667,7 +678,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <dialog class="sheet" id="sheet" aria-label="Element"><div class="exhibit" id="exhibit"></div></dialog>
 <dialog class="sharebox" id="sharebox" aria-label="Share image"><div id="shareIn"></div></dialog>
 <dialog class="palette" id="palette" aria-label="Search">
-  <label class="pal-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="palq" type="search" placeholder="Search trends, symbols, magazines" autocomplete="off"><kbd>esc</kbd></label>
+  <label class="pal-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="palq" type="search" placeholder="Search trends, symbols, magazines" autocomplete="off" data-t-ph="palSearch"><kbd>esc</kbd></label>
   <ul class="pal-list" id="pallist" role="listbox" aria-label="Results"></ul>
   <p class="pal-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> to move</span><span><kbd>↵</kbd> to open</span></p>
 </dialog>
@@ -678,16 +689,19 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="mi" data-view="table"><i>ii.</i>The Table</button>
     <button type="button" class="mi" data-view="story"><i>iii.</i>The Story</button>
     <button type="button" class="mi" data-view="lab"><i>iv.</i>The Lab</button>
-    <button type="button" class="mi" data-view="genz"><i>v.</i>Gen Z</button>
+    <button type="button" class="mi" data-view="genz"><i>v.</i><span data-t="menuGenz">Gen Z</span></button>
     <button type="button" class="mi" data-view="picks"><i>vi.</i>Editor's Picks</button>
     <button type="button" class="mi" data-view="families"><i>vii.</i>Families</button>
-    <button type="button" class="mi" data-view="sources"><i>viii.</i>Sources</button>
-    <button type="button" class="mi" data-view="wardrobe"><i>ix.</i>Wardrobe</button>
+    <button type="button" class="mi" data-view="sources"><i>viii.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="wardrobe"><i>ix.</i><span data-t="menuWardrobe">Wardrobe</span></button>
+    <div class="menu-ed"><p class="kicker">Edition</p><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
   </div>
 </dialog>
 
 <script>
 /*KIT*/
+/*JUNK*/
 /*DATA*/
+/*GARBAGE*/
 /*APP*/
 </script>

@@ -290,6 +290,9 @@ function scene(id, o) {
   parts.push(`<rect y="84" width="100" height="16" fill="${col(o.gr || "beige")}"/><path d="M0,84 H100" stroke="${P.ink}" stroke-width=".6"/>`);
   for (const s of o.back || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
   for (const f of o.figs || []) parts.push(fig(id, f));
+  const z = o.zoom || 1;
+  if (z !== 1) parts.push(`<g transform="translate(50 84) scale(${z}) translate(-50 -84)">`);
   for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="ob">${OBJ[name](...args)}</g>`); }
+  if (z !== 1) parts.push("</g>");
   return parts.join("");
 }

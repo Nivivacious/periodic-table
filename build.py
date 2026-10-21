@@ -11,7 +11,7 @@ from pathlib import Path
 root = Path(__file__).parent
 src = root / "src"
 page = (src / "page.tpl.html").read_text()
-for slot, name in (("/*KIT*/", "kit.js"), ("/*DATA*/", "data.js"), ("/*APP*/", "app.js")):
+for slot, name in (("/*KIT*/", "kit.js"), ("/*JUNK*/", "junk.js"), ("/*DATA*/", "data.js"), ("/*GARBAGE*/", "garbage.js"), ("/*APP*/", "app.js")):
     page = page.replace(slot, (src / name).read_text())
 
 head, rest = page.split("</style>", 1)
