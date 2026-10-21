@@ -7,190 +7,187 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Hind:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap">
 <style>
-/* Layout: a true 18-column periodic grid of illustrated trend tiles; columns are trend families, the detached row is Shaadi Season. The detail card sits in the d-block gap like a real table's key. */
+/* Layout: the real 18-column periodic table on a night-navy ground; every element is a cream card with an illustrated trend. The selected card opens in the gap above the transition metals, like the key on a printed table. Single dark look, by design. */
 :root {
-  --bg: #fbf7f9;
-  --surface: #ffffff;
-  --ink: #241a2b;
-  --muted: #6e6274;
-  --line: #e7dde4;
-  --accent: #c2185b;
+  --night: #141827;
+  --night-2: #1E2233;
+  --line: #333a52;
+  --paper: #F4ECDC;
+  --paper-2: #EADFC8;
+  --ink: #1E2233;
+  --muted: #9aa0b8;
+  --gold: #F2B330;
 
-  --street: #3b4cca;
-  --fusion: #0f7377;
-  --craft: #b3261e;
-  --mood: #c2185b;
-  --conscious: #4a741c;
-  --access: #946800;
-  --beauty: #7b3fa0;
-  --classic: #4a5568;
-  --shaadi: #c25a00;
+  --alkali: #D9412B;
+  --alkaline: #E2902A;
+  --transition: #3B6EA8;
+  --post: #2E7D5B;
+  --metalloid: #2B8A8A;
+  --nonmetal: #C93A78;
+  --halogen: #7A55B0;
+  --noble: #A97A1C;
+  --lanthanide: #A0457E;
+  --actinide: #7A4528;
 
-  --display: "Rozha One", "Georgia", serif;
-  --body: "Hind", "Segoe UI", system-ui, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
+  --body: "Cormorant Garamond", Garamond, "Times New Roman", serif;
+  --sans: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", sans-serif;
 
-  --tile: 4.25rem;
-  --tile-mix: 10%;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #150f19; --surface: #1e1724; --ink: #f4ecf2; --muted: #a99bb0; --line: #33283a; --accent: #ff6fa8;
-    --street: #94a0ff; --fusion: #4fd1cf; --craft: #ff8a80; --mood: #ff79b0; --conscious: #a5d66b;
-    --access: #e9b949; --beauty: #d3a4ff; --classic: #b8c2d0; --shaadi: #ffaa55;
-    --tile-mix: 14%;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #150f19; --surface: #1e1724; --ink: #f4ecf2; --muted: #a99bb0; --line: #33283a; --accent: #ff6fa8;
-  --street: #94a0ff; --fusion: #4fd1cf; --craft: #ff8a80; --mood: #ff79b0; --conscious: #a5d66b;
-  --access: #e9b949; --beauty: #d3a4ff; --classic: #b8c2d0; --shaadi: #ffaa55;
-  --tile-mix: 14%;
+  --tile: 4.3rem;
   color-scheme: dark;
 }
-
 * { box-sizing: border-box; }
 body {
-  background: var(--bg);
-  color: var(--ink);
+  background: var(--night);
+  background-image: radial-gradient(ellipse at 50% -10%, #232a45 0%, transparent 60%);
+  color: var(--paper);
   font-family: var(--body);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 18px;
+  line-height: 1.5;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 2rem 3rem;
+  padding-block: 2.5rem 3rem;
 }
-.wrap { max-width: 1440px; margin: 0 auto; display: grid; gap: 1.75rem; }
+.wrap { max-width: 1480px; margin: 0 auto; display: grid; gap: 1.6rem; }
 
-header { display: grid; gap: .5rem; max-width: 64ch; }
-.eyebrow { font-family: var(--mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0; }
-h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.05; margin: 0; text-wrap: balance; }
-h1 em { font-style: normal; color: var(--accent); }
-.lede { color: var(--muted); margin: 0; }
+header { display: grid; gap: .6rem; }
+.eyebrow { font-family: var(--sans); font-size: .72rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 1; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { color: var(--gold); }
+.lede { font-style: italic; font-size: 1.2rem; color: #d6d1c4; margin: 0; max-width: 60ch; }
 
-.controls { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; }
-.search { flex: 0 1 18rem; min-width: 0; }
+.controls { display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; align-items: center; }
+.search { flex: 0 1 17rem; min-width: 0; }
 .search input {
-  width: 100%; font: inherit; font-size: .95rem; color: var(--ink);
-  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
-  padding: .5rem 1rem;
+  width: 100%; font: 500 .9rem var(--sans); letter-spacing: .02em; color: var(--paper);
+  background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: .55rem .8rem;
 }
-.search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.legend { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
+.search input::placeholder { color: var(--muted); }
+.search input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.legend { display: flex; flex-wrap: wrap; gap: .35rem; list-style: none; margin: 0; padding: 0; }
 .chip {
   --c: var(--muted);
-  font: inherit; font-size: .82rem; font-weight: 500; cursor: pointer;
-  display: inline-flex; align-items: center; gap: .4rem;
-  color: var(--ink); background: transparent;
-  border: 1px solid var(--line); border-radius: 999px; padding: .25rem .7rem .2rem;
+  font: 600 .7rem var(--sans); letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .45rem;
+  color: var(--paper); background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: .35rem .6rem;
 }
-.chip::before { content: ""; width: .6rem; height: .6rem; border-radius: 2px; background: var(--c); }
-.chip[aria-pressed="true"] { background: color-mix(in oklab, var(--c) 18%, var(--surface)); border-color: var(--c); }
-.chip:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+.chip::before { content: ""; width: .55rem; height: .55rem; background: var(--c); border-radius: 1px; }
+.chip[aria-pressed="true"] { border-color: var(--c); background: color-mix(in oklab, var(--c) 30%, transparent); }
+.chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-.mobile-detail { display: none; }
-.scroller { overflow-x: auto; padding-bottom: .5rem; }
+.mobile-slot { display: none; }
+.scroller { overflow-x: auto; padding: 4px 2px 10px; }
 .table {
   display: grid;
   grid-template-columns: repeat(18, minmax(var(--tile), 1fr));
-  gap: 4px;
-  min-width: calc(18 * var(--tile) + 17 * 4px);
+  gap: 5px;
+  min-width: calc(18 * var(--tile) + 17 * 5px);
 }
-.spacer { grid-column: 1 / -1; height: .9rem; }
-.series-label {
+.gapline { grid-column: 1 / -1; height: .8rem; }
+.series {
   grid-column: 1 / 3; align-self: center; justify-self: end; text-align: right;
-  font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--shaadi); padding-right: .5rem; line-height: 1.3;
+  font: 600 .66rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-right: .4rem;
 }
-
-/* Illustration strokes: ink line art with family-colour washes */
-.ill { display: block; width: 100%; height: auto; color: var(--ink); overflow: visible; }
-.ill .s, .ill .fs, .ill .w, .ill .p { stroke: currentColor; stroke-width: var(--sw, 2.4); stroke-linecap: round; stroke-linejoin: round; }
-.ill .s { fill: none; }
-.ill .fs { fill: var(--c); fill-opacity: .32; }
-.ill .p { fill-opacity: .5; }
-.ill .w { fill: var(--surface); }
-.ill .k { fill: var(--c); }
-.ill .d { fill: currentColor; }
-.ill .thin { stroke-width: calc(var(--sw, 2.4) * .6); }
-.ill .smudge { fill: none; stroke: currentColor; stroke-opacity: .3; stroke-width: 6; stroke-linecap: round; }
-.ill text { font-family: var(--mono); font-weight: 700; fill: currentColor; text-anchor: middle; }
+.placeholder {
+  border: 1px dashed var(--line); border-radius: 4px; display: grid; place-items: center; text-align: center;
+  font: 600 .66rem var(--sans); letter-spacing: .08em; color: var(--muted); padding: .3rem;
+}
 
 .el {
   --c: var(--muted);
-  aspect-ratio: 1 / 1.38; max-width: 100%; min-width: 0;
-  display: grid; grid-template-rows: auto 1fr auto; gap: .1rem;
-  padding: .3rem .3rem .35rem;
-  background: color-mix(in oklab, var(--c) var(--tile-mix), var(--surface));
-  border: 1px solid color-mix(in oklab, var(--c) 30%, transparent);
-  border-radius: 3px;
+  aspect-ratio: 1 / 1.42; min-width: 0; max-width: 100%;
+  display: grid; grid-template-rows: auto 1fr auto; gap: 2px;
+  padding: 4px 4px 5px;
+  background: var(--paper);
+  border: 0; border-bottom: 3px solid var(--c); border-radius: 4px;
   color: var(--ink); font: inherit; text-align: left; cursor: pointer;
-  transition: transform .15s ease, opacity .2s ease, box-shadow .15s ease;
+  box-shadow: 0 1px 0 rgba(0,0,0,.25);
+  transition: transform .18s ease, opacity .2s ease, box-shadow .18s ease;
 }
-.el .top { display: flex; justify-content: space-between; align-items: baseline; }
-.el .num { font-family: var(--mono); font-size: .6rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.el .sym { font-family: var(--display); font-size: 1rem; line-height: 1; color: var(--c); }
-.el .art { display: grid; place-items: center; min-height: 0; overflow: hidden; padding: 2px 6%; }
-.el .art .ill { width: auto; height: 100%; max-width: 100%; }
+.el .top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 1px; }
+.el .num { font: 600 .56rem var(--sans); color: #6b6658; font-variant-numeric: tabular-nums; }
+.el .sym { font: 600 1.05rem/1 var(--display); color: var(--c); }
+.el .art { width: 100%; height: 100%; min-height: 0; display: block; border-radius: 2px; }
 .el .nm {
-  font-size: .6rem; line-height: 1.15; text-align: center; font-weight: 500;
-  height: 2.3em; overflow: hidden;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  font: 600 .56rem/1.12 var(--sans); letter-spacing: .02em; text-align: center; color: var(--ink);
+  height: 2.25em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
-.el:hover { transform: translateY(-2px); box-shadow: 0 6px 16px -8px color-mix(in oklab, var(--c) 70%, transparent); }
-.el:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
-.el[aria-pressed="true"] { border: 2px solid var(--c); padding: calc(.3rem - 1px) calc(.3rem - 1px) calc(.35rem - 1px); }
-.el.dim { opacity: .16; }
+.el:hover { transform: translateY(-3px); box-shadow: 0 10px 18px -10px rgba(0,0,0,.8); }
+.el:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.el[aria-pressed="true"] { outline: 2px solid var(--gold); outline-offset: 2px; }
+.el.dim { opacity: .14; }
 
-.street { --c: var(--street); } .fusion { --c: var(--fusion); } .craft { --c: var(--craft); }
-.mood { --c: var(--mood); } .conscious { --c: var(--conscious); } .access { --c: var(--access); }
-.beauty { --c: var(--beauty); } .classic { --c: var(--classic); } .shaadi { --c: var(--shaadi); }
+.alkali { --c: var(--alkali); } .alkaline { --c: var(--alkaline); } .transition { --c: var(--transition); }
+.post { --c: var(--post); } .metalloid { --c: var(--metalloid); } .nonmetal { --c: var(--nonmetal); }
+.halogen { --c: var(--halogen); } .noble { --c: var(--noble); } .lanthanide { --c: var(--lanthanide); } .actinide { --c: var(--actinide); }
 
+/* The opened card */
 .detail {
   grid-column: 3 / 13; grid-row: 1 / 4;
-  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .3rem 1.4rem; align-content: start;
-  padding: .25rem .75rem 0;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.6rem; align-items: start;
+  padding: 0 .6rem;
   min-width: 0;
 }
-.big {
-  grid-row: 1 / span 5;
-  width: 10.5rem;
-  display: grid; grid-template-rows: auto 1fr auto; gap: .2rem;
-  padding: .5rem .6rem .6rem;
-  border: 2px solid var(--c);
-  background: color-mix(in oklab, var(--c) var(--tile-mix), var(--surface));
-  border-radius: 4px;
-  --sw: 1.7;
+.card {
+  --c: var(--gold);
+  width: 14.5rem; aspect-ratio: 250 / 350;
+  background: var(--paper); color: var(--ink); border-radius: 12px;
+  padding: 9px; position: relative;
+  box-shadow: 0 18px 40px -18px rgba(0,0,0,.9);
 }
-.big .top { display: flex; justify-content: space-between; align-items: baseline; }
-.big .num { font-family: var(--mono); font-size: .75rem; color: var(--muted); }
-.big .sym { font-family: var(--display); font-size: 1.9rem; line-height: 1; color: var(--c); }
-.big .nm { font-size: .78rem; text-align: center; font-weight: 600; line-height: 1.2; }
-.detail h2 { font-family: var(--display); font-weight: 400; font-size: 1.8rem; line-height: 1.1; margin: 0; text-wrap: balance; }
-.detail .cat { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--c); margin: 0; }
-.detail p.desc { margin: 0; font-size: .95rem; max-width: 64ch; }
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .5rem 1.5rem; margin: .3rem 0 0; font-size: .86rem; max-width: 64ch; }
-.facts div { display: grid; align-content: start; }
-.facts dt { font-family: var(--mono); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.facts dd { margin: 0; }
-.meter { display: flex; align-items: center; gap: .5rem; font-variant-numeric: tabular-nums; }
-.meter span { display: block; width: 6rem; height: .4rem; border-radius: 99px; background: var(--line); overflow: hidden; }
-.meter span i { display: block; height: 100%; background: var(--c); }
+.card-in {
+  height: 100%; border: 1px solid var(--ink); border-radius: 7px; padding: 8px 8px 10px;
+  display: grid; grid-template-rows: auto 1fr auto; gap: 6px; position: relative;
+}
+.card .idx { position: absolute; display: grid; justify-items: center; line-height: 1; }
+.card .idx b { font: 600 1.25rem var(--display); color: var(--c); }
+.card .idx span { font: 600 .55rem var(--sans); letter-spacing: .1em; color: var(--ink); }
+.card .idx.tl { top: 8px; left: 8px; }
+.card .idx.br { bottom: 10px; right: 8px; transform: rotate(180deg); }
+.card .frame { margin: 0 1.6rem; border: 1px solid var(--ink); border-radius: 3px; overflow: hidden; min-height: 0; }
+.card .frame svg { display: block; width: 100%; height: 100%; }
+.card .banner {
+  margin: 0 1.6rem; text-align: center; border: 1px solid var(--ink); border-radius: 2px; background: var(--paper);
+  font: 600 .58rem var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 3px 2px;
+}
+.card .cap { text-align: center; font: italic .82rem/1.2 var(--body); margin: 0 1.4rem; }
 
-footer { color: var(--muted); font-size: .82rem; display: grid; gap: .35rem; max-width: 70ch; }
-footer p { margin: 0; }
+.info { display: grid; grid-template-columns: minmax(0, 1fr); gap: .55rem; align-content: start; min-width: 0; padding-top: .2rem; }
+.info .kicker { font: 600 .7rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.info .kicker b { color: var(--gold); font-weight: 600; }
+.info h2 { font: 400 clamp(2rem, 3.4vw, 2.9rem)/1.02 var(--display); margin: 0; text-wrap: balance; }
+.info .desc { font-style: italic; font-size: 1.22rem; line-height: 1.35; margin: 0; max-width: 46ch; color: #e7e1d3; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .4rem 1.6rem; margin: .2rem 0 0; border-top: 1px solid var(--line); padding-top: .7rem; max-width: 46rem; }
+.facts dt { font: 600 .66rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 0; font-size: 1.05rem; line-height: 1.35; }
+.nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .4rem; }
+.nav button {
+  font: 600 .7rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--paper);
+  background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: .55rem .9rem; cursor: pointer;
+}
+.nav button:hover { border-color: var(--gold); color: var(--gold); }
+.nav button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-@media (max-width: 860px) {
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem; border-top: 1px solid var(--line); padding-top: 1rem; font: 500 .74rem var(--sans); letter-spacing: .06em; color: var(--muted); }
+footer p { margin: 0; max-width: 70ch; }
+
+@media (max-width: 900px) {
   .table .detail { display: none; }
-  .mobile-detail { display: block; }
-  .mobile-detail .detail { padding: 0; }
-  .big { width: 8rem; grid-row: 1 / span 3; }
-  .detail .facts { grid-column: 1 / -1; }
-  .detail p.desc { grid-column: 1 / -1; }
-  :root { --tile: 4rem; }
+  .mobile-slot { display: block; }
+  .mobile-slot .detail { padding: 0; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; }
+  .card { width: 10.5rem; }
+  .card .frame, .card .banner { margin: 0 1.1rem; }
+  .card .cap { display: none; }
+  .info h2 { font-size: 1.7rem; }
+  .info .desc { font-size: 1.05rem; }
+  .facts { grid-column: 1 / -1; }
+  :root { --tile: 4.1rem; }
+}
+@media (max-width: 520px) {
+  .mobile-slot .detail { grid-template-columns: minmax(0, 1fr); }
+  .card { width: 12rem; justify-self: start; }
 }
 @media (prefers-reduced-motion: reduce) { .el { transition: none; } .el:hover { transform: none; } }
 </style>
@@ -199,195 +196,620 @@ footer p { margin: 0; }
 
 <div class="wrap">
   <header>
-    <p class="eyebrow">Trend report · India · 2026</p>
+    <p class="eyebrow">118 elements · one country's wardrobe · 2026</p>
     <h1>The Periodic Table of <em>Indian Fashion</em></h1>
-    <p class="lede">Forty-four trends shaping what India wears right now, from saree-with-sneakers to quiet-luxury ethnic. Columns are trend families, like groups on the real table. Tap any element to see what it is, the key pieces, and how to try it.</p>
+    <p class="lede">Every element keeps its real symbol, and every symbol stands for a trend India is wearing right now. H is for Hyperfeminine, Fe for Futuristic Ethnic, Ag for Avant-Garde.</p>
   </header>
 
   <div class="controls">
-    <div class="search"><input id="q" type="search" placeholder="Search: thrift, Lucknow, bows…" aria-label="Search trends"></div>
+    <div class="search"><input id="q" type="search" placeholder="Search a trend, symbol or element" aria-label="Search the table"></div>
     <ul class="legend" id="legend"></ul>
   </div>
 
-  <div class="mobile-detail" id="mobileSlot"></div>
+  <div class="mobile-slot" id="mobileSlot"></div>
 
   <div class="scroller">
     <div class="table" id="table"></div>
   </div>
 
   <footer>
-    <p><strong>Reading an element:</strong> the atomic number is top-left and the symbol top-right. The Hype index in each card is an editorial score out of 100 for how hot the trend is this season. Hype scores are our picks, not measured data.</p>
-    <p>Column 18 holds the Evergreen Trends. Like noble gases, they barely react to anything and come back every year. The detached row is Shaadi Season, the heavy elements of the wedding calendar.</p>
+    <p>The symbols, numbers and families are the real periodic table. The trends, notes and drawings are ours.</p>
+    <p>Tap any element to open its card. Use ← → to flip through.</p>
   </footer>
 </div>
 
 <script>
-const CATS = {
-  street:    "Street & Gen-Z",
-  fusion:    "Desi Fusion",
-  craft:     "Craft Revival",
-  mood:      "Aesthetics & Moods",
-  conscious: "Conscious Closet",
-  access:    "Accessory Moments",
-  beauty:    "Beauty Looks",
-  classic:   "Evergreen Trends",
-  shaadi:    "Shaadi Season",
+// Illustration kit: flat, cute fashion vignettes on a 100×100 stage.
+const P = {
+  paper: "#F4ECDC", ink: "#1E2233", red: "#D9412B", yellow: "#F2B330", green: "#2E7D5B",
+  blue: "#3B6EA8", pink: "#E58A9B", kaapi: "#7A4528", peach: "#F3C9A4", rani: "#C93A78",
+  mint: "#A8D5C2", sage: "#9DB59A", lav: "#B7A5D8", ivory: "#FBF6EA", beige: "#D9C4A3",
+  rust: "#B5532A", plum: "#6B3460", teal: "#2B8A8A", indigo: "#2D3E7A", sky: "#A9CBE6",
+  gold: "#C9962B", grey: "#A9A6A0", black: "#26232E", denim: "#5A7FB5", haldi: "#F5C531",
+  maroon: "#7E1F2E", orange: "#EE7F2D", lime: "#D7E44A", hot: "#FF5BA7", blush: "#F6D3D3",
+  cream: "#EFE3C8", night: "#1B2340", olive: "#6F7A3A", white: "#FFFFFF",
+  skin: "#C68A62", skin2: "#9E6744", skin3: "#E2AD83", hair: "#2A1E22", hair2: "#5B3A29",
 };
+const col = (c) => (c && P[c]) || c || P.ink;
+const OL = `stroke="${P.ink}" stroke-width="0.6" stroke-linejoin="round"`;
 
-// Small drawing helpers for the 64×64 illustrations
-const star = (x, y, r, cls = "k") => {
-  const a = r * .28;
-  return `<path class="${cls}" d="M${x} ${y-r}L${x+a} ${y-a}L${x+r} ${y}L${x+a} ${y+a}L${x} ${y+r}L${x-a} ${y+a}L${x-r} ${y}L${x-a} ${y-a}Z"/>`;
-};
-const flower = (x, y, r, cls = "fs") => {
-  let s = "";
-  for (let i = 0; i < 5; i++) {
-    const t = i * 2 * Math.PI / 5 - Math.PI / 2;
-    s += `<circle class="${cls} thin" cx="${(x + Math.cos(t) * r).toFixed(1)}" cy="${(y + Math.sin(t) * r).toFixed(1)}" r="${(r * .62).toFixed(1)}"/>`;
+function patterns(id) {
+  const pp = (n, w, h, body, rot) => `<pattern id="${id}-${n}" width="${w}" height="${h}" patternUnits="userSpaceOnUse"${rot ? ` patternTransform="rotate(${rot})"` : ""}>${body}</pattern>`;
+  return `<defs>
+    ${pp("dots", 4, 4, `<circle cx="2" cy="2" r="0.75" fill="#fff" fill-opacity=".85"/>`)}
+    ${pp("polka", 6, 6, `<circle cx="3" cy="3" r="1.3" fill="#fff" fill-opacity=".9"/>`)}
+    ${pp("stripes", 4, 4, `<rect width="1.6" height="4" fill="#fff" fill-opacity=".45"/>`, 0)}
+    ${pp("diag", 4, 4, `<rect width="1.4" height="4" fill="#fff" fill-opacity=".4"/>`, 35)}
+    ${pp("checks", 6, 6, `<rect width="3" height="6" fill="#fff" fill-opacity=".25"/><rect width="6" height="3" fill="#fff" fill-opacity=".25"/>`)}
+    ${pp("floral", 7, 7, `<g fill="#fff" fill-opacity=".8"><circle cx="3.5" cy="2.4" r=".8"/><circle cx="3.5" cy="4.6" r=".8"/><circle cx="2.4" cy="3.5" r=".8"/><circle cx="4.6" cy="3.5" r=".8"/></g><circle cx="3.5" cy="3.5" r=".55" fill="${P.yellow}"/>`)}
+    ${pp("chevron", 6, 5, `<path d="M0,3.5 L1.5,1.5 L3,3.5 L4.5,1.5 L6,3.5" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".7"/>`)}
+    ${pp("zari", 5, 5, `<path d="M2.5,1 L3.6,2.5 L2.5,4 L1.4,2.5Z" fill="${P.yellow}"/>`)}
+    ${pp("sparkle", 6, 6, `<path d="M3,1.2 L3.4,2.6 L4.8,3 L3.4,3.4 L3,4.8 L2.6,3.4 L1.2,3 L2.6,2.6Z" fill="#fff" fill-opacity=".9"/>`)}
+    ${pp("mirror", 6, 6, `<circle cx="3" cy="3" r="1.2" fill="#fff" stroke="${P.ink}" stroke-width=".3"/>`)}
+    ${pp("splash", 12, 12, `<circle cx="3" cy="3" r="2.2" fill="${P.hot}"/><circle cx="9" cy="6" r="1.8" fill="${P.yellow}"/><circle cx="4" cy="10" r="1.6" fill="${P.green}"/><circle cx="10" cy="11" r="1" fill="${P.blue}"/>`)}
+    ${pp("tie", 10, 10, `<circle cx="5" cy="5" r="4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.1"/><circle cx="5" cy="5" r="1.6" fill="#fff" fill-opacity=".55"/>`)}
+    ${pp("patch", 8, 8, `<rect width="4" height="4" fill="${P.yellow}" fill-opacity=".7"/><rect x="4" y="4" width="4" height="4" fill="${P.pink}" fill-opacity=".7"/>`)}
+    ${pp("paisley", 7, 7, `<path d="M3,5.5 C1,5.5 1,2.5 3,2 C4.5,1.6 5,3 4,3.6" fill="none" stroke="${P.yellow}" stroke-width=".6"/>`)}
+    ${pp("grid", 5, 5, `<path d="M0,0 H5 M0,0 V5" stroke="#fff" stroke-opacity=".45" stroke-width=".5"/>`)}
+    ${pp("pop", 8, 8, `<circle cx="2" cy="2" r="1.4" fill="${P.yellow}"/><path d="M5,5 L7,7 M7,5 L5,7" stroke="${P.ink}" stroke-width=".6"/>`)}
+    ${pp("leopard", 7, 7, `<path d="M2,2 q1,-1 2,0 q-1,1.5 -2,0Z M5,5 q1,-1 1.6,.2 q-1,1.2 -1.6,-.2Z" fill="${P.kaapi}"/>`)}
+  </defs>`;
+}
+
+// Fill a path with a colour, then optionally overlay a pattern.
+function shape(id, d, c, pat, extra = "") {
+  return `<path d="${d}" fill="${col(c)}" ${OL} ${extra}/>` + (pat ? `<path d="${d}" fill="url(#${id}-${pat})" stroke="none" ${extra}/>` : "");
+}
+
+// A standing figure, feet at (x, 94). Head about 21 units from the ground at s=1 is ~76 tall.
+function fig(id, o) {
+  const x = o.x ?? 50, s = o.s ?? 1, flip = o.flip ? -1 : 1;
+  const sk = col(o.sk || "skin"), hc = col(o.hc || "hair");
+  const top = o.top || "kurta", low = o.low || "none", lay = o.lay || [], acc = o.a || [];
+  const c = o.c || "red", l = o.l || c, y = o.y || l, b = o.b || "gold";
+  const ac = col(o.ac || "gold");
+  const g = [];
+  const S = (d, cc, pat, ex) => g.push(shape(id, d, cc, pat, ex));
+  const line = (d, cc, w, ex = "") => g.push(`<path d="${d}" fill="none" stroke="${col(cc)}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${ex}/>`);
+  const dot = (cx, cy, r, cc, ex = "") => g.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${col(cc)}" ${ex}/>`);
+
+  // Back hair and back layers
+  const h = o.h || "bun";
+  if (h === "open") S("M-10.5,-62 Q-13,-44 -9,-40 H9 Q13,-44 10.5,-62Z", hc);
+  if (h === "bob") S("M-11,-62 Q-12.5,-51 -8.5,-51 H8.5 Q12.5,-51 11,-62Z", hc);
+  if (h === "braid") { for (const yy of [-52, -46.5, -41, -35.5]) dot(9.5, yy, 2.4, hc, OL); }
+  if (h === "pony") S("M7,-66 Q16,-62 13,-46 Q11,-52 8,-58Z", hc);
+  if (h === "bun") dot(0, -71.5, 5, hc, OL);
+  if (h === "lowbun") dot(0, -52.5, 4.2, hc, OL);
+  if (lay.includes("veil")) S("M-12,-62 Q-12,-79 0,-79 Q12,-79 12,-62 L16,-22 L11,-23 L8.5,-58 Q0,-69 -8.5,-58 L-11,-23 L-16,-22Z", y, o.py, `fill-opacity=".6"`);
+  if (lay.includes("pallu")) S("M-8.5,-48 L-15,-16 L-9.5,-18Z", y, o.py);
+  if (lay.includes("dupatta")) { S("M-8.5,-48 L-14,-12 L-10,-12 L-6,-46Z", y, o.py); S("M8.5,-48 L14,-12 L10,-12 L6,-46Z", y, o.py); }
+  if (lay.includes("cape")) S("M-8.5,-49 L-18,-8 H18 L8.5,-49Z", y, o.py, `fill-opacity=".75"`);
+
+  // Lower body
+  const legs = (cc, from = -14) => { line(`M-3,${from} L-3.4,-1`, cc, 3.4); line(`M3,${from} L3.4,-1`, cc, 3.4); };
+  if (["dress", "anarkali", "babytee-skirt", "skirt", "tiered", "mini"].includes(low) || ["dress", "anarkali"].includes(top) && low === "none") legs(sk);
+  if (low === "saree") {
+    S("M-8.5,-35 H8.5 L10,0 H-10Z", l, o.pl);
+    S("M-9.8,-3.2 H9.8 L10,0 H-10Z", b);
+    line("M-1,-30 L-1.6,-3.5 M1.8,-30 L1.8,-3.5 M4.6,-30 L5.2,-3.5", "ink", 0.4, `opacity=".45"`);
   }
-  return s + `<circle class="d" cx="${x}" cy="${y}" r="${(r * .38).toFixed(1)}"/>`;
-};
-const dots = (pts, r, cls = "d") => pts.map(([x, y]) => `<circle class="${cls}" cx="${x}" cy="${y}" r="${r}"/>`).join("");
-const kurta = (dx = 0, dy = 0, cls = "fs", len = 26) =>
-  `<path class="${cls}" transform="translate(${dx} ${dy})" d="M24 8h16l10 8-4 6-4-2v${len}H22V20l-4 2-4-6z"/><path class="s thin" transform="translate(${dx} ${dy})" d="M32 8v9"/>`;
-const lehenga = (fill) =>
-  `<circle class="s" cx="32" cy="7" r="3"/><path class="s" d="M32 10v4"/>
-   <path class="fs" d="M25 14h14l1 12H24z"/>
-   <path class="fs" style="fill:${fill}" d="M24 26h16l14 30H10z"/>
-   <path class="s thin" d="M28 28l-6 28M36 28l6 28M32 28v28"/>`;
+  if (low === "lehenga") {
+    S("M-8.5,-35 H8.5 L22,0 H-22Z", l, o.pl);
+    S("M-20.6,-3.8 H20.6 L22,0 H-22Z", b);
+    line("M-3,-32 L-8,-4 M3,-32 L8,-4", "ink", 0.4, `opacity=".35"`);
+  }
+  if (low === "fishtail") { S("M-8.5,-35 H8.5 L6.5,-11 L18,0 H-18 L-6.5,-11Z", l, o.pl); S("M-16,-2.5 H16 L18,0 H-18Z", b); }
+  if (low === "tiered") { S("M-8,-30 H8 L10,-20 H-10Z", l, o.pl); S("M-10,-20 H10 L13,-10 H-13Z", l, o.pl); S("M-13,-10 H13 L16,-1 H-16Z", l, o.pl); }
+  if (low === "skirt") S("M-8,-30 H8 L12,-12 H-12Z", l, o.pl);
+  if (low === "mini") S("M-8,-30 H8 L10,-20 H-10Z", l, o.pl);
+  if (low === "churidar") { S("M-6,-16 H-0.8 L-1.4,0 H-5Z", l, o.pl); S("M6,-16 H0.8 L1.4,0 H5Z", l, o.pl); }
+  if (low === "palazzo") S("M-9.5,-22 H9.5 L13,0 H1.2 L0,-13 L-1.2,0 H-13Z", l, o.pl);
+  if (low === "jeans") S("M-8.2,-29 H8.2 L8.4,0 H1.6 L0,-19 L-1.6,0 H-8.4Z", l, o.pl);
+  if (low === "baggy") { S("M-10,-29 H10 L12.5,0 H1.6 L0,-18 L-1.6,0 H-12.5Z", l, o.pl); line("M-9,-20 h4 v5 h-4z M9,-20 h-4 v5 h4z", "ink", 0.4, `opacity=".5"`); }
+  if (low === "shorts") { S("M-8.2,-29 H8.2 L9,-20 H1 L0,-24 L-1,-20 H-9Z", l, o.pl); legs(sk, -20); }
+  if (low === "leggings") { line("M-3,-29 L-3.4,-1", l, 4.4); line("M3,-29 L3.4,-1", l, 4.4); }
+  if (low === "dhoti") { S("M-9,-24 H9 L10.5,-6 L7,0 H2 L0,-11 L-2,0 H-7 L-10.5,-6Z", l, o.pl); line("M-6,-20 Q-2,-12 -6,-6 M6,-20 Q2,-12 6,-6", "ink", 0.4, `opacity=".45"`); }
+  if (low === "sharara") S("M-8,-22 H8 L7,-12 L17,0 H1.4 L0,-9 L-1.4,0 H-17 L-7,-12Z", l, o.pl);
 
-const ART = {
-  Ov: `<path class="fs" d="M14 18L24 12Q32 18 40 12L50 18L56 30L47 33V54H17V33L8 30Z"/><path class="s thin" d="M17 33v-10M47 33v-10"/>${star(32, 34, 7, "w")}`,
-  Ef: `<rect class="fs" x="10" y="14" width="44" height="42" rx="4"/><path class="s" d="M10 25h44M22 9v9M42 9v9"/><text x="32" y="46" font-size="13">FRI</text>`,
-  Dy: `<path class="fs" d="M32 30C24 12 8 16 13 29c3 6 11 5 19 1z"/><path class="fs" d="M32 30C40 12 56 16 51 29c-3 6-11 5-19 1z"/><path class="fs" d="M32 33c-9 2-15 9-10 15 4 4 8-5 10-15z"/><path class="fs" d="M32 33c9 2 15 9 10 15-4 4-8-5-10-15z"/><path class="s" d="M32 25v22M30 24l-3-6M34 24l3-6"/>${dots([[20,24],[44,24]], 1.6)}`,
-  Ss: `<path class="fs" d="M20 4h24l5 36H15z"/><path class="s thin" d="M25 6l-3 34M30 6l-1 34M35 6l1 34M40 6l3 34"/><path class="w" d="M11 56V46q0-4 4-4h10l6 6h17q6 0 6 6v2z"/><path class="s" d="M10 56h46"/><path class="s thin" d="M26 46l3 3M30 44l3 3"/>`,
-  Ql: `<rect class="fs" x="10" y="42" width="44" height="12" rx="3"/><rect class="w" x="12" y="30" width="40" height="12" rx="3"/><rect class="fs" x="14" y="18" width="36" height="12" rx="3"/><path class="s thin" d="M42 18l6-9"/><rect class="w thin" x="44" y="2" width="9" height="8" rx="1.5" transform="rotate(25 48 6)"/>`,
-  Mn: `${kurta(0, 0, "p", 30)}<path class="p" d="M24 38h16l-1 18h-5l-2-12-2 12h-5z"/>`,
-  Th: `<path class="s" d="M28 12a4 4 0 1 1 4 4v5"/><path class="s" d="M32 21L8 36h48z"/><path class="fs" d="M14 36h36l-3 20H17z"/><path class="w" d="M38 42h14l5 7-5 7H38z"/><text x="46" y="52" font-size="7.5">₹99</text>`,
-  Os: `<ellipse class="w" cx="32" cy="44" rx="18" ry="6"/><ellipse class="fs" cx="32" cy="36" rx="18" ry="6"/><ellipse class="w" cx="32" cy="28" rx="18" ry="6"/><ellipse class="fs" cx="32" cy="20" rx="18" ry="6"/>${dots([[20,48],[26,49.5],[32,50],[38,49.5],[44,48],[20,32],[26,33.5],[32,34],[38,33.5],[44,32]], 1.3)}`,
-  Gs: `<ellipse class="fs" cx="28" cy="36" rx="15" ry="19"/><path class="s thin" d="M20 40q4-3 7 0M33 40q4-3 7 0"/><path class="s thin" d="M24 47q4 3 8 0"/>${star(48, 14, 7)}${star(54, 30, 4)}${star(40, 6, 3)}`,
-  Ws: `<circle class="k" cx="50" cy="12" r="6"/><path class="s thin" d="M50 2v2M60 12h-2M57 5l-1.5 1.5M43 5l1.5 1.5M57 19l-1.5-1.5"/>${kurta(-6, 10, "w", 34)}${dots([[22,34],[30,38],[36,32],[24,44],[34,46],[28,52]], 1.4)}`,
-  Jc: `<path class="fs" d="M16 16L26 10H38L48 16L54 28L46 31V54H18V31L10 28Z"/><path class="s" d="M26 10l6 7 6-7"/><path class="s thin" d="M12 23l6-3M52 23l-6-3"/><text x="32" y="45" font-size="15">11</text>`,
-  Kd: `<path class="p" style="fill:var(--street)" d="M23 36h18l2 22h-8l-3-15-3 15h-8z"/>${kurta(0, -2, "fs", 22)}`,
-  Vb: `<path class="fs" d="M7 22h21v9a10 10 0 0 1-10 10h-1A10 10 0 0 1 7 31z"/><path class="fs" d="M36 22h21v9a10 10 0 0 1-10 10h-1a10 10 0 0 1-10-10z"/><path class="s" d="M28 25q4-4 8 0M7 22l-3-4M57 22l3-4"/><rect class="s thin" x="6" y="48" width="52" height="10" rx="1"/>${dots([[12,53],[20,53],[28,53],[36,53],[44,53],[52,53]], 1.4)}`,
-  Dp: `<path class="p" style="fill:var(--mood)" d="M26 6h12l2 12H24z"/><path class="p" style="fill:var(--access)" d="M24 18h16l4 18H20z"/><path class="p" style="fill:var(--fusion)" d="M20 36h24l6 20H14z"/>${star(52, 12, 4)}${star(10, 22, 3)}`,
-  Hl: `<path class="fs" d="M10 30h44v24H10z"/><path class="w" d="M10 30q22-16 44 0z"/><rect class="w thin" x="29" y="34" width="6" height="6" rx="1"/><path class="s" d="M44 30c6 8-2 12 4 22" stroke-dasharray="1 4"/><path class="fs" d="M32 18c-3-5-10-1-5 4l5 4 5-4c5-5-2-9-5-4z" style="fill:var(--mood)"/>`,
-  Sj: `<circle class="fs" cx="32" cy="8" r="5"/><path class="s" d="M32 13v6"/><path class="fs" d="M16 42q0-22 16-22t16 22z"/><path class="s thin" d="M20 34h24"/><path class="s thin" d="M20 42v8M26 42v10M32 42v12M38 42v10M44 42v8"/>${dots([[20,51],[26,53],[32,55],[38,53],[44,51]], 2.2)}`,
-  Sk: `<path class="w" d="M6 32q26-22 52 0q-26 22-52 0z"/><circle class="fs" cx="32" cy="32" r="9"/><circle class="d" cx="32" cy="32" r="3.5"/><path class="smudge" d="M10 37q22 16 44 0"/><path class="s" d="M6 32q26-22 52 0M18 22l-3-5M26 18l-1-6M38 18l1-6M46 22l3-5"/>`,
-  Rg: `<path class="fs" style="fill:var(--craft)" d="M10 38q22 26 44 0z"/><path class="s" d="M10 38h44"/><path class="k" style="fill:var(--access)" d="M32 36c-7-6-3-15 0-22 3 7 7 16 0 22z"/><path class="s thin" d="M32 36c-7-6-3-15 0-22 3 7 7 16 0 22z"/>${dots([[18,44],[26,47],[38,47],[46,44]], 1.4)}`,
-  Gc: `<path class="s thin" d="M2 54l14-20 8 10 12-18 26 28"/><path class="fs" d="M22 14q10-10 20 0l10 10-4 6v24H16V30l-4-6z"/><path class="s" d="M32 18v36M22 14q10 6 20 0"/><path class="s thin" d="M20 40h7M37 40h7"/>`,
-  Al: `<rect class="fs" x="14" y="20" width="36" height="34" rx="4"/><path class="s" d="M26 20v-7h12v7M24 20v34M40 20v34"/><circle class="w" cx="20" cy="58" r="2.5"/><circle class="w" cx="44" cy="58" r="2.5"/><path class="k" d="M27 36l10-4-2 3 5 1-1 2-5-1 1 3-4-1z"/>`,
-  Cs: `<circle class="w" cx="32" cy="32" r="22"/><circle class="s" cx="32" cy="32" r="25"/><rect class="w" x="29" y="3" width="6" height="5" rx="1"/>${flower(32, 30, 5)}<path class="s thin" d="M32 37v10M32 44q-6-2-8-6M32 44q6-2 8-6"/><path class="s thin" d="M50 50l10 10" stroke-dasharray="2 2"/>`,
-  Bz: `<path class="fs" d="M18 8h28l10 12-3 36H11L8 20z"/><path class="w" d="M24 8l8 20 8-20z"/><path class="s" d="M32 28v28"/>${dots([[35,34],[35,42]], 1.6)}${star(18, 30, 3.5, "d")}${star(46, 30, 3.5, "d")}${star(18, 44, 3.5, "d")}${star(46, 44, 3.5, "d")}`,
-  Aj: `<rect class="s" x="26" y="6" width="12" height="16" rx="2"/><ellipse class="w" cx="32" cy="6" rx="8" ry="3"/><rect class="fs" x="10" y="22" width="44" height="14" rx="2"/><path class="s thin" d="M14 44h36"/>${star(14, 52, 4, "k")}${star(25, 52, 4, "k")}${star(36, 52, 4, "k")}${star(47, 52, 4, "k")}`,
-  Bn: `<path class="fs" d="M10 10h44v44H10z"/>${dots([[18,18],[32,18],[46,18],[25,25],[39,25],[18,32],[32,32],[46,32],[25,39],[39,39],[18,46],[32,46],[46,46]], 2.6, "w thin")}`,
-  Ik: `<path class="fs" d="M26 6h12l2 12 10 38H14l10-38z"/><path class="s" d="M22 26l5-4 5 4 5-4 5 4M18 38l7-5 7 5 7-5 7 5M16 49l8-5 8 5 8-5 8 5" stroke-dasharray="4 1.5"/>`,
-  Hp: `<path class="p" style="fill:var(--street)" d="M16 6h26l2 52H33l-3-34-3 34H14z"/>${flower(24, 40, 4, "fs")}<path class="s" d="M44 8l12 12" stroke-width="4"/><path class="k" d="M40 4l6 6-3 3-6-6z"/>`,
-  Ph: `<path class="fs" d="M18 12h28l10 10-4 6v26H12V28l-4-6z"/><path class="s" d="M32 12v42"/>${star(22, 26, 5, "k")}${star(42, 26, 5, "k")}${star(22, 42, 5, "k")}${star(42, 42, 5, "k")}`,
-  Kh: `<circle class="fs" cx="24" cy="30" r="17"/><path class="s thin" d="M24 13v34M7 30h34M12 18l24 24M36 18L12 42"/><circle class="d" cx="24" cy="30" r="3"/><path class="s" d="M6 56h52M24 47v9M44 44v12M44 44h14"/><path class="s thin" d="M24 13L50 44" stroke-dasharray="2 2"/>`,
-  Bp: `<rect class="fs" x="8" y="8" width="48" height="48" rx="3"/>${flower(19, 19, 3.5, "w")}${flower(45, 19, 3.5, "w")}${flower(32, 32, 3.5, "w")}${flower(19, 45, 3.5, "w")}${flower(45, 45, 3.5, "w")}`,
-  Mw: `<rect class="fs" x="8" y="8" width="48" height="48" rx="24"/><circle class="w" cx="32" cy="32" r="8"/><path class="s thin" d="M32 20v-6M32 44v6M20 32h-6M44 32h6"/>${dots([[18,18],[46,18],[18,46],[46,46]], 4, "w")}`,
-  Mx: `<rect class="p" style="fill:var(--craft)" x="6" y="12" width="26" height="30" rx="2" transform="rotate(-10 19 27)"/><rect class="p" style="fill:var(--access)" x="22" y="18" width="26" height="30" rx="2" transform="rotate(6 35 33)"/><rect class="p" style="fill:var(--fusion)" x="34" y="26" width="24" height="30" rx="2" transform="rotate(-4 46 41)"/><path class="s thin" d="M38 32l4 4 4-4 4 4 4-4M38 42l4 4 4-4 4 4 4-4"/>${dots([[26,26],[32,30],[28,36]], 1.6)}<path class="s thin" d="M8 20l20-4M10 28l20-4"/>`,
-  Cq: `<path class="fs" d="M32 28C22 14 6 16 8 28s16 10 24 0z"/><path class="fs" d="M32 28C42 14 58 16 56 28s-16 10-24 0z"/><path class="fs" d="M29 30l-9 24 6-2 4 5 3-23zM35 30l9 24-6-2-4 5-3-23z"/><rect class="w" x="28" y="23" width="8" height="10" rx="3"/>`,
-  Rn: `<path class="s" d="M28 8a4 4 0 1 1 4 4v2"/><rect class="fs" x="16" y="14" width="32" height="42" rx="4"/><path class="s thin" d="M32 18v34" stroke-dasharray="2 2"/><circle class="w" cx="48" cy="46" r="11"/><path class="s" d="M42 46a6 6 0 1 0 6-6h-2M46 37l3 3-3 3"/>`,
-  Bc: `<path class="s" d="M22 24q10-18 20 0"/><path class="fs" d="M10 24h44l-5 30H15z"/><path class="s thin" d="M42 24v14M48 24v22"/>${star(42, 42, 4, "k")}<circle class="w" cx="48" cy="50" r="3.5"/>`,
-  Gg: `<path class="fs" d="M14 58q0-20 18-20t18 20z" style="fill:var(--ink)"/><circle class="d" cx="32" cy="24" r="12"/>${flower(32, 9, 3, "w")}${flower(47, 20, 3, "w")}${flower(44, 36, 3, "w")}${flower(20, 36, 3, "w")}${flower(17, 20, 3, "w")}`,
-  Sd: `<path class="fs" d="M8 18l24-10 24 10-24 10z"/><path class="s" d="M18 22v8q14 8 28 0v-8M52 20v12"/><circle class="k" cx="52" cy="34" r="2"/><path class="fs" style="fill:var(--mood)" d="M22 38h20l6 18H16z"/><path class="s thin" d="M26 40l-3 16M30 40l-1 16M34 40l1 16M38 40l3 16"/>`,
-  Pl: lehenga("var(--mood)"),
-  Rr: `${lehenga("var(--craft)")}${dots([[14,52],[20,53],[26,54],[32,54],[38,54],[44,53],[50,52]], 1.6, "k")}`,
-  Sb: `<circle class="s" cx="32" cy="7" r="3"/><path class="s" d="M32 10v4"/><path class="fs" d="M26 14h12l5 42H21z"/><path class="fs" style="fill:var(--craft)" d="M26 15l14 18 2 6-18-20z"/><path class="fs" style="fill:var(--craft)" d="M38 14q16 10 12 40l-6-2q4-24-6-32z"/><path class="s thin" d="M28 40l-2 16M33 40v16M38 40l2 16"/>`,
-  Mm: `<path class="fs" d="M22 58V36l-5-12q-1-4 2-5t5 3l2 7V12q0-3 3-3t3 3v15V8q0-3 3-3t3 3v19V12q0-3 3-3t3 3v24l4-6q2-3 4-1t0 5l-8 15v9z"/>${flower(33, 40, 3, "w")}<path class="s thin" d="M30 11h4M36 7h4M42 11h4"/>`,
-  Fj: `<path class="s" d="M10 12q22 42 44 0"/>${flower(14, 22, 3, "w")}${flower(20, 32, 3, "w")}${flower(44, 32, 3, "w")}${flower(50, 22, 3, "w")}${flower(32, 44, 6, "fs")}<path class="s thin" d="M32 51v6"/>`,
-  Tw: `<g transform="translate(-10 4) scale(.85)">${kurta(0, 0, "fs", 30)}</g><g transform="translate(19 4) scale(.85)">${kurta(0, 0, "fs", 30)}</g><path class="k" style="fill:var(--mood)" d="M32 50c-2-3-7-1-4 2l4 3 4-3c3-3-2-5-4-2z"/>`,
-  Sq: `<path class="fs" d="M24 6h16l8 50H16z"/><path class="fs" d="M40 6q14 14 10 50l-6-1q2-30-4-49z"/>${dots([[24,18],[30,24],[36,16],[22,32],[32,36],[40,28],[26,46],[36,48],[44,40],[20,52],[46,52]], 1.6, "w thin")}${star(54, 10, 5)}${star(10, 20, 3.5)}`,
-  Dd: `<path class="fs" d="M12 56q0-46 20-46t20 46z"/><circle class="w" cx="32" cy="26" r="7"/><path class="fs" style="fill:var(--access)" d="M8 44q24 4 48-10l2 7q-24 15-50 10z"/>${dots([[16,48],[26,47.5],[36,45],[46,40]], 1.4, "d")}`,
+  // Shoes
+  const shc = { sneaker: "white", jutti: "gold", kolhapuri: "kaapi", heel: "ink", boot: "black", none: null }[o.shoe || "jutti"];
+  if (shc) { g.push(`<ellipse cx="-4" cy="-0.6" rx="${o.shoe === "sneaker" || o.shoe === "boot" ? 4 : 3.2}" ry="1.9" fill="${col(shc)}" ${OL}/>`); g.push(`<ellipse cx="4" cy="-0.6" rx="${o.shoe === "sneaker" || o.shoe === "boot" ? 4 : 3.2}" ry="1.9" fill="${col(shc)}" ${OL}/>`); }
+
+  // Top
+  const midriff = (to) => g.push(`<rect x="-8.2" y="-39.5" width="16.4" height="${to}" fill="${sk}" ${OL}/>`);
+  if (top === "blouse") { midriff(5); S("M-8,-49 Q0,-51 8,-49 L8.6,-38.5 H-8.6Z", c, o.pt); }
+  if (top === "corset") { midriff(5); S("M-8,-48 Q0,-46 8,-48 L8.6,-36 L0,-34 L-8.6,-36Z", c, o.pt); line("M-2,-46 L2,-44 M2,-46 L-2,-44 M-2,-42 L2,-40 M2,-42 L-2,-40", "ivory", 0.5); }
+  if (top === "babytee") { midriff(6); S("M-8,-49 Q0,-51 8,-49 L8.6,-37 H-8.6Z", c, o.pt); }
+  if (top === "crop") { S("M-8,-49 Q0,-51 8,-49 L8.6,-36 H-8.6Z", c, o.pt); }
+  if (top === "kurta") { S("M-8,-49 Q0,-51 8,-49 L11.5,-13 H-11.5Z", c, o.pt); line("M0,-49 L0,-42", "ink", 0.45, `opacity=".6"`); }
+  if (top === "shortkurta") { S("M-8,-49 Q0,-51 8,-49 L10.5,-22 H-10.5Z", c, o.pt); line("M0,-49 L0,-42", "ink", 0.45, `opacity=".6"`); }
+  if (top === "angrakha") { S("M-8,-49 Q0,-51 8,-49 L12,-12 H-12Z", c, o.pt); line("M-7,-49 Q3,-42 6,-34", "ink", 0.5); dot(6, -34, 0.9, b); }
+  if (top === "tee") { S("M-11.5,-49 Q0,-51.5 11.5,-49 L12.5,-26 H-12.5Z", c, o.pt); }
+  if (top === "fittee") { S("M-8.5,-49 Q0,-51 8.5,-49 L9,-29 H-9Z", c, o.pt); }
+  if (top === "shirt") { S("M-8.5,-49 Q0,-51 8.5,-49 L9.5,-27 H-9.5Z", c, o.pt); S("M-3.5,-49.5 L0,-45 L3.5,-49.5 L1.5,-50.5 L0,-48.5 L-1.5,-50.5Z", "ivory"); line("M0,-45 V-28", "ink", 0.4, `opacity=".5"`); }
+  if (top === "sherwani") { S("M-8.5,-49 Q0,-51 8.5,-49 L11,-9 H-11Z", c, o.pt); line("M0,-49 V-10", "ink", 0.45); for (const yy of [-45, -40, -35, -30]) dot(0.9, yy, 0.65, b); S("M-3,-50.5 H3 V-48.5 H-3Z", b); }
+  if (top === "dress") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-38 L15,-11 H-15 L-8,-38Z", c, o.pt); }
+  if (top === "slip") { S("M-6.5,-48 Q0,-46 6.5,-48 L8,-38 L13,-6 H-13 L-8,-38Z", c, o.pt); }
+  if (top === "anarkali") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-39 L21,-4 H-21 L-8,-39Z", c, o.pt); S("M-19.6,-7.2 H19.6 L21,-4 H-21Z", b); }
+  if (top === "gown") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-39 L17,0 H-17 L-8,-39Z", c, o.pt); }
+  if (top === "jersey") { S("M-10,-49 Q0,-51 10,-49 L11,-27 H-11Z", c, o.pt); g.push(`<text x="0" y="-33" font-family="Archivo Narrow, sans-serif" font-weight="700" font-size="8" text-anchor="middle" fill="${P.ivory}">${o.num || 7}</text>`); line("M-3,-50 L0,-46 L3,-50", "ivory", 0.8); }
+  if (top === "hoodie") { S("M-11,-49 Q0,-51.5 11,-49 L12,-26 H-12Z", c, o.pt); S("M-7,-50 Q0,-44 7,-50 Q0,-47 -7,-50Z", "ink", null, `fill-opacity=".2"`); line("M-2,-46 V-41 M2,-46 V-41", "ivory", 0.5); }
+
+  // Arms with sleeves
+  const sl = o.sl || ({ blouse: "short", corset: "none", babytee: "short", crop: "none", tee: "tee", fittee: "short", jersey: "tee", slip: "none", dress: "short" }[top] || "long");
+  for (const d of [-1, 1]) {
+    line(`M${d * 8.6},-47 L${d * 11.6},-30.5`, sk, 3.1);
+    if (sl === "short") line(`M${d * 8.6},-47.4 L${d * 9.9},-41`, c, 4.6);
+    if (sl === "puff") g.push(`<ellipse cx="${d * 9.6}" cy="-45" rx="3.6" ry="3.2" fill="${col(c)}" ${OL}/>`);
+    if (sl === "tee") line(`M${d * 10.5},-48 L${d * 14.5},-38.5`, c, 6.2);
+    if (sl === "long") line(`M${d * 8.6},-47.4 L${d * 11.4},-32`, c, 4.2);
+    g.push(`<circle cx="${d * 11.7}" cy="-30" r="1.75" fill="${sk}"/>`);
+  }
+  if (sl === "tee" && top === "tee") { g.push(shape(id, "M-11.5,-49 Q0,-51.5 11.5,-49 L12.5,-26 H-12.5Z", c, o.pt)); }
+
+  // Front layers
+  if (lay.includes("pallu")) { S("M-8.6,-49 L-3.4,-49.6 L9.4,-33.5 L9.4,-28.5Z", y, o.py); line("M-8.6,-49 L9.4,-28.5", b, 1.1); }
+  if (lay.includes("dupatta")) line("M-7,-46 Q0,-37 7,-46", y, 2.6);
+  if (lay.includes("drape")) { S("M-8.6,-49 L-3,-49.6 L11,-24 L6,-22Z", y, o.py); }
+  if (lay.includes("vest")) S("M-8.6,-49 L-3,-49.5 L0,-39 L3,-49.5 L8.6,-49 L9.6,-25 H-9.6Z", y, o.py);
+  if (lay.includes("blazer")) { S("M-9.6,-49.5 L-2.6,-49.5 L0,-36 L2.6,-49.5 L9.6,-49.5 L10.6,-23 H1.2 L0,-36 L-1.2,-23 H-10.6Z", y, o.py); for (const d of [-1, 1]) line(`M${d * 9.2},-48 L${d * 11.6},-32.5`, y, 4.6); }
+  if (lay.includes("jacket")) { S("M-10,-49.5 L-2.4,-49.5 L-1.2,-27 H-11Z", y, o.py); S("M10,-49.5 L2.4,-49.5 L1.2,-27 H11Z", y, o.py); for (const d of [-1, 1]) line(`M${d * 9.4},-48 L${d * 11.8},-32.5`, y, 4.8); }
+  if (lay.includes("shawl")) S("M-10.5,-49 Q0,-43 10.5,-49 L11.5,-39 Q0,-33 -11.5,-39Z", y, o.py);
+  if (lay.includes("cape")) S("M-8.5,-49 L-17,-10 H-9 L-6,-44 Q0,-42 6,-44 L9,-10 H17 L8.5,-49Z", y, o.py, `fill-opacity=".8"`);
+  if (lay.includes("belt")) line("M-8.4,-38 H8.4", b, 1.6);
+
+  // Neck and head
+  g.push(`<rect x="-2" y="-52.5" width="4" height="4" fill="${sk}"/>`);
+  g.push(`<circle cx="0" cy="-61" r="9.6" fill="${sk}" ${OL}/>`);
+  if (lay.includes("veil")) S("M-10.5,-60 Q-11,-75 0,-75 Q11,-75 10.5,-60 Q6,-68 0,-68 Q-6,-68 -10.5,-60Z", y, o.py, `fill-opacity=".55"`);
+  // Front hair
+  if (h === "short" || h === "buzz") S("M-10,-61.5 C-10.5,-74 10.5,-74 10,-61.5 C7,-66 -7,-66 -10,-61.5Z", hc);
+  else if (h !== "none") S("M-10.2,-60 C-10.8,-74.5 10.8,-74.5 10.2,-60 C7,-67 -2,-68 -10.2,-60Z", hc);
+  // Face
+  g.push(`<circle cx="-3.3" cy="-60" r="0.95" fill="${P.ink}"/><circle cx="3.3" cy="-60" r="0.95" fill="${P.ink}"/>`);
+  g.push(`<circle cx="-5.7" cy="-56.8" r="1.6" fill="${P.pink}" opacity=".6"/><circle cx="5.7" cy="-56.8" r="1.6" fill="${P.pink}" opacity=".6"/>`);
+  g.push(`<path d="M-1.7,-56.3 Q0,-54.8 1.7,-56.3" fill="none" stroke="${P.ink}" stroke-width="0.7" stroke-linecap="round"/>`);
+  if (o.beard) S("M-8,-58 Q0,-48 8,-58 Q0,-53 -8,-58Z", hc);
+  if (o.stache) line("M-2.6,-57.4 Q0,-58.6 2.6,-57.4", hc, 1.1);
+
+  // Accessories
+  for (const a of acc) {
+    if (a === "jhumka") for (const d of [-1, 1]) { dot(d * 9.8, -57, 1.1, ac, OL); g.push(`<path d="M${d * 9.8 - 1.6},-53.5 Q${d * 9.8},-57 ${d * 9.8 + 1.6},-53.5Z" fill="${ac}" ${OL}/>`); }
+    if (a === "bigjhumka") for (const d of [-1, 1]) { dot(d * 10.2, -57, 1.3, ac, OL); g.push(`<path d="M${d * 10.2 - 3.6},-48.5 Q${d * 10.2},-57 ${d * 10.2 + 3.6},-48.5Z" fill="${ac}" ${OL}/>`); for (const k of [-2.4, 0, 2.4]) dot(d * 10.2 + k, -47.2, 0.8, "white", OL); }
+    if (a === "hoops") for (const d of [-1, 1]) g.push(`<circle cx="${d * 10}" cy="-54" r="2.6" fill="none" stroke="${ac}" stroke-width="0.9"/>`);
+    if (a === "studs") for (const d of [-1, 1]) dot(d * 9.8, -57.5, 1, "white", OL);
+    if (a === "bindi") dot(0, -64.8, 0.95, "red");
+    if (a === "bigbindi") dot(0, -64.6, 1.6, "red");
+    if (a === "nath") g.push(`<circle cx="2.4" cy="-56.8" r="2" fill="none" stroke="${ac}" stroke-width="0.7"/>`);
+    if (a === "bignath") { g.push(`<circle cx="3" cy="-55.6" r="3.8" fill="none" stroke="${ac}" stroke-width="0.9"/>`); line("M6.6,-56 Q9,-61 9.6,-64", ac, 0.5); dot(3, -51.9, 0.8, "red"); }
+    if (a === "tikka") { line("M0,-71 L0,-66.5", ac, 0.6); dot(0, -66, 1.4, ac, OL); }
+    if (a === "matha") { line("M-9.4,-63.5 Q0,-71 9.4,-63.5", ac, 0.9); line("M0,-71 L0,-66.5", ac, 0.6); dot(0, -66, 1.4, ac, OL); }
+    if (a === "gajra") { const cy = h === "lowbun" ? -52.5 : -71.5; for (let i = 0; i < 9; i++) { const t = (i / 9) * 2 * Math.PI; dot((Math.cos(t) * 5.6).toFixed(2), (cy + Math.sin(t) * 5.6).toFixed(2), 1.05, "white", `stroke="${P.ink}" stroke-width=".25"`); } }
+    if (a === "glasses") { g.push(`<circle cx="-3.6" cy="-60" r="2.7" fill="${P.ink}" fill-opacity=".88"/><circle cx="3.6" cy="-60" r="2.7" fill="${P.ink}" fill-opacity=".88"/>`); line("M-1,-60.5 L1,-60.5", "ink", 0.6); }
+    if (a === "cateye") { g.push(`<path d="M-7.4,-62.6 L-0.8,-61.6 L-1.4,-58.6 L-5.6,-58.2Z M7.4,-62.6 L0.8,-61.6 L1.4,-58.6 L5.6,-58.2Z" fill="${col(o.ac || "ink")}" ${OL}/>`); }
+    if (a === "specs") { g.push(`<circle cx="-3.6" cy="-60" r="2.5" fill="none" stroke="${P.ink}" stroke-width=".7"/><circle cx="3.6" cy="-60" r="2.5" fill="none" stroke="${P.ink}" stroke-width=".7"/>`); }
+    if (a === "cap") { S("M-10.4,-64.5 Q0,-78 10.4,-64.5Z", o.ac || "red"); S("M-1,-65.5 L-17,-64.4 L-10,-62.6Z", o.ac || "red"); }
+    if (a === "beanie") { S("M-10.6,-63 Q0,-80 10.6,-63Z", o.ac || "red"); dot(0, -72, 1.8, o.ac || "red", OL); }
+    if (a === "hat") { g.push(`<ellipse cx="0" cy="-67" rx="17" ry="3.2" fill="${col(o.ac || "beige")}" ${OL}/>`); S("M-8,-67.5 Q-8,-77 0,-77 Q8,-77 8,-67.5Z", o.ac || "beige"); line("M-8,-69.4 H8", "ink", 1.2); }
+    if (a === "beret") g.push(`<ellipse cx="-1.5" cy="-69.5" rx="10.5" ry="3.8" fill="${col(o.ac || "red")}" ${OL}/>`);
+    if (a === "safa") { S("M8,-67 L17,-40 L12,-41Z", o.ac || "orange", o.pa); S("M-10.8,-63 Q-12,-79 0,-78 Q12,-79 10.8,-63 Q0,-67 -10.8,-63Z", o.ac || "orange", o.pa); line("M-10,-68 Q0,-74 10,-68", "ink", 0.4, `opacity=".4"`); dot(0, -72.5, 1.2, "white", OL); }
+    if (a === "headphones") { line("M-10.4,-62 Q-11,-76 0,-76 Q11,-76 10.4,-62", "ink", 1.4); g.push(`<rect x="-12.6" y="-63.5" width="3.6" height="6" rx="1.4" fill="${col(o.ac || "red")}" ${OL}/><rect x="9" y="-63.5" width="3.6" height="6" rx="1.4" fill="${col(o.ac || "red")}" ${OL}/>`); }
+    if (a === "necklace") { line("M-5,-49 Q0,-43.5 5,-49", ac, 0.9); dot(0, -44.4, 1.3, ac, OL); }
+    if (a === "choker") { line("M-4.6,-50.4 Q0,-47.2 4.6,-50.4", ac, 2.4); for (const k of [-3, 0, 3]) dot(k, k === 0 ? -48.4 : -49, 0.75, k === 0 ? "red" : "green"); }
+    if (a === "layered") { line("M-5.5,-49 Q0,-44 5.5,-49", ac, 0.8); line("M-6.5,-48.5 Q0,-40 6.5,-48.5", ac, 0.8); line("M-7.4,-48 Q0,-36 7.4,-48", ac, 0.8); dot(0, -36.2, 1.4, "red", OL); }
+    if (a === "pearls") { for (let i = -4; i <= 4; i++) dot(i * 1.25, -46.6 + Math.abs(i) * -0.45, 0.75, "white", `stroke="${P.ink}" stroke-width=".25"`); }
+    if (a === "beads") { line("M-5.5,-49 Q0,-43 5.5,-49", "red", 1.4, `stroke-dasharray=".1 1.6"`); line("M-6.5,-48.5 Q0,-39.5 6.5,-48.5", "yellow", 1.4, `stroke-dasharray=".1 1.6"`); line("M-7.5,-48 Q0,-36 7.5,-48", "teal", 1.4, `stroke-dasharray=".1 1.6"`); }
+    if (a === "chain") line("M-5,-49 Q0,-40 5,-49", "gold", 0.9, `stroke-dasharray="1 .6"`);
+    if (a === "bangles") for (const d of [-1, 1]) for (const k of [0, 1.2, 2.4]) line(`M${d * 10.2},${-33.4 + k} L${d * 13},${-34 + k}`, k === 1.2 ? "red" : ac, 0.9);
+    if (a === "bow") { g.push(`<path d="M0,-70 L-5,-73.5 L-5,-66.5Z M0,-70 L5,-73.5 L5,-66.5Z" fill="${col(o.ac || "pink")}" ${OL}/>`); dot(0, -70, 1.2, o.ac || "pink", OL); }
+    if (a === "butterfly") { for (const [bx, by] of [[-7, -68], [6, -70]]) g.push(`<path d="M${bx},${by} q-3,-3 -3,0 q0,3 3,0 q3,-3 3,0 q0,3 -3,0Z" fill="${col(o.ac || "lav")}" ${OL}/>`); }
+    if (a === "scrunchie") g.push(`<ellipse cx="9" cy="-63" rx="2.4" ry="1.7" fill="${col(o.ac || "pink")}" ${OL} transform="rotate(30 9 -63)"/>`);
+    if (a === "claw") g.push(`<rect x="-3" y="-75" width="6" height="3" rx="1" fill="${col(o.ac || "yellow")}" ${OL}/>`);
+    if (a === "flowers") { for (const [fx, fy, fc] of [[-3, -47, "pink"], [0, -45.5, "yellow"], [3, -47, "pink"], [-12, -33, "yellow"], [12, -33, "yellow"]]) dot(fx, fy, 1.3, fc, OL); }
+    if (a === "flowerhair") for (const [fx, fy, fc] of [[-8, -68, "pink"], [-5.5, -71, "yellow"], [-2.5, -72.5, "pink"]]) dot(fx, fy, 1.5, fc, OL);
+    if (a === "kohl") line("M-5,-59 L-1.6,-59 M1.6,-59 L5,-59", "ink", 1.2);
+    if (a === "lipstick") g.push(`<path d="M-1.8,-56.4 Q0,-54.4 1.8,-56.4Z" fill="${P.red}"/>`);
+    if (a === "watch") line("M10.4,-32.5 L13,-33", "gold", 1.4);
+    if (a === "bag") { line("M-8,-48 L10,-28", "kaapi", 0.8); S("M8,-30 H16 L17,-22 H7Z", o.ac2 || "kaapi"); }
+    if (a === "scarf") { S("M-6,-50.5 Q0,-46 6,-50.5 L5,-47 Q0,-44 -5,-47Z", o.ac2 || "red"); S("M3,-47 L6,-36 L3,-36 L1.5,-46Z", o.ac2 || "red"); }
+    if (a === "tie") S("M-1.2,-48 H1.2 L1.8,-36 L0,-34 L-1.8,-36Z", o.ac2 || "red");
+    if (a === "pocketsq") S("M4,-45 L7,-45 L6,-43 L4.5,-43Z", "white");
+  }
+
+  // Held items, in the right hand at (11.7,-30)
+  const hold = o.hold;
+  if (hold === "potli") { line("M11.7,-30 L12.5,-27", "ink", 0.5); S("M9.5,-27 Q12.5,-28 15.5,-27 Q17,-20 12.5,-19.5 Q8,-20 9.5,-27Z", o.hc2 || "rani", null); line("M10,-26.5 Q12.5,-25 15,-26.5", "gold", 0.8); }
+  if (hold === "clutch") S("M10,-31.5 H18 V-27 H10Z", o.hc2 || "gold");
+  if (hold === "phone") S("M10.6,-36 H14 V-29.5 H10.6Z", "ink");
+  if (hold === "coffee") { S("M10,-34 H15 L14.4,-27.5 H10.6Z", "white"); S("M10,-34 H15 V-32.4 H10Z", o.hc2 || "kaapi"); }
+  if (hold === "tote") { line("M8,-48 L11,-30", "beige", 0.9); S("M8,-31 H18 L17,-17 H9Z", o.hc2 || "beige"); }
+  if (hold === "shopbags") { for (const [bx, bc] of [[9, "red"], [14, "yellow"]]) { S(`M${bx},-31 H${bx + 6} V-21 H${bx}Z`, bc); line(`M${bx + 1.5},-31 Q${bx + 3},-35 ${bx + 4.5},-31`, "ink", 0.5); } }
+  if (hold === "dandiya") { line("M8,-26 L16,-38", "orange", 1.4); line("M10,-38 L16,-26", "rani", 1.4); }
+  if (hold === "bottle") S("M10.4,-37 H13.6 V-27 H10.4Z", o.hc2 || "teal");
+  if (hold === "flowers") { line("M11.7,-30 L13,-37", "green", 0.8); dot(13, -38, 2, "pink", OL); dot(11, -36.4, 1.6, "yellow", OL); dot(15, -36, 1.6, "red", OL); }
+  if (hold === "book") S("M9.6,-35 H16 V-28 H9.6Z", o.hc2 || "maroon");
+  if (hold === "mic") { line("M11.7,-30 L13,-37", "ink", 1.2); dot(13.3, -38.3, 1.9, "grey", OL); }
+  if (hold === "racket") { line("M11.7,-30 L15,-38", "kaapi", 0.9); g.push(`<ellipse cx="17" cy="-42.5" rx="3.4" ry="4.4" fill="none" stroke="${P.ink}" stroke-width=".8" transform="rotate(25 17 -42.5)"/>`); }
+  if (hold === "glowstick") line("M10,-33 L16,-42", "lime", 1.6);
+  if (hold === "lightsaber") line("M11.7,-30 L18,-47", "hot", 1.6);
+  if (hold === "umbrella") { line("M11.7,-30 L11.7,-48", "ink", 0.6); S("M2,-48 Q11.7,-58 21.4,-48Z", o.hc2 || "blue"); }
+
+  return `<g transform="translate(${x} 94) scale(${s * flip} ${s})">${g.join("")}</g>`;
+}
+
+// Backdrop pieces, absolute coordinates on the 100×100 stage.
+const SET = {
+  window: (c = "sky") => `<rect x="60" y="14" width="28" height="34" rx="2" fill="${col(c)}" ${OL}/><path d="M74,14 V48 M60,31 H88" stroke="${P.ink}" stroke-width=".6"/>`,
+  window2: (c = "sky") => `<rect x="12" y="14" width="26" height="32" rx="2" fill="${col(c)}" ${OL}/><path d="M25,14 V46 M12,30 H38" stroke="${P.ink}" stroke-width=".6"/>`,
+  arch: (c = "cream") => `<path d="M28,86 V40 Q28,20 50,10 Q72,20 72,40 V86Z" fill="${col(c)}" ${OL}/>`,
+  arches: (c = "cream") => [10, 38, 66].map((x) => `<path d="M${x},70 V40 Q${x},26 ${x + 12},20 Q${x + 24},26 ${x + 24},40 V70Z" fill="${col(c)}" ${OL}/>`).join(""),
+  sun: (c = "yellow", x = 80, y = 20) => `<circle cx="${x}" cy="${y}" r="9" fill="${col(c)}" ${OL}/>`,
+  moon: (x = 80, y = 18) => `<path d="M${x},${y - 8} a8,8 0 1 0 6,13 a6.5,6.5 0 1 1 -6,-13Z" fill="${P.paper}" ${OL}/>`,
+  stars: (c = "paper") => [[14, 14], [30, 26], [72, 12], [86, 34], [20, 42], [62, 30]].map(([x, y]) => `<path d="M${x},${y - 2.4} L${x + 0.7},${y - 0.7} L${x + 2.4},${y} L${x + 0.7},${y + 0.7} L${x},${y + 2.4} L${x - 0.7},${y + 0.7} L${x - 2.4},${y} L${x - 0.7},${y - 0.7}Z" fill="${col(c)}"/>`).join(""),
+  waves: (c = "blue") => `<rect x="0" y="62" width="100" height="22" fill="${col(c)}"/><path d="M0,68 q6,-3 12,0 t12,0 t12,0 t12,0 t12,0 t12,0 t12,0 t12,0 t12,0 M0,76 q6,-3 12,0 t12,0 t12,0 t12,0 t12,0 t12,0 t12,0 t12,0 t12,0" fill="none" stroke="${P.paper}" stroke-width=".8" opacity=".7"/>`,
+  palm: (x = 84) => `<path d="M${x},84 Q${x + 2},60 ${x - 2},44" fill="none" stroke="${P.kaapi}" stroke-width="2.4"/><path d="M${x - 2},44 q-12,-2 -16,6 M${x - 2},44 q-8,-10 -18,-6 M${x - 2},44 q8,-10 16,-4 M${x - 2},44 q12,0 14,8" fill="none" stroke="${P.green}" stroke-width="2.6" stroke-linecap="round"/>`,
+  hills: (c = "sage") => `<path d="M0,84 L0,62 Q18,46 34,60 Q52,40 72,58 Q86,48 100,56 V84Z" fill="${col(c)}" ${OL}/>`,
+  skyline: (c = "indigo") => `<path d="M0,84 V58 H10 V48 H20 V62 H28 V40 H38 V56 H46 V50 H58 V64 H64 V44 H76 V58 H84 V50 H100 V84Z" fill="${col(c)}" opacity=".85"/>` + [[31, 46], [33, 52], [67, 50], [70, 56], [14, 54]].map(([x, y]) => `<rect x="${x}" y="${y}" width="2" height="2.4" fill="${P.yellow}"/>`).join(""),
+  bunting: () => { let s = `<path d="M0,10 Q50,22 100,10" fill="none" stroke="${P.ink}" stroke-width=".5"/>`; const cs = ["red", "yellow", "green", "rani", "blue", "orange", "pink"]; for (let i = 0; i < 9; i++) { const x = 6 + i * 11, y = 10 + Math.sin((x / 100) * Math.PI) * 6; s += `<path d="M${x - 4},${y} L${x + 4},${y} L${x},${y + 7}Z" fill="${col(cs[i % cs.length])}" ${OL}/>`; } return s; },
+  marigold: () => { let s = ""; for (let i = 0; i < 7; i++) { const x = 8 + i * 14; for (let j = 0; j < 6; j++) s += `<circle cx="${x}" cy="${4 + j * 4.2}" r="2.1" fill="${j % 3 === 2 ? P.red : P.orange}"/>`; } return s; },
+  spotlight: (c = "yellow") => `<path d="M38,0 H62 L84,86 H16Z" fill="${col(c)}" opacity=".22"/>`,
+  curtain: (c = "maroon") => `<path d="M0,0 H22 Q14,40 18,86 H0Z M100,0 H78 Q86,40 82,86 H100Z" fill="${col(c)}" ${OL}/><path d="M6,0 Q4,40 6,86 M12,0 Q10,40 12,86 M94,0 Q96,40 94,86 M88,0 Q90,40 88,86" stroke="${P.ink}" stroke-width=".4" opacity=".35" fill="none"/>`,
+  plants: () => `<path d="M10,84 V70 H22 V84Z" fill="${P.rust}" ${OL}/><path d="M16,70 q-10,-14 -4,-24 q4,8 4,24 q0,-16 8,-22 q2,12 -8,22" fill="${P.green}" ${OL}/><path d="M80,84 V72 H92 V84Z" fill="${P.rust}" ${OL}/><path d="M86,72 q-8,-10 -2,-18 q4,6 2,18 q2,-12 8,-14 q0,10 -8,14" fill="${P.sage}" ${OL}/>`,
+  mirror: (c = "sky") => `<ellipse cx="80" cy="44" rx="11" ry="20" fill="${P.gold}" ${OL}/><ellipse cx="80" cy="44" rx="8.4" ry="17" fill="${col(c)}" ${OL}/><path d="M75,36 L80,30 M74,44 L82,34" stroke="#fff" stroke-width="1" opacity=".7"/>`,
+  floodlights: () => `<path d="M10,84 V24 M90,84 V24" stroke="${P.grey}" stroke-width="1.6"/><rect x="4" y="16" width="12" height="8" fill="${P.paper}" ${OL}/><rect x="84" y="16" width="12" height="8" fill="${P.paper}" ${OL}/><path d="M16,24 L40,60 L28,64Z M84,24 L60,60 L72,64Z" fill="${P.yellow}" opacity=".25"/>`,
+  palace: (c = "peach") => `<path d="M0,84 V44 H14 V34 Q20,24 26,34 V44 H40 V36 Q50,20 60,36 V44 H74 V34 Q80,24 86,34 V44 H100 V84Z" fill="${col(c)}" ${OL}/>` + [20, 50, 80].map((x) => `<path d="M${x - 5},84 V64 Q${x},56 ${x + 5},64 V84Z" fill="${P.ink}" opacity=".25"/>`).join(""),
+  line: () => { let s = `<path d="M0,14 Q50,22 100,14" fill="none" stroke="${P.ink}" stroke-width=".6"/>`; [["indigo", 10], ["red", 30], ["yellow", 52], ["green", 74]].forEach(([c, x]) => { s += `<path d="M${x},${15 + Math.sin((x / 100) * Math.PI) * 4} h12 v20 l-6,-3 l-6,3Z" fill="${col(c)}" ${OL}/>`; }); return s; },
+  clouds: () => [[18, 18, "hot"], [50, 12, "yellow"], [80, 22, "green"], [34, 30, "blue"], [70, 36, "rani"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="7" fill="${col(c)}" opacity=".55"/>`).join(""),
+  rail: () => `<path d="M8,16 H92" stroke="${P.ink}" stroke-width="1.2"/>`,
+  runway: () => `<path d="M38,84 L44,58 H56 L62,84Z" fill="${P.paper}" opacity=".35"/>`,
+  disco: () => `<path d="M50,0 V8" stroke="${P.ink}" stroke-width=".6"/><circle cx="50" cy="14" r="7" fill="${P.grey}" ${OL}/><path d="M43,14 H57 M50,7 V21 M45,9 L55,19 M55,9 L45,19" stroke="#fff" stroke-width=".5" opacity=".7"/>` + [[20, 30], [80, 28], [30, 50], [72, 48]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.4" fill="${P.paper}"/>`).join(""),
+  diyas: () => [14, 30, 70, 86].map((x) => `<path d="M${x - 5},84 Q${x},90 ${x + 5},84Z" fill="${P.rust}" ${OL}/><path d="M${x},83.5 c-1.6,-2 -.6,-4 0,-5.5 c.6,1.5 1.6,3.5 0,5.5Z" fill="${P.yellow}" ${OL}/>`).join(""),
+  books: () => `<rect x="6" y="20" width="26" height="60" fill="${P.kaapi}" ${OL}/>` + [[8, "maroon"], [12, "green"], [16, "indigo"], [20, "yellow"], [24, "red"], [28, "teal"]].map(([x, c]) => `<rect x="${x}" y="24" width="3.4" height="16" fill="${col(c)}" ${OL}/><rect x="${x}" y="48" width="3.4" height="16" fill="${col(c)}" ${OL}/>`).join(""),
+  net: () => `<path d="M0,64 H100" stroke="${P.paper}" stroke-width="1"/><path d="M0,58 H100 V64 H0Z" fill="none" stroke="${P.paper}" stroke-width=".4" stroke-dasharray="1 1"/>`,
+  confetti: () => [[12, 20, "red"], [26, 10, "yellow"], [40, 22, "blue"], [62, 12, "rani"], [78, 24, "green"], [88, 10, "orange"], [20, 38, "pink"], [84, 40, "yellow"]].map(([x, y, c]) => `<rect x="${x}" y="${y}" width="2.6" height="1.4" fill="${col(c)}" transform="rotate(${x} ${x} ${y})"/>`).join(""),
+  sparkles: (c = "yellow") => [[16, 20, 3], [84, 18, 2.4], [80, 46, 2], [20, 50, 2]].map(([x, y, r]) => `<path d="M${x},${y - r * 2} L${x + r * .5},${y - r * .5} L${x + r * 2},${y} L${x + r * .5},${y + r * .5} L${x},${y + r * 2} L${x - r * .5},${y + r * .5} L${x - r * 2},${y} L${x - r * .5},${y - r * .5}Z" fill="${col(c)}"/>`).join(""),
+  hearts: (c = "pink") => [[16, 22], [84, 30], [78, 14], [22, 46]].map(([x, y]) => `<path d="M${x},${y + 2} c-4,-3 -3,-6.5 0,-4.5 c3,-2 4,1.5 0,4.5Z" fill="${col(c)}" ${OL}/>`).join(""),
+  signs: () => `<rect x="6" y="18" width="24" height="10" rx="1" fill="${P.red}" ${OL}/><text x="18" y="25.4" font-family="Archivo Narrow,sans-serif" font-size="5.6" font-weight="700" text-anchor="middle" fill="${P.paper}">SALE</text>`,
+  tags: () => `<path d="M74,22 h14 l4,5 l-4,5 h-14Z" fill="${P.paper}" ${OL}/><text x="82" y="29" font-family="Archivo Narrow,sans-serif" font-size="5.4" font-weight="700" text-anchor="middle" fill="${P.ink}">₹199</text>`,
+  rings: () => [[82, 22, "yellow"], [74, 30, "blue"], [88, 34, "red"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${col(c)}" stroke-width="1.6"/>`).join(""),
 };
 
-// [number, symbol, trend, family, row, col, hype, where, what it is, key pieces, try it]
-const DATA = [
-  [1,"Ov","Oversized Everything","street",1,1,92,"Bengaluru, Delhi, Pune","Boxy, drop-shoulder fits have pushed out slim cuts across campuses. Homegrown D2C labels drop new graphics every week.","Graphic tees, baggy jeans, wide cargos, chunky sneakers","Size up one in tees and keep one fitted piece to anchor the outfit."],
-  [2,"Ef","Ethnic Fridays","classic",1,18,85,"Offices across India","Kurtas and sarees on Fridays have become an office ritual, pushed by HR culture days and Instagram 'OOTD' posts.","Cotton kurtas, handloom sarees, juttis, jhumkas","Keep a go-to kurta set ready for Thursday night."],
-  [3,"Dy","Desi Y2K","street",2,1,84,"Mumbai, Delhi","Early-2000s Bollywood nostalgia mixed with Gen-Z styling: butterfly clips, baby tees, low-rise jeans and tiny bindis.","Butterfly clips, baby tees, low-rise denim, tinted glasses","Pick two throwback pieces, not five."],
-  [4,"Ss","Saree with Sneakers","fusion",2,2,90,"Bengaluru, Kolkata, Mumbai","The saree goes casual: worn with white sneakers, a tee or a shirt as the blouse, for weddings, work and travel alike.","Cotton or linen saree, white sneakers, crop tee or shirt","Drape a little higher so the sneakers show."],
-  [5,"Ql","Quiet Luxury Ethnic","mood",2,13,89,"Delhi, Mumbai","No logos, no heavy embroidery. Ivory, beige and soft greys in very good fabric, inspired by old-money minimalism.","Raw silk kurtas, tissue sarees, pearl studs, mojaris","Spend on fabric, keep the shape simple."],
-  [6,"Mn","Tonal Dressing","mood",2,14,82,"Hyderabad, Mumbai","Head-to-toe in one colour, from kurta to pants to dupatta. Sage, lilac and rust lead the shade cards.","Monochrome kurta sets, matching dupattas, tonal juttis","Vary the textures so a single colour doesn't look flat."],
-  [7,"Th","Thrift Culture","conscious",2,15,86,"Instagram thrift stores, Delhi's Sarojini Nagar","Thrift pages on Instagram sell pre-loved finds for a few hundred rupees, and Sarojini hauls are a YouTube genre of their own.","Vintage denim, thrifted blazers, pre-loved sarees","Follow two or three local thrift pages and watch for drop times."],
-  [8,"Os","Oxidised Stacking","access",2,16,87,"Janpath, Jaipur, college campuses","Piling on blackened-silver rings, bangles and anklets for a boho, lived-in look with cotton kurtas or jeans.","Oxidised rings, kadas, toe rings, layered chains","Stack on one hand only and leave the neck bare."],
-  [9,"Gs","Glass Skin Glow","beauty",2,17,83,"Metro cities","Korean-inspired dewy skin with an Indian twist: ubtan, rosewater and lighter routines that suit humid weather.","Serums, sunscreen, tinted balms, highlighter","Swap heavy foundation for a skin tint and balm."],
-  [10,"Ws","All-White Summer","classic",2,18,88,"Lucknow, Delhi, Chennai","White cotton returns every summer. This year it's chikan kurtas, mulmul shirts and white sarees with coloured borders.","Chikan kurtas, white mulmul shirts, kasavu sarees","Add one colour through earrings or footwear."],
-  [11,"Jc","Jersey Culture","street",3,1,88,"Stadium cities in IPL season","Cricket and football jerseys worn as streetwear, styled with baggy denim, chains and sneakers well beyond match days.","Team jerseys, retro kits, track pants, sneakers","Layer a jersey over a white tee for a cleaner look."],
-  [12,"Kd","Kurta over Denim","fusion",3,2,87,"Pune, Jaipur, Hyderabad","Short kurtas and kurta-shirts over straight-leg jeans are the everyday campus and office uniform.","Short kurtas, Nehru-collar shirts, straight jeans, kolhapuris","Keep the kurta at hip length so the denim shows."],
-  [13,"Vb","Retro Bollywood","mood",3,13,85,"Mumbai, Instagram reels","Seventies and eighties film glamour: big sunglasses, polka dots, flared pants and Mumtaz-style sarees, revived through reels.","Oversized sunglasses, polka-dot sarees, bell-bottoms, scarves","Choose one era and one statement piece."],
-  [14,"Dp","Dopamine Dressing","mood",3,14,84,"Goa, Bengaluru","Bright colour-blocking that is meant to lift the mood: fuchsia with orange, yellow with green.","Colour-block co-ords, neon kurtas, bright juttis","Pair two strong colours and keep the rest neutral."],
-  [15,"Hl","Heirloom Re-wear","conscious",3,15,90,"Pan-India weddings","Wearing a mother's or grandmother's wedding saree, often re-tailored, instead of buying new. Brides post the backstory with pride.","Inherited sarees, re-cut lehengas, family jewellery","Have an old saree restyled into a lehenga or jacket."],
-  [16,"Sj","Statement Jhumkas","access",3,16,92,"Hyderabad, Jaipur","Oversized jhumkas worn with Western outfits: black tees, slip dresses and denim. They're one of the most-saved jewellery looks on Instagram.","Oversized jhumkas, chandbalis, ear chains","Pull the hair back so the jhumkas lead."],
-  [17,"Sk","Smudged Kohl","beauty",3,17,86,"Everywhere","A lived-in, smudged kajal eye with bare skin. It replaced the full-glam face of the early 2020s.","Kohl pencil, kajal, tinted lip balm","Smudge the lower line with a fingertip and skip the liner."],
-  [18,"Rg","Red & Gold Festive","classic",3,18,91,"Every Diwali","Each festive season goes back to red and gold. Brands now sell it as 'modern heritage' with cleaner silhouettes.","Red silk sarees, gold zari kurtas, temple jewellery","Pair a red saree with a plain gold blouse."],
-  [19,"Gc","Gorpcore","street",4,1,74,"Bengaluru, hill-station trips","Outdoor gear like shell jackets, fleece and trail shoes moved from Himachal and Uttarakhand trips into city wardrobes.","Shell jackets, fleece, cargo shorts, trail runners","One technical piece per outfit is enough."],
-  [20,"Al","The Airport Look","fusion",4,2,86,"Mumbai and Delhi airports","Celebrity airport photos made 'comfy but styled' a category: linen co-ords, oversized shirts and a statement bag.","Linen co-ords, oversized shirts, sneakers, totes","Choose breathable fabrics in matching sets."],
-  [21,"Cs","Chikankari Summer","craft",4,3,95,"Lucknow, Uttar Pradesh","Lucknow's hand shadow-work embroidery is the defining summer craft, now on co-ords, shirts and dresses as well as kurtas.","Chikan kurtas, co-ord sets, shirts, sarees","Wear white-on-white by day and pastel threads for events."],
-  [22,"Bz","Banarasi Tailoring","craft",4,4,85,"Varanasi, Delhi","Banarasi brocade cut into blazers, waistcoats and skirts, so wedding silk turns into evening wear.","Brocade blazers, bandhgalas, skirts, bralettes","Wear a brocade blazer over a plain black dress."],
-  [23,"Aj","Ajrakh Revival","craft",4,5,84,"Kutch, Gujarat","Natural-dyed block prints in indigo and madder red, a favourite of design students and slow-fashion labels.","Ajrakh shirts, stoles, sarees, kaftans","Wear an ajrakh shirt with white trousers."],
-  [24,"Bn","Bandhani Everything","craft",4,6,86,"Kutch, Jaipur","Tie-dye dots from Gujarat and Rajasthan now cover co-ords, shirts and dresses, well beyond the classic dupatta.","Bandhani co-ords, dupattas, shirts, scarves","One bandhani piece with solids is enough."],
-  [25,"Ik","Ikat Modern","craft",4,7,79,"Pochampally, Odisha","Resist-dyed geometric weaves cut into contemporary shapes: wrap dresses, shirts and blazers.","Ikat dresses, shirts, sarees, jackets","Keep accessories minimal so the weave leads."],
-  [26,"Hp","Hand-painted Denim","craft",4,8,76,"Bengaluru, Pune","Indie artists hand-paint Madhubani, Kalamkari and Warli motifs onto jackets and jeans, so each piece is one-off.","Painted denim jackets, jeans, tote bags","Commission one piece from a local artist."],
-  [27,"Ph","Phulkari Jackets","craft",4,9,80,"Punjab, Delhi","Bold Punjabi floral embroidery moves onto bomber and denim jackets for weddings and winter.","Phulkari bombers, dupattas, juttis","Let the jacket be the only print in the outfit."],
-  [28,"Kh","Khadi Tailoring","craft",4,10,77,"Gujarat, nationwide","Hand-spun, hand-woven khadi reworked as sharp shirts, trousers and blazers by designer labels.","Khadi shirts, trousers, Nehru jackets","Try a khadi shirt with tailored trousers."],
-  [29,"Bp","Block-print Everything","craft",4,11,88,"Jaipur, Sanganer, Bagru","Sanganeri and Bagru hand-block prints on pyjama sets, bedsheets, shirts and dresses. It's the default holiday print.","Printed pyjama sets, kurtas, dresses, shirts","Mix two block prints in the same colour family."],
-  [30,"Mw","Mirror Work","craft",4,12,83,"Kutch, Rajasthan","Tiny hand-stitched mirrors catch the light on blouses, bags and lehengas. It's the go-to for Navratri.","Mirror-work blouses, potlis, cholis, jackets","Use a mirror blouse with a plain saree."],
-  [31,"Mx","Print Maximalism","mood",4,13,78,"Mumbai, Goa","Clashing prints, stripes with florals and ikat with checks, worn on purpose and loudly.","Mixed-print co-ords, scarves, printed shirts","Tie clashing prints together with one shared colour."],
-  [32,"Cq","Coquette Bows","mood",4,14,82,"Delhi, Instagram","Satin and velvet bows on braids, blouses and juttis. The global coquette trend, adapted to Indian ethnic wear.","Hair bows, bow-back blouses, bow juttis","Tie a satin bow at the end of a long braid."],
-  [33,"Rn","Rent the Look","conscious",4,15,79,"Delhi, Mumbai, Bengaluru","Renting designer lehengas and sherwanis for one event instead of buying them, through rental apps and studios.","Rented lehengas, sherwanis, jewellery sets","Book three to four weeks ahead in wedding season."],
-  [34,"Bc","Bag Charms","access",4,16,80,"Metro cities","Totes and handbags hung with charms: tassels, mini potlis, beaded keychains and evil-eye pendants.","Beaded charms, evil-eye pendants, tassels","Clip two or three charms of different sizes."],
-  [35,"Gg","Gajra Glam","beauty",4,17,85,"Chennai, Bengaluru, Pune","Fresh jasmine wrapped around a sleek bun, worn now with gowns and office looks, not only sarees.","Fresh gajras, sleek buns, hair pins","Wrap it around a low bun on a centre parting."],
-  [36,"Sd","College Saree Day","classic",4,18,87,"College farewells nationwide","The farewell 'saree day' is a rite of passage. Students plan drapes, borrowed sarees and group photos weeks ahead.","Borrowed silk sarees, ready-made blouses, gajras","Borrow a saree from family and have the blouse fitted."],
-  [37,"Pl","Pastel Brides","shaadi",6,3,90,"Delhi, Mumbai","Mint, powder blue and blush lehengas for day weddings. Still the most-pinned bridal look.","Pastel lehengas, polki sets, floral jewellery","Choose a contrast dupatta so photos pop."],
-  [38,"Rr","Red Returns","shaadi",6,4,89,"Pan-India","After years of pastels, classic red is back as the main bridal colour, styled with vintage-inspired drapes.","Red lehengas, red Banarasis, gold and polki","Pair with polki rather than heavy gold."],
-  [39,"Sb","Saree Brides","shaadi",6,5,84,"Bengaluru, Kolkata, Chennai","More brides are skipping the lehenga for a heritage saree, often a Kanjeevaram or Banarasi from the family.","Kanjeevarams, Banarasis, temple jewellery","Pick a saree with a heavy pallu for the photos."],
-  [40,"Mm","Minimal Mehendi","shaadi",6,6,83,"Mumbai, Bengaluru","Negative-space designs, fingertip caps and tiny portrait motifs replace full-arm coverage.","Fine-line mehendi, finger caps, hidden initials","Ask for a story motif hidden in the pattern."],
-  [41,"Fj","Floral Jewellery","shaadi",6,7,88,"Haldi and mehendi events","Fresh and silk-flower jewellery for day functions: flower haath phools, maang tikkas and necklaces.","Flower necklaces, haath phools, tikkas, kaleeras","Match the flowers to the outfit's main colour."],
-  [42,"Tw","Couple Twinning","shaadi",6,8,81,"Pan-India","Bride and groom, or entire families, colour-coordinate by function. Every sangeet gets its own palette.","Matching sherwanis and lehengas, coordinated safas","Match colour, not print, for a classier look."],
-  [43,"Sq","Sequin Cocktails","shaadi",6,9,89,"Mumbai","Pre-stitched, all-over sequin sarees are the cocktail-night uniform, popularised by film stars.","Sequin sarees, strappy blouses, clutches","Go strappy on the blouse and skip the necklace."],
-  [44,"Dd","Double Dupatta","shaadi",6,10,82,"Delhi, Punjab","Two dupattas: one on the head, one draped across the body. It started as a bridal trend and is now standard.","Net head dupattas, heavy drape dupattas, brooches","Make the head dupatta the lighter of the two."],
+// Objects, absolute.
+const OBJ = {
+  rack: (x = 82) => `<path d="M${x - 14},20 H${x + 14} M${x - 12},20 V84 M${x + 12},20 V84" stroke="${P.ink}" stroke-width="1"/>` + [[-8, "red"], [-1, "yellow"], [6, "teal"]].map(([d, c]) => `<path d="M${x + d},20 l-1,3 h2Z" fill="${P.ink}"/><path d="M${x + d - 4},24 h8 l1,18 h-10Z" fill="${col(c)}" ${OL}/>`).join(""),
+  trunk: (x = 16) => `<rect x="${x - 12}" y="70" width="24" height="14" fill="${P.kaapi}" ${OL}/><path d="M${x - 12},70 q12,-8 24,0Z" fill="${P.rust}" ${OL}/><rect x="${x - 2}" y="72" width="4" height="4" fill="${P.gold}" ${OL}/><path d="M${x + 6},70 q4,8 -2,14 h4 q4,-8 -2,-14Z" fill="${P.red}" ${OL}/>`,
+  suitcase: (x = 78) => `<rect x="${x - 7}" y="62" width="14" height="20" rx="2" fill="${P.rust}" ${OL}/><path d="M${x - 3},62 v-5 h6 v5" fill="none" stroke="${P.ink}" stroke-width=".8"/><circle cx="${x - 4}" cy="84" r="1.4" fill="${P.ink}"/><circle cx="${x + 4}" cy="84" r="1.4" fill="${P.ink}"/><circle cx="${x}" cy="70" r="2.4" fill="${P.yellow}" ${OL}/>`,
+  sneaker: (x = 50, y = 70, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-22,6 V-5 Q-22,-12 -15,-12 H-8 Q-5,-6 0,-4 L12,-2 Q22,0 22,6Z" fill="${P.white}" ${OL}/><path d="M8,-2.6 Q16,-2 20,2 L22,6 H10Z" fill="${P.sky}" ${OL}/><path d="M-21,-10 Q-15,-14 -9,-11" fill="none" stroke="${P.ink}" stroke-width=".7"/><path d="M-23,6 H23 V9 Q23,12 20,12 H-20 Q-23,12 -23,9Z" fill="${P.red}" ${OL}/><path d="M-7,-8 l4,2 M-5,-10 l4,2 M-3,-6 l4,2" stroke="${P.ink}" stroke-width=".8" stroke-linecap="round"/><path d="M-16,0 Q-4,-6 8,2" stroke="${P.blue}" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>`,
+  hanger: (x = 50, c = "red") => `<path d="M${x - 2},16 a2,2 0 1 1 2,2 v2 l-12,8 h24 l-12,-8" fill="none" stroke="${P.ink}" stroke-width=".8"/>`,
+  boombox: (x = 80) => `<rect x="${x - 12}" y="70" width="24" height="14" rx="2" fill="${P.grey}" ${OL}/><circle cx="${x - 6}" cy="77" r="4" fill="${P.ink}"/><circle cx="${x + 6}" cy="77" r="4" fill="${P.ink}"/><path d="M${x - 8},70 v-4 h16 v4" fill="none" stroke="${P.ink}" stroke-width=".8"/>`,
+  mat: () => `<path d="M60,84 h30 v-3 h-30Z" fill="${P.lav}" ${OL}/><ellipse cx="88" cy="80" rx="2" ry="3" fill="${P.lav}" ${OL}/>`,
+  loop: () => `<path d="M80,22 a9,9 0 1 1 -9,9" fill="none" stroke="${P.green}" stroke-width="2"/><path d="M68,28 l3,4 l3,-4Z" fill="${P.green}"/>`,
+  cocoon: () => `<ellipse cx="82" cy="78" rx="6" ry="3.6" fill="${P.ivory}" ${OL}/><path d="M74,64 q8,-8 16,0 q-8,6 -16,0Z" fill="${P.green}" ${OL}/>`,
+  camera: (x = 82, y = 26) => `<rect x="${x - 8}" y="${y - 5}" width="16" height="11" rx="2" fill="${P.ink}"/><circle cx="${x}" cy="${y + 0.5}" r="3.6" fill="${P.sky}" stroke="${P.paper}" stroke-width=".8"/><rect x="${x + 3}" y="${y - 7}" width="4" height="2" fill="${P.ink}"/>`,
+  phone: (x = 82, y = 30) => `<rect x="${x - 7}" y="${y - 12}" width="14" height="24" rx="2.4" fill="${P.ink}"/><rect x="${x - 5.6}" y="${y - 9.6}" width="11.2" height="18" fill="${P.pink}"/><path d="M${x - 2},${y - 4} l5,3 l-5,3Z" fill="${P.paper}"/>`,
+  hand: (x = 50, y = 50) => `<g transform="translate(${x} ${y})"><path d="M-10,34 V6 L-15,-6 q-1,-4 2,-5 t5,3 l2,6 V-18 q0,-3 3,-3 t3,3 v14 V-22 q0,-3 3,-3 t3,3 v18 V-18 q0,-3 3,-3 t3,3 v24 l4,-6 q2,-3 4,-1 t0,5 l-8,15 v12Z" fill="${P.skin}" ${OL}/><g stroke="${P.kaapi}" stroke-width=".8" fill="none"><circle cx="1" cy="10" r="4"/><circle cx="1" cy="10" r="1.6"/><path d="M-3,10 q4,-6 8,0 M1,14 v4 M-2,-20 h4 M4,-22 v3 M10,-18 h3"/><path d="M-8,26 q9,4 18,0" stroke-dasharray="1 1.4"/></g></g>`,
+  eye: (x = 50, y = 50) => `<g transform="translate(${x} ${y})"><path d="M-30,0 Q0,-24 30,0 Q0,24 -30,0Z" fill="${P.white}" ${OL}/><circle r="10" fill="${P.kaapi}" ${OL}/><circle r="4.4" fill="${P.ink}"/><circle cx="3" cy="-3" r="1.6" fill="#fff"/><path d="M-32,1 Q0,-26 32,1" fill="none" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"/><path d="M-28,4 Q0,24 28,4" fill="none" stroke="${P.ink}" stroke-width="5" stroke-opacity=".4" stroke-linecap="round"/><path d="M30,0 l8,-6" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"/><path d="M-18,-12 l-3,-6 M-8,-16 l-1,-7 M4,-17 l1,-7 M16,-14 l3,-6" stroke="${P.ink}" stroke-width="1.2" stroke-linecap="round"/></g>`,
+  vinyl: (x = 82, y = 26) => `<circle cx="${x}" cy="${y}" r="10" fill="${P.ink}"/><circle cx="${x}" cy="${y}" r="3.4" fill="${P.red}"/><circle cx="${x}" cy="${y}" r="6.6" fill="none" stroke="#fff" stroke-width=".3" opacity=".4"/>`,
+  tv: (x = 82, y = 28) => `<rect x="${x - 12}" y="${y - 9}" width="24" height="18" rx="3" fill="${P.kaapi}" ${OL}/><rect x="${x - 9}" y="${y - 6}" width="15" height="12" rx="2" fill="${P.sky}" ${OL}/><path d="M${x - 5},${y - 9} l-4,-6 M${x + 3},${y - 9} l4,-6" stroke="${P.ink}" stroke-width=".7"/>`,
+};
+
+function scene(id, o) {
+  const parts = [patterns(id), `<rect width="100" height="100" fill="${col(o.bg || "sky")}"/>`];
+  for (const s of o.set || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push((SET[name] || OBJ[name])(...args)); }
+  parts.push(`<rect y="84" width="100" height="16" fill="${col(o.gr || "beige")}"/><path d="M0,84 H100" stroke="${P.ink}" stroke-width=".6"/>`);
+  for (const s of o.back || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
+  for (const f of o.figs || []) parts.push(fig(id, f));
+  for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
+  return parts.join("");
+}
+
+// [number, symbol, element, trend, what it is, key pieces, try it, scene]
+const ELEMENTS = [
+  [1, "H", "Hydrogen", "Hyperfeminine", "Bows, frills, blush pink and soft fabrics, worn with full confidence rather than irony.", "Ruffle tops, satin bows, pink sarees, pearl clips", "Pick one frilly piece and keep the rest soft and plain.",
+    { bg: "blush", gr: "pink", set: ["hearts"], figs: [{ top: "dress", c: "pink", pt: "floral", sl: "puff", h: "open", a: ["bow", "pearls"], ac: "rani", shoe: "heel" }] }],
+  [2, "He", "Helium", "Heirloom Edit", "Styling a mother's or grandmother's saree and jewellery in new ways, often with a modern blouse.", "Inherited silk sarees, old gold, re-cut blouses", "Pair an heirloom saree with a sleek modern blouse.",
+    { bg: "peach", gr: "beige", back: [["trunk", 16]], figs: [{ x: 56, top: "blouse", c: "gold", low: "saree", l: "maroon", pl: "zari", lay: ["pallu"], b: "gold", h: "bun", a: ["gajra", "jhumka", "bindi"] }] }],
+  [3, "Li", "Lithium", "Lived-In", "Wrinkled linen, faded denim and soft cottons that look worn and loved, not freshly ironed.", "Washed linen shirts, faded jeans, soft kurtas", "Skip the iron and roll the sleeves.",
+    { bg: "cream", gr: "sage", set: [["window", "sky"], "plants"], figs: [{ x: 44, top: "shirt", c: "beige", pt: "grid", low: "jeans", l: "denim", h: "lowbun", sk: "skin3", hold: "coffee", shoe: "kolhapuri" }] }],
+  [4, "Be", "Beryllium", "Boho Ethnic", "Free-spirited ethnic wear: tassels, mirrors, oxidised silver and loose silhouettes in earthy prints.", "Tiered skirts, mirror-work tops, tassel bags, oxidised silver", "Layer silver jewellery over a loose printed kurta.",
+    { bg: "peach", gr: "rust", set: ["plants"], figs: [{ top: "crop", c: "teal", pt: "mirror", low: "tiered", l: "rust", pl: "paisley", h: "braid", a: ["hoops", "beads", "bangles"], ac: "grey", shoe: "kolhapuri" }] }],
+  [5, "B", "Boron", "Barbiecore", "Head-to-toe hot pink, from lehengas to sneakers. It grew after the 2023 film and still holds.", "Hot-pink sarees, pink co-ords, pink sneakers", "Go all pink, with one white accent.",
+    { bg: "pink", gr: "rani", set: ["sparkles"], figs: [{ top: "corset", c: "hot", low: "skirt", l: "hot", h: "pony", hc: "yellow", a: ["hoops", "scrunchie"], ac: "white", shoe: "heel", hold: "clutch", hc2: "white" }] }],
+  [6, "C", "Carbon", "Coquette", "Romantic, girly dressing with bows on braids, blouses and juttis, adapted to Indian ethnic wear.", "Bow blouses, satin ribbons, lace kurtas, bow juttis", "Tie a satin bow at the end of a long braid.",
+    { bg: "blush", gr: "cream", set: ["hearts"], figs: [{ top: "blouse", sl: "puff", c: "ivory", low: "lehenga", l: "pink", pl: "floral", b: "ivory", h: "braid", a: ["bow", "pearls"], ac: "red", shoe: "jutti" }] }],
+  [7, "N", "Nitrogen", "Normcore", "Deliberately plain clothes: a white tee, straight jeans and clean sneakers, worn with confidence.", "Plain tees, straight jeans, white sneakers", "Buy basics that fit well and wear them often.",
+    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "fittee", c: "white", low: "jeans", l: "denim", h: "short", sk: "skin2", shoe: "sneaker", a: ["specs"] }] }],
+  [8, "O", "Oxygen", "Oversized", "Boxy, drop-shoulder fits across tees, shirts and kurtas. Sizing up is the default on campus.", "Oversized tees, baggy jeans, wide cargos", "Size up on top, keep one fitted piece.",
+    { bg: "yellow", gr: "grey", set: [["skyline", "indigo"]], figs: [{ top: "tee", c: "blue", pt: "pop", low: "baggy", l: "beige", h: "short", sk: "skin", shoe: "sneaker", a: ["cap"], ac: "red" }] }],
+  [9, "F", "Fluorine", "Fusion", "Indian and Western pieces worn together, like a kurta with jeans or a saree with a shirt.", "Short kurtas, jeans, shirts, sneakers", "Swap one piece of a traditional look for a Western one.",
+    { bg: "mint", gr: "beige", set: [["window2", "sky"]], figs: [{ x: 54, top: "shortkurta", c: "yellow", pt: "floral", low: "jeans", l: "denim", h: "open", a: ["jhumka"], shoe: "kolhapuri", hold: "tote" }] }],
+  [10, "Ne", "Neon", "Neon Ethnic", "Electric pinks, limes and oranges on lehengas and kurtas, built for night functions and photos.", "Neon lehengas, fluorescent dupattas", "Pair one neon with a deep neutral.",
+    { bg: "night", gr: "plum", set: [["spotlight", "hot"], "stars"], figs: [{ top: "blouse", c: "lime", low: "lehenga", l: "hot", b: "lime", lay: ["dupatta"], y: "orange", h: "bun", a: ["jhumka", "bindi"], ac: "lime" }] }],
+  [11, "Na", "Sodium", "Nineties Aesthetic", "Slip dresses, chunky cardigans, scrunchies and claw clips borrowed from 1990s Indian TV and cinema.", "Slip dresses, scrunchies, claw clips, denim", "Add a claw clip and a cardigan to anything.",
+    { bg: "lav", gr: "beige", set: [], figs: [{ x: 44, top: "slip", c: "sage", h: "pony", a: ["scrunchie", "claw"], ac: "yellow", shoe: "boot", lay: ["jacket"], y: "rust" }], obj: [["tv", 82, 30]] }],
+  [12, "Mg", "Magnesium", "Mob-wife Glam", "Fur collars, leopard print, gold chains and red lips. It's loud, rich, and unbothered.", "Faux fur, leopard print, gold chains, red lips", "Wear one fur piece with all black.",
+    { bg: "maroon", gr: "black", set: ["sparkles"], figs: [{ top: "slip", c: "black", h: "open", hc: "hair2", lay: ["shawl", "jacket"], y: "kaapi", py: "leopard", a: ["glasses", "chain", "lipstick", "hoops"], shoe: "heel" }] }],
+  [13, "Al", "Aluminium", "Airport Looks", "Celebrity airport photos made 'comfortable but styled' its own category.", "Linen co-ords, oversized shirts, totes, sneakers", "Choose matching sets in breathable fabric.",
+    { bg: "sky", gr: "grey", set: [["window", "white"]], figs: [{ x: 42, top: "shirt", c: "beige", low: "palazzo", l: "beige", h: "open", a: ["glasses"], hold: "phone", shoe: "sneaker" }], obj: [["suitcase", 72]] }],
+  [14, "Si", "Silicon", "Sheer Indulgence", "Sheer organza and net layered over slips and bralettes, on sarees, shirts and dresses.", "Organza sarees, sheer shirts, net dupattas", "Layer a sheer shirt over a solid tank.",
+    { bg: "plum", gr: "lav", set: ["sparkles"], figs: [{ top: "blouse", c: "lav", low: "saree", l: "lav", pl: "sparkle", lay: ["pallu"], y: "pink", b: "white", h: "bun", a: ["studs"] }] }],
+  [15, "P", "Phosphorus", "Preppy", "Collars, sweater vests, pleated skirts and loafers, borrowed from school uniforms.", "Sweater vests, collared shirts, pleated skirts", "Layer a sweater vest over a crisp shirt.",
+    { bg: "green", gr: "beige", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["vest"], y: "maroon", py: "grid", low: "mini", l: "indigo", pl: "checks", h: "bob", a: ["specs"], hold: "book", shoe: "heel" }] }],
+  [16, "S", "Sulfur", "Streetwear", "Desi streetwear labels mix hip-hop, skate and Bollywood graphics into a homegrown look.", "Graphic hoodies, cargos, caps, chunky sneakers", "Build an outfit around one loud graphic.",
+    { bg: "orange", gr: "grey", set: [["skyline", "night"], "signs"], figs: [{ top: "hoodie", c: "green", low: "baggy", l: "black", h: "short", sk: "skin2", a: ["cap", "chain"], ac: "yellow", shoe: "sneaker" }] }],
+  [17, "Cl", "Chlorine", "Clean-girl Look", "Slicked buns, dewy skin, gold hoops and neat neutrals. Polished and low effort.", "Sleek buns, gold hoops, white shirts, neutral sets", "Slick the hair back and keep makeup minimal.",
+    { bg: "cream", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "palazzo", l: "beige", h: "lowbun", a: ["hoops"], ac: "gold", hold: "coffee", hc2: "beige", shoe: "jutti" }] }],
+  [18, "Ar", "Argon", "Athleisure Rise", "Gym clothes worn everywhere: leggings, sports bras, track jackets and running shoes.", "Leggings, track jackets, running shoes", "Add a structured jacket over workout wear.",
+    { bg: "sky", gr: "green", set: ["hills", "sun"], figs: [{ top: "crop", c: "teal", low: "leggings", l: "black", lay: ["jacket"], y: "lav", h: "pony", a: ["studs"], hold: "bottle", hc2: "orange", shoe: "sneaker" }] }],
+  [19, "K", "Potassium", "Kidcore", "Bright primary colours, cartoon prints and plastic jewellery, inspired by childhood.", "Rainbow knits, cartoon tees, beaded bracelets", "Mix three primary colours in one outfit.",
+    { bg: "yellow", gr: "blue", set: ["confetti"], figs: [{ top: "tee", c: "red", pt: "polka", low: "shorts", l: "blue", h: "pony", hc: "hair", a: ["butterfly", "beads"], ac: "green", shoe: "sneaker" }] }],
+  [20, "Ca", "Calcium", "Coastal Aesthetic", "Goa-coded linen, crochet and white cotton for beach weddings and long weekends.", "Linen sets, crochet tops, straw hats", "Wear white linen with one woven accessory.",
+    { bg: "sky", gr: "peach", set: ["waves", "sun", "palm"], figs: [{ x: 42, top: "dress", c: "white", pt: "stripes", h: "open", hc: "hair2", a: ["hat", "studs"], ac: "beige", shoe: "kolhapuri" }] }],
+  [21, "Sc", "Scandium", "Sporty Chic", "Polished athletic pieces like polo dresses, track pants with blazers and sneakers with sarees.", "Polo dresses, track pants, blazers, sneakers", "Pair track pants with a sharp blazer.",
+    { bg: "green", gr: "grey", set: ["net"], figs: [{ top: "fittee", c: "white", low: "jeans", l: "black", pl: "stripes", lay: ["blazer"], y: "beige", h: "pony", a: ["cap", "studs"], ac: "white", shoe: "sneaker" }] }],
+  [22, "Ti", "Titanium", "Thrift It", "Instagram thrift stores and Sarojini hauls make pre-loved fashion cool and cheap.", "Vintage jackets, thrifted denim, pre-loved sarees", "Follow a few local thrift pages and watch drop times.",
+    { bg: "peach", gr: "kaapi", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "tee", c: "yellow", pt: "checks", low: "jeans", l: "denim", lay: ["jacket"], y: "rust", h: "bob", hold: "shopbags", shoe: "sneaker" }] }],
+  [23, "V", "Vanadium", "Vintage", "Retro pieces from past decades, either real vintage or new clothes cut to look old.", "Polka-dot dresses, high-waist trousers, cat-eye frames", "Mix one real vintage piece into a modern outfit.",
+    { bg: "teal", gr: "cream", set: [["vinyl", 82, 26]], figs: [{ x: 44, top: "dress", c: "red", pt: "polka", h: "bob", a: ["cateye", "pearls", "lipstick"], ac: "ink", shoe: "heel" }], obj: [["vinyl", 82, 26]] }],
+  [24, "Cr", "Chromium", "Corset Revival", "Structured, boned corsets worn as saree blouses and over shirts.", "Corset blouses, corset tops, bustiers", "Pair a corset blouse with a plain saree.",
+    { bg: "night", gr: "plum", set: [["spotlight", "pink"]], figs: [{ top: "corset", c: "black", low: "saree", l: "rani", lay: ["pallu"], y: "rani", b: "gold", h: "lowbun", a: ["jhumka"], ac: "gold" }] }],
+  [25, "Mn", "Manganese", "Modern Nostalgia", "Old photo-album outfits redone with modern fits, like a mother's 80s salwar suit re-tailored.", "Vintage suits, retro prints, old-school jewellery", "Ask family for an old suit and re-tailor it.",
+    { bg: "beige", gr: "kaapi", set: [["camera", 82, 24]], figs: [{ x: 44, top: "kurta", c: "orange", pt: "paisley", low: "churidar", l: "yellow", lay: ["dupatta"], y: "green", h: "braid", a: ["bindi", "bangles"], ac: "gold" }], obj: [["camera", 82, 24]] }],
+  [26, "Fe", "Iron", "Futuristic Ethnic", "Metallic fabrics, sculpted shapes and chrome jewellery on Indian silhouettes.", "Metallic lehengas, sculpted blouses, chrome jewellery", "Try a metallic saree with minimal silver jewellery.",
+    { bg: "night", gr: "indigo", set: ["stars", "rings"], figs: [{ top: "corset", c: "grey", low: "fishtail", l: "grey", pl: "grid", b: "sky", h: "lowbun", a: ["hoops"], ac: "sky", shoe: "heel" }] }],
+  [27, "Co", "Cobalt", "Co-ord Obsession", "Matching top and bottom sets for every occasion, from brunch to the office.", "Printed co-ords, linen sets, kurta sets", "Wear the top open over a white tank.",
+    { bg: "mint", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "shirt", c: "blue", pt: "floral", low: "palazzo", l: "blue", pl: "floral", h: "open", a: ["glasses"], hold: "coffee", shoe: "kolhapuri" }] }],
+  [28, "Ni", "Nickel", "Nawabi Influence", "Lucknow's royal Awadhi style returns: shararas, angrakhas and long jackets in soft colours.", "Shararas, angrakhas, achkans, gota dupattas", "Pick a sharara set in a pastel with gold.",
+    { bg: "peach", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "shortkurta", c: "mint", pt: "zari", low: "sharara", l: "mint", lay: ["dupatta"], y: "gold", h: "bun", a: ["tikka", "jhumka"] }] }],
+  [29, "Cu", "Copper", "Cargo Utility", "Pockets, straps and utility fabrics, now even on kurtas and saree blouses.", "Cargo pants, utility vests, pocket kurtas", "Pair cargo pants with a fitted kurta.",
+    { bg: "olive", gr: "kaapi", set: ["hills"], figs: [{ top: "shortkurta", c: "beige", low: "baggy", l: "olive", lay: ["vest"], y: "kaapi", h: "short", sk: "skin2", stache: true, shoe: "boot", a: ["watch"] }] }],
+  [30, "Zn", "Zinc", "Zen Neutrals", "Calm dressing in oatmeal, stone and ivory. It's the opposite of loud prints.", "Linen kurtas, beige sets, white sneakers", "Build an outfit from three shades of one neutral.",
+    { bg: "cream", gr: "beige", set: ["plants"], figs: [{ top: "kurta", c: "beige", low: "palazzo", l: "ivory", h: "short", sk: "skin3", hc: "hair2", shoe: "kolhapuri" }] }],
+  [31, "Ga", "Gallium", "Gorpcore Adventure", "Outdoor gear worn in the city: fleece, shell jackets and trail shoes from hill-station trips.", "Shell jackets, fleece, trail shoes, bucket hats", "Wear one technical piece per outfit.",
+    { bg: "sky", gr: "green", set: ["hills", ["sun", "white", 22, 18]], figs: [{ top: "hoodie", c: "orange", low: "baggy", l: "olive", h: "short", sk: "skin", a: ["beanie"], ac: "teal", shoe: "boot" }] }],
+  [32, "Ge", "Germanium", "Gen-Z Ethnic", "Ethnic wear styled young: kurtas with caps, sarees with sneakers, lehengas with crop tees.", "Short kurtas, caps, sneakers, tote bags", "Wear your kurta with a cap and headphones.",
+    { bg: "rani", gr: "pink", set: ["confetti"], figs: [{ top: "shortkurta", c: "white", pt: "floral", low: "jeans", l: "denim", h: "open", a: ["headphones", "jhumka"], ac: "yellow", shoe: "sneaker" }] }],
+  [33, "As", "Arsenic", "Asymmetric Silhouettes", "One-shoulder blouses, uneven hems and draped kurtas that break symmetry.", "One-shoulder tops, asymmetric kurtas, draped skirts", "Choose one asymmetric piece and keep the rest clean.",
+    { bg: "teal", gr: "night", set: ["runway"], figs: [{ top: "slip", c: "orange", lay: ["drape"], y: "orange", h: "lowbun", a: ["hoops"], ac: "gold", shoe: "heel" }] }],
+  [34, "Se", "Selenium", "Saree Everyday", "Women wearing sarees to work, college and errands, not just to weddings.", "Cotton sarees, simple blouses, flats", "Keep two easy cotton sarees for weekdays.",
+    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "blouse", c: "white", low: "saree", l: "blue", pl: "checks", lay: ["pallu"], y: "blue", b: "red", h: "lowbun", a: ["bindi", "watch"], hold: "tote", hc2: "kaapi" }] }],
+  [35, "Br", "Bromine", "Bridal Re-wear", "Brides and guests wearing wedding outfits again, restyled for later events.", "Restyled lehengas, re-cut sarees, mix-and-match blouses", "Wear your lehenga skirt with a plain shirt.",
+    { bg: "rani", gr: "maroon", set: ["marigold"], figs: [{ top: "shirt", c: "white", low: "lehenga", l: "red", pl: "zari", b: "gold", h: "open", a: ["jhumka"], ac: "gold" }], obj: [["loop"]] }],
+  [36, "Kr", "Krypton", "Kurta Reloaded", "The men's kurta, reworked in new colours, short lengths and shirt collars.", "Short kurtas, pastel kurtas, kurta shirts", "Pair a short kurta with straight trousers.",
+    { bg: "lav", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "kurta", c: "lav", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, shoe: "kolhapuri", a: ["watch"] }] }],
+  [37, "Rb", "Rubidium", "Retro Bollywood", "Seventies and eighties film glamour: polka dots, bell-bottoms, big hair and giant shades.", "Polka-dot sarees, bell-bottoms, oversized sunglasses", "Choose one era and one statement piece.",
+    { bg: "yellow", gr: "red", set: ["disco"], figs: [{ top: "blouse", c: "red", low: "saree", l: "white", pl: "polka", lay: ["pallu"], y: "red", py: "polka", b: "red", h: "bun", hc: "hair", a: ["glasses", "hoops", "bigbindi"], ac: "gold" }] }],
+  [38, "Sr", "Strontium", "Saree Runners", "Sarees worn with sneakers for comfort at work, weddings and while travelling.", "Cotton sarees, white sneakers, crop tees", "Drape a little higher so the sneakers show.",
+    { bg: "green", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "babytee", c: "white", low: "saree", l: "yellow", pl: "chevron", lay: ["pallu"], y: "yellow", b: "red", h: "pony", a: ["studs"], shoe: "sneaker", hold: "phone" }] }],
+  [39, "Y", "Yttrium", "Y2K", "Early-2000s pop: baby tees, low-rise jeans, butterfly clips, tinted shades and tiny bags.", "Baby tees, low-rise jeans, butterfly clips, mini bags", "Pick two throwback pieces, not five.",
+    { bg: "lav", gr: "pink", set: ["stars"], figs: [{ top: "babytee", c: "pink", pt: "sparkle", low: "jeans", l: "sky", h: "open", hc: "hair2", a: ["butterfly", "hoops"], ac: "lav", shoe: "sneaker", hold: "phone" }] }],
+  [40, "Zr", "Zirconium", "Zero-waste Remix", "Clothes made from leftover fabric and patchwork, so nothing goes to waste.", "Patchwork jackets, scrap-fabric tops, upcycled bags", "Turn an old dupatta into a scarf or tote.",
+    { bg: "sage", gr: "kaapi", set: ["line"], figs: [{ top: "tee", c: "teal", pt: "patch", low: "jeans", l: "denim", pl: "patch", h: "bob", hc: "hair2", shoe: "sneaker" }] }],
+  [41, "Nb", "Niobium", "No-Brand", "No visible logos. Quality fabric and fit do the talking.", "Plain cashmere, well-cut trousers, unbranded leather bags", "Remove the logo test: would you still wear it?",
+    { bg: "beige", gr: "cream", set: [["arch", "ivory"]], figs: [{ top: "fittee", c: "ivory", low: "palazzo", l: "kaapi", lay: ["blazer"], y: "beige", h: "lowbun", a: ["studs"], hold: "clutch", hc2: "kaapi", shoe: "heel" }] }],
+  [42, "Mo", "Molybdenum", "Mughal Opulence", "Heavy jewel tones, velvet, zardozi and jewellery inspired by Mughal miniatures.", "Velvet lehengas, zardozi jackets, jadau jewellery", "Choose velvet in emerald or wine.",
+    { bg: "green", gr: "maroon", set: [["palace", "peach"]], figs: [{ top: "blouse", c: "green", pt: "zari", low: "lehenga", l: "maroon", pl: "zari", b: "gold", lay: ["veil"], y: "gold", h: "bun", a: ["matha", "bignath", "choker"] }] }],
+  [43, "Tc", "Technetium", "Tennis Core", "Pleated tennis skirts, polo shirts, visors and white sneakers, for courts and cafes.", "Pleated skirts, polos, visors, white sneakers", "Pair a pleated skirt with a crisp polo.",
+    { bg: "green", gr: "beige", set: ["net"], figs: [{ top: "fittee", c: "white", low: "mini", l: "white", pl: "stripes", h: "pony", a: ["cap"], ac: "white", hold: "racket", shoe: "sneaker" }] }],
+  [44, "Ru", "Ruthenium", "Rental Uprising", "Renting designer lehengas and sherwanis for a single event instead of buying.", "Rented lehengas, sherwanis, jewellery sets", "Book three to four weeks ahead in wedding season.",
+    { bg: "pink", gr: "beige", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "blouse", c: "gold", low: "lehenga", l: "teal", pl: "zari", b: "gold", h: "bun", a: ["jhumka"], hold: "phone" }] }],
+  [45, "Rh", "Rhodium", "Rani-pink Hues", "Bright rani pink, India's signature celebration colour, on everything from sarees to suits.", "Rani-pink sarees, kurtas, lehengas, juttis", "Pair rani pink with orange or gold.",
+    { bg: "orange", gr: "rani", set: ["marigold"], figs: [{ top: "blouse", c: "orange", low: "saree", l: "rani", lay: ["pallu"], y: "rani", b: "orange", h: "bun", a: ["gajra", "jhumka", "bindi"] }] }],
+  [46, "Pd", "Palladium", "Power Dressing", "Sharp blazers, pantsuits and structured sarees for work and boardrooms.", "Pantsuits, structured blazers, crisp sarees", "Choose a blazer in a strong colour.",
+    { bg: "indigo", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "fittee", c: "white", low: "jeans", l: "red", lay: ["blazer"], y: "red", h: "bob", a: ["studs", "watch"], hold: "phone", shoe: "heel" }] }],
+  [47, "Ag", "Silver", "Avant-Garde", "Experimental shapes and unusual materials from young Indian designers.", "Sculpted dresses, deconstructed kurtas, art jewellery", "Wear one experimental piece with simple basics.",
+    { bg: "red", gr: "ink", set: ["spotlight"], figs: [{ top: "gown", c: "white", pt: "grid", lay: ["cape"], y: "black", h: "buzz", sk: "skin2", a: ["hoops"], ac: "silver" }] }],
+  [48, "Cd", "Cadmium", "Colour Drenching", "One colour from head to toe, from kurta and dupatta to shoes and bag.", "Matching kurta sets, tonal dupattas, same-colour shoes", "Vary textures so one colour doesn't fall flat.",
+    { bg: "orange", gr: "rust", set: [["sun", "yellow", 80, 20]], figs: [{ top: "kurta", c: "orange", low: "palazzo", l: "orange", lay: ["dupatta"], y: "orange", h: "open", a: ["hoops"], ac: "orange", shoe: "jutti" }] }],
+  [49, "In", "Indium", "Indo-Noir", "All-black Indian wear, from black sarees to black sherwanis, for evening events.", "Black sarees, black bandhgalas, silver jewellery", "Wear black with one metallic accent.",
+    { bg: "night", gr: "black", set: ["moon", "stars"], figs: [{ top: "blouse", c: "black", low: "saree", l: "black", pl: "sparkle", lay: ["pallu"], y: "black", b: "grey", h: "lowbun", a: ["bigjhumka"], ac: "grey" }] }],
+  [50, "Sn", "Tin", "Sneaker Nation", "Sneaker culture is huge in India: limited drops, resale and chunky sneakers with everything.", "Chunky sneakers, limited editions, high-tops", "Make the sneakers the loudest part of the outfit.",
+    { bg: "blue", gr: "grey", set: ["confetti"], obj: [["sneaker", 50, 66, 1.6]] }],
+  [51, "Sb", "Antimony", "Soft Boy", "Men's fashion with pastels, pearls, knit vests and loose shirts, softer than the macho look.", "Pastel shirts, knit vests, pearl chains", "Add a pearl chain to a pastel shirt.",
+    { bg: "mint", gr: "beige", set: ["plants"], figs: [{ top: "shirt", c: "pink", lay: ["vest"], y: "lav", py: "checks", low: "jeans", l: "beige", h: "short", sk: "skin3", hc: "hair2", a: ["pearls"], shoe: "sneaker" }] }],
+  [52, "Te", "Tellurium", "Tonal Ethnic", "Kurta, pants and dupatta in shades of one colour, from light to dark.", "Tonal kurta sets, ombre dupattas", "Go one shade darker on the bottom half.",
+    { bg: "lav", gr: "plum", set: [["arch", "cream"]], figs: [{ top: "kurta", c: "lav", low: "palazzo", l: "plum", lay: ["dupatta"], y: "pink", h: "braid", a: ["jhumka"], ac: "grey" }] }],
+  [53, "I", "Iodine", "Indie", "Supporting small homegrown labels with handmade, quirky pieces you won't see everywhere.", "Small-batch prints, handmade jewellery, tote bags", "Buy one piece a season from an indie label.",
+    { bg: "yellow", gr: "green", set: [["window2", "sky"]], figs: [{ x: 56, top: "dress", c: "green", pt: "floral", h: "bob", a: ["hoops", "specs"], ac: "rani", hold: "tote", hc2: "beige", shoe: "kolhapuri" }] }],
+  [54, "Xe", "Xenon", "XXL Everything", "Oversized accessories: giant jhumkas, huge bows, big bags and extra-wide sleeves.", "Giant jhumkas, oversized bags, big bows", "Pick one huge accessory and keep the rest small.",
+    { bg: "teal", gr: "yellow", set: ["sparkles"], figs: [{ top: "fittee", c: "black", low: "jeans", l: "white", h: "lowbun", a: ["bigjhumka"], ac: "gold", hold: "tote", hc2: "red", shoe: "heel" }] }],
+  [55, "Cs", "Caesium", "Cricket Streetwear", "Cricket jerseys worn as streetwear with baggy denim, chains and sneakers.", "Team jerseys, retro kits, track pants", "Layer a jersey over a white tee.",
+    { bg: "night", gr: "green", set: ["floodlights"], figs: [{ top: "jersey", c: "blue", num: 18, sl: "tee", low: "baggy", l: "denim", h: "short", sk: "skin2", a: ["chain", "cap"], ac: "blue", shoe: "sneaker" }] }],
+  [56, "Ba", "Barium", "Balletcore", "Ballet-inspired wrap tops, soft pink, ribbons and ballet flats for everyday wear.", "Wrap tops, ballet flats, tulle skirts, ribbons", "Wear ballet flats with a midi skirt.",
+    { bg: "blush", gr: "pink", set: ["hearts"], figs: [{ top: "crop", c: "pink", low: "skirt", l: "white", pl: "grid", h: "bun", a: ["bow", "pearls"], ac: "pink", shoe: "jutti" }] }],
+  [57, "La", "Lanthanum", "Layered Accessories", "Stacking many necklaces, bangles and rings for a collected, lived-in look.", "Layered chains, bangle stacks, ring stacks", "Mix metals but keep one chain the longest.",
+    { bg: "peach", gr: "kaapi", set: ["sparkles"], figs: [{ top: "fittee", c: "white", low: "jeans", l: "denim", h: "open", a: ["layered", "bangles", "hoops"], ac: "gold", shoe: "kolhapuri" }] }],
+  [58, "Ce", "Cerium", "Cape Era", "Sheer and embroidered capes worn over lehengas, gowns and saree blouses instead of dupattas.", "Cape sets, cape blouses, organza capes", "Use a cape instead of a dupatta at sangeets.",
+    { bg: "sage", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "blouse", c: "sage", low: "lehenga", l: "sage", pl: "floral", b: "gold", lay: ["cape"], y: "mint", h: "lowbun", a: ["jhumka"] }] }],
+  [59, "Pr", "Praseodymium", "Print Riot", "Clashing prints on purpose: stripes with florals, ikat with checks.", "Mixed-print co-ords, printed shirts, scarves", "Tie clashing prints together with one shared colour.",
+    { bg: "yellow", gr: "red", set: ["bunting"], figs: [{ top: "shirt", c: "red", pt: "checks", low: "palazzo", l: "teal", pl: "floral", h: "open", a: ["hoops", "scarf"], ac2: "yellow", shoe: "jutti" }] }],
+  [60, "Nd", "Neodymium", "New Desi", "A confident, global look with Indian roots, worn from Mumbai to London.", "Saree pants, kurta dresses, sneakers, bindis", "Wear a bindi with your everyday Western outfit.",
+    { bg: "rani", gr: "orange", set: [["skyline", "night"]], figs: [{ top: "crop", c: "orange", low: "palazzo", l: "rani", pl: "zari", lay: ["drape"], y: "rani", h: "open", a: ["bindi", "hoops"], ac: "gold", shoe: "sneaker" }] }],
+  [61, "Pm", "Promethium", "Pastel Mania", "Mint, powder blue, lilac and blush on everything, from festive wear to sneakers.", "Pastel lehengas, pastel kurtas, pastel sneakers", "Pair two pastels with white.",
+    { bg: "mint", gr: "lav", set: ["sparkles"], figs: [{ top: "blouse", c: "lav", low: "lehenga", l: "sky", pl: "floral", b: "pink", lay: ["dupatta"], y: "pink", h: "bun", a: ["jhumka"], ac: "pink" }] }],
+  [62, "Sm", "Samarium", "Slow Movement", "Buying less, buying handmade and wearing clothes for years.", "Handloom sarees, hand-spun shirts, mended denim", "Wait a week before buying anything new.",
+    { bg: "sage", gr: "kaapi", set: ["plants", "line"], figs: [{ top: "kurta", c: "beige", pt: "grid", low: "palazzo", l: "green", h: "lowbun", a: ["studs"], hold: "tote", hc2: "beige", shoe: "kolhapuri" }] }],
+  [63, "Eu", "Europium", "Ethnic Utility", "Practical ethnic wear with pockets, crossbody bags and comfortable cuts.", "Pocket kurtas, cargo salwars, sling bags", "Choose kurtas with real pockets.",
+    { bg: "olive", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "shortkurta", c: "rust", low: "baggy", l: "olive", h: "pony", a: ["bag"], ac2: "kaapi", shoe: "sneaker" }] }],
+  [64, "Gd", "Gadolinium", "Gender-fluid Dressing", "Men in skirts and pearls, women in sherwanis. Clothes chosen without gender rules.", "Kurta dresses, sherwanis for women, pearl chains", "Borrow one piece from the 'other' section.",
+    { bg: "lav", gr: "plum", set: ["sparkles"], figs: [{ top: "kurta", c: "rani", pt: "zari", low: "skirt", l: "black", h: "short", sk: "skin2", a: ["pearls", "hoops"], ac: "gold", shoe: "boot" }] }],
+  [65, "Tb", "Terbium", "Tomboy Boom", "Baggy shirts, loafers and shorts on women, worn with ease instead of irony.", "Oversized shirts, loafers, cargo shorts", "Wear an oversized shirt with loafers.",
+    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "tee", c: "white", pt: "stripes", low: "shorts", l: "beige", h: "bob", sk: "skin", a: ["cap", "watch"], ac: "indigo", shoe: "sneaker" }] }],
+  [66, "Dy", "Dysprosium", "Desi Y2K", "Early-2000s Bollywood nostalgia, with butterfly clips, baby tees and low-rise jeans with a desi twist.", "Butterfly clips, baby tees, bindis, mojaris", "Add a tiny bindi to a Y2K outfit.",
+    { bg: "pink", gr: "yellow", set: ["stars"], figs: [{ top: "babytee", c: "yellow", pt: "floral", low: "jeans", l: "denim", h: "open", a: ["butterfly", "bindi", "hoops"], ac: "rani", shoe: "jutti" }] }],
+  [67, "Ho", "Holmium", "Heritage Office", "Ethnic wear at work: handloom sarees, kurta sets and bandhgalas on weekdays.", "Handloom sarees, kurta sets, Nehru jackets", "Keep a neat kurta set ready for Mondays.",
+    { bg: "cream", gr: "grey", set: [["window", "sky"]], figs: [{ x: 44, top: "kurta", c: "white", low: "churidar", l: "white", lay: ["vest"], y: "indigo", h: "short", sk: "skin", stache: true, a: ["specs", "watch"], hold: "book", hc2: "kaapi" }] }],
+  [68, "Er", "Erbium", "Eco Revival", "Natural dyes, organic cotton and peace silk from labels that show their supply chain.", "Natural-dyed sarees, organic cotton, peace silk", "Check the label for fabric and dye.",
+    { bg: "green", gr: "sage", set: ["line"], figs: [{ top: "blouse", c: "rust", low: "saree", l: "indigo", pl: "dots", lay: ["pallu"], y: "indigo", b: "rust", h: "lowbun", a: ["studs"] }], obj: [["cocoon"]] }],
+  [69, "Tm", "Thulium", "Twinning Moments", "Couples and families colour-coordinating for every function and photo.", "Matching sherwanis and lehengas, coordinated safas", "Match colour, not print.",
+    { bg: "peach", gr: "sage", set: ["marigold"], figs: [{ x: 33, s: 0.9, top: "sherwani", c: "sage", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, a: ["safa"], ac: "sage" }, { x: 67, s: 0.9, top: "blouse", c: "sage", low: "lehenga", l: "sage", pl: "floral", b: "gold", h: "bun", a: ["jhumka"] }] }],
+  [70, "Yb", "Ytterbium", "Yoga-to-Brunch", "Yoga sets that go straight from class to cafe with a jacket on top.", "Yoga sets, light jackets, slides", "Throw an overshirt on your yoga set.",
+    { bg: "sky", gr: "peach", set: ["plants"], figs: [{ x: 44, top: "crop", c: "sage", low: "leggings", l: "sage", lay: ["jacket"], y: "white", h: "bun", hold: "coffee", hc2: "kaapi", shoe: "sneaker" }], obj: [["mat"]] }],
+  [71, "Lu", "Lutetium", "Luxe Understated", "Quiet luxury in Indian form: raw silk, tissue and pearl studs in ivory and beige.", "Tissue sarees, raw-silk kurtas, pearl studs", "Spend on fabric and keep the shape simple.",
+    { bg: "beige", gr: "cream", set: [["arch", "ivory"]], figs: [{ top: "blouse", c: "ivory", low: "saree", l: "beige", pl: "grid", lay: ["pallu"], y: "ivory", b: "gold", h: "lowbun", a: ["studs", "pearls"] }] }],
+  [72, "Hf", "Hafnium", "Heritage Fusion", "Traditional crafts cut into modern shapes, like a Banarasi blazer or ikat trousers.", "Brocade blazers, ikat trousers, ajrakh shirts", "Wear a brocade blazer over a plain dress.",
+    { bg: "indigo", gr: "beige", set: [["arch", "peach"]], figs: [{ top: "fittee", c: "black", low: "jeans", l: "black", lay: ["blazer"], y: "red", py: "zari", h: "lowbun", a: ["jhumka"], shoe: "heel" }] }],
+  [73, "Ta", "Tantalum", "Tailored Androgyny", "Sharp suits and bandhgalas for women, cut with a neutral, masculine line.", "Pantsuits, bandhgalas, loafers, ties", "Try a bandhgala with straight trousers.",
+    { bg: "grey", gr: "black", set: ["spotlight"], figs: [{ top: "shirt", c: "white", low: "jeans", l: "black", lay: ["blazer"], y: "black", h: "bob", sk: "skin3", a: ["tie", "studs"], ac2: "red", shoe: "boot" }] }],
+  [74, "W", "Tungsten", "Workleisure", "Comfortable clothes that still look office-ready, like knit trousers and stretch blazers.", "Knit trousers, soft blazers, loafers", "Pick blazers in stretch fabric.",
+    { bg: "sky", gr: "grey", set: [["window", "white"]], figs: [{ x: 44, top: "fittee", c: "sage", low: "palazzo", l: "grey", lay: ["blazer"], y: "beige", h: "pony", a: ["studs"], hold: "coffee", hc2: "white", shoe: "sneaker" }] }],
+  [75, "Re", "Rhenium", "Resort Ethnic", "Light ethnic wear for destination weddings: kaftans, printed sarees and linen sets.", "Kaftans, printed sarees, linen kurta sets", "Pick breathable prints for day functions.",
+    { bg: "sky", gr: "peach", set: ["waves", "palm"], figs: [{ x: 42, top: "anarkali", c: "yellow", pt: "floral", b: "orange", h: "open", a: ["hat", "jhumka"], ac: "beige", shoe: "kolhapuri" }] }],
+  [76, "Os", "Osmium", "Old-money Style", "Polished, inherited-wealth looks: cable knits, pearls, loafers and quiet colours.", "Cable knits, pearl studs, loafers, pleated trousers", "Drape a sweater over your shoulders.",
+    { bg: "green", gr: "beige", set: [["arches", "cream"]], figs: [{ top: "shirt", c: "white", low: "palazzo", l: "beige", lay: ["shawl"], y: "sky", h: "lowbun", a: ["pearls", "studs"], shoe: "heel" }] }],
+  [77, "Ir", "Iridium", "Insta-Reel Fits", "Outfits planned for 15-second reels: transitions, twirls and statement colours.", "Twirl skirts, statement sets, bold colours", "Choose something that moves when you turn.",
+    { bg: "pink", gr: "rani", set: ["sparkles"], figs: [{ x: 42, top: "anarkali", c: "rani", pt: "floral", b: "gold", h: "open", a: ["jhumka"], shoe: "jutti" }], obj: [["phone", 82, 30]] }],
+  [78, "Pt", "Platinum", "Pyjama Takeover", "Printed pyjama sets worn outside the house, to cafes and airports.", "Printed pyjama sets, satin sets, slides", "Wear a pyjama set with loafers and a tote.",
+    { bg: "night", gr: "lav", set: ["moon", "stars"], figs: [{ top: "shirt", c: "pink", pt: "floral", low: "palazzo", l: "pink", pl: "floral", h: "open", hold: "coffee", hc2: "white", shoe: "kolhapuri" }] }],
+  [79, "Au", "Gold", "Aesthetic Upcycling", "Turning old sarees, denim and dupattas into new outfits that look designed.", "Saree dresses, denim patchwork, dupatta jackets", "Get an old saree stitched into a dress.",
+    { bg: "yellow", gr: "kaapi", set: ["line"], figs: [{ top: "dress", c: "rani", pt: "zari", lay: ["jacket"], y: "denim", py: "patch", h: "bob", a: ["hoops"], ac: "gold", shoe: "sneaker" }] }],
+  [80, "Hg", "Mercury", "Hippie Groove", "Seventies boho returns: bell-bottoms, fringe, headbands and peace signs.", "Bell-bottoms, fringe jackets, headbands", "Pair flared jeans with a printed blouse.",
+    { bg: "orange", gr: "yellow", set: [["sun", "yellow", 50, 30]], figs: [{ top: "crop", c: "yellow", pt: "floral", low: "palazzo", l: "denim", h: "open", hc: "hair2", a: ["glasses", "flowerhair", "beads"], shoe: "kolhapuri" }] }],
+  [81, "Tl", "Thallium", "Tomato-girl Look", "Summery, sun-soaked Italian-coded dressing: red gingham, linen and tomato reds.", "Gingham dresses, red accents, straw bags", "Add one tomato-red piece to summer whites.",
+    { bg: "sky", gr: "beige", set: [["sun", "yellow", 82, 18]], figs: [{ top: "dress", c: "red", pt: "checks", h: "lowbun", a: ["scarf", "studs"], ac2: "white", hold: "tote", hc2: "beige", shoe: "kolhapuri" }] }],
+  [82, "Pb", "Lead", "Pre-loved Buys", "Buying second-hand on apps and in markets, for both savings and sustainability.", "Second-hand designer, vintage sarees, resale sneakers", "Check resale apps before buying new.",
+    { bg: "teal", gr: "beige", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "fittee", c: "yellow", low: "skirt", l: "denim", h: "pony", hold: "shopbags", shoe: "sneaker" }] }],
+  [83, "Bi", "Bismuth", "Bridal Indie", "Brides breaking norms: pantsuits, pastel sarees, sneakers and their own choice of colour.", "Bridal pantsuits, pastel sarees, bridal sneakers", "Choose the colour that feels like you.",
+    { bg: "mint", gr: "sage", set: ["marigold"], figs: [{ top: "fittee", c: "ivory", low: "palazzo", l: "ivory", lay: ["blazer", "veil"], y: "ivory", h: "bun", a: ["matha", "choker"], shoe: "sneaker", hold: "flowers" }] }],
+  [84, "Po", "Polonium", "Party Opulence", "Maximum shine for sangeets and cocktails: sequins, mirrors and metallics.", "Sequin sarees, mirror lehengas, metallic blouses", "Skip the necklace when the outfit sparkles.",
+    { bg: "night", gr: "plum", set: ["disco"], figs: [{ top: "blouse", c: "gold", pt: "sparkle", low: "saree", l: "black", pl: "sparkle", lay: ["pallu"], y: "black", py: "sparkle", b: "gold", h: "open", a: ["bigjhumka"], ac: "gold", hold: "clutch" }] }],
+  [85, "At", "Astatine", "Anti-Trend", "Ignoring trends altogether and wearing personal favourites on repeat.", "Personal uniforms, long-kept favourites", "Find your best outfit and repeat it proudly.",
+    { bg: "cream", gr: "grey", set: [["window", "sky"]], figs: [{ x: 44, top: "kurta", c: "indigo", low: "jeans", l: "denim", h: "short", sk: "skin2", a: ["specs"], shoe: "kolhapuri", hold: "book", hc2: "red" }] }],
+  [86, "Rn", "Radon", "Re-wear Nation", "Proudly re-wearing outfits at multiple events instead of buying new ones each time.", "Restyled sarees, repeat lehengas, mix-and-match blouses", "Change the blouse and jewellery, keep the saree.",
+    { bg: "green", gr: "beige", set: ["confetti"], figs: [{ x: 42, top: "blouse", c: "yellow", low: "saree", l: "teal", lay: ["pallu"], y: "teal", b: "yellow", h: "bun", a: ["jhumka"] }], obj: [["loop"]] }],
+  [87, "Fr", "Francium", "Fringe Revival", "Fringe and tassels on jackets, bags, dupattas and blouse sleeves.", "Fringe jackets, tassel dupattas, fringe bags", "Let one piece swing, keep the rest still.",
+    { bg: "rust", gr: "yellow", set: ["bunting"], figs: [{ top: "crop", c: "kaapi", low: "jeans", l: "denim", lay: ["jacket"], y: "beige", h: "open", a: ["hat", "beads"], ac: "kaapi", shoe: "boot" }] }],
+  [88, "Ra", "Radium", "Rajwada Aesthetic", "Royal Rajasthani style: safas, achkans, leheriya and polki for big weddings.", "Achkans, safas, leheriya sarees, polki", "Pair a leheriya safa with an ivory achkan.",
+    { bg: "peach", gr: "rust", set: [["palace", "pink"]], figs: [{ top: "sherwani", c: "ivory", pt: "zari", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, a: ["safa", "layered"], ac: "orange", pa: "chevron" }] }],
+  [89, "Ac", "Actinium", "Academia Chic", "Dark-academia browns, tweed, knitwear and books as accessories.", "Tweed blazers, knits, loafers, satchels", "Wear brown on brown with a book in hand.",
+    { bg: "kaapi", gr: "maroon", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["blazer"], y: "kaapi", py: "checks", low: "skirt", l: "olive", h: "lowbun", a: ["specs"], hold: "book", hc2: "maroon", shoe: "boot" }] }],
+  [90, "Th", "Thorium", "Trad-Hybrid", "Traditional and Western pieces in one outfit: lehenga skirts with shirts, sarees with blazers.", "Saree blazers, lehenga shirts, dhoti pants", "Belt a blazer over a saree.",
+    { bg: "rani", gr: "beige", set: [["arch", "peach"]], figs: [{ top: "blouse", c: "red", low: "saree", l: "red", b: "gold", lay: ["pallu", "blazer", "belt"], y: "black", h: "lowbun", a: ["jhumka"] }] }],
+  [91, "Pa", "Protactinium", "Pop Art", "Comic-strip graphics, bright dots and bold blocks of colour on clothes.", "Graphic tees, comic prints, colour-block bags", "Wear one pop-art piece with solid colours.",
+    { bg: "yellow", gr: "blue", set: ["confetti"], figs: [{ top: "tee", c: "red", pt: "pop", low: "jeans", l: "blue", h: "bob", a: ["hoops"], ac: "yellow", shoe: "sneaker" }] }],
+  [92, "U", "Uranium", "Upcycling", "Turning old clothes into new ones, often with visible mending and patchwork.", "Patchwork jeans, saree dresses, mended jackets", "Learn one visible-mending stitch.",
+    { bg: "sage", gr: "kaapi", set: ["line"], figs: [{ top: "shirt", c: "denim", pt: "patch", low: "jeans", l: "denim", pl: "patch", h: "short", sk: "skin3", shoe: "sneaker" }] }],
+  [93, "Np", "Neptunium", "Nostalgic Prints", "Prints borrowed from childhood: paisley bedsheets, polka-dot frocks and retro florals.", "Paisley kurtas, retro floral dresses, polka dots", "Pair a retro print with a plain colour.",
+    { bg: "teal", gr: "beige", set: [["window2", "yellow"]], figs: [{ x: 56, top: "kurta", c: "maroon", pt: "paisley", low: "palazzo", l: "beige", h: "braid", a: ["bindi", "jhumka"] }] }],
+  [94, "Pu", "Plutonium", "Punk Uprising", "Leather, studs, plaid and boots on Indian streets and concert grounds.", "Leather jackets, plaid skirts, combat boots", "Pair combat boots with a kurta.",
+    { bg: "black", gr: "red", set: ["stars"], figs: [{ top: "fittee", c: "black", low: "mini", l: "red", pl: "checks", lay: ["jacket"], y: "black", h: "pony", hc: "rani", a: ["chain", "hoops"], ac: "grey", shoe: "boot" }] }],
+  [95, "Am", "Americium", "Anime Mania", "Anime merch, cosplay touches and manga graphics in everyday outfits.", "Anime tees, cosplay accessories, manga prints", "Wear your fandom on one piece.",
+    { bg: "sky", gr: "pink", set: ["stars"], figs: [{ top: "hoodie", c: "orange", low: "baggy", l: "black", h: "pony", hc: "blue", a: ["headphones"], ac: "pink", hold: "lightsaber", shoe: "sneaker" }] }],
+  [96, "Cm", "Curium", "Cottagecore Mood", "Romantic rural style: puff sleeves, florals, aprons and wicker baskets.", "Puff-sleeve dresses, floral prints, baskets", "Choose a floral dress with puff sleeves.",
+    { bg: "sage", gr: "green", set: ["plants", ["sun", "yellow", 80, 18]], figs: [{ top: "dress", sl: "puff", c: "white", pt: "floral", h: "braid", a: ["flowerhair"], hold: "flowers", shoe: "jutti" }] }],
+  [97, "Bk", "Berkelium", "Bold Kohl", "Smudged, lived-in kajal with bare skin. It replaced the full-glam face.", "Kohl pencil, kajal, tinted lip balm", "Smudge the lower line with a fingertip.",
+    { bg: "peach", gr: "kaapi", set: [], obj: [["eye", 50, 46]] }],
+  [98, "Cf", "Californium", "Comfort First", "Soft fabrics, elastic waists and flat shoes chosen over stiff, tight clothes.", "Soft kurta sets, elastic trousers, slides", "Choose the softest fabric you can find.",
+    { bg: "lav", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "tee", c: "sage", low: "palazzo", l: "grey", h: "lowbun", hold: "coffee", hc2: "kaapi", shoe: "kolhapuri" }] }],
+  [99, "Es", "Einsteinium", "Eclectic Styling", "Mixing eras, cultures and prices in one look, like vintage, designer and street.", "Thrifted jackets, designer bags, ethnic jewellery", "Mix one old, one new and one ethnic piece.",
+    { bg: "teal", gr: "rust", set: ["confetti"], figs: [{ top: "shortkurta", c: "yellow", pt: "paisley", low: "jeans", l: "rust", lay: ["jacket"], y: "denim", h: "open", a: ["hat", "bigjhumka"], ac: "red", shoe: "boot" }] }],
+  [100, "Fm", "Fermium", "Festive Minimalism", "Simpler festive wear: one strong colour, clean shapes and a single piece of jewellery.", "Solid silk kurtas, plain sarees, statement earrings", "Wear a solid silk set with just jhumkas.",
+    { bg: "ivory", gr: "beige", set: ["diyas"], figs: [{ top: "kurta", c: "green", low: "palazzo", l: "green", h: "lowbun", a: ["jhumka"], ac: "gold", shoe: "jutti" }] }],
+  [101, "Md", "Mendelevium", "Mehendi Doodles", "Fine-line mehendi with small motifs and negative space instead of full coverage.", "Fine-line mehendi, finger caps, hidden initials", "Ask for a story motif hidden in the pattern.",
+    { bg: "green", gr: "sage", set: [], obj: [["hand", 50, 50]] }],
+  [102, "No", "Nobelium", "Nath Obsession", "Big naths are back for brides and guests, from Maharashtrian to Tehri styles.", "Bridal naths, clip-on nose rings, chains", "Choose a nath with a chain to the hair.",
+    { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ s: 1.15, top: "blouse", c: "red", lay: ["veil"], y: "red", h: "bun", a: ["bignath", "matha", "choker"], low: "lehenga", l: "red", b: "gold" }] }],
+  [103, "Lr", "Lawrencium", "Lehenga Remix", "Lehenga skirts worn with shirts, crop tops and jackets instead of matching blouses.", "Lehenga skirts, white shirts, denim jackets", "Wear your lehenga with a crisp white shirt.",
+    { bg: "yellow", gr: "rani", set: ["bunting"], figs: [{ top: "babytee", c: "white", low: "lehenga", l: "rani", pl: "mirror", b: "gold", lay: ["jacket"], y: "denim", h: "open", a: ["jhumka"] }] }],
+  [104, "Rf", "Rutherfordium", "Ruffle Fever", "Ruffled sarees, ruffled hems and frilled sleeves for a soft, swishy look.", "Ruffle sarees, frill blouses, tiered skirts", "Choose a ruffle saree in georgette.",
+    { bg: "pink", gr: "blush", set: ["hearts"], figs: [{ top: "blouse", sl: "puff", c: "white", low: "tiered", l: "orange", h: "lowbun", a: ["jhumka"], shoe: "jutti" }] }],
+  [105, "Db", "Dubnium", "Double-dupatta Brides", "Two dupattas, one on the head and one draped across, now standard for brides.", "Net head dupattas, heavy drape dupattas", "Make the head dupatta the lighter one.",
+    { bg: "rani", gr: "maroon", set: ["marigold"], figs: [{ top: "blouse", c: "maroon", low: "lehenga", l: "red", pl: "zari", b: "gold", lay: ["veil", "drape"], y: "pink", h: "bun", a: ["tikka", "nath", "choker"] }] }],
+  [106, "Sg", "Seaborgium", "Soft Grunge", "Flannel, slip dresses, chunky boots and smudged eyeliner, but gentler than 90s grunge.", "Flannel shirts, slip dresses, combat boots", "Throw a flannel over a slip dress.",
+    { bg: "plum", gr: "black", set: ["stars"], figs: [{ top: "slip", c: "black", lay: ["jacket"], y: "red", py: "checks", h: "open", hc: "hair2", a: ["kohl", "chain"], shoe: "boot" }] }],
+  [107, "Bh", "Bohrium", "Bollywood Heroine", "Dressing like a film heroine for sangeets and reels, from chiffon sarees to song-sequence looks.", "Chiffon sarees, sequin blouses, flowing dupattas", "Pick a chiffon saree in a single bright colour.",
+    { bg: "sky", gr: "white", set: ["hills"], figs: [{ top: "blouse", c: "yellow", low: "saree", l: "yellow", lay: ["pallu"], y: "yellow", b: "yellow", h: "open", a: ["jhumka", "bindi"] }] }],
+  [108, "Hs", "Hassium", "Heritage Streetwear", "Streetwear made with Indian crafts: block-printed hoodies, ikat bombers, khadi cargos.", "Block-print hoodies, ikat jackets, khadi cargos", "Swap a plain hoodie for a block-printed one.",
+    { bg: "rust", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "hoodie", c: "indigo", pt: "chevron", low: "baggy", l: "beige", h: "short", sk: "skin2", a: ["cap"], ac: "rust", shoe: "sneaker" }] }],
+  [109, "Mt", "Meitnerium", "Monochrome Tailoring", "Matching suits in one colour, from jacket to trousers, for work and events.", "Single-colour suits, matching shirts, loafers", "Match the shirt to the suit.",
+    { bg: "teal", gr: "grey", set: ["spotlight"], figs: [{ top: "shirt", c: "teal", low: "jeans", l: "teal", lay: ["blazer"], y: "teal", h: "short", sk: "skin", a: ["pocketsq"], shoe: "boot" }] }],
+  [110, "Ds", "Darmstadtium", "Dopamine Styling", "Mood-lifting colour blocking: fuchsia with orange, yellow with green.", "Colour-block co-ords, bright kurtas, bright shoes", "Pair two bright colours and keep the rest neutral.",
+    { bg: "yellow", gr: "green", set: ["confetti"], figs: [{ top: "shirt", c: "orange", low: "palazzo", l: "hot", h: "open", a: ["hoops"], ac: "lime", hold: "tote", hc2: "green", shoe: "sneaker" }] }],
+  [111, "Rg", "Roentgenium", "Red-carpet Glam", "Celebrity premiere and award-night looks: gowns, trains and dramatic jewellery.", "Gowns, sequin sarees, cocktail rings", "Go long and keep the jewellery to one statement.",
+    { bg: "maroon", gr: "red", set: ["spotlight", "sparkles"], figs: [{ top: "gown", c: "red", pt: "sparkle", h: "open", hc: "hair2", a: ["studs", "lipstick"], hold: "clutch", hc2: "gold" }] }],
+  [112, "Cn", "Copernicium", "Concert Nights", "Outfits for big concerts and festivals: sequins, cowboy boots, glitter and glowsticks.", "Sequin tops, cowboy boots, glitter, cargo skirts", "Wear comfy boots and one sparkly piece.",
+    { bg: "night", gr: "plum", set: ["stars", ["spotlight", "lime"]], figs: [{ top: "crop", c: "grey", pt: "sparkle", low: "mini", l: "black", h: "open", a: ["hat", "hoops"], ac: "pink", hold: "glowstick", shoe: "boot" }] }],
+  [113, "Nh", "Nihonium", "Nineties Hair", "Claw clips, scrunchies, half-up styles and face-framing strands.", "Claw clips, scrunchies, hair scarves", "Twist your hair up with a claw clip.",
+    { bg: "pink", gr: "yellow", set: [["mirror", "sky"]], figs: [{ x: 44, s: 1.1, top: "fittee", c: "white", low: "jeans", l: "denim", h: "pony", a: ["scrunchie", "claw", "hoops"], ac: "yellow" }] }],
+  [114, "Fl", "Flerovium", "Festive Layering", "Layering jackets, capes and shrugs over festive outfits for winter weddings.", "Embroidered jackets, velvet shrugs, shawls", "Add a velvet jacket over a silk saree.",
+    { bg: "plum", gr: "maroon", set: ["diyas"], figs: [{ top: "blouse", c: "gold", low: "saree", l: "pink", lay: ["pallu", "jacket"], y: "maroon", py: "zari", b: "gold", h: "lowbun", a: ["jhumka"] }] }],
+  [115, "Mc", "Moscovium", "Mermaid Core", "Iridescent fabrics, sea-green shades, shell jewellery and fishtail cuts.", "Fishtail lehengas, iridescent fabrics, shell jewellery", "Try a sea-green fishtail with pearls.",
+    { bg: "blue", gr: "teal", set: ["waves", "sparkles"], figs: [{ top: "corset", c: "teal", pt: "sparkle", low: "fishtail", l: "mint", pl: "sparkle", b: "teal", h: "open", hc: "rani", a: ["pearls"] }] }],
+  [116, "Lv", "Livermorium", "Lavender Vibes", "Lavender and lilac as the go-to colour for sangeets, brunches and day weddings.", "Lavender lehengas, lilac kurtas, purple dupattas", "Pair lavender with silver.",
+    { bg: "lav", gr: "plum", set: ["sparkles"], figs: [{ top: "blouse", c: "lav", low: "lehenga", l: "lav", pl: "floral", b: "white", lay: ["dupatta"], y: "white", h: "bun", a: ["jhumka"], ac: "grey" }] }],
+  [117, "Ts", "Tennessine", "Tropical Summer", "Palm prints, bright florals and breezy shirts for holidays and day parties.", "Palm-print shirts, floral co-ords, sunhats", "Wear a printed shirt open over a tank.",
+    { bg: "yellow", gr: "peach", set: ["palm", "sun"], figs: [{ x: 42, top: "shirt", c: "green", pt: "floral", low: "shorts", l: "beige", h: "short", sk: "skin2", a: ["glasses"], hold: "coffee", hc2: "orange", shoe: "kolhapuri" }] }],
+  [118, "Og", "Oganesson", "Old-school Glam", "Golden-age film glamour: finger waves, red lips, pearls and silk sarees.", "Silk sarees, pearls, red lips, sleek hair", "Pair a silk saree with pearls and a red lip.",
+    { bg: "night", gr: "maroon", set: ["curtain", "spotlight"], figs: [{ top: "blouse", c: "black", low: "saree", l: "maroon", pl: "zari", lay: ["pallu"], y: "maroon", b: "gold", h: "lowbun", a: ["pearls", "lipstick", "studs"] }] }],
 ];
 
-const els = DATA.map(([n,sym,name,cat,row,col,hype,where,desc,pieces,tip]) => ({n,sym,name,cat,row,col,hype,where,desc,pieces,tip}));
-const svg = (sym) => `<svg class="ill" viewBox="0 0 64 64" aria-hidden="true">${ART[sym] || ""}</svg>`;
+
+const FAMILIES = {
+  alkali: "Alkali metals", alkaline: "Alkaline earth", transition: "Transition metals", post: "Post-transition",
+  metalloid: "Metalloids", nonmetal: "Nonmetals", halogen: "Halogens", noble: "Noble gases",
+  lanthanide: "Lanthanides", actinide: "Actinides",
+};
+const SETS = {
+  alkali: [3, 11, 19, 37, 55, 87], alkaline: [4, 12, 20, 38, 56, 88],
+  nonmetal: [1, 6, 7, 8, 15, 16, 34], halogen: [9, 17, 35, 53, 85, 117],
+  noble: [2, 10, 18, 36, 54, 86, 118], metalloid: [5, 14, 32, 33, 51, 52],
+  post: [13, 31, 49, 50, 81, 82, 83, 84, 113, 114, 115, 116],
+};
+function family(n) {
+  for (const [k, v] of Object.entries(SETS)) if (v.includes(n)) return k;
+  if (n >= 57 && n <= 71) return "lanthanide";
+  if (n >= 89 && n <= 103) return "actinide";
+  return "transition";
+}
+// Grid position on the 18-column table; the f-block sits in rows 9 and 10.
+function place(n) {
+  if (n === 1) return [1, 1];
+  if (n === 2) return [1, 18];
+  const periods = [[3, 10, 2], [11, 18, 3], [19, 36, 4], [37, 54, 5]];
+  for (const [a, b, row] of periods) if (n >= a && n <= b) {
+    const i = n - a;
+    if (b - a === 7) return [row, i < 2 ? i + 1 : i + 11];
+    return [row, i + 1];
+  }
+  for (const [start, row, frow] of [[55, 6, 9], [87, 7, 10]]) {
+    if (n === start || n === start + 1) return [row, n - start + 1];
+    if (n >= start + 2 && n <= start + 16) return [frow, n - start + 1];
+    if (n >= start + 17 && n <= start + 31) return [row, n - start - 13];
+  }
+}
+
+const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n) }));
+const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
 const table = document.getElementById("table");
 const legend = document.getElementById("legend");
 const mobileSlot = document.getElementById("mobileSlot");
 const q = document.getElementById("q");
-let activeCat = null;
+let current = null, activeFam = null;
 
 const tiles = new Map();
 for (const e of els) {
+  const [row, colN] = place(e.n);
   const b = document.createElement("button");
   b.type = "button";
-  b.className = `el ${e.cat}`;
-  b.style.gridRow = e.row;
-  b.style.gridColumn = e.col;
+  b.className = `el ${e.fam}`;
+  b.style.gridRow = row;
+  b.style.gridColumn = colN;
   b.setAttribute("aria-pressed", "false");
-  b.setAttribute("aria-label", `${e.n} ${e.name}, ${CATS[e.cat]}`);
-  b.innerHTML = `<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><span class="art">${svg(e.sym)}</span><span class="nm">${e.name}</span>`;
+  b.setAttribute("aria-label", `${e.n}, ${e.sym}, ${e.trend}`);
+  b.innerHTML = `<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene("t" + e.sym, e.art)}</svg><span class="nm">${e.trend}</span>`;
   b.addEventListener("click", () => select(e));
   tiles.set(e.n, b);
   table.appendChild(b);
 }
-const spacer = document.createElement("div");
-spacer.className = "spacer";
-spacer.style.gridRow = 5;
-table.appendChild(spacer);
-const label = document.createElement("div");
-label.className = "series-label";
-label.style.gridRow = 6;
-label.textContent = "Shaadi Season";
-table.appendChild(label);
+const add = (cls, style, html) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, style); d.innerHTML = html; table.appendChild(d); };
+add("placeholder lanthanide", { gridRow: 6, gridColumn: 3 }, "57–71");
+add("placeholder actinide", { gridRow: 7, gridColumn: 3 }, "89–103");
+add("gapline", { gridRow: 8 }, "");
+add("series", { gridRow: 9 }, "Lanthanides");
+add("series", { gridRow: 10 }, "Actinides");
 
-const detail = document.createElement("section");
-detail.className = "detail";
-detail.setAttribute("aria-live", "polite");
-
-for (const [key, name] of Object.entries(CATS)) {
+for (const [key, name] of Object.entries(FAMILIES)) {
   const li = document.createElement("li");
   const c = document.createElement("button");
   c.type = "button";
@@ -395,48 +817,74 @@ for (const [key, name] of Object.entries(CATS)) {
   c.textContent = name;
   c.setAttribute("aria-pressed", "false");
   c.addEventListener("click", () => {
-    activeCat = activeCat === key ? null : key;
-    legend.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c && activeCat === key)));
+    activeFam = activeFam === key ? null : key;
+    legend.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c && activeFam === key)));
     filter();
   });
   li.appendChild(c);
   legend.appendChild(li);
 }
-
 function filter() {
   const term = q.value.trim().toLowerCase();
   for (const e of els) {
-    const hay = `${e.name} ${e.sym} ${e.where} ${e.desc} ${e.pieces} ${CATS[e.cat]}`.toLowerCase();
-    const ok = (!activeCat || e.cat === activeCat) && (!term || hay.includes(term));
+    const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces}`.toLowerCase();
+    const ok = (!activeFam || e.fam === activeFam) && (!term || e.sym.toLowerCase() === term || hay.includes(term));
     tiles.get(e.n).classList.toggle("dim", !ok);
   }
 }
 q.addEventListener("input", filter);
 
+const detail = document.createElement("section");
+detail.className = "detail";
+detail.setAttribute("aria-live", "polite");
+
 function select(e) {
+  current = e;
   tiles.forEach(t => t.setAttribute("aria-pressed", "false"));
   tiles.get(e.n).setAttribute("aria-pressed", "true");
-  detail.className = `detail ${e.cat}`;
   detail.innerHTML = `
-    <div class="big"><span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span>${svg(e.sym)}<span class="nm">${e.name}</span></div>
-    <p class="cat">${CATS[e.cat]}</p>
-    <h2>${e.name}</h2>
-    <p class="desc">${e.desc}</p>
-    <dl class="facts">
-      <div><dt>Key pieces</dt><dd>${e.pieces}</dd></div>
-      <div><dt>Spotted in</dt><dd>${e.where}</dd></div>
-      <div><dt>Try it</dt><dd>${e.tip}</dd></div>
-      <div><dt>Hype index</dt><dd class="meter"><span><i style="width:${e.hype}%"></i></span>${e.hype}</dd></div>
-    </dl>`;
+    <div class="card ${e.fam}">
+      <div class="card-in">
+        <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
+        <div class="idx br"><b>${e.sym}</b><span>${e.n}</span></div>
+        <div class="banner">${e.el}</div>
+        <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${scene("b" + e.sym, e.art)}</svg></div>
+        <p class="cap">${e.trend}</p>
+      </div>
+    </div>
+    <div class="info">
+      <p class="kicker">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
+      <h2>${e.trend}</h2>
+      <p class="desc">${e.desc}</p>
+      <dl class="facts">
+        <div><dt>Key pieces</dt><dd>${e.pieces}</dd></div>
+        <div><dt>Try it</dt><dd>${e.tip}</dd></div>
+      </dl>
+      <div class="nav">
+        <button type="button" data-go="-1">← Previous</button>
+        <button type="button" data-go="1">Next →</button>
+        <button type="button" data-go="r">Shuffle</button>
+      </div>
+    </div>`;
+  detail.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => go(btn.dataset.go)));
 }
+function go(dir) {
+  if (dir === "r") { let r; do { r = els[Math.floor(Math.random() * els.length)]; } while (r === current); return select(r); }
+  const i = (current.n - 1 + Number(dir) + els.length) % els.length;
+  select(els[i]);
+}
+document.addEventListener("keydown", ev => {
+  if (ev.target === q) return;
+  if (ev.key === "ArrowRight") go(1);
+  if (ev.key === "ArrowLeft") go(-1);
+});
 
-const narrow = window.matchMedia("(max-width: 860px)");
-function placeDetail() {
-  (narrow.matches ? mobileSlot : table).appendChild(detail);
-}
+const narrow = window.matchMedia("(max-width: 900px)");
+function placeDetail() { (narrow.matches ? mobileSlot : table).appendChild(detail); }
 narrow.addEventListener("change", placeDetail);
 placeDetail();
-select(els.find(e => e.sym === "Ss"));
+const fromHash = bySym.get(location.hash.slice(1).toLowerCase());
+select(fromHash || bySym.get("sr"));
 </script>
 </body>
 </html>

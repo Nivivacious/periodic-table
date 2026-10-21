@@ -1,11 +1,12 @@
 # The Periodic Table of Indian Fashion
 
-A single-page website that lays out 44 Indian fashion trends as an illustrated periodic table, from Saree with Sneakers and Quiet Luxury Ethnic to Thrift Culture and Chikankari Summer. Every element has its own hand-drawn SVG illustration.
+A single-page website: the real 118-element periodic table, where every element keeps its true symbol, number and family, and each symbol stands for an Indian fashion trend with matching initials.
 
-- **Columns are trend families**: Street & Gen-Z, Desi Fusion, Craft Revival, Aesthetics & Moods, Conscious Closet, Accessory Moments, Beauty Looks, and Evergreen Trends (column 18, the "noble" trends that come back every year).
-- **Shaadi Season** is the detached bottom row of wedding trends.
-- Click a trend to see what it is, its key pieces, where it's spotted, how to try it and its Hype index (an editorial score, not measured data).
-- Filter by family or search by name, place or craft.
+- **H** Hyperfeminine, **Fe** Futuristic Ethnic, **Ag** Avant-Garde, **Sr** Saree Runners, **Mo** Mughal Opulence, **Og** Old-school Glam… all 118 of them.
+- Every element has its own illustration, drawn in code as inline SVG (no image files).
+- Click an element to open its card: what the trend is, key pieces, and how to try it. Use ← → or Shuffle to flip through.
+- Filter by real chemical family or search by trend, symbol or element name.
+- Open a specific element directly with its symbol as the link anchor, e.g. `index.html#Fe`.
 
 ## Run it
 
