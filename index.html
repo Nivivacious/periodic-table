@@ -46,6 +46,8 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
+input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
 html, body { background: var(--night); }
 body {
   color: var(--paper);
@@ -104,8 +106,189 @@ button { font: inherit; }
 .pill .arrow { transition: transform .2s ease; }
 .pill:hover .arrow { transform: translateX(3px); }
 
+.tabs { display: flex; gap: 2px; margin-left: auto; padding: 3px; border-radius: 999px; background: rgba(255,255,255,.03); border: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button {
+  flex: none; background: none; border: 0; color: var(--soft); cursor: pointer; border-radius: 999px;
+  font: 600 .7rem var(--sans); letter-spacing: .13em; text-transform: uppercase; padding: .55rem .85rem; transition: background .2s ease, color .2s ease;
+}
+.tabs button:hover { color: var(--paper); background: rgba(255,255,255,.06); }
+.tabs button[aria-selected="true"] { background: var(--paper); color: var(--ink); }
+.view:not([hidden]) { animation: viewin .6s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes viewin { from { transform: translateY(14px); } to { transform: none; } }
+
+/* Home doors */
+.doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.door {
+  position: relative; overflow: hidden; text-align: left; cursor: pointer; color: var(--paper); min-height: 17rem;
+  border: 1px solid var(--line); border-radius: 22px; background: var(--surface); padding: 1.5rem;
+  display: grid; grid-template-rows: auto 1fr auto; gap: 1rem; transition: border-color .3s ease, transform .3s ease;
+}
+.door::before { content: ""; position: absolute; width: 16rem; height: 16rem; border-radius: 50%; background: var(--dc); filter: blur(70px); opacity: .22; right: -6rem; bottom: -7rem; transition: opacity .3s ease; }
+.door:hover { transform: translateY(-4px); border-color: var(--line-2); }
+.door:hover::before { opacity: .4; }
+.door small { position: relative; font: 600 .64rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.door h3 { position: relative; margin: .4rem 0 0; font: 400 2rem/1.02 var(--display); }
+.door h3 em { color: var(--gold); }
+.door p { position: relative; margin: .5rem 0 0; font-style: italic; color: var(--soft); line-height: 1.35; }
+.door .minis { position: relative; height: 6.6rem; align-self: end; }
+.door .minis .el { width: 4.4rem; position: absolute; bottom: 0; box-shadow: 0 10px 20px -10px rgba(0,0,0,.9); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.door .minis .el:nth-child(1) { left: 0; transform: rotate(-8deg); }
+.door .minis .el:nth-child(2) { left: 3.2rem; transform: rotate(-1deg) translateY(-6px); z-index: 2; }
+.door .minis .el:nth-child(3) { left: 6.4rem; transform: rotate(7deg); }
+.door:hover .minis .el:nth-child(1) { transform: rotate(-13deg) translateX(-6px); }
+.door:hover .minis .el:nth-child(3) { transform: rotate(12deg) translateX(8px); }
+.door .go { position: relative; font: 600 .66rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--paper); }
+
+/* Gen Z grid */
+.zgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 2.4rem 1.6rem; }
+.zgrid .pick .card { --w: 15.5rem; }
+.zbadge { position: absolute; top: -5px; right: -5px; width: 15px; height: 15px; border-radius: 50%; background: var(--lime, #D7E44A); color: var(--ink); font: 700 .5rem/15px var(--sans); text-align: center; box-shadow: 0 0 0 2px var(--night); z-index: 2; }
+.seg.z { --c: #D7E44A; }
+
+/* Sources */
+.srclist { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.src { display: grid; grid-template-columns: 4rem minmax(0, 1.1fr) minmax(0, 1.6fr) auto; gap: 1.2rem; align-items: baseline; padding: .95rem 0; border-bottom: 1px solid var(--line); }
+.src .s { font: 600 1.3rem var(--display); color: var(--c); }
+.src .t { font: 400 1.15rem/1.2 var(--display); background: none; border: 0; padding: 0; color: var(--paper); text-align: left; cursor: pointer; }
+.src .t:hover { color: var(--gold); }
+.src a { color: var(--soft); font-style: italic; text-decoration: none; border-bottom: 1px solid var(--line-2); line-height: 1.35; }
+.src a:hover { color: var(--paper); border-color: var(--gold); }
+.src .d { font: 600 .66rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.src .z { margin-left: .4rem; font: 700 .55rem var(--sans); letter-spacing: .1em; color: var(--ink); background: #D7E44A; border-radius: 999px; padding: .1rem .4rem; vertical-align: middle; }
+.seen { font: 500 .95rem/1.4 var(--body); color: var(--soft); margin: .2rem 0 0; }
+.seen a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--gold); }
+.seen a:hover { color: var(--gold); }
+
+/* Living illustrations: figures sway, objects bob, sparkles twinkle on hover */
+:is(.el:hover, .pick:hover, .pick.open, .deck .card:hover, .c3d, .door:hover) .fg { animation: sway 1.9s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+:is(.el:hover, .pick:hover, .pick.open, .deck .card:hover, .c3d, .door:hover) .fg + .fg { animation-delay: -.95s; }
+:is(.el:hover, .pick:hover, .pick.open, .deck .card:hover, .c3d) .ob { animation: obob 1.6s ease-in-out infinite; transform-box: fill-box; }
+:is(.el:hover, .pick:hover, .pick.open, .deck .card:hover, .c3d) :is(.set-sparkles, .set-stars, .set-hearts, .set-confetti, .set-disco, .set-diyas) > * { animation: twinkle 1.2s ease-in-out infinite alternate; }
+:is(.el:hover, .pick:hover, .pick.open, .deck .card:hover, .c3d) :is(.set-sparkles, .set-stars, .set-hearts, .set-confetti) > :nth-child(2n) { animation-delay: -.6s; }
+@keyframes sway { 0%, 100% { transform: rotate(-2.2deg); } 50% { transform: rotate(2.2deg) translateY(-1.2px); } }
+@keyframes obob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes twinkle { to { opacity: .2; } }
+
+/* Nav extras */
+.iconbtn { display: inline-flex; align-items: center; gap: .5rem; height: 2.6rem; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.04); color: var(--soft); cursor: pointer; }
+.iconbtn:hover { color: var(--paper); background: rgba(255,255,255,.08); }
+.iconbtn svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 2; }
+kbd { font: 600 .62rem var(--sans); letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line-2); border-radius: 5px; padding: .1rem .35rem; background: rgba(255,255,255,.04); }
+.wcount { display: inline-grid; place-items: center; min-width: 1.15rem; height: 1.15rem; margin-left: .25rem; padding: 0 .3rem; border-radius: 999px; background: var(--rani); color: #fff; font-size: .6rem; letter-spacing: 0; }
+
+/* Gradient-shift headline word and shimmer on the main button */
+.hero h1 em { background-size: 220% 100%; animation: gshift 7s ease-in-out infinite alternate; }
+@keyframes gshift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+.pill.solid { position: relative; overflow: hidden; }
+.pill.solid::after { content: ""; position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.75) 50%, transparent 70%); animation: shimmer 3.6s ease-in-out infinite; animation-delay: 1.2s; pointer-events: none; }
+@keyframes shimmer { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
+.badge { border: 1px solid transparent; background: linear-gradient(var(--night), var(--night)) padding-box, linear-gradient(100deg, #F2B330, #E0508F, #8a6be0) border-box; }
+
+/* Sort bar */
+.sortbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .8rem; margin-bottom: 2rem; }
+.sortbar .hint { font: 600 .64rem var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+
+/* Expand-in-place cards */
+.pick { position: relative; }
+.pick .saved { position: absolute; top: .7rem; right: .7rem; z-index: 3; font: 600 .62rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--paper); background: rgba(17,20,31,.7); backdrop-filter: blur(8px); border: 1px solid var(--line-2); border-radius: 999px; padding: .3rem .6rem; }
+.pick .more { display: none; }
+.pick.open { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2.4rem; align-items: center; cursor: default;
+  padding: 2rem; border-radius: 26px; border: 1px solid var(--line-2); background: linear-gradient(160deg, rgba(30,35,54,.9), rgba(19,22,34,.95)); }
+.pick.open .card { --w: 16rem; max-width: none; transform: none !important; }
+.pick.open h3 { font-size: clamp(2rem, 3.6vw, 3rem); }
+.pick.open .lead p { font-size: 1.25rem; }
+.pick.open .more { display: grid; gap: .9rem; margin-top: 1rem; }
+.pick .xclose { display: none; }
+.pick.open .xclose { display: grid; position: absolute; top: 1rem; right: 1rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .4rem; }
+.actions .pill { padding: .65rem 1rem; }
+.pill.glass[aria-pressed="true"] { background: var(--rani); border-color: var(--rani); color: #fff; }
+::view-transition-group(*) { animation-duration: .45s; animation-timing-function: cubic-bezier(.2,.7,.2,1); }
+
+/* Wardrobe empty state */
+.empty { border: 1px dashed var(--line-2); border-radius: 22px; padding: 3rem 2rem; display: grid; justify-items: start; gap: .8rem; }
+.empty .big { font: 400 2rem var(--display); margin: 0; }
+.empty p { margin: 0; color: var(--soft); font-style: italic; }
+.empty b { font-style: normal; color: var(--paper); }
+
+/* Search palette */
+dialog.palette { border: 0; padding: 0; background: transparent; width: min(640px, calc(100% - 32px)); max-width: none; margin-top: 12vh; color: var(--paper); }
+dialog.palette::backdrop { background: rgba(8,10,18,.7); backdrop-filter: blur(6px); }
+.pal-in { border: 1px solid var(--line-2); border-radius: 20px; background: rgba(24,28,43,.94); backdrop-filter: blur(20px); box-shadow: 0 40px 90px -30px #000; overflow: hidden; }
+dialog.palette[open] .pal-in { animation: pop .3s cubic-bezier(.2,.8,.2,1); }
+.pal-q { display: flex; align-items: center; gap: .8rem; padding: 1rem 1.2rem; border-bottom: 1px solid var(--line); }
+.pal-q svg { width: 1.1rem; height: 1.1rem; stroke: var(--muted); fill: none; stroke-width: 2; flex: none; }
+.pal-q input { flex: 1; min-width: 0; background: none; border: 0; color: var(--paper); font: 400 1.25rem var(--body); }
+.pal-q input:focus { outline: none; }
+.pal-list { list-style: none; margin: 0; padding: .4rem; max-height: 52vh; overflow-y: auto; }
+.pal-list li { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) auto; gap: .9rem; align-items: center; padding: .55rem .7rem; border-radius: 12px; cursor: pointer; }
+.pal-list li[aria-selected="true"] { background: rgba(255,255,255,.07); }
+.pal-list .ps { width: 2.6rem; height: 2.6rem; border-radius: 6px; background: var(--paper); display: grid; place-items: center; font: 600 1.05rem var(--display); color: var(--c); box-shadow: inset 0 -3px 0 var(--c); }
+.pal-list .pt { font: 400 1.1rem/1.15 var(--display); }
+.pal-list .pm { display: block; font: 500 .72rem var(--sans); letter-spacing: .06em; color: var(--muted); margin-top: .15rem; }
+.pal-list .pz { font: 700 .55rem var(--sans); letter-spacing: .1em; color: var(--ink); background: #D7E44A; border-radius: 999px; padding: .12rem .45rem; }
+.pal-list .none { display: block; color: var(--muted); font-style: italic; cursor: default; padding: 1rem; }
+.pal-foot { display: flex; gap: 1.2rem; margin: 0; padding: .7rem 1.2rem; border-top: 1px solid var(--line); font: 500 .7rem var(--sans); color: var(--muted); }
+.pal-foot kbd { margin-right: .2rem; }
+
+/* Toast */
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 80; transform: translate(-50%, 140%); transition: transform .45s cubic-bezier(.2,.8,.2,1);
+  font: 600 .74rem var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); background: var(--paper); border-radius: 999px; padding: .8rem 1.3rem; box-shadow: 0 20px 40px -14px rgba(0,0,0,.9); pointer-events: none; white-space: nowrap; }
+.toast:not(.on) { visibility: hidden; transition: transform .45s cubic-bezier(.2,.8,.2,1), visibility 0s .45s; }
+.toast.on { transform: translate(-50%, 0); }
+
+/* Home (the table) */
+.home { position: relative; isolation: isolate; overflow: hidden; padding-top: 3rem; }
+.home .glow.a { top: -10rem; } .home .glow.b { top: 4rem; }
+.home h1 { font: 400 clamp(2.2rem, 4.2vw, 3.8rem)/1 var(--display); letter-spacing: -.025em; margin: 1.1rem 0 0; text-wrap: balance; }
+.home h1 em { font-style: italic; font-weight: 500; background: linear-gradient(100deg, #F7D27A 0%, #F2B330 30%, #E86F9F 70%, #C58BE8 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: gshift 7s ease-in-out infinite alternate; }
+
+/* Portal transition between tabs */
+html.vt-tab::view-transition-old(root) { animation: none; }
+html.vt-tab::view-transition-new(root) { animation: portal .8s cubic-bezier(.7,0,.2,1); }
+@keyframes portal { from { clip-path: circle(0 at var(--vx, 50%) var(--vy, 0)); } to { clip-path: circle(150vmax at var(--vx, 50%) var(--vy, 0)); } }
+
+/* Orbit: the 3D sphere */
+.orbitview { position: relative; isolation: isolate; overflow: hidden; }
+.orbit { position: relative; height: min(88vh, 900px); min-height: 560px; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+.orbit.drag { cursor: grabbing; }
+.sphere { position: absolute; inset: 0; }
+.orb {
+  --c: var(--muted);
+  position: absolute; left: 0; top: 0; width: 66px; padding: 3px 3px 4px; margin: 0;
+  background: var(--paper); border: 0; border-bottom: 3px solid var(--c); border-radius: 6px;
+  display: grid; gap: 2px; will-change: transform, opacity; cursor: pointer; box-shadow: 0 12px 22px -12px #000;
+}
+.orb img { width: 100%; aspect-ratio: 1; display: block; border-radius: 3px; pointer-events: none; -webkit-user-drag: none; }
+.orb span { font: 600 .48rem/1.15 var(--sans); color: var(--ink); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.orb b { color: var(--c); font: 600 .62rem var(--display); margin-right: .2rem; }
+.orbit-title { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; pointer-events: none; z-index: 2000; padding: 1rem; }
+.orbit-title::before { content: ""; position: absolute; left: 50%; top: 50%; width: min(760px, 90%); height: 300px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(17,20,31,.92), rgba(17,20,31,.6) 60%, transparent); z-index: -1; }
+.orbit-title h2 { margin: 0; font: 400 clamp(2.6rem, 6.4vw, 6rem)/.95 var(--display); letter-spacing: -.03em; text-shadow: 0 6px 40px rgba(0,0,0,.85); text-wrap: balance; }
+.orbit-title h2 em { color: var(--gold); }
+.orbit-title .chap-no::after { display: none; }
+.orbit-title .hint { margin: 1.1rem 0 0; font: 600 .66rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--soft); }
+
+/* Gen Z endless columns */
+.cols { display: flex; gap: .8rem; height: 25rem; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
+.col { width: 7.4rem; animation: colup 40s linear infinite; }
+.col.rev { animation-direction: reverse; animation-duration: 46s; }
+.col:nth-child(3) { animation-duration: 52s; }
+.cols:hover .col { animation-play-state: paused; }
+@keyframes colup { to { transform: translateY(-50%); } }
+.ccard { --c: var(--muted); display: grid; gap: 3px; width: 100%; margin: 0 0 .8rem; padding: 4px 4px 6px; background: var(--paper); border: 0; border-bottom: 3px solid var(--c); border-radius: 8px; cursor: pointer; transition: transform .25s ease; }
+.ccard:hover { transform: scale(1.05) rotate(-1.5deg); }
+.ccard img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; border-radius: 4px; }
+.ccard span { font: 600 .56rem/1.15 var(--sans); color: var(--ink); text-align: center; }
+
+/* Ink reveal */
+.ink { position: relative; margin: 0 0 3rem; border-bottom: 1px solid var(--line); }
+.ink canvas { display: block; width: 100%; height: clamp(140px, 19vw, 300px); cursor: crosshair; touch-action: pan-y; }
+.ink-hint { position: absolute; right: 0; bottom: .8rem; margin: 0; font: 600 .62rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
 /* ---------- Hero ---------- */
-.hero { position: relative; isolation: isolate; overflow: hidden; margin-top: -70px; padding-top: 70px; }
+.hero { position: relative; isolation: isolate; overflow: hidden; margin-top: -76px; padding-top: 76px; }
 .glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; z-index: -1; pointer-events: none; }
 .glow.a { width: 46vw; height: 46vw; max-width: 640px; max-height: 640px; background: #5a2a6e; left: -10vw; top: 2vh; animation: drift 18s ease-in-out infinite alternate; }
 .glow.b { width: 38vw; height: 38vw; max-width: 560px; max-height: 560px; background: #8a3a22; right: -6vw; top: 18vh; opacity: .45; animation: drift 22s ease-in-out infinite alternate-reverse; }
@@ -402,8 +585,16 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
 }
 @media (max-width: 900px) {
   :root { --tile: 4.1rem; }
-  .navlinks { display: none; }
-  .glassnav { justify-content: space-between; }
+  .glassnav { flex-wrap: wrap; justify-content: space-between; border-radius: 22px; }
+  .tabs { order: 3; width: 100%; margin-left: 0; }
+  .src { grid-template-columns: 3rem minmax(0, 1fr); }
+  .src a, .src .d { grid-column: 2; }
+  .iconbtn kbd { display: none; }
+  .cols { display: none; }
+  .orb { width: 52px; }
+  .home { padding-top: 2.5rem; }
+  .pick.open { grid-template-columns: minmax(0, 1fr); justify-items: center; padding: 3rem 1.2rem 1.4rem; }
+  .pick.open .card { --w: 12.5rem; }
   .brand span { display: none; }
   .chap-head { grid-template-columns: minmax(0, 1fr); }
   .tools { flex-direction: column; align-items: stretch; }
@@ -428,50 +619,30 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
 
 <div class="nav-shell">
   <nav class="glassnav" aria-label="Main">
-    <a class="brand" href="#top" data-jump="top"><span class="mono"><i>0</i><b>If</b></span><span>Indian Fashion · Periodic Table</span></a>
-    <div class="navlinks">
-      <button type="button" data-jump="table">The Table</button>
-      <button type="button" data-jump="picks">Editor's Picks</button>
-      <button type="button" data-jump="families">Families</button>
+    <a class="brand" href="#table" data-view="table"><span class="mono"><i>0</i><b>If</b></span><span>Indian Fashion · Periodic Table</span></a>
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button type="button" role="tab" data-view="table">The Table</button>
+      <button type="button" role="tab" data-view="orbit">Orbit</button>
+      <button type="button" role="tab" data-view="genz">Gen Z</button>
+      <button type="button" role="tab" data-view="picks">Editor's Picks</button>
+      <button type="button" role="tab" data-view="families">Families</button>
+      <button type="button" role="tab" data-view="sources">Sources</button>
+      <button type="button" role="tab" data-view="wardrobe">Wardrobe <span class="wcount" id="wcount" hidden>0</span></button>
     </div>
+    <button type="button" class="iconbtn" id="openSearch" aria-label="Search trends"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><kbd>⌘K</kbd></button>
     <button type="button" class="pill solid" data-deal>Deal me a card <span class="arrow">→</span></button>
   </nav>
 </div>
 
-<header class="hero band" id="top">
-  <div class="glow a"></div><div class="glow b"></div><div class="glow c"></div>
-  <div class="hero-in">
-    <div>
-      <span class="badge rise"><b>Drop 01</b> 118 trends · 2026 edition</span>
-      <h1 class="rise d1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
-      <p class="lede rise d2">Every element keeps its real symbol, and every symbol stands for a trend India is wearing right now. H for Hyperfeminine, Sr for Saree Runners, Og for Old-school Glam.</p>
-      <div class="ctas rise d3">
-        <button type="button" class="pill solid" data-jump="table">Explore the table <span class="arrow">↓</span></button>
-        <button type="button" class="pill glass" data-deal>Deal me a card</button>
-      </div>
-      <div class="stats rise d4">
-        <div><b>118</b><span>Elements</span></div>
-        <div><b>10</b><span>Families</span></div>
-        <div><b>118</b><span>Illustrations</span></div>
-      </div>
-    </div>
-    <div class="deck" id="deck" aria-label="A hand of element cards">
-      <div class="deck-in" id="deckIn"></div>
-      <p class="deck-hint">Pick a card</p>
-    </div>
-  </div>
-</header>
-
-<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
-
 <main>
-  <section class="chapter band" id="table" aria-labelledby="h-table">
+  <section class="view chapter band home" data-view="table" id="v-table" aria-labelledby="h-table">
+    <div class="glow a"></div><div class="glow b"></div>
     <div class="wrap">
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 01 · The Table</p>
-          <h2 id="h-table">Every element, <em>a trend.</em></h2>
-          <p>Real symbols, real numbers, real families. Hover to lift a tile, tap to open its card.</p>
+          <span class="badge"><b>Drop 01</b> 118 trends · 2026 edition</span>
+          <h1 id="h-table">The Periodic Table of <em>Indian Fashion</em></h1>
+          <p>Every element keeps its real symbol. Every symbol stands for a trend fashion editors are writing about in 2026. Tap a tile to open its card.</p>
         </div>
         <div class="tools">
           <label class="search" style="order:2"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend, symbol or element"></label>
@@ -485,11 +656,38 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     </div>
   </section>
 
-  <section class="chapter band" id="picks" aria-labelledby="h-picks">
+  <section class="view band orbitview" data-view="orbit" id="v-orbit" aria-labelledby="h-orbit" hidden>
+    <div class="glow a"></div><div class="glow b"></div><div class="glow c"></div>
+    <div class="orbit" id="orbit">
+      <div class="sphere" id="sphere"></div>
+      <div class="orbit-title">
+        <p class="chap-no">Chapter 02 · Orbit</p>
+        <h2 id="h-orbit">Every trend, <em>in orbit.</em></h2>
+        <p class="hint">Drag to spin · tap a tile to open it</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="view chapter band" data-view="genz" id="v-genz" aria-labelledby="h-genz" hidden>
     <div class="wrap">
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 02 · Editor's Picks</p>
+          <p class="chap-no">Chapter 03 · Gen Z</p>
+          <h2 id="h-genz">Gen Z, <em>decoded.</em></h2>
+          <p id="genzLede"></p>
+        </div>
+        <div class="cols" aria-hidden="true"><div class="col" id="col0"></div><div class="col rev" id="col1"></div><div class="col" id="col2"></div></div>
+      </div>
+      <div class="sortbar"><div class="segs" id="zsort" role="group" aria-label="Sort"><button type="button" class="seg" data-sort="table" aria-pressed="true">Table order</button><button type="button" class="seg" data-sort="new" aria-pressed="false">Newest</button><button type="button" class="seg" data-sort="az" aria-pressed="false">A–Z</button></div><span class="hint">Tap a card to expand it</span></div>
+      <div class="zgrid" id="zgrid"></div>
+    </div>
+  </section>
+
+  <section class="view chapter band" data-view="picks" id="v-picks" aria-labelledby="h-picks" hidden>
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 04 · Editor's Picks</p>
           <h2 id="h-picks">Eight cards <em>worth holding.</em></h2>
           <p>The trends we'd bet on this season, dealt face up.</p>
         </div>
@@ -499,16 +697,48 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
     </div>
   </section>
 
-  <section class="chapter band" id="families" aria-labelledby="h-fam">
+  <section class="view chapter band" data-view="families" id="v-families" aria-labelledby="h-fam" hidden>
     <div class="wrap">
+      <div class="ink" id="inkWrap"><canvas id="ink" aria-label="ELEMENTAL. Move across the word to paint it in colour." role="img"></canvas><p class="ink-hint">Move across the word</p></div>
       <div class="chap-head">
         <div>
-          <p class="chap-no">Chapter 03 · Families</p>
+          <p class="chap-no">Chapter 05 · Families</p>
           <h2 id="h-fam">Ten families, <em>one wardrobe.</em></h2>
           <p>Grouped exactly as chemistry groups them. Open a family to see only its elements on the table.</p>
         </div>
       </div>
       <div class="fams" id="fams"></div>
+    </div>
+  </section>
+
+  <section class="view chapter band" data-view="wardrobe" id="v-wardrobe" aria-labelledby="h-ward" hidden>
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Your Wardrobe</p>
+          <h2 id="h-ward">The trends <em>you kept.</em></h2>
+          <p>Tap ♡ on any card to save it here. Saved on this device only.</p>
+        </div>
+      </div>
+      <div class="zgrid" id="wgrid"></div>
+      <div class="empty" id="wempty">
+        <p class="big">Nothing saved yet.</p>
+        <p>Open any element and tap <b>♡ Save</b>. Your picks collect here, in this browser.</p>
+        <button type="button" class="pill solid" data-deal>Deal me a card <span class="arrow">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view chapter band" data-view="sources" id="v-sources" aria-labelledby="h-src" hidden>
+    <div class="wrap">
+      <div class="chap-head">
+        <div>
+          <p class="chap-no">Chapter 06 · Sources</p>
+          <h2 id="h-src">Who's <em>saying so.</em></h2>
+          <p>Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p>
+        </div>
+      </div>
+      <div class="srclist" id="srclist"></div>
     </div>
   </section>
 </main>
@@ -517,11 +747,20 @@ footer { margin-top: 5rem; border-top: 1px solid var(--line); overflow: hidden; 
   <div class="wrap">
     <p class="poster" aria-hidden="true">Indian <span>Fashion</span></p>
     <div class="foot">
-      <p>The symbols, numbers and families are the real periodic table. The trends, notes and drawings are ours.</p>
+      <p>The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage (see Sources). The notes and drawings are ours.</p>
       <p>Use ← → to flip through cards · Drop 01 · 2026</p>
     </div>
   </div>
 </footer>
+
+<dialog class="palette" id="palette" aria-label="Search">
+  <div class="pal-in">
+    <label class="pal-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="palq" type="search" placeholder="Search 118 trends, symbols, elements, magazines" autocomplete="off"><kbd>esc</kbd></label>
+    <ul class="pal-list" id="pallist" role="listbox" aria-label="Results"></ul>
+    <p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> to move</span><span><kbd>↵</kbd> to open</span></p>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <dialog class="sheet" id="sheet" aria-label="Element card">
   <div class="sheet-in" id="sheetIn"></div>
@@ -744,7 +983,7 @@ function fig(id, o) {
   if (hold === "lightsaber") line("M11.7,-30 L18,-47", "hot", 1.6);
   if (hold === "umbrella") { line("M11.7,-30 L11.7,-48", "ink", 0.6); S("M2,-48 Q11.7,-58 21.4,-48Z", o.hc2 || "blue"); }
 
-  return `<g transform="translate(${x} 94) scale(${s * flip} ${s})">${g.join("")}</g>`;
+  return `<g class="fg"><g transform="translate(${x} 94) scale(${s * flip} ${s})">${g.join("")}</g></g>`;
 }
 
 // Backdrop pieces, absolute coordinates on the 100×100 stage.
@@ -786,6 +1025,17 @@ const SET = {
 
 // Objects, absolute.
 const OBJ = {
+  sandal: (x = 50, y = 60) => [[-13, -8], [13, 8]].map(([dx, rot]) => `<g transform="translate(${x + dx} ${y}) rotate(${rot})">
+    <path d="M0,-26 C10,-26 11,-12 10,0 C9,14 8,24 0,26 C-8,24 -9,14 -10,0 C-11,-12 -10,-26 0,-26Z" fill="${P.kaapi}" ${OL}/>
+    <path d="M0,-22 C7,-22 8,-11 7,0 C6,12 5,20 0,22 C-5,20 -6,12 -7,0 C-8,-11 -7,-22 0,-22Z" fill="${P.rust}" opacity=".55"/>
+    <path d="M-10,-4 Q0,-12 10,-4 L9,2 Q0,-5 -9,2Z" fill="${P.gold}" ${OL}/>
+    <path d="M-8,-1 l3,-3 l3,3 l3,-3 l3,3 l3,-3" fill="none" stroke="${P.ink}" stroke-width=".5"/>
+    <path d="M0,-4 L0,-17" stroke="${P.kaapi}" stroke-width="2.4"/><circle cx="0" cy="-18" r="2.6" fill="none" stroke="${P.gold}" stroke-width="1.6"/>
+    <circle cx="0" cy="14" r=".8" fill="${P.ink}" opacity=".5"/><circle cx="-3" cy="10" r=".8" fill="${P.ink}" opacity=".5"/><circle cx="3" cy="10" r=".8" fill="${P.ink}" opacity=".5"/></g>`).join(""),
+  charmbag: (x = 76) => `<path d="M${x - 10},62 q10,-16 20,0" fill="none" stroke="${P.ink}" stroke-width="1.2"/><path d="M${x - 14},62 h28 l-3,22 h-22Z" fill="${P.rani}" ${OL}/>
+    <path d="M${x - 8},62 v8 M${x - 2},62 v12 M${x + 5},62 v7" stroke="${P.ink}" stroke-width=".6"/>
+    <circle cx="${x - 8}" cy="72" r="3" fill="${P.yellow}" ${OL}/><path d="M${x - 5},74 l3,5 l-6,0Z" fill="${P.mint}" ${OL}/>
+    <path d="M${x - 2},78 c-3,-3 -2,-6 0,-4 c2,-2 3,1 0,4Z" fill="${P.red}" ${OL}/><rect x="${x + 2}" y="69" width="6" height="7" rx="2.5" fill="${P.lav}" ${OL}/><circle cx="${x + 4}" cy="71.5" r=".6" fill="${P.ink}"/><circle cx="${x + 6}" cy="71.5" r=".6" fill="${P.ink}"/>`,
   rack: (x = 82) => `<path d="M${x - 14},20 H${x + 14} M${x - 12},20 V84 M${x + 12},20 V84" stroke="${P.ink}" stroke-width="1"/>` + [[-8, "red"], [-1, "yellow"], [6, "teal"]].map(([d, c]) => `<path d="M${x + d},20 l-1,3 h2Z" fill="${P.ink}"/><path d="M${x + d - 4},24 h8 l1,18 h-10Z" fill="${col(c)}" ${OL}/>`).join(""),
   trunk: (x = 16) => `<rect x="${x - 12}" y="70" width="24" height="14" fill="${P.kaapi}" ${OL}/><path d="M${x - 12},70 q12,-8 24,0Z" fill="${P.rust}" ${OL}/><rect x="${x - 2}" y="72" width="4" height="4" fill="${P.gold}" ${OL}/><path d="M${x + 6},70 q4,8 -2,14 h4 q4,-8 -2,-14Z" fill="${P.red}" ${OL}/>`,
   suitcase: (x = 78) => `<rect x="${x - 7}" y="62" width="14" height="20" rx="2" fill="${P.rust}" ${OL}/><path d="M${x - 3},62 v-5 h6 v5" fill="none" stroke="${P.ink}" stroke-width=".8"/><circle cx="${x - 4}" cy="84" r="1.4" fill="${P.ink}"/><circle cx="${x + 4}" cy="84" r="1.4" fill="${P.ink}"/><circle cx="${x}" cy="70" r="2.4" fill="${P.yellow}" ${OL}/>`,
@@ -805,252 +1055,390 @@ const OBJ = {
 
 function scene(id, o) {
   const parts = [patterns(id), `<rect width="100" height="100" fill="${col(o.bg || "sky")}"/>`];
-  for (const s of o.set || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push((SET[name] || OBJ[name])(...args)); }
+  for (const s of o.set || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="set-${name}">${(SET[name] || OBJ[name])(...args)}</g>`); }
   parts.push(`<rect y="84" width="100" height="16" fill="${col(o.gr || "beige")}"/><path d="M0,84 H100" stroke="${P.ink}" stroke-width=".6"/>`);
   for (const s of o.back || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
   for (const f of o.figs || []) parts.push(fig(id, f));
-  for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
+  for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="ob">${OBJ[name](...args)}</g>`); }
   return parts.join("");
 }
 
-// [number, symbol, element, trend, what it is, key pieces, try it, scene]
+// [number, symbol, element, trend, what it is, key pieces, try it, scene, { z: Gen Z-led, src: [publication, headline, url, date] }]
+// Sources marked "G" are filled in from the research file at build time (global press).
+const HBI = "Harper's Bazaar India", ELI = "ELLE India", CSI = "Cosmopolitan India", MWI = "Man's World India", AZA = "Aza Fashions";
+const S_DUAL = [ELI, "Draped In Duality: Indian Gen Z Is Dressing Up, Logging On, And Defining Itself", "https://elle.in/fashion/indian-gen-z-is-dressing-up-logging-on-and-defining-itself-11822076", "May 2026"];
+const S_AZA = [AZA, "Hot Girl Sarees, Stacked Bangles & Bold Bindis: The New Gen Z Aesthetic", "https://www.azafashions.com/blog/the-new-genz-aesthetic/?amp=1", "Jun 2026"];
+const S_MWI_FEET = [MWI, "What Are Gen Z Wearing On Their Feet?", "https://www.mansworldindia.com/fashion/what-are-gen-z-wearing-on-their-feet", "Jun 2025"];
+const S_ELLE_SUBV = [ELI, "Not Your Mom's Jewellery: The Rise Of Subversive Accessories in 2025", "https://elle.in/fashion/not-your-moms-jewellery-the-rise-of-subversive-accessories-in-2025-9989424", "Sep 2025"];
+const S_ELLE_GENZ = [ELI, "Trend? Vibe? Identity Crisis? Welcome To Gen Z Fashion", "https://elle.in/teens/welcome-to-gen-z-fashion-11176816", "Mar 2026"];
+const S_ELLE_DRAPES7 = [ELI, "Seven Saree Drapes That Move Effortlessly From College Fest to Red Carpet", "https://elle.in/fashion/seven-saree-drapes-to-try-11881764", "May 2026"];
+const S_ELLE_BOLLY = [ELI, "From Belted Pallus To Cape Pleats: Saree Drapes Bollywood Made Cool Again", "https://elle.in/trending/bollywood-inspired-saree-draping-styles-guide-12120628", "Jun 2026"];
+const S_ELLE_HANDLOOM = [ELI, "Six Yards, Rewritten: The Handloom Revival", "https://elle.in/fashion/six-yards-rewritten-the-handloom-revival-11441973", "Apr 2026"];
+const S_ELLE_WED = [ELI, "So You're Getting Married This Year. Here's Everything You Need To Know.", "https://elle.in/wedding/so-youre-getting-married-this-year-heres-everything-you-need-to-know-11827037", "May 2026"];
+const S_ELLE_PALETTE = [ELI, "From Butter Yellow to Burgundy: The Palettes Shaping Spring/Summer 2026", "https://elle.in/trending/the-palettes-shaping-spring-summer-2026-11728432", "Apr 2026"];
+const S_ELLE_PIN = [ELI, "Pinterest Thinks This Is How We'll Dress in 2026, And Honestly, We're Into It", "https://elle.in/fashion/2026-pinterest-trends-10983205", "Jan 2026"];
+const S_ELLE_MASALA = [ELI, "Main Character, Masala Edition: The Chatpata Fashion Manifesto", "https://elle.in/fashion/main-character-masala-edition-the-chatpata-fashion-manifesto-11157867", "Mar 2026"];
+const S_MWI_FDCI = [MWI, "Indian Menswear Loosens Up At FDCI India Men's Weekend", "https://www.mansworldindia.com/fashion/indian-menswear-loosens-up-at-fdci-india-men-s-weekend", "Feb 2026"];
+const S_MWI_LFW = [MWI, "The Menswear At Lakme Fashion Week Proved That You Don't Need To Be Shopping From International Brands", "https://www.mansworldindia.com/fashion/the-menswear-at-lakme-fashion-week-proved-that-you-don-t-need-to-be-shopping-from-international-brands", "Apr 2026"];
+const S_APPAREL = ["Apparel Resources (Pinterest data)", "Vintage Values: The Next Big Consumer Movement", "https://apparelresources.com/?p=303915", "Dec 2025"];
+const S_DEPOP = ["Depop", "Depop Unveils 2026 Fashion Trends Report: \"The Edited Self\"", "https://news.depop.com/company-news/depop-unveils-2026-fashion-trends-report-the-edited-self/", "Dec 2025"];
+const S_PIN = ["Pinterest Predicts 2026 via FashionUnited", "Poetcore, opera aesthetic and brooches: Key style predictions from Pinterest for 2026", "https://fashionunited.com/news/fashion/poetcore-opera-aesthetic-and-brooches-key-style-predictions-from-pinterest-for-2026/2025121069575", "Dec 2025"];
+
 const ELEMENTS = [
-  [1, "H", "Hydrogen", "Hyperfeminine", "Bows, frills, blush pink and soft fabrics, worn with full confidence rather than irony.", "Ruffle tops, satin bows, pink sarees, pearl clips", "Pick one frilly piece and keep the rest soft and plain.",
-    { bg: "blush", gr: "pink", set: ["hearts"], figs: [{ top: "dress", c: "pink", pt: "floral", sl: "puff", h: "open", a: ["bow", "pearls"], ac: "rani", shoe: "heel" }] }],
-  [2, "He", "Helium", "Heirloom Edit", "Styling a mother's or grandmother's saree and jewellery in new ways, often with a modern blouse.", "Inherited silk sarees, old gold, re-cut blouses", "Pair an heirloom saree with a sleek modern blouse.",
-    { bg: "peach", gr: "beige", back: [["trunk", 16]], figs: [{ x: 56, top: "blouse", c: "gold", low: "saree", l: "maroon", pl: "zari", lay: ["pallu"], b: "gold", h: "bun", a: ["gajra", "jhumka", "bindi"] }] }],
-  [3, "Li", "Lithium", "Lived-In", "Wrinkled linen, faded denim and soft cottons that look worn and loved, not freshly ironed.", "Washed linen shirts, faded jeans, soft kurtas", "Skip the iron and roll the sleeves.",
-    { bg: "cream", gr: "sage", set: [["window", "sky"], "plants"], figs: [{ x: 44, top: "shirt", c: "beige", pt: "grid", low: "jeans", l: "denim", h: "lowbun", sk: "skin3", hold: "coffee", shoe: "kolhapuri" }] }],
-  [4, "Be", "Beryllium", "Boho Ethnic", "Free-spirited ethnic wear: tassels, mirrors, oxidised silver and loose silhouettes in earthy prints.", "Tiered skirts, mirror-work tops, tassel bags, oxidised silver", "Layer silver jewellery over a loose printed kurta.",
-    { bg: "peach", gr: "rust", set: ["plants"], figs: [{ top: "crop", c: "teal", pt: "mirror", low: "tiered", l: "rust", pl: "paisley", h: "braid", a: ["hoops", "beads", "bangles"], ac: "grey", shoe: "kolhapuri" }] }],
-  [5, "B", "Boron", "Barbiecore", "Head-to-toe hot pink, from lehengas to sneakers. It grew after the 2023 film and still holds.", "Hot-pink sarees, pink co-ords, pink sneakers", "Go all pink, with one white accent.",
-    { bg: "pink", gr: "rani", set: ["sparkles"], figs: [{ top: "corset", c: "hot", low: "skirt", l: "hot", h: "pony", hc: "yellow", a: ["hoops", "scrunchie"], ac: "white", shoe: "heel", hold: "clutch", hc2: "white" }] }],
-  [6, "C", "Carbon", "Coquette", "Romantic, girly dressing with bows on braids, blouses and juttis, adapted to Indian ethnic wear.", "Bow blouses, satin ribbons, lace kurtas, bow juttis", "Tie a satin bow at the end of a long braid.",
-    { bg: "blush", gr: "cream", set: ["hearts"], figs: [{ top: "blouse", sl: "puff", c: "ivory", low: "lehenga", l: "pink", pl: "floral", b: "ivory", h: "braid", a: ["bow", "pearls"], ac: "red", shoe: "jutti" }] }],
-  [7, "N", "Nitrogen", "Normcore", "Deliberately plain clothes: a white tee, straight jeans and clean sneakers, worn with confidence.", "Plain tees, straight jeans, white sneakers", "Buy basics that fit well and wear them often.",
-    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "fittee", c: "white", low: "jeans", l: "denim", h: "short", sk: "skin2", shoe: "sneaker", a: ["specs"] }] }],
-  [8, "O", "Oxygen", "Oversized", "Boxy, drop-shoulder fits across tees, shirts and kurtas. Sizing up is the default on campus.", "Oversized tees, baggy jeans, wide cargos", "Size up on top, keep one fitted piece.",
-    { bg: "yellow", gr: "grey", set: [["skyline", "indigo"]], figs: [{ top: "tee", c: "blue", pt: "pop", low: "baggy", l: "beige", h: "short", sk: "skin", shoe: "sneaker", a: ["cap"], ac: "red" }] }],
-  [9, "F", "Fluorine", "Fusion", "Indian and Western pieces worn together, like a kurta with jeans or a saree with a shirt.", "Short kurtas, jeans, shirts, sneakers", "Swap one piece of a traditional look for a Western one.",
-    { bg: "mint", gr: "beige", set: [["window2", "sky"]], figs: [{ x: 54, top: "shortkurta", c: "yellow", pt: "floral", low: "jeans", l: "denim", h: "open", a: ["jhumka"], shoe: "kolhapuri", hold: "tote" }] }],
-  [10, "Ne", "Neon", "Neon Ethnic", "Electric pinks, limes and oranges on lehengas and kurtas, built for night functions and photos.", "Neon lehengas, fluorescent dupattas", "Pair one neon with a deep neutral.",
-    { bg: "night", gr: "plum", set: [["spotlight", "hot"], "stars"], figs: [{ top: "blouse", c: "lime", low: "lehenga", l: "hot", b: "lime", lay: ["dupatta"], y: "orange", h: "bun", a: ["jhumka", "bindi"], ac: "lime" }] }],
-  [11, "Na", "Sodium", "Nineties Aesthetic", "Slip dresses, chunky cardigans, scrunchies and claw clips borrowed from 1990s Indian TV and cinema.", "Slip dresses, scrunchies, claw clips, denim", "Add a claw clip and a cardigan to anything.",
-    { bg: "lav", gr: "beige", set: [], figs: [{ x: 44, top: "slip", c: "sage", h: "pony", a: ["scrunchie", "claw"], ac: "yellow", shoe: "boot", lay: ["jacket"], y: "rust" }], obj: [["tv", 82, 30]] }],
-  [12, "Mg", "Magnesium", "Mob-wife Glam", "Fur collars, leopard print, gold chains and red lips. It's loud, rich, and unbothered.", "Faux fur, leopard print, gold chains, red lips", "Wear one fur piece with all black.",
-    { bg: "maroon", gr: "black", set: ["sparkles"], figs: [{ top: "slip", c: "black", h: "open", hc: "hair2", lay: ["shawl", "jacket"], y: "kaapi", py: "leopard", a: ["glasses", "chain", "lipstick", "hoops"], shoe: "heel" }] }],
-  [13, "Al", "Aluminium", "Airport Looks", "Celebrity airport photos made 'comfortable but styled' its own category.", "Linen co-ords, oversized shirts, totes, sneakers", "Choose matching sets in breathable fabric.",
-    { bg: "sky", gr: "grey", set: [["window", "white"]], figs: [{ x: 42, top: "shirt", c: "beige", low: "palazzo", l: "beige", h: "open", a: ["glasses"], hold: "phone", shoe: "sneaker" }], obj: [["suitcase", 72]] }],
-  [14, "Si", "Silicon", "Sheer Indulgence", "Sheer organza and net layered over slips and bralettes, on sarees, shirts and dresses.", "Organza sarees, sheer shirts, net dupattas", "Layer a sheer shirt over a solid tank.",
-    { bg: "plum", gr: "lav", set: ["sparkles"], figs: [{ top: "blouse", c: "lav", low: "saree", l: "lav", pl: "sparkle", lay: ["pallu"], y: "pink", b: "white", h: "bun", a: ["studs"] }] }],
-  [15, "P", "Phosphorus", "Preppy", "Collars, sweater vests, pleated skirts and loafers, borrowed from school uniforms.", "Sweater vests, collared shirts, pleated skirts", "Layer a sweater vest over a crisp shirt.",
-    { bg: "green", gr: "beige", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["vest"], y: "maroon", py: "grid", low: "mini", l: "indigo", pl: "checks", h: "bob", a: ["specs"], hold: "book", shoe: "heel" }] }],
-  [16, "S", "Sulfur", "Streetwear", "Desi streetwear labels mix hip-hop, skate and Bollywood graphics into a homegrown look.", "Graphic hoodies, cargos, caps, chunky sneakers", "Build an outfit around one loud graphic.",
-    { bg: "orange", gr: "grey", set: [["skyline", "night"], "signs"], figs: [{ top: "hoodie", c: "green", low: "baggy", l: "black", h: "short", sk: "skin2", a: ["cap", "chain"], ac: "yellow", shoe: "sneaker" }] }],
-  [17, "Cl", "Chlorine", "Clean-girl Look", "Slicked buns, dewy skin, gold hoops and neat neutrals. Polished and low effort.", "Sleek buns, gold hoops, white shirts, neutral sets", "Slick the hair back and keep makeup minimal.",
-    { bg: "cream", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "palazzo", l: "beige", h: "lowbun", a: ["hoops"], ac: "gold", hold: "coffee", hc2: "beige", shoe: "jutti" }] }],
-  [18, "Ar", "Argon", "Athleisure Rise", "Gym clothes worn everywhere: leggings, sports bras, track jackets and running shoes.", "Leggings, track jackets, running shoes", "Add a structured jacket over workout wear.",
-    { bg: "sky", gr: "green", set: ["hills", "sun"], figs: [{ top: "crop", c: "teal", low: "leggings", l: "black", lay: ["jacket"], y: "lav", h: "pony", a: ["studs"], hold: "bottle", hc2: "orange", shoe: "sneaker" }] }],
-  [19, "K", "Potassium", "Kidcore", "Bright primary colours, cartoon prints and plastic jewellery, inspired by childhood.", "Rainbow knits, cartoon tees, beaded bracelets", "Mix three primary colours in one outfit.",
-    { bg: "yellow", gr: "blue", set: ["confetti"], figs: [{ top: "tee", c: "red", pt: "polka", low: "shorts", l: "blue", h: "pony", hc: "hair", a: ["butterfly", "beads"], ac: "green", shoe: "sneaker" }] }],
-  [20, "Ca", "Calcium", "Coastal Aesthetic", "Goa-coded linen, crochet and white cotton for beach weddings and long weekends.", "Linen sets, crochet tops, straw hats", "Wear white linen with one woven accessory.",
-    { bg: "sky", gr: "peach", set: ["waves", "sun", "palm"], figs: [{ x: 42, top: "dress", c: "white", pt: "stripes", h: "open", hc: "hair2", a: ["hat", "studs"], ac: "beige", shoe: "kolhapuri" }] }],
-  [21, "Sc", "Scandium", "Sporty Chic", "Polished athletic pieces like polo dresses, track pants with blazers and sneakers with sarees.", "Polo dresses, track pants, blazers, sneakers", "Pair track pants with a sharp blazer.",
-    { bg: "green", gr: "grey", set: ["net"], figs: [{ top: "fittee", c: "white", low: "jeans", l: "black", pl: "stripes", lay: ["blazer"], y: "beige", h: "pony", a: ["cap", "studs"], ac: "white", shoe: "sneaker" }] }],
-  [22, "Ti", "Titanium", "Thrift It", "Instagram thrift stores and Sarojini hauls make pre-loved fashion cool and cheap.", "Vintage jackets, thrifted denim, pre-loved sarees", "Follow a few local thrift pages and watch drop times.",
-    { bg: "peach", gr: "kaapi", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "tee", c: "yellow", pt: "checks", low: "jeans", l: "denim", lay: ["jacket"], y: "rust", h: "bob", hold: "shopbags", shoe: "sneaker" }] }],
-  [23, "V", "Vanadium", "Vintage", "Retro pieces from past decades, either real vintage or new clothes cut to look old.", "Polka-dot dresses, high-waist trousers, cat-eye frames", "Mix one real vintage piece into a modern outfit.",
-    { bg: "teal", gr: "cream", set: [["vinyl", 82, 26]], figs: [{ x: 44, top: "dress", c: "red", pt: "polka", h: "bob", a: ["cateye", "pearls", "lipstick"], ac: "ink", shoe: "heel" }], obj: [["vinyl", 82, 26]] }],
-  [24, "Cr", "Chromium", "Corset Revival", "Structured, boned corsets worn as saree blouses and over shirts.", "Corset blouses, corset tops, bustiers", "Pair a corset blouse with a plain saree.",
-    { bg: "night", gr: "plum", set: [["spotlight", "pink"]], figs: [{ top: "corset", c: "black", low: "saree", l: "rani", lay: ["pallu"], y: "rani", b: "gold", h: "lowbun", a: ["jhumka"], ac: "gold" }] }],
-  [25, "Mn", "Manganese", "Modern Nostalgia", "Old photo-album outfits redone with modern fits, like a mother's 80s salwar suit re-tailored.", "Vintage suits, retro prints, old-school jewellery", "Ask family for an old suit and re-tailor it.",
-    { bg: "beige", gr: "kaapi", set: [["camera", 82, 24]], figs: [{ x: 44, top: "kurta", c: "orange", pt: "paisley", low: "churidar", l: "yellow", lay: ["dupatta"], y: "green", h: "braid", a: ["bindi", "bangles"], ac: "gold" }], obj: [["camera", 82, 24]] }],
-  [26, "Fe", "Iron", "Futuristic Ethnic", "Metallic fabrics, sculpted shapes and chrome jewellery on Indian silhouettes.", "Metallic lehengas, sculpted blouses, chrome jewellery", "Try a metallic saree with minimal silver jewellery.",
-    { bg: "night", gr: "indigo", set: ["stars", "rings"], figs: [{ top: "corset", c: "grey", low: "fishtail", l: "grey", pl: "grid", b: "sky", h: "lowbun", a: ["hoops"], ac: "sky", shoe: "heel" }] }],
-  [27, "Co", "Cobalt", "Co-ord Obsession", "Matching top and bottom sets for every occasion, from brunch to the office.", "Printed co-ords, linen sets, kurta sets", "Wear the top open over a white tank.",
-    { bg: "mint", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "shirt", c: "blue", pt: "floral", low: "palazzo", l: "blue", pl: "floral", h: "open", a: ["glasses"], hold: "coffee", shoe: "kolhapuri" }] }],
-  [28, "Ni", "Nickel", "Nawabi Influence", "Lucknow's royal Awadhi style returns: shararas, angrakhas and long jackets in soft colours.", "Shararas, angrakhas, achkans, gota dupattas", "Pick a sharara set in a pastel with gold.",
-    { bg: "peach", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "shortkurta", c: "mint", pt: "zari", low: "sharara", l: "mint", lay: ["dupatta"], y: "gold", h: "bun", a: ["tikka", "jhumka"] }] }],
-  [29, "Cu", "Copper", "Cargo Utility", "Pockets, straps and utility fabrics, now even on kurtas and saree blouses.", "Cargo pants, utility vests, pocket kurtas", "Pair cargo pants with a fitted kurta.",
-    { bg: "olive", gr: "kaapi", set: ["hills"], figs: [{ top: "shortkurta", c: "beige", low: "baggy", l: "olive", lay: ["vest"], y: "kaapi", h: "short", sk: "skin2", stache: true, shoe: "boot", a: ["watch"] }] }],
-  [30, "Zn", "Zinc", "Zen Neutrals", "Calm dressing in oatmeal, stone and ivory. It's the opposite of loud prints.", "Linen kurtas, beige sets, white sneakers", "Build an outfit from three shades of one neutral.",
-    { bg: "cream", gr: "beige", set: ["plants"], figs: [{ top: "kurta", c: "beige", low: "palazzo", l: "ivory", h: "short", sk: "skin3", hc: "hair2", shoe: "kolhapuri" }] }],
-  [31, "Ga", "Gallium", "Gorpcore Adventure", "Outdoor gear worn in the city: fleece, shell jackets and trail shoes from hill-station trips.", "Shell jackets, fleece, trail shoes, bucket hats", "Wear one technical piece per outfit.",
-    { bg: "sky", gr: "green", set: ["hills", ["sun", "white", 22, 18]], figs: [{ top: "hoodie", c: "orange", low: "baggy", l: "olive", h: "short", sk: "skin", a: ["beanie"], ac: "teal", shoe: "boot" }] }],
-  [32, "Ge", "Germanium", "Gen-Z Ethnic", "Ethnic wear styled young: kurtas with caps, sarees with sneakers, lehengas with crop tees.", "Short kurtas, caps, sneakers, tote bags", "Wear your kurta with a cap and headphones.",
-    { bg: "rani", gr: "pink", set: ["confetti"], figs: [{ top: "shortkurta", c: "white", pt: "floral", low: "jeans", l: "denim", h: "open", a: ["headphones", "jhumka"], ac: "yellow", shoe: "sneaker" }] }],
-  [33, "As", "Arsenic", "Asymmetric Silhouettes", "One-shoulder blouses, uneven hems and draped kurtas that break symmetry.", "One-shoulder tops, asymmetric kurtas, draped skirts", "Choose one asymmetric piece and keep the rest clean.",
-    { bg: "teal", gr: "night", set: ["runway"], figs: [{ top: "slip", c: "orange", lay: ["drape"], y: "orange", h: "lowbun", a: ["hoops"], ac: "gold", shoe: "heel" }] }],
-  [34, "Se", "Selenium", "Saree Everyday", "Women wearing sarees to work, college and errands, not just to weddings.", "Cotton sarees, simple blouses, flats", "Keep two easy cotton sarees for weekdays.",
-    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "blouse", c: "white", low: "saree", l: "blue", pl: "checks", lay: ["pallu"], y: "blue", b: "red", h: "lowbun", a: ["bindi", "watch"], hold: "tote", hc2: "kaapi" }] }],
-  [35, "Br", "Bromine", "Bridal Re-wear", "Brides and guests wearing wedding outfits again, restyled for later events.", "Restyled lehengas, re-cut sarees, mix-and-match blouses", "Wear your lehenga skirt with a plain shirt.",
-    { bg: "rani", gr: "maroon", set: ["marigold"], figs: [{ top: "shirt", c: "white", low: "lehenga", l: "red", pl: "zari", b: "gold", h: "open", a: ["jhumka"], ac: "gold" }], obj: [["loop"]] }],
-  [36, "Kr", "Krypton", "Kurta Reloaded", "The men's kurta, reworked in new colours, short lengths and shirt collars.", "Short kurtas, pastel kurtas, kurta shirts", "Pair a short kurta with straight trousers.",
-    { bg: "lav", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "kurta", c: "lav", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, shoe: "kolhapuri", a: ["watch"] }] }],
-  [37, "Rb", "Rubidium", "Retro Bollywood", "Seventies and eighties film glamour: polka dots, bell-bottoms, big hair and giant shades.", "Polka-dot sarees, bell-bottoms, oversized sunglasses", "Choose one era and one statement piece.",
-    { bg: "yellow", gr: "red", set: ["disco"], figs: [{ top: "blouse", c: "red", low: "saree", l: "white", pl: "polka", lay: ["pallu"], y: "red", py: "polka", b: "red", h: "bun", hc: "hair", a: ["glasses", "hoops", "bigbindi"], ac: "gold" }] }],
-  [38, "Sr", "Strontium", "Saree Runners", "Sarees worn with sneakers for comfort at work, weddings and while travelling.", "Cotton sarees, white sneakers, crop tees", "Drape a little higher so the sneakers show.",
-    { bg: "green", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "babytee", c: "white", low: "saree", l: "yellow", pl: "chevron", lay: ["pallu"], y: "yellow", b: "red", h: "pony", a: ["studs"], shoe: "sneaker", hold: "phone" }] }],
-  [39, "Y", "Yttrium", "Y2K", "Early-2000s pop: baby tees, low-rise jeans, butterfly clips, tinted shades and tiny bags.", "Baby tees, low-rise jeans, butterfly clips, mini bags", "Pick two throwback pieces, not five.",
-    { bg: "lav", gr: "pink", set: ["stars"], figs: [{ top: "babytee", c: "pink", pt: "sparkle", low: "jeans", l: "sky", h: "open", hc: "hair2", a: ["butterfly", "hoops"], ac: "lav", shoe: "sneaker", hold: "phone" }] }],
-  [40, "Zr", "Zirconium", "Zero-waste Remix", "Clothes made from leftover fabric and patchwork, so nothing goes to waste.", "Patchwork jackets, scrap-fabric tops, upcycled bags", "Turn an old dupatta into a scarf or tote.",
-    { bg: "sage", gr: "kaapi", set: ["line"], figs: [{ top: "tee", c: "teal", pt: "patch", low: "jeans", l: "denim", pl: "patch", h: "bob", hc: "hair2", shoe: "sneaker" }] }],
-  [41, "Nb", "Niobium", "No-Brand", "No visible logos. Quality fabric and fit do the talking.", "Plain cashmere, well-cut trousers, unbranded leather bags", "Remove the logo test: would you still wear it?",
-    { bg: "beige", gr: "cream", set: [["arch", "ivory"]], figs: [{ top: "fittee", c: "ivory", low: "palazzo", l: "kaapi", lay: ["blazer"], y: "beige", h: "lowbun", a: ["studs"], hold: "clutch", hc2: "kaapi", shoe: "heel" }] }],
-  [42, "Mo", "Molybdenum", "Mughal Opulence", "Heavy jewel tones, velvet, zardozi and jewellery inspired by Mughal miniatures.", "Velvet lehengas, zardozi jackets, jadau jewellery", "Choose velvet in emerald or wine.",
-    { bg: "green", gr: "maroon", set: [["palace", "peach"]], figs: [{ top: "blouse", c: "green", pt: "zari", low: "lehenga", l: "maroon", pl: "zari", b: "gold", lay: ["veil"], y: "gold", h: "bun", a: ["matha", "bignath", "choker"] }] }],
-  [43, "Tc", "Technetium", "Tennis Core", "Pleated tennis skirts, polo shirts, visors and white sneakers, for courts and cafes.", "Pleated skirts, polos, visors, white sneakers", "Pair a pleated skirt with a crisp polo.",
-    { bg: "green", gr: "beige", set: ["net"], figs: [{ top: "fittee", c: "white", low: "mini", l: "white", pl: "stripes", h: "pony", a: ["cap"], ac: "white", hold: "racket", shoe: "sneaker" }] }],
-  [44, "Ru", "Ruthenium", "Rental Uprising", "Renting designer lehengas and sherwanis for a single event instead of buying.", "Rented lehengas, sherwanis, jewellery sets", "Book three to four weeks ahead in wedding season.",
-    { bg: "pink", gr: "beige", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "blouse", c: "gold", low: "lehenga", l: "teal", pl: "zari", b: "gold", h: "bun", a: ["jhumka"], hold: "phone" }] }],
-  [45, "Rh", "Rhodium", "Rani-pink Hues", "Bright rani pink, India's signature celebration colour, on everything from sarees to suits.", "Rani-pink sarees, kurtas, lehengas, juttis", "Pair rani pink with orange or gold.",
-    { bg: "orange", gr: "rani", set: ["marigold"], figs: [{ top: "blouse", c: "orange", low: "saree", l: "rani", lay: ["pallu"], y: "rani", b: "orange", h: "bun", a: ["gajra", "jhumka", "bindi"] }] }],
-  [46, "Pd", "Palladium", "Power Dressing", "Sharp blazers, pantsuits and structured sarees for work and boardrooms.", "Pantsuits, structured blazers, crisp sarees", "Choose a blazer in a strong colour.",
-    { bg: "indigo", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "fittee", c: "white", low: "jeans", l: "red", lay: ["blazer"], y: "red", h: "bob", a: ["studs", "watch"], hold: "phone", shoe: "heel" }] }],
-  [47, "Ag", "Silver", "Avant-Garde", "Experimental shapes and unusual materials from young Indian designers.", "Sculpted dresses, deconstructed kurtas, art jewellery", "Wear one experimental piece with simple basics.",
-    { bg: "red", gr: "ink", set: ["spotlight"], figs: [{ top: "gown", c: "white", pt: "grid", lay: ["cape"], y: "black", h: "buzz", sk: "skin2", a: ["hoops"], ac: "silver" }] }],
-  [48, "Cd", "Cadmium", "Colour Drenching", "One colour from head to toe, from kurta and dupatta to shoes and bag.", "Matching kurta sets, tonal dupattas, same-colour shoes", "Vary textures so one colour doesn't fall flat.",
-    { bg: "orange", gr: "rust", set: [["sun", "yellow", 80, 20]], figs: [{ top: "kurta", c: "orange", low: "palazzo", l: "orange", lay: ["dupatta"], y: "orange", h: "open", a: ["hoops"], ac: "orange", shoe: "jutti" }] }],
-  [49, "In", "Indium", "Indo-Noir", "All-black Indian wear, from black sarees to black sherwanis, for evening events.", "Black sarees, black bandhgalas, silver jewellery", "Wear black with one metallic accent.",
-    { bg: "night", gr: "black", set: ["moon", "stars"], figs: [{ top: "blouse", c: "black", low: "saree", l: "black", pl: "sparkle", lay: ["pallu"], y: "black", b: "grey", h: "lowbun", a: ["bigjhumka"], ac: "grey" }] }],
-  [50, "Sn", "Tin", "Sneaker Nation", "Sneaker culture is huge in India: limited drops, resale and chunky sneakers with everything.", "Chunky sneakers, limited editions, high-tops", "Make the sneakers the loudest part of the outfit.",
-    { bg: "blue", gr: "grey", set: ["confetti"], obj: [["sneaker", 50, 72, 1.15]] }],
-  [51, "Sb", "Antimony", "Soft Boy", "Men's fashion with pastels, pearls, knit vests and loose shirts, softer than the macho look.", "Pastel shirts, knit vests, pearl chains", "Add a pearl chain to a pastel shirt.",
-    { bg: "mint", gr: "beige", set: ["plants"], figs: [{ top: "shirt", c: "pink", lay: ["vest"], y: "lav", py: "checks", low: "jeans", l: "beige", h: "short", sk: "skin3", hc: "hair2", a: ["pearls"], shoe: "sneaker" }] }],
-  [52, "Te", "Tellurium", "Tonal Ethnic", "Kurta, pants and dupatta in shades of one colour, from light to dark.", "Tonal kurta sets, ombre dupattas", "Go one shade darker on the bottom half.",
-    { bg: "lav", gr: "plum", set: [["arch", "cream"]], figs: [{ top: "kurta", c: "lav", low: "palazzo", l: "plum", lay: ["dupatta"], y: "pink", h: "braid", a: ["jhumka"], ac: "grey" }] }],
-  [53, "I", "Iodine", "Indie", "Supporting small homegrown labels with handmade, quirky pieces you won't see everywhere.", "Small-batch prints, handmade jewellery, tote bags", "Buy one piece a season from an indie label.",
-    { bg: "yellow", gr: "green", set: [["window2", "sky"]], figs: [{ x: 56, top: "dress", c: "green", pt: "floral", h: "bob", a: ["hoops", "specs"], ac: "rani", hold: "tote", hc2: "beige", shoe: "kolhapuri" }] }],
-  [54, "Xe", "Xenon", "XXL Everything", "Oversized accessories: giant jhumkas, huge bows, big bags and extra-wide sleeves.", "Giant jhumkas, oversized bags, big bows", "Pick one huge accessory and keep the rest small.",
-    { bg: "teal", gr: "yellow", set: ["sparkles"], figs: [{ top: "fittee", c: "black", low: "jeans", l: "white", h: "lowbun", a: ["bigjhumka"], ac: "gold", hold: "tote", hc2: "red", shoe: "heel" }] }],
-  [55, "Cs", "Caesium", "Cricket Streetwear", "Cricket jerseys worn as streetwear with baggy denim, chains and sneakers.", "Team jerseys, retro kits, track pants", "Layer a jersey over a white tee.",
-    { bg: "night", gr: "green", set: ["floodlights"], figs: [{ top: "jersey", c: "blue", num: 18, sl: "tee", low: "baggy", l: "denim", h: "short", sk: "skin2", a: ["chain", "cap"], ac: "blue", shoe: "sneaker" }] }],
-  [56, "Ba", "Barium", "Balletcore", "Ballet-inspired wrap tops, soft pink, ribbons and ballet flats for everyday wear.", "Wrap tops, ballet flats, tulle skirts, ribbons", "Wear ballet flats with a midi skirt.",
-    { bg: "blush", gr: "pink", set: ["hearts"], figs: [{ top: "crop", c: "pink", low: "skirt", l: "white", pl: "grid", h: "bun", a: ["bow", "pearls"], ac: "pink", shoe: "jutti" }] }],
-  [57, "La", "Lanthanum", "Layered Accessories", "Stacking many necklaces, bangles and rings for a collected, lived-in look.", "Layered chains, bangle stacks, ring stacks", "Mix metals but keep one chain the longest.",
-    { bg: "peach", gr: "kaapi", set: ["sparkles"], figs: [{ top: "fittee", c: "white", low: "jeans", l: "denim", h: "open", a: ["layered", "bangles", "hoops"], ac: "gold", shoe: "kolhapuri" }] }],
-  [58, "Ce", "Cerium", "Cape Era", "Sheer and embroidered capes worn over lehengas, gowns and saree blouses instead of dupattas.", "Cape sets, cape blouses, organza capes", "Use a cape instead of a dupatta at sangeets.",
-    { bg: "sage", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "blouse", c: "sage", low: "lehenga", l: "sage", pl: "floral", b: "gold", lay: ["cape"], y: "mint", h: "lowbun", a: ["jhumka"] }] }],
-  [59, "Pr", "Praseodymium", "Print Riot", "Clashing prints on purpose: stripes with florals, ikat with checks.", "Mixed-print co-ords, printed shirts, scarves", "Tie clashing prints together with one shared colour.",
-    { bg: "yellow", gr: "red", set: ["bunting"], figs: [{ top: "shirt", c: "red", pt: "checks", low: "palazzo", l: "teal", pl: "floral", h: "open", a: ["hoops", "scarf"], ac2: "yellow", shoe: "jutti" }] }],
-  [60, "Nd", "Neodymium", "New Desi", "A confident, global look with Indian roots, worn from Mumbai to London.", "Saree pants, kurta dresses, sneakers, bindis", "Wear a bindi with your everyday Western outfit.",
-    { bg: "rani", gr: "orange", set: [["skyline", "night"]], figs: [{ top: "crop", c: "orange", low: "palazzo", l: "rani", pl: "zari", lay: ["drape"], y: "rani", h: "open", a: ["bindi", "hoops"], ac: "gold", shoe: "sneaker" }] }],
-  [61, "Pm", "Promethium", "Pastel Mania", "Mint, powder blue, lilac and blush on everything, from festive wear to sneakers.", "Pastel lehengas, pastel kurtas, pastel sneakers", "Pair two pastels with white.",
-    { bg: "mint", gr: "lav", set: ["sparkles"], figs: [{ top: "blouse", c: "lav", low: "lehenga", l: "sky", pl: "floral", b: "pink", lay: ["dupatta"], y: "pink", h: "bun", a: ["jhumka"], ac: "pink" }] }],
-  [62, "Sm", "Samarium", "Slow Movement", "Buying less, buying handmade and wearing clothes for years.", "Handloom sarees, hand-spun shirts, mended denim", "Wait a week before buying anything new.",
-    { bg: "sage", gr: "kaapi", set: ["plants", "line"], figs: [{ top: "kurta", c: "beige", pt: "grid", low: "palazzo", l: "green", h: "lowbun", a: ["studs"], hold: "tote", hc2: "beige", shoe: "kolhapuri" }] }],
-  [63, "Eu", "Europium", "Ethnic Utility", "Practical ethnic wear with pockets, crossbody bags and comfortable cuts.", "Pocket kurtas, cargo salwars, sling bags", "Choose kurtas with real pockets.",
-    { bg: "olive", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "shortkurta", c: "rust", low: "baggy", l: "olive", h: "pony", a: ["bag"], ac2: "kaapi", shoe: "sneaker" }] }],
-  [64, "Gd", "Gadolinium", "Gender-fluid Dressing", "Men in skirts and pearls, women in sherwanis. Clothes chosen without gender rules.", "Kurta dresses, sherwanis for women, pearl chains", "Borrow one piece from the 'other' section.",
-    { bg: "lav", gr: "plum", set: ["sparkles"], figs: [{ top: "kurta", c: "rani", pt: "zari", low: "skirt", l: "black", h: "short", sk: "skin2", a: ["pearls", "hoops"], ac: "gold", shoe: "boot" }] }],
-  [65, "Tb", "Terbium", "Tomboy Boom", "Baggy shirts, loafers and shorts on women, worn with ease instead of irony.", "Oversized shirts, loafers, cargo shorts", "Wear an oversized shirt with loafers.",
-    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "tee", c: "white", pt: "stripes", low: "shorts", l: "beige", h: "bob", sk: "skin", a: ["cap", "watch"], ac: "indigo", shoe: "sneaker" }] }],
-  [66, "Dy", "Dysprosium", "Desi Y2K", "Early-2000s Bollywood nostalgia, with butterfly clips, baby tees and low-rise jeans with a desi twist.", "Butterfly clips, baby tees, bindis, mojaris", "Add a tiny bindi to a Y2K outfit.",
-    { bg: "pink", gr: "yellow", set: ["stars"], figs: [{ top: "babytee", c: "yellow", pt: "floral", low: "jeans", l: "denim", h: "open", a: ["butterfly", "bindi", "hoops"], ac: "rani", shoe: "jutti" }] }],
-  [67, "Ho", "Holmium", "Heritage Office", "Ethnic wear at work: handloom sarees, kurta sets and bandhgalas on weekdays.", "Handloom sarees, kurta sets, Nehru jackets", "Keep a neat kurta set ready for Mondays.",
-    { bg: "cream", gr: "grey", set: [["window", "sky"]], figs: [{ x: 44, top: "kurta", c: "white", low: "churidar", l: "white", lay: ["vest"], y: "indigo", h: "short", sk: "skin", stache: true, a: ["specs", "watch"], hold: "book", hc2: "kaapi" }] }],
-  [68, "Er", "Erbium", "Eco Revival", "Natural dyes, organic cotton and peace silk from labels that show their supply chain.", "Natural-dyed sarees, organic cotton, peace silk", "Check the label for fabric and dye.",
-    { bg: "green", gr: "sage", set: ["line"], figs: [{ top: "blouse", c: "rust", low: "saree", l: "indigo", pl: "dots", lay: ["pallu"], y: "indigo", b: "rust", h: "lowbun", a: ["studs"] }], obj: [["cocoon"]] }],
-  [69, "Tm", "Thulium", "Twinning Moments", "Couples and families colour-coordinating for every function and photo.", "Matching sherwanis and lehengas, coordinated safas", "Match colour, not print.",
-    { bg: "peach", gr: "sage", set: ["marigold"], figs: [{ x: 33, s: 0.9, top: "sherwani", c: "sage", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, a: ["safa"], ac: "sage" }, { x: 67, s: 0.9, top: "blouse", c: "sage", low: "lehenga", l: "sage", pl: "floral", b: "gold", h: "bun", a: ["jhumka"] }] }],
-  [70, "Yb", "Ytterbium", "Yoga-to-Brunch", "Yoga sets that go straight from class to cafe with a jacket on top.", "Yoga sets, light jackets, slides", "Throw an overshirt on your yoga set.",
-    { bg: "sky", gr: "peach", set: ["plants"], figs: [{ x: 44, top: "crop", c: "sage", low: "leggings", l: "sage", lay: ["jacket"], y: "white", h: "bun", hold: "coffee", hc2: "kaapi", shoe: "sneaker" }], obj: [["mat"]] }],
-  [71, "Lu", "Lutetium", "Luxe Understated", "Quiet luxury in Indian form: raw silk, tissue and pearl studs in ivory and beige.", "Tissue sarees, raw-silk kurtas, pearl studs", "Spend on fabric and keep the shape simple.",
-    { bg: "beige", gr: "cream", set: [["arch", "ivory"]], figs: [{ top: "blouse", c: "ivory", low: "saree", l: "beige", pl: "grid", lay: ["pallu"], y: "ivory", b: "gold", h: "lowbun", a: ["studs", "pearls"] }] }],
-  [72, "Hf", "Hafnium", "Heritage Fusion", "Traditional crafts cut into modern shapes, like a Banarasi blazer or ikat trousers.", "Brocade blazers, ikat trousers, ajrakh shirts", "Wear a brocade blazer over a plain dress.",
-    { bg: "indigo", gr: "beige", set: [["arch", "peach"]], figs: [{ top: "fittee", c: "black", low: "jeans", l: "black", lay: ["blazer"], y: "red", py: "zari", h: "lowbun", a: ["jhumka"], shoe: "heel" }] }],
-  [73, "Ta", "Tantalum", "Tailored Androgyny", "Sharp suits and bandhgalas for women, cut with a neutral, masculine line.", "Pantsuits, bandhgalas, loafers, ties", "Try a bandhgala with straight trousers.",
-    { bg: "grey", gr: "black", set: ["spotlight"], figs: [{ top: "shirt", c: "white", low: "jeans", l: "black", lay: ["blazer"], y: "black", h: "bob", sk: "skin3", a: ["tie", "studs"], ac2: "red", shoe: "boot" }] }],
-  [74, "W", "Tungsten", "Workleisure", "Comfortable clothes that still look office-ready, like knit trousers and stretch blazers.", "Knit trousers, soft blazers, loafers", "Pick blazers in stretch fabric.",
-    { bg: "sky", gr: "grey", set: [["window", "white"]], figs: [{ x: 44, top: "fittee", c: "sage", low: "palazzo", l: "grey", lay: ["blazer"], y: "beige", h: "pony", a: ["studs"], hold: "coffee", hc2: "white", shoe: "sneaker" }] }],
-  [75, "Re", "Rhenium", "Resort Ethnic", "Light ethnic wear for destination weddings: kaftans, printed sarees and linen sets.", "Kaftans, printed sarees, linen kurta sets", "Pick breathable prints for day functions.",
-    { bg: "sky", gr: "peach", set: ["waves", "palm"], figs: [{ x: 42, top: "anarkali", c: "yellow", pt: "floral", b: "orange", h: "open", a: ["hat", "jhumka"], ac: "beige", shoe: "kolhapuri" }] }],
-  [76, "Os", "Osmium", "Old-money Style", "Polished, inherited-wealth looks: cable knits, pearls, loafers and quiet colours.", "Cable knits, pearl studs, loafers, pleated trousers", "Drape a sweater over your shoulders.",
-    { bg: "green", gr: "beige", set: [["arches", "cream"]], figs: [{ top: "shirt", c: "white", low: "palazzo", l: "beige", lay: ["shawl"], y: "sky", h: "lowbun", a: ["pearls", "studs"], shoe: "heel" }] }],
-  [77, "Ir", "Iridium", "Insta-Reel Fits", "Outfits planned for 15-second reels: transitions, twirls and statement colours.", "Twirl skirts, statement sets, bold colours", "Choose something that moves when you turn.",
-    { bg: "pink", gr: "rani", set: ["sparkles"], figs: [{ x: 42, top: "anarkali", c: "rani", pt: "floral", b: "gold", h: "open", a: ["jhumka"], shoe: "jutti" }], obj: [["phone", 82, 30]] }],
-  [78, "Pt", "Platinum", "Pyjama Takeover", "Printed pyjama sets worn outside the house, to cafes and airports.", "Printed pyjama sets, satin sets, slides", "Wear a pyjama set with loafers and a tote.",
-    { bg: "night", gr: "lav", set: ["moon", "stars"], figs: [{ top: "shirt", c: "pink", pt: "floral", low: "palazzo", l: "pink", pl: "floral", h: "open", hold: "coffee", hc2: "white", shoe: "kolhapuri" }] }],
-  [79, "Au", "Gold", "Aesthetic Upcycling", "Turning old sarees, denim and dupattas into new outfits that look designed.", "Saree dresses, denim patchwork, dupatta jackets", "Get an old saree stitched into a dress.",
-    { bg: "yellow", gr: "kaapi", set: ["line"], figs: [{ top: "dress", c: "rani", pt: "zari", lay: ["jacket"], y: "denim", py: "patch", h: "bob", a: ["hoops"], ac: "gold", shoe: "sneaker" }] }],
-  [80, "Hg", "Mercury", "Hippie Groove", "Seventies boho returns: bell-bottoms, fringe, headbands and peace signs.", "Bell-bottoms, fringe jackets, headbands", "Pair flared jeans with a printed blouse.",
-    { bg: "orange", gr: "yellow", set: [["sun", "yellow", 50, 30]], figs: [{ top: "crop", c: "yellow", pt: "floral", low: "palazzo", l: "denim", h: "open", hc: "hair2", a: ["glasses", "flowerhair", "beads"], shoe: "kolhapuri" }] }],
-  [81, "Tl", "Thallium", "Tomato-girl Look", "Summery, sun-soaked Italian-coded dressing: red gingham, linen and tomato reds.", "Gingham dresses, red accents, straw bags", "Add one tomato-red piece to summer whites.",
-    { bg: "sky", gr: "beige", set: [["sun", "yellow", 82, 18]], figs: [{ top: "dress", c: "red", pt: "checks", h: "lowbun", a: ["scarf", "studs"], ac2: "white", hold: "tote", hc2: "beige", shoe: "kolhapuri" }] }],
-  [82, "Pb", "Lead", "Pre-loved Buys", "Buying second-hand on apps and in markets, for both savings and sustainability.", "Second-hand designer, vintage sarees, resale sneakers", "Check resale apps before buying new.",
-    { bg: "teal", gr: "beige", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "fittee", c: "yellow", low: "skirt", l: "denim", h: "pony", hold: "shopbags", shoe: "sneaker" }] }],
-  [83, "Bi", "Bismuth", "Bridal Indie", "Brides breaking norms: pantsuits, pastel sarees, sneakers and their own choice of colour.", "Bridal pantsuits, pastel sarees, bridal sneakers", "Choose the colour that feels like you.",
-    { bg: "mint", gr: "sage", set: ["marigold"], figs: [{ top: "fittee", c: "ivory", low: "palazzo", l: "ivory", lay: ["blazer", "veil"], y: "ivory", h: "bun", a: ["matha", "choker"], shoe: "sneaker", hold: "flowers" }] }],
-  [84, "Po", "Polonium", "Party Opulence", "Maximum shine for sangeets and cocktails: sequins, mirrors and metallics.", "Sequin sarees, mirror lehengas, metallic blouses", "Skip the necklace when the outfit sparkles.",
-    { bg: "night", gr: "plum", set: ["disco"], figs: [{ top: "blouse", c: "gold", pt: "sparkle", low: "saree", l: "black", pl: "sparkle", lay: ["pallu"], y: "black", py: "sparkle", b: "gold", h: "open", a: ["bigjhumka"], ac: "gold", hold: "clutch" }] }],
-  [85, "At", "Astatine", "Anti-Trend", "Ignoring trends altogether and wearing personal favourites on repeat.", "Personal uniforms, long-kept favourites", "Find your best outfit and repeat it proudly.",
-    { bg: "cream", gr: "grey", set: [["window", "sky"]], figs: [{ x: 44, top: "kurta", c: "indigo", low: "jeans", l: "denim", h: "short", sk: "skin2", a: ["specs"], shoe: "kolhapuri", hold: "book", hc2: "red" }] }],
-  [86, "Rn", "Radon", "Re-wear Nation", "Proudly re-wearing outfits at multiple events instead of buying new ones each time.", "Restyled sarees, repeat lehengas, mix-and-match blouses", "Change the blouse and jewellery, keep the saree.",
-    { bg: "green", gr: "beige", set: ["confetti"], figs: [{ x: 42, top: "blouse", c: "yellow", low: "saree", l: "teal", lay: ["pallu"], y: "teal", b: "yellow", h: "bun", a: ["jhumka"] }], obj: [["loop"]] }],
-  [87, "Fr", "Francium", "Fringe Revival", "Fringe and tassels on jackets, bags, dupattas and blouse sleeves.", "Fringe jackets, tassel dupattas, fringe bags", "Let one piece swing, keep the rest still.",
-    { bg: "rust", gr: "yellow", set: ["bunting"], figs: [{ top: "crop", c: "kaapi", low: "jeans", l: "denim", lay: ["jacket"], y: "beige", h: "open", a: ["hat", "beads"], ac: "kaapi", shoe: "boot" }] }],
-  [88, "Ra", "Radium", "Rajwada Aesthetic", "Royal Rajasthani style: safas, achkans, leheriya and polki for big weddings.", "Achkans, safas, leheriya sarees, polki", "Pair a leheriya safa with an ivory achkan.",
-    { bg: "peach", gr: "rust", set: [["palace", "pink"]], figs: [{ top: "sherwani", c: "ivory", pt: "zari", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, a: ["safa", "layered"], ac: "orange", pa: "chevron" }] }],
-  [89, "Ac", "Actinium", "Academia Chic", "Dark-academia browns, tweed, knitwear and books as accessories.", "Tweed blazers, knits, loafers, satchels", "Wear brown on brown with a book in hand.",
-    { bg: "kaapi", gr: "maroon", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["blazer"], y: "kaapi", py: "checks", low: "skirt", l: "olive", h: "lowbun", a: ["specs"], hold: "book", hc2: "maroon", shoe: "boot" }] }],
-  [90, "Th", "Thorium", "Trad-Hybrid", "Traditional and Western pieces in one outfit: lehenga skirts with shirts, sarees with blazers.", "Saree blazers, lehenga shirts, dhoti pants", "Belt a blazer over a saree.",
-    { bg: "rani", gr: "beige", set: [["arch", "peach"]], figs: [{ top: "blouse", c: "red", low: "saree", l: "red", b: "gold", lay: ["pallu", "blazer", "belt"], y: "black", h: "lowbun", a: ["jhumka"] }] }],
-  [91, "Pa", "Protactinium", "Pop Art", "Comic-strip graphics, bright dots and bold blocks of colour on clothes.", "Graphic tees, comic prints, colour-block bags", "Wear one pop-art piece with solid colours.",
-    { bg: "yellow", gr: "blue", set: ["confetti"], figs: [{ top: "tee", c: "red", pt: "pop", low: "jeans", l: "blue", h: "bob", a: ["hoops"], ac: "yellow", shoe: "sneaker" }] }],
-  [92, "U", "Uranium", "Upcycling", "Turning old clothes into new ones, often with visible mending and patchwork.", "Patchwork jeans, saree dresses, mended jackets", "Learn one visible-mending stitch.",
-    { bg: "sage", gr: "kaapi", set: ["line"], figs: [{ top: "shirt", c: "denim", pt: "patch", low: "jeans", l: "denim", pl: "patch", h: "short", sk: "skin3", shoe: "sneaker" }] }],
-  [93, "Np", "Neptunium", "Nostalgic Prints", "Prints borrowed from childhood: paisley bedsheets, polka-dot frocks and retro florals.", "Paisley kurtas, retro floral dresses, polka dots", "Pair a retro print with a plain colour.",
-    { bg: "teal", gr: "beige", set: [["window2", "yellow"]], figs: [{ x: 56, top: "kurta", c: "maroon", pt: "paisley", low: "palazzo", l: "beige", h: "braid", a: ["bindi", "jhumka"] }] }],
-  [94, "Pu", "Plutonium", "Punk Uprising", "Leather, studs, plaid and boots on Indian streets and concert grounds.", "Leather jackets, plaid skirts, combat boots", "Pair combat boots with a kurta.",
-    { bg: "black", gr: "red", set: ["stars"], figs: [{ top: "fittee", c: "black", low: "mini", l: "red", pl: "checks", lay: ["jacket"], y: "black", h: "pony", hc: "rani", a: ["chain", "hoops"], ac: "grey", shoe: "boot" }] }],
-  [95, "Am", "Americium", "Anime Mania", "Anime merch, cosplay touches and manga graphics in everyday outfits.", "Anime tees, cosplay accessories, manga prints", "Wear your fandom on one piece.",
-    { bg: "sky", gr: "pink", set: ["stars"], figs: [{ top: "hoodie", c: "orange", low: "baggy", l: "black", h: "pony", hc: "blue", a: ["headphones"], ac: "pink", hold: "lightsaber", shoe: "sneaker" }] }],
-  [96, "Cm", "Curium", "Cottagecore Mood", "Romantic rural style: puff sleeves, florals, aprons and wicker baskets.", "Puff-sleeve dresses, floral prints, baskets", "Choose a floral dress with puff sleeves.",
-    { bg: "sage", gr: "green", set: ["plants", ["sun", "yellow", 80, 18]], figs: [{ top: "dress", sl: "puff", c: "white", pt: "floral", h: "braid", a: ["flowerhair"], hold: "flowers", shoe: "jutti" }] }],
-  [97, "Bk", "Berkelium", "Bold Kohl", "Smudged, lived-in kajal with bare skin. It replaced the full-glam face.", "Kohl pencil, kajal, tinted lip balm", "Smudge the lower line with a fingertip.",
-    { bg: "peach", gr: "kaapi", set: [], obj: [["eye", 50, 50, .72]] }],
-  [98, "Cf", "Californium", "Comfort First", "Soft fabrics, elastic waists and flat shoes chosen over stiff, tight clothes.", "Soft kurta sets, elastic trousers, slides", "Choose the softest fabric you can find.",
-    { bg: "lav", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "tee", c: "sage", low: "palazzo", l: "grey", h: "lowbun", hold: "coffee", hc2: "kaapi", shoe: "kolhapuri" }] }],
-  [99, "Es", "Einsteinium", "Eclectic Styling", "Mixing eras, cultures and prices in one look, like vintage, designer and street.", "Thrifted jackets, designer bags, ethnic jewellery", "Mix one old, one new and one ethnic piece.",
-    { bg: "teal", gr: "rust", set: ["confetti"], figs: [{ top: "shortkurta", c: "yellow", pt: "paisley", low: "jeans", l: "rust", lay: ["jacket"], y: "denim", h: "open", a: ["hat", "bigjhumka"], ac: "red", shoe: "boot" }] }],
-  [100, "Fm", "Fermium", "Festive Minimalism", "Simpler festive wear: one strong colour, clean shapes and a single piece of jewellery.", "Solid silk kurtas, plain sarees, statement earrings", "Wear a solid silk set with just jhumkas.",
-    { bg: "ivory", gr: "beige", set: ["diyas"], figs: [{ top: "kurta", c: "green", low: "palazzo", l: "green", h: "lowbun", a: ["jhumka"], ac: "gold", shoe: "jutti" }] }],
-  [101, "Md", "Mendelevium", "Mehendi Doodles", "Fine-line mehendi with small motifs and negative space instead of full coverage.", "Fine-line mehendi, finger caps, hidden initials", "Ask for a story motif hidden in the pattern.",
-    { bg: "green", gr: "sage", set: [], obj: [["hand", 50, 50]] }],
-  [102, "No", "Nobelium", "Nath Obsession", "Big naths are back for brides and guests, from Maharashtrian to Tehri styles.", "Bridal naths, clip-on nose rings, chains", "Choose a nath with a chain to the hair.",
-    { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ s: 1.15, top: "blouse", c: "red", lay: ["veil"], y: "red", h: "bun", a: ["bignath", "matha", "choker"], low: "lehenga", l: "red", b: "gold" }] }],
-  [103, "Lr", "Lawrencium", "Lehenga Remix", "Lehenga skirts worn with shirts, crop tops and jackets instead of matching blouses.", "Lehenga skirts, white shirts, denim jackets", "Wear your lehenga with a crisp white shirt.",
-    { bg: "yellow", gr: "rani", set: ["bunting"], figs: [{ top: "babytee", c: "white", low: "lehenga", l: "rani", pl: "mirror", b: "gold", lay: ["jacket"], y: "denim", h: "open", a: ["jhumka"] }] }],
-  [104, "Rf", "Rutherfordium", "Ruffle Fever", "Ruffled sarees, ruffled hems and frilled sleeves for a soft, swishy look.", "Ruffle sarees, frill blouses, tiered skirts", "Choose a ruffle saree in georgette.",
-    { bg: "pink", gr: "blush", set: ["hearts"], figs: [{ top: "blouse", sl: "puff", c: "white", low: "tiered", l: "orange", h: "lowbun", a: ["jhumka"], shoe: "jutti" }] }],
-  [105, "Db", "Dubnium", "Double-dupatta Brides", "Two dupattas, one on the head and one draped across, now standard for brides.", "Net head dupattas, heavy drape dupattas", "Make the head dupatta the lighter one.",
-    { bg: "rani", gr: "maroon", set: ["marigold"], figs: [{ top: "blouse", c: "maroon", low: "lehenga", l: "red", pl: "zari", b: "gold", lay: ["veil", "drape"], y: "pink", h: "bun", a: ["tikka", "nath", "choker"] }] }],
-  [106, "Sg", "Seaborgium", "Soft Grunge", "Flannel, slip dresses, chunky boots and smudged eyeliner, but gentler than 90s grunge.", "Flannel shirts, slip dresses, combat boots", "Throw a flannel over a slip dress.",
-    { bg: "plum", gr: "black", set: ["stars"], figs: [{ top: "slip", c: "black", lay: ["jacket"], y: "red", py: "checks", h: "open", hc: "hair2", a: ["kohl", "chain"], shoe: "boot" }] }],
-  [107, "Bh", "Bohrium", "Bollywood Heroine", "Dressing like a film heroine for sangeets and reels, from chiffon sarees to song-sequence looks.", "Chiffon sarees, sequin blouses, flowing dupattas", "Pick a chiffon saree in a single bright colour.",
-    { bg: "sky", gr: "white", set: ["hills"], figs: [{ top: "blouse", c: "yellow", low: "saree", l: "yellow", lay: ["pallu"], y: "yellow", b: "yellow", h: "open", a: ["jhumka", "bindi"] }] }],
-  [108, "Hs", "Hassium", "Heritage Streetwear", "Streetwear made with Indian crafts: block-printed hoodies, ikat bombers, khadi cargos.", "Block-print hoodies, ikat jackets, khadi cargos", "Swap a plain hoodie for a block-printed one.",
-    { bg: "rust", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "hoodie", c: "indigo", pt: "chevron", low: "baggy", l: "beige", h: "short", sk: "skin2", a: ["cap"], ac: "rust", shoe: "sneaker" }] }],
-  [109, "Mt", "Meitnerium", "Monochrome Tailoring", "Matching suits in one colour, from jacket to trousers, for work and events.", "Single-colour suits, matching shirts, loafers", "Match the shirt to the suit.",
-    { bg: "teal", gr: "grey", set: ["spotlight"], figs: [{ top: "shirt", c: "teal", low: "jeans", l: "teal", lay: ["blazer"], y: "teal", h: "short", sk: "skin", a: ["pocketsq"], shoe: "boot" }] }],
-  [110, "Ds", "Darmstadtium", "Dopamine Styling", "Mood-lifting colour blocking: fuchsia with orange, yellow with green.", "Colour-block co-ords, bright kurtas, bright shoes", "Pair two bright colours and keep the rest neutral.",
-    { bg: "yellow", gr: "green", set: ["confetti"], figs: [{ top: "shirt", c: "orange", low: "palazzo", l: "hot", h: "open", a: ["hoops"], ac: "lime", hold: "tote", hc2: "green", shoe: "sneaker" }] }],
-  [111, "Rg", "Roentgenium", "Red-carpet Glam", "Celebrity premiere and award-night looks: gowns, trains and dramatic jewellery.", "Gowns, sequin sarees, cocktail rings", "Go long and keep the jewellery to one statement.",
-    { bg: "maroon", gr: "red", set: ["spotlight", "sparkles"], figs: [{ top: "gown", c: "red", pt: "sparkle", h: "open", hc: "hair2", a: ["studs", "lipstick"], hold: "clutch", hc2: "gold" }] }],
-  [112, "Cn", "Copernicium", "Concert Nights", "Outfits for big concerts and festivals: sequins, cowboy boots, glitter and glowsticks.", "Sequin tops, cowboy boots, glitter, cargo skirts", "Wear comfy boots and one sparkly piece.",
-    { bg: "night", gr: "plum", set: ["stars", ["spotlight", "lime"]], figs: [{ top: "crop", c: "grey", pt: "sparkle", low: "mini", l: "black", h: "open", a: ["hat", "hoops"], ac: "pink", hold: "glowstick", shoe: "boot" }] }],
-  [113, "Nh", "Nihonium", "Nineties Hair", "Claw clips, scrunchies, half-up styles and face-framing strands.", "Claw clips, scrunchies, hair scarves", "Twist your hair up with a claw clip.",
-    { bg: "pink", gr: "yellow", set: [["mirror", "sky"]], figs: [{ x: 44, s: 1.1, top: "fittee", c: "white", low: "jeans", l: "denim", h: "pony", a: ["scrunchie", "claw", "hoops"], ac: "yellow" }] }],
-  [114, "Fl", "Flerovium", "Festive Layering", "Layering jackets, capes and shrugs over festive outfits for winter weddings.", "Embroidered jackets, velvet shrugs, shawls", "Add a velvet jacket over a silk saree.",
-    { bg: "plum", gr: "maroon", set: ["diyas"], figs: [{ top: "blouse", c: "gold", low: "saree", l: "pink", lay: ["pallu", "jacket"], y: "maroon", py: "zari", b: "gold", h: "lowbun", a: ["jhumka"] }] }],
-  [115, "Mc", "Moscovium", "Mermaid Core", "Iridescent fabrics, sea-green shades, shell jewellery and fishtail cuts.", "Fishtail lehengas, iridescent fabrics, shell jewellery", "Try a sea-green fishtail with pearls.",
-    { bg: "blue", gr: "teal", set: ["waves", "sparkles"], figs: [{ top: "corset", c: "teal", pt: "sparkle", low: "fishtail", l: "mint", pl: "sparkle", b: "teal", h: "open", hc: "rani", a: ["pearls"] }] }],
-  [116, "Lv", "Livermorium", "Lavender Vibes", "Lavender and lilac as the go-to colour for sangeets, brunches and day weddings.", "Lavender lehengas, lilac kurtas, purple dupattas", "Pair lavender with silver.",
-    { bg: "lav", gr: "plum", set: ["sparkles"], figs: [{ top: "blouse", c: "lav", low: "lehenga", l: "lav", pl: "floral", b: "white", lay: ["dupatta"], y: "white", h: "bun", a: ["jhumka"], ac: "grey" }] }],
-  [117, "Ts", "Tennessine", "Tropical Summer", "Palm prints, bright florals and breezy shirts for holidays and day parties.", "Palm-print shirts, floral co-ords, sunhats", "Wear a printed shirt open over a tank.",
-    { bg: "yellow", gr: "peach", set: ["palm", "sun"], figs: [{ x: 42, top: "shirt", c: "green", pt: "floral", low: "shorts", l: "beige", h: "short", sk: "skin2", a: ["glasses"], hold: "coffee", hc2: "orange", shoe: "kolhapuri" }] }],
-  [118, "Og", "Oganesson", "Old-school Glam", "Golden-age film glamour: finger waves, red lips, pearls and silk sarees.", "Silk sarees, pearls, red lips, sleek hair", "Pair a silk saree with pearls and a red lip.",
-    { bg: "night", gr: "maroon", set: ["curtain", "spotlight"], figs: [{ top: "blouse", c: "black", low: "saree", l: "maroon", pl: "zari", lay: ["pallu"], y: "maroon", b: "gold", h: "lowbun", a: ["pearls", "lipstick", "studs"] }] }],
+  [1, "H", "Hydrogen", "Handmade", "Visible handwork such as crochet, chikankari, bandhani and beadwork is the new marker of luxury, replacing logos.", "Crochet bag, chikankari kurta, jamdani saree, beadwork jacket", "Choose one piece where you can see the maker's hand.",
+    { bg: "peach", gr: "beige", set: ["plants"], figs: [{ top: "kurta", c: "ivory", pt: "floral", low: "palazzo", l: "beige", h: "lowbun", a: ["jhumka"], hold: "tote", hc2: "rust", shoe: "kolhapuri" }] },
+    { src: [HBI, "Forget the logo, handmade craftsmanship is fashion's latest obsession", "https://www.harpersbazaar.in/fashion/story/forget-the-logo-handmade-craftsmanship-is-fashions-latest-obsession-1424615-2026-07-19", "Jul 2026"] }],
+  [2, "He", "Helium", "Hair Embellishment", "Rave-ready hair jewellery: stacked clips, beads braided in, and matha-patti-style parting chains.", "Stacked hair clips, braid beads, hair cuffs, parting chain", "Thread three gold beads into one braid.",
+    { bg: "lav", gr: "plum", set: ["sparkles"], figs: [{ s: 1.08, top: "babytee", c: "black", low: "jeans", l: "denim", h: "braid", a: ["matha", "claw", "butterfly", "hoops"], ac: "gold" }] },
+    { z: true, src: S_ELLE_SUBV }],
+  [3, "Li", "Lithium", "Literary Chic", "Dressing like you read books, with wire-rim glasses, satchels and buttoned-up shirts as props.", "Wire-rim glasses, leather satchel, buttoned shirt, book charm", "Carry a real paperback, not a prop.",
+    { bg: "kaapi", gr: "maroon", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["vest"], y: "olive", py: "checks", low: "skirt", l: "kaapi", h: "lowbun", a: ["specs", "bag"], ac2: "kaapi", hold: "book", hc2: "maroon", shoe: "boot" }] },
+    { z: true, src: [ELI, "Why Is Everyone Suddenly Dressing Like They Read Books?", "https://elle.in/fashion/why-is-everyone-dressing-like-they-read-books-11886667", "May 2026"] }],
+  [4, "Be", "Beryllium", "Belted Pallu", "A statement belt cinches the saree at the waist and holds the pallu in place, a drape Bollywood made cool again.", "Statement belt, silk saree, structured blouse, cocktail jewellery", "Belt over the pallu at your natural waist.",
+    { bg: "rani", gr: "maroon", set: ["spotlight"], figs: [{ top: "blouse", c: "black", low: "saree", l: "rani", lay: ["pallu", "belt"], y: "rani", b: "gold", h: "lowbun", a: ["jhumka"] }] },
+    { src: S_ELLE_BOLLY }],
+  [5, "B", "Boron", "Blokette", "Blokecore meets coquette: football jerseys worn with frilly skirts, hair bows and Samba-style trainers.", "Football jersey, pleated or frilly skirt, hair bows, retro trainers", "Tie a satin bow on your ponytail with a jersey.",
+    { bg: "green", gr: "beige", set: ["net"], figs: [{ top: "jersey", c: "red", num: 10, sl: "tee", low: "mini", l: "white", pl: "stripes", h: "pony", a: ["bow"], ac: "pink", shoe: "sneaker" }] },
+    { z: true, src: [ELI, "What Is Blokette? The Gen Z Aesthetic Breaking The Internet", "https://elle.in/trending/blokette-aesthetic-breaking-the-internet-12046899", "Jun 2026"] }],
+  [6, "C", "Carbon", "Chatpata", "Gen Z's loud Indo-Western mix: mirror work and gota patti on Y2K shapes, clashing on purpose.", "Mirror-work crop top, corset blouse with cargos, stacked bangles, bold bindi", "Put one desi craft piece on a Y2K silhouette.",
+    { bg: "orange", gr: "rani", set: ["confetti"], figs: [{ top: "crop", c: "rani", pt: "mirror", low: "baggy", l: "olive", h: "pony", a: ["bigbindi", "bangles", "jhumka", "gajra"], shoe: "sneaker" }] },
+    { z: true, src: [HBI, "'Chatpata dressing' is Gen Z's boldest take on Indo-Western style yet", "https://www.harpersbazaar.in/fashion/story/chatpata-dressing-is-gen-zs-boldest-take-on-indo-western-style-yet-1379090-2026-04-21", "Apr 2026"] }],
+  [7, "N", "Nitrogen", "Nineties", "Carolyn Bessette Kennedy-style 90s minimalism: slip skirts, crisp shirts, sleek hair, almost no jewellery.", "Slip skirt, white shirt, slim belt, kitten heels", "Wear one neutral colour and nothing shiny.",
+    { bg: "cream", gr: "grey", set: [["window", "sky"]], figs: [{ x: 44, top: "fittee", c: "black", low: "skirt", l: "beige", lay: ["belt"], b: "ink", h: "lowbun", hc: "hair2", a: ["studs"], shoe: "heel" }] },
+    { src: ["ELLE", "Carolyn Bessette Kennedy's '90s Style Inspired 5 Major Fall 2026 Fashion Trends", "https://www.elle.com/fashion/trend-reports/a70736522/carolyn-bessette-kennedy-runway-fashion-trends-influence-fall-2026/", "Mar 2026"] }],
+  [8, "O", "Oxygen", "Ombré", "The colour-gradient lehenga is back after fading out post-2021, blue melting into green.", "Ombré lehenga, zardozi blouse, two-tone dupatta, polki choker", "Pick a dupatta that matches the darker end.",
+    { bg: "mint", gr: "teal", set: ["sparkles"], figs: [{ top: "blouse", c: "blue", pt: "zari", low: "lehenga", l: "teal", pl: "dots", b: "green", lay: ["dupatta"], y: "sky", h: "bun", a: ["choker", "jhumka"] }] },
+    { src: [ELI, "Manushi Chhillar's Lehenga Proves Ombré Is Still Trending", "https://elle.in/events/manushi-chhillars-lehenga-look-12226353", "Aug 2026"] }],
+  [9, "F", "Fluorine", "Farmcore", "Practical countryside dressing in cotton, linen, gingham and lace, worn in the city.", "Gingham mini, midi skirt, denim jumpsuit, lace-trim top", "Pair gingham with one piece of plain denim.",
+    { bg: "sky", gr: "green", set: ["hills", "sun"], figs: [{ top: "dress", c: "red", pt: "checks", h: "braid", a: ["hat"], ac: "beige", hold: "flowers", shoe: "boot" }] },
+    { src: [CSI, "The farmcore fashion trend is giving city girls a countryside style makeover", "https://www.cosmopolitan.in/amp/fashion/features/story/the-farmcore-fashion-trend-is-giving-city-girls-a-countryside-style-makeover-1421254-2026-07-09", "Jul 2026"] }],
+  [10, "Ne", "Neon", "Neon", "Fluorescent brights went big on the London Fashion Week runways.", "Neon knit, fluorescent slip, neon bag, bright trainers", "Use one neon piece against black or grey.",
+    { bg: "night", gr: "black", set: [["spotlight", "lime"], "stars"], figs: [{ top: "fittee", c: "lime", low: "skirt", l: "black", lay: ["jacket"], y: "hot", h: "bob", a: ["hoops"], ac: "lime", shoe: "boot" }] },
+    { src: ["Harper's Bazaar", "Why I'm Still Thinking About London Fashion Week", "https://www.harpersbazaar.com/fashion/trends/a73943665/london-fashion-week-trends/", "Oct 2026"] }],
+  [11, "Na", "Sodium", "Nani's Almirah", "Gen Z is 'thrifting' from grandmothers' cupboards: vintage sarees restyled with crop blouses and blazers.", "Vintage hand-block saree, cropped blouse, oversized blazer, chunky sneakers", "Ask to borrow before you buy.",
+    { bg: "peach", gr: "kaapi", back: [["trunk", 16]], figs: [{ x: 56, top: "crop", c: "black", low: "saree", l: "maroon", pl: "paisley", lay: ["pallu", "blazer"], y: "beige", b: "gold", h: "open", a: ["jhumka"], shoe: "sneaker" }] },
+    { z: true, src: [ELI, "Gen Z Just Figured Out the Best Vintage Store Was At Home All Along", "https://elle.in/trending/gen-z-just-figured-out-the-best-vintage-store-12457511", "Aug 2026"] }],
+  [12, "Mg", "Magnesium", "Mirror Glam", "Shisha embroidery is moving from Gujarat and Rajasthan into blazers, co-ords and resort wear.", "Mirror-work jacket, mirror co-ord, mirror lehenga, kaftan", "Wear a mirror-work jacket over plain white.",
+    { bg: "teal", gr: "beige", set: ["sparkles"], figs: [{ top: "fittee", c: "white", low: "palazzo", l: "white", lay: ["jacket"], y: "rani", py: "mirror", h: "lowbun", a: ["jhumka"], shoe: "jutti" }] },
+    { src: [ELI, "Abhla Embroidery: The Timeless Craft Of Shisha Work", "https://elle.in/fashion/abhla-embroidery-is-a-heritage-craft-that-still-shines-today-12189947", "Jul 2026"] }],
+  [13, "Al", "Aluminium", "Alt-Bride", "Gen Z brides rejecting tradition for dark, gothic, romantic looks: red veils, black gowns, lace gloves.", "Red veil, black gothic gown, lace gloves, body chains", "Keep one traditional element, like the nath.",
+    { bg: "maroon", gr: "black", set: ["moon", "stars"], figs: [{ top: "gown", c: "black", pt: "floral", lay: ["veil"], y: "red", h: "open", a: ["nath", "chain"], ac: "grey" }] },
+    { z: true, src: S_ELLE_WED }],
+  [14, "Si", "Silicon", "Sheer Illusion", "Sheer overlays and layers on runways, worn over slips and bodysuits.", "Sheer shirt, organza skirt, sheer dupatta, slip", "Layer sheer over a solid in the same colour.",
+    { bg: "plum", gr: "lav", set: ["sparkles"], figs: [{ top: "slip", c: "black", lay: ["cape"], y: "lav", py: "sparkle", h: "lowbun", a: ["studs"], shoe: "heel" }] },
+    { src: ["Harper's Bazaar", "The Top 14 Trends From the Spring 2027 Season", "https://www.harpersbazaar.com/fashion/fashion-week/a74111249/fall-2026-runway-trends_1791832659/", "Oct 2026"] }],
+  [15, "P", "Phosphorus", "Poetcore", "Introspective, layered 'intellectual' dressing: vintage blazers, turtlenecks and trench coats.", "Vintage blazer, turtleneck, trench coat, satchel", "Tie a silk scarf like a neckerchief.",
+    { bg: "olive", gr: "kaapi", set: ["books"], figs: [{ x: 58, top: "fittee", c: "black", low: "jeans", l: "kaapi", lay: ["blazer"], y: "beige", h: "short", sk: "skin3", hc: "hair2", a: ["scarf", "specs"], ac2: "maroon", hold: "book", shoe: "boot" }] },
+    { src: [HBI, "Here's our 2026 style prediction", "https://www.harpersbazaar.in/fashion/story/heres-our-2026-style-prediction-1328723-2026-01-09", "Jan 2026"] }],
+  [16, "S", "Sulfur", "Sportif", "Elevated athleisure: track pieces cut like tailoring, worn well beyond the gym.", "Track jacket, tailored track pants, polo, slim sneakers", "Pair a track jacket with tailored trousers.",
+    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "fittee", c: "white", low: "jeans", l: "black", pl: "stripes", lay: ["jacket"], y: "green", h: "pony", a: ["studs"], shoe: "sneaker" }] },
+    { src: ["Marie Claire", "The Top 2026 Fashion Trends Taking Shape in Real Time", "https://www.marieclaire.com/fashion/fashion-trends-2026/", "Jan 2026"] }],
+  [17, "Cl", "Chlorine", "Cloud Dancer", "Pantone's 2026 colour, a soft white long used by Indian designers for ivory couture.", "Ivory lehenga, ivory saree, ivory sherwani, ivory bandhgala", "Go head-to-toe ivory with pearl details.",
+    { bg: "sky", gr: "white", set: [["sun", "white", 80, 18]], figs: [{ top: "blouse", c: "ivory", low: "lehenga", l: "ivory", pl: "floral", b: "beige", lay: ["dupatta"], y: "white", h: "bun", a: ["pearls", "studs"] }] },
+    { src: [ELI, "Pantone's Colour Of The Year 2026 Has Long Been An Indian Designer Staple", "https://elle.in/fashion/pantones-colour-of-the-year-2026-has-long-been-an-indian-designer-staple-10892003", "Dec 2025"] }],
+  [18, "Ar", "Argon", "Archival Maximalist", "Gen Z layers archival designer pieces, thrift finds and heirlooms to kill the clean-girl look.", "90s designer jacket, vintage corset, heirloom embroidery, forgotten-brand blouse", "Layer one heirloom over one thrift find.",
+    { bg: "yellow", gr: "rust", set: ["confetti"], figs: [{ top: "corset", c: "maroon", pt: "zari", low: "jeans", l: "denim", lay: ["jacket"], y: "kaapi", py: "leopard", h: "open", a: ["layered", "hoops"], shoe: "boot" }] },
+    { z: true, src: [ELI, "The 'Archival Maximalist': How Gen Z Is Using Vintage to Kill the Clean Girl Aesthetic", "https://elle.in/fashion/the-archival-maximalist-according-to-gen-z-11220076", "Mar 2026"] }],
+  [19, "K", "Potassium", "Kolhapuris", "Indian Gen Z put Kolhapuris back in the everyday rotation, helped by Prada's near-copy in June 2025.", "Kolhapuri chappals, wide-leg denim, linen shirt, kurta", "Buy GI-tagged pairs from Kolhapur makers.",
+    { bg: "peach", gr: "kaapi", set: [], obj: [["sandal", 50, 62]] },
+    { z: true, src: S_MWI_FEET }],
+  [20, "Ca", "Calcium", "Caffeine Neutrals", "A coffee palette of espresso, mocha and latte browns, big in Gen Z searches.", "Brown knit, mocha trousers, latte trench, caramel bag", "Stack three browns from dark to light.",
+    { bg: "beige", gr: "kaapi", set: [["window", "cream"]], figs: [{ x: 44, top: "fittee", c: "kaapi", low: "palazzo", l: "beige", lay: ["jacket"], y: "rust", h: "lowbun", hold: "coffee", hc2: "kaapi", shoe: "boot" }] },
+    { z: true, src: S_APPAREL }],
+  [21, "Sc", "Scandium", "Sculpted Corsetry", "Moulded bodices that reshape the torso, called 2026's biggest silhouette, couture included.", "Moulded bustier, breastplate bodice, corseted sari blouse, column skirt", "Pair a sculpted top with a fluid skirt.",
+    { bg: "grey", gr: "black", set: ["spotlight"], figs: [{ top: "corset", c: "gold", low: "fishtail", l: "black", b: "gold", h: "lowbun", a: ["hoops"], ac: "gold", shoe: "heel" }] },
+    { src: [ELI, "The New Body-Con: Sculpted Bodices Are Fashion's Biggest Silhouette Of 2026", "https://elle.in/fashion/the-new-body-con-sculpted-bodices-are-fashions-biggest-silhouette-of-2026-12265298", "Aug 2026"] }],
+  [22, "Ti", "Titanium", "Tote It", "The flat, roomy tote is the bag of the year, carried by hand or under the arm.", "Flat leather tote, canvas tote, oversized shirt, flats", "Carry it under the arm, not on the shoulder.",
+    { bg: "sage", gr: "beige", set: [["skyline", "green"]], figs: [{ top: "shirt", c: "sky", low: "palazzo", l: "white", h: "lowbun", hold: "tote", hc2: "kaapi", shoe: "kolhapuri" }] },
+    { src: ["Who What Wear", "These Are the 5 Biggest Bag Trends of 2026, Period", "https://www.whowhatwear.com/fashion/trends/bag-trends-2026", "Aug 2026"] }],
+  [23, "V", "Vanadium", "Velvet", "Velvet as a winter staple, styled down with denim and knits.", "Velvet blazer, velvet trousers, velvet slip, burgundy and forest green", "Wear a velvet blazer with jeans.",
+    { bg: "green", gr: "maroon", set: ["diyas"], figs: [{ top: "fittee", c: "black", low: "jeans", l: "denim", lay: ["blazer"], y: "maroon", h: "open", a: ["hoops"], ac: "gold", shoe: "boot" }] },
+    { src: [HBI, "Velvet is everywhere this winter and here's how to wear it without looking dated", "https://www.harpersbazaar.in/fashion/story/velvet-is-everywhere-this-winter-and-heres-how-to-wear-it-without-looking-dated-1325687-2026-01-07", "Jan 2026"] }],
+  [24, "Cr", "Chromium", "Corset Rework", "Heirloom Banarasi and other sarees cut into corsets and structured tops.", "Banarasi corset, tailored trousers, Baluchari with leather jacket, oxidised silver", "Turn an old silk saree into a corset top.",
+    { bg: "maroon", gr: "beige", set: [["arch", "peach"]], figs: [{ top: "corset", c: "red", pt: "zari", low: "palazzo", l: "black", h: "lowbun", a: ["jhumka"], ac: "grey", shoe: "heel" }] },
+    { z: true, src: S_ELLE_HANDLOOM }],
+  [25, "Mn", "Manganese", "Messy Necklaces", "Pile-it-on, tangled, mismatched necklaces as a reaction against quiet luxury.", "Beaded charm necklaces, mismatched chains, black pearls, crystal collar", "Layer five chains of different lengths.",
+    { bg: "teal", gr: "black", set: ["sparkles"], figs: [{ s: 1.08, top: "fittee", c: "white", low: "jeans", l: "black", h: "open", a: ["layered", "beads", "pearls"], ac: "gold" }] },
+    { src: [ELI, "The Runways Are Making The Case For Messy Jewellery", "https://elle.in/trending/the-runways-are-making-the-case-for-messy-jewellery-12147743", "Jul 2026"] }],
+  [26, "Fe", "Iron", "Fairy-tale Everyday", "Everyday whimsy: princess sleeves, bows and storybook details as an escape for Zillennials.", "Puff sleeves, tulle skirt, ribbon bows, Mary Janes", "Add one storybook detail to a normal outfit.",
+    { bg: "lav", gr: "pink", set: ["stars", "hearts"], figs: [{ top: "dress", sl: "puff", c: "pink", pt: "floral", h: "braid", a: ["bow", "flowerhair"], hold: "flowers", shoe: "jutti" }] },
+    { z: true, src: ["ELLE", "Fairy-Tale Fashion Is Taking Over the Fall 2026 Runways", "https://www.elle.com/fashion/trend-reports/a72622925/fairy-tale-fashion-trend/", "Jul 2026"] }],
+  [27, "Co", "Cobalt", "Coquette 2.0", "Coquette grows darker and more grown-up in 2026: bows and lace with an edge.", "Black lace, satin bows, sheer tights, Mary Janes", "Swap pastel bows for black ones.",
+    { bg: "blush", gr: "black", set: ["hearts"], figs: [{ top: "dress", sl: "puff", c: "black", pt: "floral", h: "open", a: ["bow", "pearls"], ac: "pink", shoe: "heel" }] },
+    { src: ["ELLE", "Coquettecore Aesthetic: How Olivia Rodrigo and Fashion Are Redefining Femininity in 2026", "https://www.elle.com/fashion/trend-reports/a71166334/coquettecore-femininity-fashion-trend-2026/", "May 2026"] }],
+  [28, "Ni", "Nickel", "Nature-Inspired", "Butterflies, birds and botanicals are replacing leopard print.", "Botanical scarf, bird-print dress, butterfly blouse, nature-print kurta", "Pick one nature print and keep accessories plain.",
+    { bg: "sage", gr: "green", set: ["plants", "sun"], figs: [{ top: "dress", c: "green", pt: "floral", h: "lowbun", a: ["butterfly"], ac: "orange", shoe: "kolhapuri" }] },
+    { src: S_ELLE_PIN }],
+  [29, "Cu", "Copper", "Cummerbund", "The cummerbund is back on spring 2027 runways, wrapped over shirts, dresses and tailoring.", "Satin cummerbund, white shirt, wide trousers, loafers", "Wrap a wide sash over a plain shirt.",
+    { bg: "beige", gr: "black", set: ["spotlight"], figs: [{ top: "shirt", c: "white", low: "palazzo", l: "black", lay: ["belt"], b: "maroon", h: "short", sk: "skin", a: ["watch"], shoe: "boot" }] },
+    { src: ["Harper's Bazaar", "At Fashion Week, a Cummerbund Has Never Felt More Dashing", "https://www.harpersbazaar.com/fashion/a73710763/cummerbund-trend-fashion-week-spring-2027/", "Sep 2026"] }],
+  [30, "Zn", "Zinc", "Zardozi Nights", "The cocktail blazer, India Couture Week 2026's breakout: zardozi jackets over sarees and lehengas.", "Zardozi jacket over a saree, mirror-beaded jacket, peplum jacket", "Throw an embroidered jacket over your saree.",
+    { bg: "night", gr: "plum", set: ["stars"], figs: [{ top: "blouse", c: "black", low: "saree", l: "pink", lay: ["pallu", "jacket"], y: "gold", py: "zari", b: "gold", h: "lowbun", a: ["jhumka"] }] },
+    { src: [ELI, "Couture's Breakout Trend: The Cocktail Blazer", "https://elle.in/trending/coutures-breakout-trend-the-cocktail-blazer-12234544", "Aug 2026"] }],
+  [31, "Ga", "Gallium", "Gold Accents", "Gold is forecast as a key colour: gold hardware, lamé and gilded accessories.", "Gold lamé top, gold cuffs, metallic bag, gilded heels", "Choose one gold piece and keep the rest matte.",
+    { bg: "black", gr: "kaapi", set: ["sparkles"], figs: [{ top: "slip", c: "gold", pt: "sparkle", h: "lowbun", a: ["hoops", "bangles"], ac: "gold", hold: "clutch", hc2: "gold", shoe: "heel" }] },
+    { src: ["Marie Claire", "The Top 2026 Fashion Trends Taking Shape in Real Time", "https://www.marieclaire.com/fashion/fashion-trends-2026/", "Jan 2026"] }],
+  [32, "Ge", "Germanium", "Glocal Ethnic", "Global silhouettes mixed with Indian textiles and handmade accessories in one outfit.", "Ikat scarf, oxidised earrings, heritage-weave crop top, cargos with dupatta", "Wear cargos with a dupatta.",
+    { bg: "rani", gr: "pink", set: ["confetti"], figs: [{ top: "crop", c: "indigo", pt: "chevron", low: "baggy", l: "olive", lay: ["dupatta"], y: "yellow", h: "pony", a: ["jhumka", "headphones"], ac: "grey", shoe: "sneaker" }] },
+    { z: true, src: [ELI, "Culture, Curated: The New Language Of Gen Z Style", "https://elle.in/fashion/culture-curated-the-new-language-of-gen-z-style-11438710", "Mar 2026"] }],
+  [33, "As", "Arsenic", "Analogue Style", "Gen Z choosing slim mechanical and vintage dress watches over smartwatches.", "Tank-style watch, MoonSwatch, small dress watch, leather strap", "Wear a small watch with a big cuff shirt.",
+    { bg: "kaapi", gr: "beige", set: [["window", "cream"]], figs: [{ x: 44, s: 1.08, top: "shirt", c: "white", low: "jeans", l: "black", h: "short", sk: "skin2", a: ["watch", "specs"] }] },
+    { z: true, src: [CSI, "How Gen Z is rewriting the rules of the watch game", "https://www.cosmopolitan.in/fashion/features/story/how-gen-z-is-rewriting-the-rules-of-the-watch-game-1375025-2026-04-14", "Apr 2026"] }],
+  [34, "Se", "Selenium", "Saree Everyday", "The saree moving from milestone occasions to regular, all-day wear.", "Lightweight printed saree, heirloom saree, nauvari drape, flats", "Keep two easy sarees for weekdays.",
+    { bg: "sky", gr: "grey", set: [["skyline", "blue"]], figs: [{ top: "blouse", c: "white", low: "saree", l: "blue", pl: "checks", lay: ["pallu"], y: "blue", b: "red", h: "lowbun", a: ["bindi", "watch"], hold: "tote", hc2: "kaapi" }] },
+    { src: [ELI, "ELLE x Satya Paul: Inside a Conversation on the Art of the Modern Saree", "https://elle.in/fashion/elle-x-satya-paul-the-art-of-the-modern-saree-11096984", "Feb 2026"] }],
+  [35, "Br", "Bromine", "Brooch Revival", "Pins worn on blazers, scarves, bags and even sari pallus.", "Vintage brooch, oversized floral pin, crystal clip, sari brooch", "Pin a brooch on your pallu.",
+    { bg: "indigo", gr: "beige", set: ["sparkles"], figs: [{ top: "fittee", c: "black", low: "jeans", l: "black", lay: ["blazer"], y: "beige", h: "bob", a: ["pocketsq", "studs"], shoe: "heel" }] },
+    { src: S_ELLE_PIN }],
+  [36, "Kr", "Krypton", "Kanjivaram Reimagined", "Kanjivaram worn casually, in sage, ivory and powder blue with statement blouses.", "Kanjivaram saree, statement blouse, heirloom jewellery, muted tones", "Pick a pastel Kanjivaram for a day event.",
+    { bg: "mint", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "blouse", c: "maroon", low: "saree", l: "sage", pl: "zari", lay: ["pallu"], y: "sage", b: "gold", h: "bun", a: ["gajra", "jhumka", "bindi"] }] },
+    { src: [ELI, "Bollywood Just Proved Indian Dressing Is The Only Dressing That Matters", "https://elle.in/fashion/the-new-rulebook-for-celebrity-indian-dressing-11751472", "Apr 2026"] }],
+  [37, "Rb", "Rubidium", "Retro Bollywood", "'Rekhafication': Gen Z recreating Rekha's 80s glam with kohl eyes, chokers and leopard saris.", "Heavy kajal, layered chokers, leopard-print sari, statement earrings", "Do the kajal first. Then decide the rest.",
+    { bg: "yellow", gr: "red", set: ["disco"], figs: [{ top: "blouse", c: "kaapi", low: "saree", l: "beige", pl: "leopard", lay: ["pallu"], y: "beige", py: "leopard", b: "kaapi", h: "open", a: ["kohl", "choker", "bigjhumka", "lipstick"], ac: "gold" }] },
+    { z: true, src: [HBI, "Why Gen Z is obsessed with Rekha's '80s glam (and making it work for coffee dates)", "https://www.harpersbazaar.in/fashion/story/why-gen-z-is-obsessed-with-rekhas-80s-glam-and-making-it-work-for-coffee-dates-1288931-2025-10-10", "Oct 2025"] }],
+  [38, "Sr", "Strontium", "Saree Runners", "Rule-free saree styling with shirts, tees and trainers for daytime.", "Shirt as blouse, fitted tee, trainers, practical bag", "Drape a little higher so the trainers show.",
+    { bg: "green", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "shirt", c: "white", low: "saree", l: "yellow", pl: "chevron", lay: ["pallu"], y: "yellow", b: "red", h: "pony", shoe: "sneaker", hold: "phone" }] },
+    { src: [ELI, "Saree Styling Is No Longer About Following The Rules", "https://elle.in/trending/saree-styling-is-no-longer-about-following-the-rules-12566981", "Sep 2026"] }],
+  [39, "Y", "Yttrium", "Y2K", "Early-2000s pop styling that keeps coming back in Gen Z wardrobes.", "Low-rise jeans, baby tee, mini skirt, butterfly clips", "Pick two throwback pieces, not five.",
+    { bg: "lav", gr: "pink", set: ["stars"], figs: [{ top: "babytee", c: "pink", pt: "sparkle", low: "jeans", l: "sky", h: "open", hc: "hair2", a: ["butterfly", "hoops"], ac: "lav", shoe: "sneaker", hold: "phone" }] },
+    { z: true, src: S_ELLE_GENZ }],
+  [40, "Zr", "Zirconium", "Zari Revival", "Zari-woven handlooms styled with sharp, modern shapes and restrained accessories.", "Tissue saree, corset blouse, zari jacket, zari skirt", "Let the zari shine. Skip extra sparkle.",
+    { bg: "peach", gr: "kaapi", set: [["arch", "cream"]], figs: [{ top: "corset", c: "black", low: "saree", l: "gold", pl: "zari", lay: ["pallu"], y: "gold", py: "zari", b: "maroon", h: "lowbun", a: ["studs"] }] },
+    { src: [ELI, "The 'Old World Zari' Comeback: Handloom Meets Modern Silhouettes", "https://elle.in/fashion/the-zari-revival-heritage-craftsmanship-12250420", "Aug 2026"] }],
+  [41, "Nb", "Niobium", "No-Brand", "Indian quiet luxury: craft-led, logo-free dressing in muted colours. 'Whispers, not screams.'", "Ivory chikankari, handwoven sari, block prints, kurta with tailored trousers", "Spend on fabric and keep the shape simple.",
+    { bg: "beige", gr: "cream", set: [["arch", "ivory"]], figs: [{ top: "kurta", c: "ivory", pt: "floral", low: "palazzo", l: "beige", h: "lowbun", a: ["studs"], hold: "clutch", hc2: "kaapi", shoe: "jutti" }] },
+    { src: [ELI, "Quiet Luxury: How Indian Fashion Is Letting The Craft Speak For Itself", "https://elle.in/fashion/trends/the-rise-of-understated-luxury-in-indian-fashion-11761239", "Apr 2026"] }],
+  [42, "Mo", "Molybdenum", "Moody Opulence", "Plum, fig, merlot and dusty olive replace bridal red as 2026's wedding palette.", "Plum lehenga, merlot drape, satin pumps, chrome accents", "Pair plum with silver, not gold.",
+    { bg: "plum", gr: "maroon", set: ["marigold"], figs: [{ top: "blouse", c: "plum", pt: "zari", low: "lehenga", l: "plum", pl: "floral", b: "grey", lay: ["veil"], y: "maroon", h: "bun", a: ["matha", "choker"], ac: "grey" }] },
+    { src: S_ELLE_WED }],
+  [43, "Tc", "Technetium", "Thrift Culture", "Second-hand has gone from stigma to style through Instagram thrift stores and Sarojini Nagar hauls.", "Vintage denim, pre-loved designer, vintage jackets, one-off prints", "Follow a few thrift pages and watch drop times.",
+    { bg: "peach", gr: "kaapi", set: ["tags"], back: [["rack", 80]], figs: [{ x: 40, top: "tee", c: "yellow", pt: "checks", low: "jeans", l: "denim", lay: ["jacket"], y: "rust", h: "bob", hold: "shopbags", shoe: "sneaker" }] },
+    { z: true, src: ["The Week", "India's thrift revolution: From stigma to style", "https://www.theweek.in/leisure/lifestyle/2025/06/20/india-s-thrift-revolution-from-stigma-to-style.amp.html", "Jun 2025"] }],
+  [44, "Ru", "Ruthenium", "Repeat Uniform", "Wearing the same set of staples on repeat. Consistency is the new flex.", "Workwear jacket, peacoat, crisp shirt, boxy knit", "Find your best outfit and wear it weekly.",
+    { bg: "grey", gr: "black", set: [["window", "sky"]], figs: [{ x: 44, top: "shirt", c: "sky", low: "jeans", l: "black", lay: ["jacket"], y: "indigo", h: "short", sk: "skin3", hc: "hair2", shoe: "boot" }] },
+    { z: true, src: S_DEPOP }],
+  [45, "Rh", "Rhodium", "Rani Hues", "Electric fuchsia and hot pink, India's rani pink, take over the 2026 summer.", "Fuchsia sarees, hot-pink suits, pink bags, pink heels", "Pair rani pink with orange.",
+    { bg: "orange", gr: "rani", set: ["marigold"], figs: [{ top: "blouse", c: "orange", low: "saree", l: "rani", lay: ["pallu"], y: "rani", b: "orange", h: "bun", a: ["gajra", "jhumka", "bindi"] }] },
+    { src: ["ELLE", "From Fashion Trend to Soccer Pitch: How Pink Became the Unexpected Color of the World Cup", "https://www.elle.com/fashion/trend-reports/a71772378/world-cup-pink-color-fashion-trend-explained-2026/", "Jun 2026"] }],
+  [46, "Pd", "Palladium", "Pre-Draped", "Pre-stitched, pre-pleated sarees that skip manual draping, now in handloom too.", "Pre-pleated Patola, pre-stitched silk, belt over the pleats, loafers", "Belt it for a sharper waist.",
+    { bg: "pink", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "blouse", c: "black", low: "saree", l: "red", pl: "chevron", lay: ["pallu", "belt"], y: "red", b: "gold", h: "lowbun", a: ["jhumka"] }] },
+    { z: true, src: S_ELLE_HANDLOOM }],
+  [47, "Ag", "Silver", "Alien Glam", "Y3K and 'Extra Celestial': liquid metal, holographic finishes and sculptural silver.", "Liquid-metal dress, wraparound shades, sculptural silver, opal fabrics", "Wear one chrome piece with all black.",
+    { bg: "night", gr: "indigo", set: ["stars", "rings"], figs: [{ top: "gown", c: "grey", pt: "sparkle", h: "buzz", sk: "skin2", a: ["glasses", "hoops"], ac: "sky" }] },
+    { src: [HBI, "Here's our 2026 style prediction", "https://www.harpersbazaar.in/fashion/story/heres-our-2026-style-prediction-1328723-2026-01-09", "Jan 2026"] }],
+  [48, "Cd", "Cadmium", "Cape Drape", "An embellished cape replaces the pallu for movement and drama.", "Embellished cape, pre-draped saree, structured blouse, statement earrings", "Use a cape instead of a pallu at sangeets.",
+    { bg: "sage", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "blouse", c: "sage", low: "saree", l: "sage", pl: "floral", b: "gold", lay: ["cape"], y: "mint", py: "sparkle", h: "lowbun", a: ["jhumka"] }] },
+    { src: S_ELLE_BOLLY }],
+  [49, "In", "Indium", "Indie Sleaze", "The messy, flash-lit 2010s look returns: distressed leather, shiny leggings, smudged liner.", "Distressed leather jacket, shiny leggings, smudged eyeliner, skull scarf", "Smudge the liner on purpose.",
+    { bg: "black", gr: "plum", set: ["stars", ["spotlight", "pink"]], figs: [{ top: "fittee", c: "grey", low: "leggings", l: "black", lay: ["jacket"], y: "black", h: "open", hc: "hair2", a: ["kohl", "chain", "hoops"], shoe: "boot" }] },
+    { z: true, src: ["t2ONLINE", "Indie Sleaze is back – and it's wrecking the Clean Girl aesthetic", "https://t2online.in/goodlife/fashion-beauty/indie-sleaze-is-back---and-it-s-wrecking-the-clean-girl-aesthetic/2000090", "Jul 2025"] }],
+  [50, "Sn", "Tin", "Sneakerina", "The ballet-flat and sneaker hybrid became the It-shoe.", "Ballet sneakers, Speedcat Ballet, Samba Jane, socks", "Wear them with a midi skirt.",
+    { bg: "blush", gr: "pink", set: ["hearts"], obj: [["sneaker", 50, 72, 1.15]] },
+    { z: true, src: ["ETV Bharat", "What Makes Sneakerinas Different From The Ballet Flats Of The 2000s And The Dad Sneakers Of The 2010s?", "https://www.etvbharat.com/amp/en/!lifestyle/sneakerina-fashion-trend-shoes-footwear-enn25092000773", "Sep 2025"] }],
+  [51, "Sb", "Antimony", "Stacked Bangles", "Maximal wrist stacks mixing glass, oxidised and kundan bangles with no matching rules.", "Glass bangles, oxidised bangles, kundan bangles, polki", "Mix three materials on one wrist.",
+    { bg: "rani", gr: "maroon", set: ["sparkles"], figs: [{ s: 1.08, top: "fittee", c: "white", low: "jeans", l: "denim", h: "open", a: ["bangles", "jhumka"], ac: "gold" }] },
+    { z: true, src: S_AZA }],
+  [52, "Te", "Tellurium", "Textured Denim", "Jeans as the focal point, with sequins, embroidery and mirror-work surfaces, including Indian labels.", "Sequin jeans, embroidered jeans, mirror-work denim, velvet-finish denim", "Keep the top plain and let the jeans talk.",
+    { bg: "indigo", gr: "beige", set: ["sparkles"], figs: [{ top: "fittee", c: "white", low: "jeans", l: "denim", pl: "mirror", h: "pony", a: ["hoops"], shoe: "heel" }] },
+    { src: [HBI, "Textured jeans are giving classic denim a brand new edge", "https://www.harpersbazaar.in/fashion/story/textured-jeans-are-giving-classic-denim-a-brand-new-edge-1380907-2026-04-27", "Apr 2026"] }],
+  [53, "I", "Iodine", "Indigo", "Indigo and white was the most repeated colour story at Lakmé Fashion Week 2026.", "Indigo denim, blue-white stripes, indigo handloom, white separates", "Pair indigo with crisp white.",
+    { bg: "sky", gr: "white", set: ["line"], figs: [{ top: "kurta", c: "indigo", pt: "dots", low: "palazzo", l: "white", h: "lowbun", a: ["studs"], shoe: "kolhapuri" }] },
+    { src: [HBI, "Lakmé Fashion Week 2026 proved runway fashion can be wearable too!", "https://www.harpersbazaar.in/fashion/story/lakme-fashion-week-2026-proved-runway-fashion-can-be-wearable-too-1364488-2026-03-24", "Mar 2026"] }],
+  [54, "Xe", "Xenon", "XL Earrings", "Statement jhumkas worn every day with denim, white shirts and co-ords.", "Oversized jhumkas, white shirt, jeans, co-ord", "Pull your hair back so they show.",
+    { bg: "teal", gr: "yellow", set: ["sparkles"], figs: [{ s: 1.08, top: "shirt", c: "white", low: "jeans", l: "denim", h: "lowbun", a: ["bigjhumka"], ac: "gold" }] },
+    { z: true, src: S_AZA }],
+  [55, "Cs", "Caesium", "Corset Saree", "A structured corset bodice against a fluid saree drape, from college fest to red carpet.", "Corset blouse, chiffon or organza saree, belt, minimal jewellery", "Choose a soft saree for a hard corset.",
+    { bg: "night", gr: "plum", set: [["spotlight", "pink"]], figs: [{ top: "corset", c: "black", low: "saree", l: "rani", lay: ["pallu"], y: "rani", b: "gold", h: "lowbun", a: ["jhumka"], ac: "gold" }] },
+    { z: true, src: S_ELLE_DRAPES7 }],
+  [56, "Ba", "Barium", "Balletcore", "Ballet-inspired soft dressing, one of the 'cores' in a Gen Z wardrobe.", "Ballet flats, wrap cardigan, leg warmers, hair ribbons", "Wear ballet flats with a midi skirt.",
+    { bg: "blush", gr: "pink", set: ["hearts"], figs: [{ top: "crop", c: "pink", low: "skirt", l: "white", pl: "grid", h: "bun", a: ["bow", "pearls"], ac: "pink", shoe: "jutti" }] },
+    { z: true, src: S_ELLE_GENZ }],
+  [57, "La", "Lanthanum", "Laced Up", "Lace and crochet move into streetwear, accessories and nails.", "Lace bandana, doily headwear, lace tights, lace nails", "Tie a lace bandana with a tee.",
+    { bg: "cream", gr: "beige", set: ["plants"], figs: [{ top: "babytee", c: "white", pt: "floral", low: "skirt", l: "white", pl: "floral", h: "open", a: ["scarf"], ac2: "white", shoe: "boot" }] },
+    { src: S_PIN }],
+  [58, "Ce", "Cerium", "Cerulean", "Blue is a contender for colour of 2026, with cobalt across the SS26 and FW26 runways.", "Cobalt trousers, cerulean sweater, sky-blue gown, blue eyeshadow", "Go head-to-toe blue in two shades.",
+    { bg: "sky", gr: "blue", set: [["sun", "white", 80, 18]], figs: [{ top: "fittee", c: "blue", low: "palazzo", l: "sky", h: "lowbun", a: ["hoops"], ac: "gold", shoe: "heel" }] },
+    { src: [ELI, "So… Is Blue Actually The Colour Of 2026?", "https://elle.in/fashion/is-blue-actually-the-colour-of-2026-11733444", "Apr 2026"] }],
+  [59, "Pr", "Praseodymium", "Print Riot", "Clash-conscious dressing: prints galore, mixed on purpose.", "Mixed-print co-ords, printed shirts, patterned scarves", "Tie clashing prints together with one colour.",
+    { bg: "yellow", gr: "red", set: ["bunting"], figs: [{ top: "shirt", c: "red", pt: "checks", low: "palazzo", l: "teal", pl: "floral", h: "open", a: ["hoops", "scarf"], ac2: "yellow", shoe: "jutti" }] },
+    { src: ["Marie Claire", "The Top 2026 Fashion Trends Taking Shape in Real Time", "https://www.marieclaire.com/fashion/fashion-trends-2026/", "Jan 2026"] }],
+  [60, "Nd", "Neodymium", "Nightie Dressing", "Babydoll nighties and slips worn as daywear, led by Gen Z.", "Babydoll dress, slip dress, ballet flats, cardigan", "Add a cardigan and flats for daytime.",
+    { bg: "lav", gr: "beige", set: ["moon", "stars"], figs: [{ top: "dress", sl: "puff", c: "white", pt: "floral", h: "open", hc: "hair2", a: ["bow"], ac: "lav", shoe: "jutti" }] },
+    { z: true, src: S_APPAREL }],
+  [61, "Pm", "Promethium", "Pastel Mandap", "Brides swapping saturated reds for mint, blush, powder blue and pistachio.", "Pastel lehenga, structured blouse, big dupatta, polki and pearls", "Choose a contrast dupatta for photos.",
+    { bg: "mint", gr: "lav", set: ["marigold"], figs: [{ top: "blouse", c: "lav", low: "lehenga", l: "sky", pl: "floral", b: "pink", lay: ["veil"], y: "pink", h: "bun", a: ["matha", "choker"] }] },
+    { src: [ELI, "Why Pastel Bridal Lehengas Are Winning Over Bollywood Brides", "https://elle.in/fashion/pastel-bridal-lehengas-10820811", "Nov 2025"] }],
+  [62, "Sm", "Samarium", "Sheer Menswear", "Sheer, flowing layers and drapes replacing rigid men's suiting at Lakmé Fashion Week.", "Sheer shirt, draped tunic, wide trousers, soft jacket", "Layer a sheer shirt over a vest.",
+    { bg: "teal", gr: "black", set: ["runway"], figs: [{ top: "shirt", c: "lav", pt: "sparkle", low: "palazzo", l: "black", h: "short", sk: "skin2", stache: true, a: ["chain"], shoe: "boot" }] },
+    { src: S_MWI_LFW }],
+  [63, "Eu", "Europium", "Ethnic Utility", "Utility workwear given Indian craft and burnished leather.", "Denim sets, boxy work jacket, carpenter trousers, leather", "Pair a work jacket with a kurta.",
+    { bg: "olive", gr: "kaapi", set: ["hills"], figs: [{ top: "shortkurta", c: "beige", low: "baggy", l: "olive", lay: ["vest"], y: "kaapi", h: "short", sk: "skin2", stache: true, shoe: "boot", a: ["watch"] }] },
+    { src: S_MWI_FDCI }],
+  [64, "Gd", "Gadolinium", "Gingham Days", "Two-colour checks as Gen Z's frugal, ironic 'recession' print.", "Gingham midi dress, gingham shirt, checked skirt, leather jacket", "Toughen gingham with a leather jacket.",
+    { bg: "sky", gr: "beige", set: [["sun", "yellow", 82, 18]], figs: [{ top: "dress", c: "red", pt: "checks", lay: ["jacket"], y: "black", h: "lowbun", a: ["scarf", "studs"], ac2: "white", shoe: "boot" }] },
+    { z: true, src: [HBI, "Is gingham having a moment, or is it just recession?", "https://www.harpersbazaar.in/fashion/story/is-gingham-having-a-moment-or-is-it-just-recession-1235204-2025-07-01", "Jul 2025"] }],
+  [65, "Tb", "Terbium", "Tooth Bling", "Hip-hop-rooted tooth gems and grills as a bold accessory.", "Crystal tooth gem, custom grill, gold cap", "Start with one tiny crystal.",
+    { bg: "yellow", gr: "black", set: ["sparkles"], figs: [{ s: 1.12, top: "hoodie", c: "black", low: "baggy", l: "denim", h: "short", sk: "skin2", a: ["chain", "cap"], ac: "white", shoe: "sneaker" }] },
+    { z: true, src: S_ELLE_SUBV }],
+  [66, "Dy", "Dysprosium", "Desi Y2K", "Filmy Y2K glam: early-2000s Bollywood updated for festivals and nights out.", "Cropped choli with jeans, stacked bangles, shiny bindis, low-rise denim", "Wear a choli as a crop top with jeans.",
+    { bg: "pink", gr: "yellow", set: ["stars"], figs: [{ top: "babytee", c: "yellow", pt: "mirror", low: "jeans", l: "denim", h: "open", a: ["butterfly", "bindi", "bangles"], ac: "rani", shoe: "jutti" }] },
+    { z: true, src: S_ELLE_MASALA }],
+  [67, "Ho", "Holmium", "Hot-Girl Saree", "The saree restyled for parties, concerts and dinners, often pre-draped with corset or halter blouses.", "Pre-draped saree, corset blouse, halter blouse, saree skirt", "Swap the blouse for a halter.",
+    { bg: "black", gr: "plum", set: ["disco"], figs: [{ top: "corset", c: "silver", pt: "sparkle", low: "saree", l: "black", pl: "sparkle", lay: ["pallu"], y: "black", py: "sparkle", b: "grey", h: "open", a: ["hoops"], ac: "grey" }] },
+    { z: true, src: S_AZA }],
+  [68, "Er", "Erbium", "Everyday Rituals", "Dressing up for small daily moments, as if every day were a ceremony.", "A good shirt, a polished shoe, a ring you love", "Wear the nice thing on a Tuesday.",
+    { bg: "peach", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "dress", c: "green", pt: "floral", h: "lowbun", a: ["pearls"], hold: "coffee", hc2: "kaapi", shoe: "heel" }] },
+    { z: true, src: ["Marie Claire", "Gen Z's 2026 Fashion Trends Celebrate Elevated Self-Expression", "https://www.marieclaire.com/fashion/gen-z-fashion-trends-2026/", "Jan 2026"] }],
+  [69, "Tm", "Thulium", "Tailor-Made", "Gen Z takes screenshots and sketches to local tailors for one-off pieces.", "Thrifted blazer over corset, sari skirt, tailor copy of a runway look", "Bring a screenshot to your tailor.",
+    { bg: "yellow", gr: "kaapi", set: ["tags"], figs: [{ top: "corset", c: "teal", low: "skirt", l: "maroon", pl: "paisley", lay: ["blazer"], y: "beige", h: "pony", a: ["hoops"], shoe: "heel" }] },
+    { z: true, src: [CSI, "Gen Z is bringing made-to-measure fashion back and making it cooler than ever", "https://www.cosmopolitan.in/fashion/features/story/gen-z-is-bringing-made-to-measure-fashion-back-and-making-it-cooler-than-ever-1373726-2026-04-11", "Apr 2026"] }],
+  [70, "Yb", "Ytterbium", "Yellow, Buttered", "Butter yellow holds for another season, now paired with icy blue.", "Butter-yellow dress, powder-blue shirt, butter-yellow saree", "Pair butter yellow with powder blue.",
+    { bg: "sky", gr: "beige", set: ["plants"], figs: [{ top: "slip", c: "yellow", lay: ["jacket"], y: "sky", h: "lowbun", a: ["studs"], hold: "clutch", hc2: "white", shoe: "heel" }] },
+    { z: true, src: ["Dazed", "Hot pants, pubes and protest tees: The 2025 trend report is here", "https://www.dazeddigital.com/fashion/article/69281/1/2025-fashion-trend-report-is-here-protect-the-dolls-pubic-hair", "Dec 2025"] }],
+  [71, "Lu", "Lutetium", "Lungi Edit", "The lungi, veshti and sarong as menswear's defining silhouette.", "Kanjeevaram veshti, sarong wrap, cropped jacket, leather sandals", "Wear a veshti with a cropped jacket.",
+    { bg: "green", gr: "beige", set: ["palm"], figs: [{ x: 42, top: "shirt", c: "white", low: "dhoti", l: "ivory", b: "gold", lay: ["jacket"], y: "kaapi", h: "short", sk: "skin2", stache: true, shoe: "kolhapuri" }] },
+    { src: [ELI, "The Lungi Edit: Menswear's Most Defining Silhouette This Season", "https://elle.in/fashion/the-lungi-edit-menswears-most-defining-silhouette-this-season-11173028", "Mar 2026"] }],
+  [72, "Hf", "Hafnium", "Hybrid Fit", "Young Indian men wear kurtas and handwoven bandhgalas as streetwear with sneakers and heirloom jewellery.", "Handwoven bandhgala, half-sleeve kurta, sneakers, brooch", "Wear your bandhgala with sneakers.",
+    { bg: "rust", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "sherwani", c: "indigo", pt: "chevron", low: "jeans", l: "black", h: "short", sk: "skin", a: ["chain"], shoe: "sneaker" }] },
+    { z: true, src: [HBI, "The new maharaja: How Indian men rewrote the dress code", "https://www.harpersbazaar.in/fashion/story/the-new-maharaja-how-indian-men-rewrote-the-dress-code-1382573-2026-04-28", "Apr 2026"] }],
+  [73, "Ta", "Tantalum", "Tactile", "Texture you want to touch: shaggy knits, bouclé, fringe and crinkled fabrics on FW26 runways.", "Bouclé jacket, shaggy knit, crinkled skirt, fuzzy bag", "Mix two textures in one colour.",
+    { bg: "beige", gr: "kaapi", set: ["plants"], figs: [{ top: "fittee", c: "cream", pt: "grid", low: "skirt", l: "kaapi", pl: "diag", lay: ["jacket"], y: "beige", py: "dots", h: "lowbun", shoe: "boot" }] },
+    { src: ["Coveteur", "The Fall/Winter 2026 Runway Trend Report", "https://coveteur.com/fall-winter-2026-runway-trends", "Mar 2026"] }],
+  [74, "W", "Tungsten", "Waftcore", "Light, floaty fabrics that move as you walk, a top trend of the spring 2027 shows.", "Chiffon dress, floaty scarf, sheer layers, flat sandals", "Pick fabric that moves when you turn.",
+    { bg: "sky", gr: "peach", set: ["waves"], figs: [{ x: 44, top: "anarkali", c: "lav", pt: "sparkle", b: "white", lay: ["drape"], y: "pink", h: "open", a: ["studs"] }] },
+    { src: ["Vogue", "Top Trends of the Spring 2027 Ready-to-Wear Season Span Skirts, Bra Tops, and Misfit Glamour", "https://www.vogue.com/article/the-top-trends-of-the-spring-2027-ready-to-wear-season", "Oct 2026"] }],
+  [75, "Re", "Rhenium", "Regency", "Jane Austen dressing: empire waists, puff sleeves and soft romance.", "Empire-waist dress, puff sleeves, gloves, ribbon", "Raise the waistline to just under the bust.",
+    { bg: "green", gr: "beige", set: [["arches", "cream"]], figs: [{ top: "gown", sl: "puff", c: "white", pt: "floral", lay: ["belt"], b: "sky", h: "bun", a: ["pearls", "bow"], ac: "sky" }] },
+    { src: ["Glamour", "Regency Era Fashion Is Trending for Fall 2026: Here's How to Dress Like You're in a Jane Austen Novel", "https://www.glamour.com/story/regency-era-fashion-is-trending-how-to-wear-it", "Oct 2026"] }],
+  [76, "Os", "Osmium", "Office Siren", "The sexy late-90s office look: tight skirts, button-downs and thin rectangular glasses.", "Pencil skirt, crisp button-down, slim glasses, kitten heels", "Add slim glasses to a pencil skirt.",
+    { bg: "grey", gr: "black", set: [["skyline", "indigo"]], figs: [{ top: "shirt", c: "white", low: "skirt", l: "black", h: "lowbun", hc: "hair2", a: ["specs", "lipstick"], hold: "phone", shoe: "heel" }] },
+    { z: true, src: ["Fortune", "Gen Zers are getting in trouble for not knowing how to dress at work", "https://fortune.com/2025/01/26/gen-z-dress-coded-experts-critical-fashion-tip-office-siren-corpcore-tiktok/", "Jan 2025"] }],
+  [77, "Ir", "Iridium", "It-girl Rewind", "Recreating Gossip Girl and Gilmore Girls wardrobes through thrift and siblings' closets.", "Henley over lace cami, cable knit, babydoll top, trench", "Pick one TV character and borrow one look.",
+    { bg: "maroon", gr: "beige", set: [["tv", 82, 28]], figs: [{ x: 44, top: "shirt", c: "white", low: "mini", l: "indigo", pl: "checks", lay: ["blazer"], y: "maroon", h: "open", hc: "hair2", a: ["bow"], ac: "indigo", shoe: "heel" }] },
+    { z: true, src: [CSI, "How the It Girls of 2025 are raiding TV's most iconic wardrobes", "https://www.cosmopolitan.in/fashion/features/story/how-the-it-girls-of-2025-are-raiding-tvs-most-iconic-wardrobes-1292006-2025-10-22", "Oct 2025"] }],
+  [78, "Pt", "Platinum", "Peplum Tailoring", "The peplum returns with sharper proportions on jackets, coats and dresses.", "Peplum jacket, peplum skirt suit, pencil skirt, tailored trousers", "Pair a peplum jacket with slim trousers.",
+    { bg: "teal", gr: "grey", set: ["spotlight"], figs: [{ top: "corset", c: "black", low: "jeans", l: "black", lay: ["blazer", "belt"], y: "black", b: "gold", h: "lowbun", a: ["studs"], shoe: "heel" }] },
+    { src: [HBI, "Peplum is back on the fashion agenda", "https://www.harpersbazaar.in/fashion/story/peplum-is-back-on-the-fashion-agenda-1464773-2026-10-19", "Oct 2026"] }],
+  [79, "Au", "Gold", "Anarkali Updated", "The Anarkali never left. Now it's lighter, in Chanderi with tonal embroidery.", "Chanderi Anarkali, jacket-style bodice, tulle dupatta, tonal resham", "Choose a sheer dupatta.",
+    { bg: "peach", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "anarkali", c: "mint", pt: "floral", b: "gold", lay: ["dupatta"], y: "white", h: "bun", a: ["tikka", "jhumka"] }] },
+    { src: [ELI, "The Anarkali Isn't Back; It Was Never Gone", "https://elle.in/fashion/it-was-never-gone-10948367", "Dec 2025"] }],
+  [80, "Hg", "Mercury", "Heritage Gold", "Celebrity brides choose regional heirloom jewellery like temple gold, polki and kasu mala over diamonds.", "Kasu mala, oversized nath, mundavalya, vanki armlet", "Borrow one piece from family.",
+    { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ s: 1.08, top: "blouse", c: "green", low: "saree", l: "red", pl: "zari", lay: ["pallu"], y: "red", b: "gold", h: "bun", a: ["layered", "bignath", "matha"] }] },
+    { src: [ELI, "The Rise of Traditional Jewellery in Celebrity Weddings", "https://elle.in/fashion/the-rise-of-traditional-jewellery-in-celebrity-weddings-11160578", "Feb 2026"] }],
+  [81, "Tl", "Thallium", "Teal Luxe", "WGSN and Coloro's colour of 2026: a blue-green between ocean and forest.", "Teal trousers, teal turtleneck, teal knit, teal coat", "Pair teal with chocolate brown.",
+    { bg: "kaapi", gr: "teal", set: [["window", "sky"]], figs: [{ x: 44, top: "fittee", c: "teal", low: "palazzo", l: "teal", lay: ["jacket"], y: "kaapi", h: "lowbun", a: ["hoops"], ac: "gold", shoe: "heel" }] },
+    { src: ["Marie Claire", "The Top 2026 Fashion Trends Taking Shape in Real Time", "https://www.marieclaire.com/fashion/fashion-trends-2026/", "Jan 2026"] }],
+  [82, "Pb", "Lead", "Pouch Bag", "Soft, slouchy pouch bags carried by hand.", "Leather pouch, gathered clutch, soft hobo", "Carry it by the gathers.",
+    { bg: "pink", gr: "kaapi", set: ["sparkles"], figs: [{ top: "slip", c: "black", h: "lowbun", a: ["hoops"], hold: "potli", hc2: "rust", shoe: "heel" }] },
+    { src: ["Who What Wear", "These Are the 5 Biggest Bag Trends of 2026, Period", "https://www.whowhatwear.com/fashion/trends/bag-trends-2026", "Aug 2026"] }],
+  [83, "Bi", "Bismuth", "Bindi Reclaimed", "#ReclaimTheBindi: young South Asians wearing bindis on their own terms, not as a 'festival accessory'.", "Bindi, stacked bangles, nose ring, Om pendant", "Wear a bindi with your everyday clothes.",
+    { bg: "red", gr: "maroon", set: ["sparkles"], figs: [{ s: 1.12, top: "fittee", c: "white", low: "jeans", l: "denim", h: "open", a: ["bigbindi", "nath", "bangles", "necklace"], ac: "gold" }] },
+    { z: true, src: [HBI, "Why 2026 is shaping up to be the year of bindis, bangles, and Indian baddies", "https://www.harpersbazaar.in/culture/story/why-2026-is-shaping-up-to-be-the-year-of-bindis-bangles-and-indian-baddies-1351946-2026-02-26", "Feb 2026"] }],
+  [84, "Po", "Polonium", "Polka Dots", "Polka dots are back as a playful vintage print, high in Gen Z searches.", "Polka-dot dress, dotted blouse, dotted scarf, Mary Janes", "Pick one dotted piece and keep the rest plain.",
+    { bg: "yellow", gr: "red", set: [["vinyl", 82, 26]], figs: [{ x: 44, top: "dress", c: "red", pt: "polka", h: "bob", a: ["cateye", "pearls", "lipstick"], ac: "ink", shoe: "heel" }] },
+    { z: true, src: S_APPAREL }],
+  [85, "At", "Astatine", "Animal Tracks", "Animal print goes beyond leopard: zebra, snake, cow and tiger.", "Zebra skirt, snake boots, cow-print bag, tiger knit", "Mix one animal print with denim.",
+    { bg: "olive", gr: "kaapi", set: ["plants"], figs: [{ top: "fittee", c: "black", low: "skirt", l: "beige", pl: "leopard", lay: ["jacket"], y: "kaapi", h: "open", a: ["hoops"], shoe: "boot" }] },
+    { src: ["Who What Wear", "8 Animal-Print Trends for Fall 2026 (Not Just Leopard!)", "https://www.whowhatwear.com/fashion/fall/animal-print-trends-fall-2026", "Oct 2026"] }],
+  [86, "Rn", "Radon", "Romance Noir", "Dark romance on FW26 runways: gothic lace, black velvet and Victorian collars.", "Black lace dress, velvet, high collar, opera gloves", "Try black lace in daylight.",
+    { bg: "night", gr: "black", set: ["moon"], figs: [{ top: "gown", c: "black", pt: "floral", lay: ["cape"], y: "maroon", h: "open", hc: "hair", a: ["choker", "lipstick"], ac: "maroon" }] },
+    { src: ["Coveteur", "The Fall/Winter 2026 Runway Trend Report", "https://coveteur.com/fall-winter-2026-runway-trends", "Mar 2026"] }],
+  [87, "Fr", "Francium", "Fringe Revival", "Fringe and feathers on jackets, skirts and bags, 'flight mode' on SS26 runways.", "Fringe skirt, feather trim, fringe bag, suede jacket", "Let one piece swing, keep the rest still.",
+    { bg: "rust", gr: "yellow", set: ["bunting"], figs: [{ top: "crop", c: "kaapi", low: "jeans", l: "denim", lay: ["jacket"], y: "beige", h: "open", a: ["hat", "beads"], ac: "kaapi", shoe: "boot" }] },
+    { src: ["ELLE Singapore", "The Spring/Summer 2026 Trend Report", "https://elle.com.sg/fashion/what-to-wear/spring-summer-2026-trend-report/", "Mar 2026"] }],
+  [88, "Ra", "Radium", "Romantic Athletics", "Softened, elegant sportswear, amplified by the 2026 World Cup.", "Tennis whites, vintage jersey, bike shorts with ballet flats", "Wear bike shorts with ballet flats.",
+    { bg: "green", gr: "beige", set: ["net"], figs: [{ top: "fittee", c: "white", low: "shorts", l: "black", lay: ["jacket"], y: "pink", h: "pony", a: ["bow"], ac: "white", hold: "racket", shoe: "jutti" }] },
+    { z: true, src: S_DEPOP }],
+  [89, "Ac", "Actinium", "Academia Chic", "Dark academia: a moody, scholarly vintage look named as a Gen Z micro-aesthetic.", "Tweed blazer, plaid skirt, loafers, cable knit", "Wear brown on brown with a book.",
+    { bg: "kaapi", gr: "maroon", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["blazer"], y: "kaapi", py: "checks", low: "skirt", l: "olive", h: "lowbun", a: ["specs"], hold: "book", hc2: "maroon", shoe: "boot" }] },
+    { z: true, src: S_ELLE_GENZ }],
+  [90, "Th", "Thorium", "Thriftbeast", "'The hypebeast is dead': worn-in, thrifted and customised sneakers replace resale flexing.", "Thrifted Reeboks, DIY lace charms, beaten-up Sambas", "Clean your old pair instead of buying new.",
+    { bg: "orange", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "hoodie", c: "teal", pt: "patch", low: "baggy", l: "beige", h: "short", sk: "skin", a: ["cap"], ac: "red", shoe: "sneaker" }] },
+    { z: true, src: S_MWI_FEET }],
+  [91, "Pa", "Protactinium", "Patchwork", "Patchworked and pieced-together clothes, tied to thrift flips.", "Patchwork jeans, patchwork jacket, quilted tote, patchwork skirt", "Start with a patchwork tote.",
+    { bg: "sage", gr: "kaapi", set: ["line"], figs: [{ top: "tee", c: "teal", pt: "patch", low: "jeans", l: "denim", pl: "patch", h: "bob", hc: "hair2", shoe: "sneaker" }] },
+    { z: true, src: S_APPAREL }],
+  [92, "U", "Uranium", "Upcycling", "Hand-painting, patching and reworking clothes, often into small online businesses.", "Hand-painted trainers, customised tote, patched jacket, jeans-to-skirt", "Paint one motif on an old tote.",
+    { bg: "yellow", gr: "kaapi", set: ["line"], figs: [{ top: "dress", c: "rani", pt: "zari", lay: ["jacket"], y: "denim", py: "patch", h: "bob", a: ["hoops"], ac: "gold", shoe: "sneaker" }] },
+    { z: true, src: [ELI, "Did Gen Z Just Reinvent DIY Culture And Make It Cool Again?", "https://elle.in/life-culture/gen-z-is-redefining-style-through-diy-11898149", "Jun 2026"] }],
+  [93, "Np", "Neptunium", "New Prep", "Team-spirit prep on the spring 2027 runways: varsity knits, pleats and stripes.", "Varsity cardigan, pleated skirt, striped shirt, loafers", "Layer a varsity knit over a shirt.",
+    { bg: "green", gr: "beige", set: ["books"], figs: [{ x: 58, top: "shirt", c: "white", lay: ["vest"], y: "maroon", py: "stripes", low: "mini", l: "indigo", pl: "checks", h: "bob", a: ["specs"], hold: "book", shoe: "heel" }] },
+    { src: ["Vogue", "Top Trends of the Spring 2027 Ready-to-Wear Season Span Skirts, Bra Tops, and Misfit Glamour", "https://www.vogue.com/article/the-top-trends-of-the-spring-2027-ready-to-wear-season", "Oct 2026"] }],
+  [94, "Pu", "Plutonium", "Power, Undone", "Gen Z remixes the power suit with girlish, sheer or casual details.", "Oversized blazer, tie through belt loops, bow pins, tulle skirt with a suit jacket", "Wear a blazer over a tulle skirt.",
+    { bg: "indigo", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "fittee", c: "white", low: "skirt", l: "pink", pl: "grid", lay: ["blazer"], y: "black", h: "bob", a: ["tie", "studs"], ac2: "pink", shoe: "sneaker" }] },
+    { z: true, src: [CSI, "How Gen Z is rewriting the rules of power dressing in 2025", "https://www.cosmopolitan.in/fashion/features/story/how-gen-z-is-rewriting-the-rules-of-power-dressing-in-2025-1291184-2025-10-17", "Oct 2025"] }],
+  [95, "Am", "Americium", "Anti-Minimal", "A curated hodgepodge that rejects the clean-girl look: more layers, more stuff, more you.", "Mixed prints, overstuffed bag, charms, scarves", "Add one more thing than feels safe.",
+    { bg: "teal", gr: "rust", set: ["confetti"], figs: [{ top: "shortkurta", c: "yellow", pt: "paisley", low: "jeans", l: "rust", lay: ["jacket"], y: "denim", h: "open", a: ["hat", "bigjhumka", "scarf", "bag"], ac: "red", ac2: "rani", shoe: "boot" }] },
+    { z: true, src: ["Marie Claire", "Gen Z's 2026 Fashion Trends Celebrate Elevated Self-Expression", "https://www.marieclaire.com/fashion/gen-z-fashion-trends-2026/", "Jan 2026"] }],
+  [96, "Cm", "Curium", "Charm Mania", "Handbags loaded with charms and trinkets. Lyst reports demand up 153% year on year.", "Bag charms, keyrings, beaded charms, customised totes", "Clip three charms of different sizes.",
+    { bg: "pink", gr: "beige", set: ["sparkles"], figs: [{ top: "babytee", c: "white", low: "skirt", l: "denim", h: "pony", a: ["bow"], ac: "pink", shoe: "sneaker" }], obj: [["charmbag", 76]] },
+    { z: true, src: [ELI, "Did Gen Z Just Reinvent DIY Culture And Make It Cool Again?", "https://elle.in/life-culture/gen-z-is-redefining-style-through-diy-11898149", "Jun 2026"] }],
+  [97, "Bk", "Berkelium", "Baddie Kajal", "The 'Indian Baddie': kajal, nose pins and maximal ornament replacing the minimal clean girl.", "Kajal, metallic bindi, kamarbandh over denim, Banarasi halter", "Line the waterline. Smudge the rest.",
+    { bg: "peach", gr: "kaapi", set: [], obj: [["eye", 50, 50, .72]] },
+    { src: [HBI, "The 'Indian Baddie' aesthetic is replacing the era of the clean girl", "https://www.harpersbazaar.in/fashion/story/the-indian-baddie-aesthetic-is-replacing-the-era-of-the-clean-girl-1390074-2026-05-12", "May 2026"] }],
+  [98, "Cf", "Californium", "Comfort Footwear", "'Ugly-iconic' comfort shoes like Crocs with Jibbitz, Hokas and Tasmans that still make a statement.", "Crocs with Jibbitz, Hokas, UGG Tasman, Merrells", "Clip on one charm you love.",
+    { bg: "lav", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "hoodie", c: "sage", low: "palazzo", l: "grey", h: "lowbun", hold: "coffee", hc2: "kaapi", shoe: "boot" }] },
+    { z: true, src: S_MWI_FEET }],
+  [99, "Es", "Einsteinium", "Embroidered Shirts", "Hand embroidery moves off occasion wear into relaxed menswear, as seen at Lakmé Fashion Week.", "Hand-embroidered shirt, nalki Chanderi, embroidered denim, patchwork jacket", "Wear an embroidered shirt with plain jeans.",
+    { bg: "teal", gr: "beige", set: ["plants"], figs: [{ top: "shirt", c: "ivory", pt: "floral", low: "jeans", l: "denim", h: "short", sk: "skin2", stache: true, shoe: "kolhapuri" }] },
+    { src: S_MWI_LFW }],
+  [100, "Fm", "Fermium", "Faux Mink", "Statement faux fur, from coats to collars and cuffs.", "Faux-fur coat, fur collar, fur-trim bag", "Wear faux fur with jeans, not a gown.",
+    { bg: "maroon", gr: "black", set: ["sparkles"], figs: [{ top: "slip", c: "black", h: "open", hc: "hair2", lay: ["shawl", "jacket"], y: "kaapi", py: "leopard", a: ["glasses", "chain", "lipstick", "hoops"], shoe: "heel" }] },
+    { src: ["W Magazine", "The 14 Top Trends From the Fall 2026 Runways", "https://wmagazine.com/fashion/fall-2026-fashion-trends", "Apr 2026"] }],
+  [101, "Md", "Mendelevium", "Mermaid Drape", "A saree drape that hugs the hips and flares at the hem, for cocktails and receptions.", "Satin or sequin saree, tucked pleats, sleek blouse, heels", "Choose a fabric with weight so it flares.",
+    { bg: "blue", gr: "teal", set: ["waves", "sparkles"], figs: [{ top: "corset", c: "teal", pt: "sparkle", low: "fishtail", l: "mint", pl: "sparkle", b: "teal", lay: ["drape"], y: "mint", h: "open", a: ["pearls"] }] },
+    { z: true, src: S_ELLE_DRAPES7 }],
+  [102, "No", "Nobelium", "Nostalgia Overload", "Neo-nostalgia: remixing the 70s, 90s and 2000s into one personal look.", "Bandage dress, long jorts, archival pieces, medieval touches", "Mix two decades in one outfit.",
+    { bg: "orange", gr: "yellow", set: [["sun", "yellow", 50, 30]], figs: [{ top: "crop", c: "yellow", pt: "floral", low: "palazzo", l: "denim", h: "open", hc: "hair2", a: ["glasses", "flowerhair", "beads"], shoe: "kolhapuri" }] },
+    { z: true, src: S_DEPOP }],
+  [103, "Lr", "Lawrencium", "Lace-trim Rush", "Lace-trimmed midi skirts are 'the skirt everyone's wearing'.", "Lace-trim satin midi, ballet flats, fitted tee, slim cardigan", "Pair it with a plain white tee.",
+    { bg: "blush", gr: "beige", set: [["window", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "skirt", l: "lav", pl: "floral", h: "lowbun", a: ["studs"], shoe: "jutti" }] },
+    { src: [CSI, "Meet the skirt trend everyone's wearing right now", "https://www.cosmopolitan.in/fashion/features/photo/meet-the-skirt-trend-everyones-wearing-right-now-1434447-2026-08-06", "Aug 2026"] }],
+  [104, "Rf", "Rutherfordium", "Relaxed Fit", "Indian menswear loosening up into soft, fluid suits and easy kurtas.", "Relaxed suit, airy jacket, fluid shirt, easy kurta", "Size up your next suit jacket.",
+    { bg: "sage", gr: "beige", set: [["arch", "cream"]], figs: [{ top: "shirt", c: "beige", low: "palazzo", l: "beige", lay: ["blazer"], y: "sage", h: "short", sk: "skin", stache: true, shoe: "kolhapuri" }] },
+    { src: S_MWI_FDCI }],
+  [105, "Db", "Dubnium", "Dark Baggies", "Dark, baggy denim for men, worn by NBA stars and fifty-something actors alike.", "Dark baggy jeans, boxy tee, chunky shoes", "Go dark rinse, one size up.",
+    { bg: "blue", gr: "grey", set: [["skyline", "night"]], figs: [{ top: "tee", c: "white", low: "baggy", l: "indigo", h: "short", sk: "skin2", a: ["chain", "cap"], ac: "black", shoe: "sneaker" }] },
+    { src: ["GQ", "Everyone Is Wearing Dark, Baggy Denim Now", "https://www.gq.com/story/baggy-dark-denim-jeans-for-men-trend", "Oct 2026"] }],
+  [106, "Sg", "Seaborgium", "Saree Gown", "Saree-gown hybrids and sculptural couture sarees, seen at the Met Gala 2026.", "Chiffon saree-gown, sculptural saree, Kanjivaram-base gown, embroidered cape", "Choose a pre-stitched saree-gown for ease.",
+    { bg: "maroon", gr: "red", set: ["spotlight", "sparkles"], figs: [{ top: "gown", c: "gold", pt: "sparkle", lay: ["drape"], y: "gold", py: "zari", h: "lowbun", a: ["studs", "lipstick"] }] },
+    { src: [ELI, "Met Gala 2026: India Cuts Through With Craft And Form", "https://elle.in/fashion/met-gala-2026-india-cuts-through-with-craft-and-form-11804215", "May 2026"] }],
+  [107, "Bh", "Bohrium", "Back Haar", "Necklaces and chains worn down the back, now built into couture blouses.", "Back chain, reversed lariat, pearl-draped blouse, embellished gown", "Wear a long necklace backwards.",
+    { bg: "plum", gr: "maroon", set: ["sparkles"], figs: [{ flip: true, top: "blouse", c: "gold", low: "lehenga", l: "rani", pl: "zari", b: "gold", h: "lowbun", a: ["pearls", "layered"] }] },
+    { src: [HBI, "Back jewellery isn't going anywhere—it's just getting a couture upgrade", "https://www.harpersbazaar.in/fashion/story/back-jewellery-isnt-going-anywhere-its-just-getting-a-couture-upgrade-1442979-2026-08-26", "Aug 2026"] }],
+  [108, "Hs", "Hassium", "Heavy Silver", "Silver jewellery is 'the new boutonnière' for grooms: pinky rings, hand bracelets, chains.", "Pinky ring, hand bracelet, chain necklace, groom brooch", "Stack two silver rings on one hand.",
+    { bg: "peach", gr: "sage", set: ["marigold"], figs: [{ top: "sherwani", c: "pink", pt: "zari", low: "churidar", l: "ivory", h: "short", sk: "skin", stache: true, a: ["chain", "safa"], ac: "pink" }] },
+    { src: S_ELLE_WED }],
+  [109, "Mt", "Meitnerium", "Mint Tones", "Mint green comes through as a key colour on the fall 2026 runways.", "Mint knit, mint trousers, mint coat, mint bag", "Wear mint with cream.",
+    { bg: "mint", gr: "sage", set: ["plants"], figs: [{ top: "fittee", c: "mint", low: "palazzo", l: "mint", lay: ["blazer"], y: "mint", h: "lowbun", a: ["studs"], hold: "clutch", hc2: "white", shoe: "heel" }] },
+    { src: ["Harper's Bazaar", "The Top 14 Trends From the Spring 2027 Season", "https://www.harpersbazaar.com/fashion/fashion-week/a74111249/fall-2026-runway-trends_1791832659/", "Oct 2026"] }],
+  [110, "Ds", "Darmstadtium", "Desert Style", "Desert chic on the fall 2026 runways: sand, rust and sun-faded neutrals.", "Suede jacket, sand trousers, rust scarf, desert boots", "Layer three sand tones.",
+    { bg: "peach", gr: "rust", set: [["sun", "orange", 80, 20], "hills"], figs: [{ top: "shirt", c: "beige", low: "palazzo", l: "rust", lay: ["jacket"], y: "kaapi", h: "lowbun", a: ["hat"], ac: "beige", shoe: "boot" }] },
+    { src: ["Harper's Bazaar", "The Top 14 Trends From the Spring 2027 Season", "https://www.harpersbazaar.com/fashion/fashion-week/a74111249/fall-2026-runway-trends_1791832659/", "Oct 2026"] }],
+  [111, "Rg", "Roentgenium", "Red Glam", "A pop of red is the season's quickest update, from bags to shoes to a full red look.", "Red bag, red heels, red coat, red lip", "Add one red accessory to a neutral outfit.",
+    { bg: "black", gr: "red", set: ["spotlight", "sparkles"], figs: [{ top: "gown", c: "red", pt: "sparkle", h: "open", hc: "hair2", a: ["studs", "lipstick"], hold: "clutch", hc2: "gold" }] },
+    { src: ["Harper's Bazaar", "Pops of Red Were Trending on the Runways\u2014Here's How to Style Them", "https://www.harpersbazaar.com/fashion/trends/a73961176/red-color-trend-2026/", "Oct 2026"] }],
+  [112, "Cn", "Copernicium", "Cherry Notes", "Cherry red and unexpected colour pairings are replacing all-pink Barbiecore.", "Cherry-red bag, butter-yellow top, colour-clash outfit", "Pair cherry red with butter yellow.",
+    { bg: "yellow", gr: "red", set: ["confetti"], figs: [{ top: "fittee", c: "yellow", low: "skirt", l: "red", h: "pony", a: ["hoops"], ac: "red", hold: "clutch", hc2: "red", shoe: "heel" }] },
+    { src: [ELI, "The Fashion Trends That Are Already Over In 2026 — Time To Move On", "https://elle.in/trending/fashion-trends-were-leaving-behind-11883143", "May 2026"] }],
+  [113, "Nh", "Nihonium", "Nineties Hankies", "Hair handkerchiefs and bandanas are back on street style.", "Silk hair handkerchief, bandana, claw clip", "Tie a silk square over a low bun.",
+    { bg: "pink", gr: "yellow", set: [["mirror", "sky"]], figs: [{ x: 44, s: 1.1, top: "fittee", c: "white", low: "jeans", l: "denim", h: "lowbun", a: ["beret", "hoops"], ac: "red" }] },
+    { src: ["Vogue", "How to Wear a Handkerchief According to the Street Style Set", "https://www.vogue.com/article/street-style-handkerchief-trend", "Aug 2026"] }],
+  [114, "Fl", "Flerovium", "Flared Legs", "'70s flare jeans return, with Lyst reporting a huge jump in searches.", "Flare jeans, platform boots, fitted knit, big belt", "Hem flares to just graze the floor.",
+    { bg: "orange", gr: "yellow", set: ["disco"], figs: [{ top: "fittee", c: "rust", low: "palazzo", l: "denim", lay: ["belt"], b: "kaapi", h: "open", hc: "hair2", a: ["glasses", "hoops"], ac: "gold", shoe: "boot" }] },
+    { src: ["Glamour", "The Fall 2026 Denim Trends Are Bringing Back '70s Silhouettes", "https://www.glamour.com/story/fall-denim-trends-2026", "Oct 2026"] }],
+  [115, "Mc", "Moscovium", "Monastic Chic", "Robe-like layers, hoods and plain fabric in calm, quiet menswear.", "Long robe coat, hood, plain trousers, sandals", "Choose one long layer in a single colour.",
+    { bg: "beige", gr: "kaapi", set: [["arches", "cream"]], figs: [{ top: "sherwani", c: "kaapi", low: "palazzo", l: "kaapi", lay: ["cape"], y: "beige", h: "buzz", sk: "skin2", shoe: "kolhapuri" }] },
+    { src: ["GQ", "5 Stylish Swerves to Steal Straight From the Paris Runways", "https://www.gq.com/story/paris-fashion-week-trends-2026", "Oct 2026"] }],
+  [116, "Lv", "Livermorium", "Lilac & Violet", "Royal purple and lilac, from shoes to eyeshadow.", "Purple shoes, lilac knit, violet suit, purple eyeshadow", "Wear purple shoes with all black.",
+    { bg: "lav", gr: "plum", set: ["sparkles"], figs: [{ top: "fittee", c: "plum", low: "palazzo", l: "lav", lay: ["blazer"], y: "lav", h: "bun", a: ["hoops"], ac: "grey", shoe: "heel" }] },
+    { src: ["Glamour", "Purple Shoes Are the One Fall Trend That Can Make Every Outfit More Interesting", "https://www.glamour.com/story/purple-shoes-fall-2026-trend", "Oct 2026"] }],
+  [117, "Ts", "Tennessine", "Tuxedo Season", "The tuxedo is reworked for everyone on the spring 2027 runways.", "Satin-lapel tux, bow tie, cummerbund, loafers", "Wear the jacket with jeans.",
+    { bg: "black", gr: "grey", set: ["spotlight"], figs: [{ top: "shirt", c: "white", low: "jeans", l: "black", lay: ["blazer"], y: "black", h: "bob", a: ["tie", "studs"], ac2: "black", shoe: "boot" }] },
+    { src: ["Harper's Bazaar", "Why I'm Still Thinking About London Fashion Week", "https://www.harpersbazaar.com/fashion/trends/a73943665/london-fashion-week-trends/", "Oct 2026"] }],
+  [118, "Og", "Oganesson", "Opera Glam", "Vintage-theatre glamour for parties and weddings: opera gloves, velvet and masquerade touches.", "Opera gloves, velvet gown, draped evening wear, masquerade mask", "Add long gloves to a simple dress.",
+    { bg: "night", gr: "maroon", set: ["curtain", "spotlight"], figs: [{ top: "gown", c: "maroon", pt: "floral", h: "lowbun", a: ["pearls", "lipstick", "studs"], sl: "long" }] },
+    { src: ["ELLE", "Why Opera-Inspired Fashion Is the Next Biggest 2026 Trend", "https://www.elle.com/fashion/trend-reports/a70886109/opera-fashion-trend-2026/", "Mar 2026"] }],
 ];
 
 
@@ -1065,8 +1453,7 @@ const SETS = {
   noble: [2, 10, 18, 36, 54, 86, 118], metalloid: [5, 14, 32, 33, 51, 52],
   post: [13, 31, 49, 50, 81, 82, 83, 84, 113, 114, 115, 116],
 };
-const PICKS = ["Sr", "Mo", "Lu", "Gd", "Rb", "Hs", "Br", "Og"];
-const DECK = ["Og", "Gd", "Sr", "B", "Mo"];
+const PICKS = ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
 function family(n) {
   for (const [k, v] of Object.entries(SETS)) if (v.includes(n)) return k;
   if (n >= 57 && n <= 71) return "lanthanide";
@@ -1090,14 +1477,14 @@ function place(n) {
   }
 }
 
-const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n) }));
+const els = ELEMENTS.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
 const get = (s) => bySym.get(s.toLowerCase());
 const $ = (id) => document.getElementById(id);
 let uid = 0;
-let current = null, activeFam = null;
+let current = null, activeFam = null, zOnly = false;
 
-const tileHTML = (e, id) => `<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
+const tileHTML = (e, id) => `${e.z ? `<span class="zbadge" title="Gen Z trend">Z</span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
 const cardHTML = (e, extra = "") => `<div class="card ${e.fam}"${extra}>
     <div class="card-in">
       <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
@@ -1108,37 +1495,6 @@ const cardHTML = (e, extra = "") => `<div class="card ${e.fam}"${extra}>
     </div>
     <div class="glare"></div>
   </div>`;
-
-// ---------- Hero deck ----------
-const deckIn = $("deckIn");
-const fan = [[-30, -16, 34], [-15, -8, 14], [0, 0, -4], [15, 8, 14], [30, 16, 34]];
-DECK.forEach((s, i) => {
-  const e = get(s), [rot, dx, dy] = fan[i];
-  const wrap = document.createElement("div");
-  wrap.innerHTML = cardHTML(e, ` role="button" tabindex="0" aria-label="Open ${e.trend}"`);
-  const c = wrap.firstElementChild;
-  const base = `translate(-50%, -50%) translate(${dx * 4.2}%, ${dy}px) rotate(${rot * .55}deg)`;
-  c.style.transform = base;
-  c.style.zIndex = i === 2 ? 5 : 5 - Math.abs(i - 2);
-  c.classList.add("float");
-  c.style.animationDelay = `${i * -1.3}s`;
-  c.addEventListener("mouseenter", () => c.style.transform = base + " translateY(-26px) scale(1.04)");
-  c.addEventListener("mouseleave", () => c.style.transform = base);
-  c.addEventListener("click", () => open(e));
-  c.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(e); } });
-  deckIn.appendChild(c);
-});
-const deck = $("deck");
-deck.addEventListener("pointermove", ev => {
-  const r = deck.getBoundingClientRect();
-  const x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
-  deckIn.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 10}deg)`;
-});
-deck.addEventListener("pointerleave", () => deckIn.style.transform = "");
-
-// ---------- Marquee ----------
-const items = els.map(e => `<span><b>${e.sym}</b>${e.trend}</span>`).join("");
-$("track").innerHTML = items + items;
 
 // ---------- Table ----------
 const grid = $("tableGrid");
@@ -1174,7 +1530,7 @@ key.innerHTML = `
     <div class="el ${sample.fam}">${tileHTML(sample, "k" + sample.sym)}</div>
     <p>Number &amp; symbol<span>26, Fe, as on any periodic table</span></p>
     <p>The illustration<span>the trend, drawn</span></p>
-    <p>Trend<span>Fe stands for Futuristic Ethnic</span></p>
+    <p>Trend<span>Fe stands for Fairy-tale Everyday</span></p>
   </div>
   <ul class="keylist">${Object.entries(FAMILIES).map(([k, name]) => `<li class="${k}">${name}<span>${counts[k]}</span></li>`).join("")}</ul>`;
 const narrow = window.matchMedia("(max-width: 900px)");
@@ -1183,12 +1539,15 @@ narrow.addEventListener("change", placeKey);
 placeKey();
 
 const segs = $("segs");
-segs.innerHTML = `<button type="button" class="seg" data-fam="" aria-pressed="true">All</button>` +
+segs.innerHTML = `<button type="button" class="seg" data-fam="" aria-pressed="true">All</button><button type="button" class="seg z" data-z aria-pressed="false"><i></i>Gen Z</button>` +
   Object.entries(FAMILIES).map(([k, name]) => `<button type="button" class="seg ${k}" data-fam="${k}" aria-pressed="false"><i></i>${name}</button>`).join("");
-segs.querySelectorAll(".seg").forEach(s => s.addEventListener("click", () => setFam(s.dataset.fam || null)));
+segs.querySelectorAll(".seg:not([data-z])").forEach(s => s.addEventListener("click", () => setFam(s.dataset.fam || null)));
+const zSeg = segs.querySelector("[data-z]");
+zSeg.addEventListener("click", () => setZ(!zOnly));
+function setZ(v) { zOnly = v; zSeg.setAttribute("aria-pressed", String(v)); filter(); }
 function setFam(f) {
   activeFam = f;
-  segs.querySelectorAll(".seg").forEach(s => s.setAttribute("aria-pressed", String((s.dataset.fam || null) === f)));
+  segs.querySelectorAll(".seg:not([data-z])").forEach(s => s.setAttribute("aria-pressed", String((s.dataset.fam || null) === f)));
   filter();
 }
 const q = $("q");
@@ -1196,7 +1555,7 @@ function filter() {
   const term = q.value.trim().toLowerCase();
   for (const e of els) {
     const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces}`.toLowerCase();
-    const ok = (!activeFam || e.fam === activeFam) && (!term || e.sym.toLowerCase() === term || hay.includes(term));
+    const ok = (!activeFam || e.fam === activeFam) && (!zOnly || e.z) && (!term || e.sym.toLowerCase() === term || hay.includes(term));
     tiles.get(e.n).classList.toggle("dim", !ok);
   }
 }
@@ -1226,14 +1585,275 @@ $("fams").innerHTML = Object.entries(FAMILIES).map(([k, name]) => {
     <span class="go">See all ${members.length} on the table →</span>
   </button>`;
 }).join("");
-document.querySelectorAll(".fam").forEach(f => f.addEventListener("click", () => { setFam(f.dataset.fam); jump("table"); }));
+document.querySelectorAll(".fam").forEach(f => f.addEventListener("click", () => { setFam(f.dataset.fam); setZ(false); show("table"); }));
 
-// ---------- Jumps ----------
-function jump(id) {
-  const t = id === "top" ? document.body : $(id);
-  t.scrollIntoView({ behavior: "smooth", block: "start" });
+// Gen Z elements
+const zEls = els.filter(e => e.z);
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Each scene as an image data URI: cheap to move in 3D and reuse
+const imgCache = new Map();
+function sceneImg(e) {
+  if (!imgCache.has(e.sym)) imgCache.set(e.sym, "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice">${scene("i" + e.sym, e.art)}</svg>`));
+  return imgCache.get(e.sym);
 }
-document.querySelectorAll("[data-jump]").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); jump(a.dataset.jump); }));
+
+// ---------- Orbit: a draggable sphere of all 118 elements ----------
+const orbitEl = $("orbit"), sphere = $("sphere");
+const orbs = [];
+{
+  const N = els.length, GA = Math.PI * (3 - Math.sqrt(5));
+  els.forEach((e, i) => {
+    const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = GA * i;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = `orb ${e.fam}`; b.tabIndex = -1;
+    b.setAttribute("aria-label", `${e.sym}, ${e.trend}`);
+    b.innerHTML = `<img src="${sceneImg(e)}" alt="" loading="lazy"><span><b>${e.sym}</b>${e.trend}</span>`;
+    sphere.appendChild(b);
+    orbs.push({ b, e, x: Math.cos(th) * r, y, z: Math.sin(th) * r });
+  });
+}
+let ax = -0.25, ay = 0, vx = 0, vy = 0.0028, orbitRAF = 0, dragging = null;
+const AUTO = 0.0028;
+function orbitFrame() {
+  if (!dragging) { vy += (AUTO - vy) * 0.02; vx *= 0.94; }
+  ay += vy; ax = Math.max(-0.9, Math.min(0.9, ax + vx));
+  const W = orbitEl.clientWidth, H = orbitEl.clientHeight, R = Math.min(W * 0.46, H * 0.42), P = 1100;
+  const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax);
+  for (const o of orbs) {
+    const x1 = o.x * cy + o.z * sy, z1 = -o.x * sy + o.z * cy;
+    const y2 = o.y * cx - z1 * sx, z2 = o.y * sx + z1 * cx;
+    const k = P / (P - z2 * R);
+    const px = W / 2 + x1 * R * k - 33, py = H / 2 + y2 * R * k - 46;
+    o.b.style.transform = `translate3d(${px.toFixed(1)}px, ${py.toFixed(1)}px, 0) scale(${(k * 0.92).toFixed(3)}) rotateY(${(x1 * 28).toFixed(1)}deg) rotateX(${(-y2 * 22).toFixed(1)}deg)`;
+    o.b.style.opacity = (0.12 + 0.88 * Math.max(0, (z2 + 1) / 2) ** 1.4).toFixed(3);
+    o.b.style.zIndex = String(Math.round(500 + z2 * 400));
+    o.b.style.pointerEvents = z2 > -0.2 ? "auto" : "none";
+    o.b.style.filter = z2 < 0 ? `blur(${(-z2 * 2.2).toFixed(1)}px)` : "";
+  }
+  orbitRAF = requestAnimationFrame(orbitFrame);
+}
+orbitEl.addEventListener("pointerdown", ev => {
+  dragging = { x: ev.clientX, y: ev.clientY, moved: 0, target: ev.target.closest(".orb") };
+  orbitEl.setPointerCapture(ev.pointerId);
+  orbitEl.classList.add("drag");
+});
+orbitEl.addEventListener("pointermove", ev => {
+  if (!dragging) return;
+  const dx = ev.clientX - dragging.x, dy = ev.clientY - dragging.y;
+  dragging.moved += Math.abs(dx) + Math.abs(dy);
+  vy = dx * 0.0042; vx = -dy * 0.0042;
+  dragging.x = ev.clientX; dragging.y = ev.clientY;
+});
+const endDrag = () => {
+  if (!dragging) return;
+  const d = dragging; dragging = null; orbitEl.classList.remove("drag");
+  if (d.moved < 6 && d.target) open(orbs.find(o => o.b === d.target).e);
+};
+orbitEl.addEventListener("pointerup", endDrag);
+orbitEl.addEventListener("pointercancel", endDrag);
+function orbitStart() { if (!orbitRAF) orbitRAF = requestAnimationFrame(orbitFrame); }
+function orbitStop() { cancelAnimationFrame(orbitRAF); orbitRAF = 0; }
+if (reduced) { /* still spins only when dragged */ }
+
+// ---------- Ink reveal: the cursor paints a colour version of the word ----------
+const ink = $("ink"), ictx = ink.getContext("2d");
+let inkW = 0, inkH = 0, blobs = [], inkRAF = 0, lastInk = 0, inkPat = null, autoT = 0;
+function inkSize() {
+  const r = ink.getBoundingClientRect(), d = devicePixelRatio || 1;
+  if (!r.width) return;
+  ink.width = Math.round(r.width * d); ink.height = Math.round(r.height * d);
+  inkW = r.width; inkH = r.height; ictx.setTransform(d, 0, 0, d, 0, 0);
+  const c = document.createElement("canvas"); c.width = c.height = 14;
+  const x = c.getContext("2d"); x.fillStyle = "rgba(255,255,255,.95)"; x.beginPath(); x.arc(7, 7, 1.7, 0, 7); x.fill();
+  inkPat = ictx.createPattern(c, "repeat");
+}
+function inkDraw() {
+  ictx.clearRect(0, 0, inkW, inkH);
+  const word = "ELEMENTAL", fs = Math.min(inkH * 0.95, inkW / 5.4), cx = inkW / 2, cy = inkH * 0.56;
+  ictx.font = `400 ${fs}px "Bodoni Moda", Didot, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
+  ictx.fillStyle = "#F4ECDC"; ictx.fillText(word, cx, cy);
+  if (!blobs.length) return;
+  ictx.save(); ictx.beginPath();
+  for (const b of blobs) { ictx.moveTo(b.x + b.r, b.y); ictx.arc(b.x, b.y, b.r, 0, Math.PI * 2); }
+  ictx.clip();
+  ictx.fillStyle = "#1d1527"; ictx.fillRect(0, 0, inkW, inkH);
+  const g = ictx.createLinearGradient(0, 0, inkW, 0);
+  g.addColorStop(0, "#F2B330"); g.addColorStop(.33, "#E0508F"); g.addColorStop(.66, "#8a6be0"); g.addColorStop(1, "#2B8A8A");
+  ictx.fillStyle = g; ictx.fillText(word, cx, cy);
+  ictx.globalAlpha = .55; ictx.fillStyle = inkPat; ictx.fillText(word, cx, cy);
+  ictx.restore();
+}
+function inkAdd(x, y, big = 1) {
+  blobs.push({ x, y, r: (24 + Math.random() * 30) * big, life: 1 });
+  if (Math.random() < .6) blobs.push({ x: x + (Math.random() - .5) * 60, y: y + (Math.random() - .5) * 50, r: 6 + Math.random() * 12, life: .8 });
+  if (Math.random() < .25) blobs.push({ x: x + (Math.random() - .5) * 20, y: y + 20, r: 5 + Math.random() * 6, life: 1, vy: 1.2 });
+}
+function inkFrame(t) {
+  if (t - lastInk > 1600 && !reduced) { autoT += 0.022; inkAdd(inkW * (0.5 + 0.42 * Math.sin(autoT)), inkH * (0.55 + 0.25 * Math.sin(autoT * 2.3)), 0.8); }
+  for (const b of blobs) { b.life -= 0.0075; if (b.vy) { b.y += b.vy; b.vy *= 0.98; } b.r *= b.life > .25 ? 1.004 : 0.95; }
+  blobs = blobs.filter(b => b.life > 0 && b.r > 0.5);
+  inkDraw();
+  inkRAF = requestAnimationFrame(inkFrame);
+}
+ink.addEventListener("pointermove", ev => { const r = ink.getBoundingClientRect(); lastInk = performance.now(); inkAdd(ev.clientX - r.left, ev.clientY - r.top); });
+function inkStart() { inkSize(); inkDraw(); if (!inkRAF) inkRAF = requestAnimationFrame(inkFrame); }
+function inkStop() { cancelAnimationFrame(inkRAF); inkRAF = 0; }
+addEventListener("resize", () => { if (inkRAF) inkSize(); });
+if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
+
+// ---------- Gen Z columns ----------
+{
+  const cols = [[], [], []];
+  zEls.forEach((e, i) => cols[i % 3].push(e));
+  cols.forEach((list, i) => {
+    const html = list.map(e => `<button type="button" class="ccard ${e.fam}" data-sym="${e.sym}" tabindex="-1"><img src="${sceneImg(e)}" alt=""><span>${e.trend}</span></button>`).join("");
+    $("col" + i).innerHTML = html + html;
+  });
+  document.querySelectorAll(".ccard").forEach(c => c.addEventListener("click", () => open(get(c.dataset.sym))));
+}
+
+function onView(v) {
+  v === "orbit" ? orbitStart() : orbitStop();
+  v === "families" ? requestAnimationFrame(inkStart) : inkStop();
+}
+
+// ---------- Saved (per-viewer, this browser only) ----------
+let saved = [];
+try { saved = JSON.parse(localStorage.getItem("ptif-saved") || "[]"); } catch (err) { saved = []; }
+const isSaved = (e) => saved.includes(e.sym);
+function toggleSave(e) {
+  saved = isSaved(e) ? saved.filter(s => s !== e.sym) : [...saved, e.sym];
+  try { localStorage.setItem("ptif-saved", JSON.stringify(saved)); } catch (err) {}
+  toast(isSaved(e) ? `Saved ${e.sym} · ${e.trend}` : `Removed ${e.sym} from your wardrobe`);
+  syncSaved();
+}
+function syncSaved() {
+  const wc = $("wcount");
+  wc.textContent = saved.length; wc.hidden = !saved.length;
+  document.querySelectorAll("[data-save]").forEach(b => { const on = saved.includes(b.dataset.save); b.setAttribute("aria-pressed", String(on)); b.textContent = on ? "♥ Saved" : "♡ Save"; });
+  document.querySelectorAll(".pick[data-sym]").forEach(p => { const tag = p.querySelector(".saved"); if (tag) tag.hidden = !saved.includes(p.dataset.sym); });
+  renderWardrobe();
+}
+let toastTimer;
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), 2200);
+}
+async function copyTrend(e) {
+  const text = `${e.sym} · ${e.trend}: ${e.desc}${e.src ? ` (${e.src[0]}, ${e.src[3]})` : ""}`;
+  try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); }
+  catch (err) { toast("Copy isn't available here"); }
+}
+
+// Scroll reveal: only for items that start below the fold, so nothing is hidden at rest
+const reveal = new IntersectionObserver((entries) => {
+  let i = 0;
+  for (const en of entries) if (en.isIntersecting) {
+    reveal.unobserve(en.target);
+    if (!en.target.dataset.below || matchMedia("(prefers-reduced-motion: reduce)").matches) continue;
+    en.target.animate([{ transform: "translateY(28px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 650, delay: (i++ % 6) * 70, easing: "cubic-bezier(.2,.7,.2,1)", fill: "backwards" });
+  }
+}, { rootMargin: "0px 0px -40px 0px" });
+function watch(nodes) { nodes.forEach(n => { if (n.getBoundingClientRect().top > innerHeight) n.dataset.below = "1"; reveal.observe(n); }); }
+
+// Expandable card used by the Gen Z and Wardrobe grids
+const pickHTML = (e) => `<div class="pick" data-sym="${e.sym}" role="button" tabindex="0" aria-expanded="false" aria-label="${e.trend}">
+  <span class="saved" hidden>♥ Saved</span>
+  <button type="button" class="round xclose" aria-label="Collapse">×</button>
+  ${cardHTML(e)}
+  <div class="lead"><small>No. ${e.n} · ${e.src ? e.src[0] : FAMILIES[e.fam]}</small><h3>${e.trend}</h3><p>${e.desc}</p>
+    <div class="more">
+      <dl class="facts"><div><dt>Key pieces</dt><dd>${e.pieces}</dd></div><div><dt>Try it</dt><dd>${e.tip}</dd></div></dl>
+      ${e.src ? `<p class="seen">As seen in <a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]}</a>, ${e.src[3]}</p>` : ""}
+      <div class="actions"><button type="button" class="pill glass" data-save="${e.sym}" aria-pressed="false">♡ Save</button><button type="button" class="pill glass" data-copy="${e.sym}">Copy</button><button type="button" class="pill glass" data-table="${e.sym}">Find on table →</button></div>
+    </div>
+  </div>
+</div>`;
+function wireGrid(root) {
+  root.querySelectorAll(".pick").forEach(p => {
+    const e = get(p.dataset.sym);
+    const toggle = (force) => {
+      const go = () => {
+        const opening = force ?? !p.classList.contains("open");
+        root.querySelectorAll(".pick.open").forEach(o => { o.classList.remove("open"); o.setAttribute("aria-expanded", "false"); });
+        p.classList.toggle("open", opening); p.setAttribute("aria-expanded", String(opening));
+      };
+      if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        root.querySelectorAll(".pick").forEach((x, i) => x.style.viewTransitionName = `pk-${root.id}-${i}`);
+        document.startViewTransition(go).finished.then(() => root.querySelectorAll(".pick").forEach(x => x.style.viewTransitionName = ""));
+      } else go();
+      setTimeout(() => p.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
+    };
+    p.addEventListener("click", ev => {
+      if (ev.target.closest("a")) return;
+      if (ev.target.closest("[data-save]")) { ev.stopPropagation(); return toggleSave(e); }
+      if (ev.target.closest("[data-copy]")) { ev.stopPropagation(); return copyTrend(e); }
+      if (ev.target.closest("[data-table]")) { ev.stopPropagation(); show("table"); setTimeout(() => { const t = tiles.get(e.n); t.scrollIntoView({ block: "center", inline: "center" }); t.focus({ preventScroll: true }); }, 60); return; }
+      if (ev.target.closest(".xclose")) { ev.stopPropagation(); return toggle(false); }
+      if (!p.classList.contains("open")) toggle(true);
+    });
+    p.addEventListener("keydown", ev => { if ((ev.key === "Enter" || ev.key === " ") && ev.target === p) { ev.preventDefault(); toggle(); } if (ev.key === "Escape") toggle(false); });
+  });
+}
+function renderWardrobe() {
+  const list = saved.map(get).filter(Boolean);
+  const wg = $("wgrid");
+  const key = list.map(e => e.sym).join(",");
+  if (wg.dataset.key !== key) { wg.dataset.key = key; wg.innerHTML = list.map(pickHTML).join(""); wireGrid(wg); }
+  $("wempty").hidden = list.length > 0;
+  wg.querySelectorAll("[data-save]").forEach(b => { b.setAttribute("aria-pressed", "true"); b.textContent = "♥ Saved"; });
+}
+
+// ---------- Gen Z ----------
+$("genzLede").textContent = `${zEls.length} of the 118 trends are led by people under 25, according to the stories we sourced. They're marked with a Z on the table.`;
+const monthIdx = (d) => { const m = /([A-Za-z]+)\s+(\d{4})/.exec(d || ""); if (!m) return 0; const mi = "janfebmaraprmayjunjulaugsepoctnovdec".indexOf(m[1].slice(0, 3).toLowerCase()) / 3; return Number(m[2]) * 12 + (mi >= 0 ? mi : 0); };
+function renderZ(sort = "table") {
+  const list = [...zEls];
+  if (sort === "az") list.sort((a, b) => a.trend.localeCompare(b.trend));
+  if (sort === "new") list.sort((a, b) => monthIdx(b.src && b.src[3]) - monthIdx(a.src && a.src[3]));
+  $("zgrid").innerHTML = list.map(pickHTML).join("");
+  wireGrid($("zgrid"));
+  syncSaved();
+}
+renderZ();
+$("zsort").querySelectorAll(".seg").forEach(b => b.addEventListener("click", () => {
+  $("zsort").querySelectorAll(".seg").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  const go = () => renderZ(b.dataset.sort);
+  document.startViewTransition ? document.startViewTransition(go) : go();
+}));
+
+// ---------- Sources ----------
+$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">GEN Z</span>` : ""}</span>${e.src ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a><span class="d">${e.src[3]}</span>` : `<span></span><span></span>`}</div>`).join("");
+$("srclist").querySelectorAll(".t").forEach(b => b.addEventListener("click", () => open(get(b.dataset.sym))));
+
+// ---------- Views ----------
+const VIEWS = ["table", "orbit", "genz", "picks", "families", "sources", "wardrobe"];
+function show(v, opts = {}) {
+  if (!VIEWS.includes(v)) v = "table";
+  const cur = document.querySelector(".view:not([hidden])");
+  if (opts.x != null && document.startViewTransition && !reduced && cur && cur.dataset.view !== v) {
+    const root = document.documentElement;
+    root.style.setProperty("--vx", opts.x + "px"); root.style.setProperty("--vy", opts.y + "px");
+    root.classList.add("vt-tab");
+    const t = document.startViewTransition(() => show(v, { ...opts, x: null }));
+    t.finished.finally(() => root.classList.remove("vt-tab"));
+    return;
+  }
+  document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
+  document.querySelectorAll(".tabs [data-view]").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === v)));
+  if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
+  requestAnimationFrame(() => watch(document.querySelectorAll(`.view[data-view="${v}"] :is(.pick, .fam, .door, .src, .stage)`)));
+  try { history.replaceState(null, "", v === "table" ? location.pathname + location.search : "#" + v); } catch (err) {}
+  onView(v);
+}
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-view]");
+  if (!t || t.classList.contains("view")) return;
+  ev.preventDefault();
+  show(t.dataset.view, { x: ev.clientX, y: ev.clientY });
+});
 
 // ---------- Pop-up card ----------
 const sheet = $("sheet"), sheetIn = $("sheetIn");
@@ -1247,10 +1867,12 @@ function render(e) {
       <p class="kicker">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
       <p class="desc">${e.desc}</p>
+      ${e.src ? `<p class="seen">As seen in <a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]}</a>, ${e.src[3]}${e.z ? " · Gen Z" : ""}</p>` : ""}
       <dl class="facts">
         <div><dt>Key pieces</dt><dd>${e.pieces}</dd></div>
         <div><dt>Try it</dt><dd>${e.tip}</dd></div>
       </dl>
+      <div class="actions"><button type="button" class="pill glass" data-save="${e.sym}" aria-pressed="false">♡ Save</button><button type="button" class="pill glass" data-copy="${e.sym}">Copy</button></div>
       <div class="sheet-nav">
         <button type="button" class="round" data-go="-1" aria-label="Previous element">←</button>
         <button type="button" class="round" data-go="1" aria-label="Next element">→</button>
@@ -1259,6 +1881,9 @@ function render(e) {
       </div>
     </div>`;
   sheetIn.querySelector(".close").addEventListener("click", () => sheet.close());
+  sheetIn.querySelector("[data-save]").addEventListener("click", () => toggleSave(e));
+  sheetIn.querySelector("[data-copy]").addEventListener("click", () => copyTrend(e));
+  syncSaved();
   sheetIn.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => go(btn.dataset.go)));
   const c3d = sheetIn.querySelector(".c3d"), flipper = sheetIn.querySelector(".flipper"), glare = sheetIn.querySelector(".glare");
   flipper.addEventListener("animationend", () => flipper.classList.remove("flip"), { once: true });
@@ -1289,7 +1914,46 @@ document.addEventListener("keydown", ev => {
   if (ev.key === "ArrowLeft") go(-1);
 });
 
-const fromHash = location.hash && get(location.hash.slice(1));
+// ---------- Search palette ----------
+const palette = $("palette"), palq = $("palq"), pallist = $("pallist");
+let palSel = 0, palRes = [];
+function palRender() {
+  const t = palq.value.trim().toLowerCase();
+  palRes = !t ? [...PICKS.map(get), ...zEls].filter((e, i, a) => a.indexOf(e) === i).slice(0, 8)
+    : els.map(e => {
+        const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? "gen z genz" : ""}`.toLowerCase();
+        const score = e.sym.toLowerCase() === t ? 100 : e.trend.toLowerCase().startsWith(t) ? 60 : e.trend.toLowerCase().includes(t) ? 40 : e.el.toLowerCase().startsWith(t) ? 30 : hay.includes(t) ? 10 : 0;
+        return [score, e];
+      }).filter(x => x[0]).sort((a, b) => b[0] - a[0]).slice(0, 10).map(x => x[1]);
+  palSel = 0;
+  pallist.innerHTML = palRes.length ? palRes.map((e, i) => `<li role="option" class="${e.fam}" data-i="${i}" aria-selected="${i === 0}"><span class="ps">${e.sym}</span><span><span class="pt">${e.trend}</span><span class="pm">No. ${e.n} · ${e.el}${e.src ? " · " + e.src[0] : ""}</span></span>${e.z ? `<span class="pz">GEN Z</span>` : "<span></span>"}</li>`).join("")
+    : `<li class="none">No trend matches “${palq.value}”.</li>`;
+}
+function palMove(d) {
+  if (!palRes.length) return;
+  palSel = (palSel + d + palRes.length) % palRes.length;
+  pallist.querySelectorAll("li[data-i]").forEach(li => li.setAttribute("aria-selected", String(Number(li.dataset.i) === palSel)));
+  pallist.querySelector(`li[data-i="${palSel}"]`).scrollIntoView({ block: "nearest" });
+}
+function palOpen() { palq.value = ""; palRender(); palette.showModal(); palq.focus(); }
+function palPick(i) { const e = palRes[i]; if (!e) return; palette.close(); open(e); }
+$("openSearch").addEventListener("click", palOpen);
+palq.addEventListener("input", palRender);
+palq.addEventListener("keydown", ev => {
+  if (ev.key === "ArrowDown") { ev.preventDefault(); palMove(1); }
+  if (ev.key === "ArrowUp") { ev.preventDefault(); palMove(-1); }
+  if (ev.key === "Enter") { ev.preventDefault(); palPick(palSel); }
+});
+pallist.addEventListener("click", ev => { const li = ev.target.closest("li[data-i]"); if (li) palPick(Number(li.dataset.i)); });
+palette.addEventListener("click", ev => { if (ev.target === palette) palette.close(); });
+document.addEventListener("keydown", ev => {
+  if ((ev.key === "k" && (ev.metaKey || ev.ctrlKey)) || (ev.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && !sheet.open)) { ev.preventDefault(); palette.open ? palette.close() : palOpen(); }
+});
+syncSaved();
+
+const h = location.hash.slice(1);
+const fromHash = h && !VIEWS.includes(h) && get(h);
+show(fromHash ? "table" : h, { keepScroll: true });
 if (fromHash) open(fromHash);
 </script>
 </body>

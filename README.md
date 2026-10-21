@@ -1,13 +1,13 @@
 # The Periodic Table of Indian Fashion
 
-A single-page website: the real 118-element periodic table, where every element keeps its true symbol, number and family, and each symbol stands for an Indian fashion trend with matching initials.
+A single-page website: the real 118-element periodic table, where every element keeps its true symbol, number and family, and each symbol stands for a fashion trend with matching initials, named in 2025–26 fashion coverage.
 
-- **H** Hyperfeminine, **Fe** Futuristic Ethnic, **Ag** Avant-Garde, **Sr** Saree Runners, **Mo** Mughal Opulence, **Og** Old-school Glam… all 118 of them.
-- Every element has its own illustration, drawn in code as inline SVG (no image files).
-- Click an element to open its card: what the trend is, key pieces, and how to try it. Use ← → or Shuffle to flip through.
-- Filter by real chemical family or search by trend, symbol or element name.
-- Open a specific element directly with its symbol as the link anchor, e.g. `index.html#Fe`.
+- **Sourced trends.** Each card links to the article that named the trend: ELLE India, Harper's Bazaar India, Cosmopolitan India, Man's World India, Vogue, Harper's Bazaar, ELLE, Glamour, W, GQ, Marie Claire, Who What Wear, Coveteur, Pinterest Predicts, Depop and others. The full list is in the **Sources** tab.
+- **Gen Z.** 48 trends are flagged as Gen Z-led (a Z badge on the table) and collected in the **Gen Z** tab.
+- **Tabs:** The Table (home) · Orbit (a draggable 3D sphere of all 118) · Gen Z · Editor's Picks · Families · Sources · Wardrobe (your saved cards, stored in your browser).
+- **Interactions:** cards that flip and tilt, illustrations that animate on hover, ⌘K search, save and copy, expand-in-place cards, an ink-reveal headline and portal transitions between tabs.
+- Every illustration is drawn in code as inline SVG (no image files).
 
 ## Run it
 
-No build step. Open `index.html` in a browser, or enable GitHub Pages (Settings → Pages → deploy from the `main` branch) to host it.
+No build step. Open `index.html` in a browser, or enable GitHub Pages (Settings → Pages → deploy from the `main` branch).
