@@ -619,9 +619,37 @@ function lookName(list, r) {
   const first = word(list[0].trend), last = word(list[list.length - 1].trend, true), mid = list.length === 3 ? " " + word(list[1].trend) : "";
   return `${first}${mid} ${first.toLowerCase() === last.toLowerCase() ? "Edit" : last}`;
 }
+// Editorial recipes and challenges are separate from chemical reactions.
+const MIX_STORIES = isG ? [
+  {syms:["Fe","Ar","Ga"],title:"The Morning After the Festival",tip:"Flowers, plates and an idol share a plinth. Yesterday's celebration becomes today's street still life.",challenge:"Recreate the morning after a festival"},
+  {syms:["O","Br"],title:"Last Night, This Morning",tip:"An Old Monk bottle and a brewery wristband. Two souvenirs, neither from the gift shop.",challenge:"Build the evidence of a Bangalore night out"},
+  {syms:["Li","P"],title:"The Lorry Will Come Tomorrow",tip:"Leaf litter gathers around the waiting sack. The city's most reliable temporary installation.",challenge:"Make a portrait of the collection that never came"},
+  {syms:["S","Se"],title:"The Outdoor Living Room",tip:"A sofa and a bus seat turn the footpath into a waiting room for a bus that does not stop here.",challenge:"Furnish a Bangalore footpath"}
+] : [
+  {syms:["H","He"],title:"The Heirloom Rave",tip:"Keep the handmade silhouette, add a sharp lower half and dress the hair in gold. Let the craft and jewellery do the talking.",challenge:"Take handmade craft to a late-night dance floor"},
+  {syms:["Fe","Co"],title:"Once Upon a Tuesday",tip:"Storybook sleeves meet coquette details. Ground the romance with simple shoes and wear it on an ordinary day.",challenge:"Build a fairytale look for an ordinary Tuesday"},
+  {syms:["Kr","Ga"],title:"Gold, Passed Down",tip:"Start with the heritage drape and finish with gold. Keep the rest quiet so the weave has room to speak.",challenge:"Dress for a wedding with two heirloom ingredients"},
+  {syms:["S","Sn"],title:"Off-Duty, On Pointe",tip:"Sportswear meets the sneakerina. Keep the silhouette easy and let the ballet-inspired footwear soften the finish.",challenge:"Mix a sports mood with a ballet detail"}
+];
+const storyFor = list => MIX_STORIES.find(story => story.syms.length === list.length && story.syms.every(sym => list.some(e => e.sym === sym)));
+let challengeIndex = 0;
+function renderChallenge() {
+  const story = MIX_STORIES[challengeIndex];
+  $("mixChallenge").innerHTML = `<p class="kicker">A little experiment · ${challengeIndex+1} / ${MIX_STORIES.length}</p><h3>${story.challenge}</h3><p>${story.syms.map(sym=>get(sym).trend).join(" + ")}</p><div><button type="button" class="link" data-try-challenge>Try this mix <span aria-hidden="true">→</span></button><button type="button" class="link" data-next-challenge>Another idea</button></div>`;
+}
+$("mixChallenge").addEventListener("click",ev=>{
+  if(ev.target.closest("[data-next-challenge]")){challengeIndex=(challengeIndex+1)%MIX_STORIES.length;renderChallenge();}
+  if(ev.target.closest("[data-try-challenge]")){
+    randomMixTimers.forEach(clearTimeout);cancelMixSequence();mix=[];renderMix();
+    randomMixTimers=MIX_STORIES[challengeIndex].syms.map((sym,i)=>setTimeout(()=>addToMix(get(sym)),reduced?0:i*400));
+  }
+});
+renderChallenge();
+
 // The cultural mix has its own outcome, independent of the chemistry result.
 function culturalMix(list) {
-  const title = lookName(list);
+  const story = storyFor(list);
+  const title = story ? story.title : lookName(list);
   const roles = isG ? ["Foundation", "Structure", "Finishing detail"] : ["Silhouette", "Contrast", "Finishing detail"];
   const notes = list.map((e, i) => `${roles[i]} from ${e.trend}.`);
   const id = "mix" + list.map(e => e.sym).join("");
@@ -645,7 +673,7 @@ function culturalMix(list) {
     for (const key of ["hold", "hc2", "ac", "h"]) if (finish[key] !== undefined) f[key] = finish[key];
     drawing = scene(id, {bg:list[0].art.bg, gr:list[list.length-1].art.gr, figs:[f], obj:list.flatMap(e => e.art.obj || []).slice(0,3)});
   }
-  return {title, notes, drawing, caption:isG ? "An imagined found-object sculpture. A new composition from your finds." : "A new outfit study. One silhouette, with details borrowed from every selected trend."};
+  return {title, notes, drawing, caption:story ? story.tip : isG ? "An imagined found-object sculpture. A new composition from your finds." : "A new outfit study. One silhouette, with details borrowed from every selected trend."};
 }
 function renderCulturalMix() {
   const result = $("mixResult");
@@ -663,6 +691,7 @@ function chemHTML(r) {
   return `<p class="chem-name">${kind ? `<span class="kicker">${kind}</span>` : ""}${name}</p><p class="chem-note">${r.note}${spec}${src}</p>`;
 }
 function renderMix() {
+  $("labShare").disabled = mix.length < 2;
   shelf.querySelectorAll(".sh").forEach(b => b.classList.toggle("in", mix.some(e => e.sym === b.dataset.sym)));
   $("liquid").style.transform = `translateY(${240 - (mix.length ? 70 + mix.length * 42 : 0)}px)`;
   const cols = mix.length ? mix.map(famColor) : ["#B3245E"];
@@ -678,7 +707,7 @@ function renderMix() {
     mixRevealTimer = setTimeout(() => { flaskWrap.classList.remove("mixing"); renderCulturalMix(); $("mixStatus").textContent = isG ? "Your street sculpture is ready." : "Your outfit study is ready."; }, 850);
   } else { flaskWrap.classList.remove("mixing"); renderCulturalMix(); $("mixStatus").textContent = mix.length ? "Add another ingredient to see the result." : ""; }
   const ln = $("lookname");
-  ln.textContent = mix.length ? (isG ? lookName(mix) : `“${lookName(mix)}”`) : "Pick up to three elements from the shelf.";
+  ln.textContent = mix.length ? (isG ? (storyFor(mix)?.title || lookName(mix)) : `“${storyFor(mix)?.title || lookName(mix)}”`) : "Pick up to three elements from the shelf.";
   ln.classList.toggle("empty", !mix.length);
   $("recipe").innerHTML = mix.map(e => `<li><b>${e.pieces.split(",")[0].trim()}</b> from ${e.trend}${r && r.spectator === e.sym ? " (on the side)" : ""}</li>`).join("");
   $("slots").innerHTML = mix.map(e => `<button type="button" class="slot ${e.fam}" data-sym="${e.sym}" aria-label="Remove ${e.trend}"><img src="${sceneImg(e)}" alt=""><span>${e.sym}</span></button>`).join("");
@@ -693,6 +722,7 @@ $("labCopy").addEventListener("click", async () => {
   const text = `${outcome ? outcome.title + ": " + outcome.notes.join(" ") + "\n" : ""}${r.none ? mix.map(e => e.sym).join(" + ") : `${r.f} (${r.n})`}: “${lookName(mix, r)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
   try { await navigator.clipboard.writeText(text); toast("Formula copied"); } catch (err) { toast("Copy isn't available here"); }
 });
+$("labShare").addEventListener("click", () => shareMix().catch(() => toast("Could not create the image. Please try again.")));
 renderMix();
 
 // ---------- Families ----------
@@ -937,6 +967,17 @@ function colourReveal(svg, old, key) {
     syncScenePlayback();
   }
 }
+function signatureFor(e) {
+  const text = `${e.trend} ${e.pieces}`.toLowerCase();
+  if (isG && /flower|petal|garland/.test(text)) return {kind:"scatter",label:"Scatter the petals",selector:"[class*=flower], [class*=petal], .depth-front"};
+  if (!isG && /bow|ribbon/.test(text)) return {kind:"tie",label:"Tie the bow",selector:".detail-bow, [class*=ribbon], .depth-person"};
+  if (isG && /paper|ticket|receipt|notice|newspaper/.test(text)) return {kind:"unfold",label:"Unfold the paper",selector:".ob, .depth-front"};
+  if (/bangle|gold|silver|jewel|bead|mirror|sequin/.test(text)) return {kind:"glint",label:"Catch the light",selector:"[class*=detail], .depth-person, .ob"};
+  if (isG && /bottle|cup|can|tin|bucket/.test(text)) return {kind:"roll",label:"Give it a nudge",selector:".ob"};
+  if (/fabric|saree|silk|sleeve|drape|kurta|shirt|skirt|dress|cloth/.test(text)) return {kind:"flutter",label:"Catch a little breeze",selector:".depth-person, .ob"};
+  if (isG && /leaf|shell|peel|litter|scrap/.test(text)) return {kind:"scatter",label:"Stir the street",selector:".depth-front"};
+  return {kind:isG ? "balance" : "pose",label:isG ? "Test its balance" : "Strike a pose",selector:isG ? ".ob" : ".depth-person"};
+}
 function bindSceneInteractions(e) {
   const frame = exhibit.querySelector(".frame"), svg = frame && frame.querySelector("svg");
   if (!svg) return;
@@ -977,6 +1018,25 @@ function bindSceneInteractions(e) {
     showLens();
   };
   const addTransient = animation => { temporary.add(animation); animation.finished.catch(()=>{}).finally(()=>temporary.delete(animation)); };
+  const signature=signatureFor(e), signatureButton=document.createElement("button");
+  signatureButton.type="button";signatureButton.className="moment-control signature-control";signatureButton.textContent=signature.label;controls.prepend(signatureButton);
+  const signatureAction=()=>{
+    if(lensOn || layersOn || draggingArt)return;
+    const target=svg.querySelector(signature.selector)||svg.querySelector(".depth-front, .depth-person");
+    if(!target)return;
+    target.style.transformBox="fill-box";target.style.transformOrigin=signature.kind==="tie"?"center": "bottom center";
+    hint.textContent=signature.label+" · "+e.trend;
+    if(reduced){hint.textContent+=" · Illustration detail highlighted";target.style.opacity=".7";setTimeout(()=>target.style.opacity="",250);return;}
+    const frames={tie:[{transform:"scale(1)"},{transform:"scale(.84,1.12)"},{transform:"scale(1.08,.96)"},{transform:"none"}],unfold:[{transform:"perspective(400px) rotateX(0deg) scaleX(1)"},{transform:"perspective(400px) rotateX(-25deg) scaleX(1.13)"},{transform:"none"}],flutter:[{transform:"skewX(0deg)"},{transform:"skewX(-7deg)"},{transform:"skewX(5deg)"},{transform:"none"}],roll:[{transform:"translateX(0) rotate(0)"},{transform:"translateX(8px) rotate(16deg)"},{transform:"translateX(-3px) rotate(-6deg)"},{transform:"none"}],balance:[{transform:"rotate(0)"},{transform:"rotate(-9deg)"},{transform:"rotate(7deg)"},{transform:"none"}],pose:[{transform:"translateY(0) rotate(0)"},{transform:"translateY(-3px) rotate(-4deg)"},{transform:"none"}],glint:[{filter:"brightness(1)"},{filter:"brightness(1.6) saturate(1.3)"},{filter:"brightness(1)"}],scatter:[{transform:"translate(0)"},{transform:"translate(4px,-3px) rotate(4deg)"},{transform:"none"}]}[signature.kind];
+    addTransient(target.animate(frames,{duration:1100,easing:"cubic-bezier(.22,1,.36,1)"}));
+    if(signature.kind==="scatter" || signature.kind==="glint")for(let i=0;i<12;i++){
+      const particle=document.createElementNS("http://www.w3.org/2000/svg","ellipse");particle.setAttribute("cx",String(30+i*3.5));particle.setAttribute("cy","62");particle.setAttribute("rx",signature.kind==="scatter"?"1.4":".5");particle.setAttribute("ry",signature.kind==="scatter"?".7":"1.8");particle.setAttribute("fill",signature.kind==="scatter" ? [P.orange,P.yellow,P.pink][i%3] : P.gold);particle.setAttribute("aria-hidden","true");svg.appendChild(particle);
+      const animation=particle.animate([{opacity:0,transform:"translateY(0)"},{opacity:1,offset:.15},{opacity:0,transform:`translate(${(i-6)*3}px,${signature.kind==="scatter"?20:-20}px) rotate(${i*35}deg)`}],{duration:1000,delay:i*25,easing:"ease-out"});addTransient(animation);animation.finished.catch(()=>{}).finally(()=>particle.remove());
+    }
+  };
+  listen(signatureButton,"click",signatureAction);
+  // The labelled control provides the same action for touch and keyboard users.
+
   const actors = [...new Set([...sceneAnimations.map(a=>a.effect.target), ...svg.querySelectorAll(".fg, .ob")])].filter(n=>n && svg.contains(n)).slice(0,7);
   actors.forEach((node,i) => {
     node.dataset.move = "true";
@@ -1036,9 +1096,17 @@ function bindSceneInteractions(e) {
   const clearHold=()=>{clearTimeout(holdTimer);holdTimer=0;};
   listen(frame,"pointermove",()=>{if(!lensOn)clearHold();});
   listen(frame,"pointerup",()=>{clearHold();if(lensOn)setLens(false);});listen(frame,"pointercancel",()=>{clearHold();setLens(false);});
-  interactionCleanup=()=>{clearHold();abort.abort();temporary.forEach(a=>a.cancel());lens.remove();tags.remove();exhibit.classList.remove("layers-open","lens-open","object-drag");};
+  interactionCleanup=()=>{clearHold();abort.abort();temporary.forEach(a=>a.cancel());signatureButton.remove();lens.remove();tags.remove();exhibit.classList.remove("layers-open","lens-open","object-drag");};
 }
 
+function relatedElements(e) {
+  const curated = MIX_STORIES.filter(story=>story.syms.includes(e.sym)).flatMap(story=>story.syms).filter(sym=>sym!==e.sym);
+  const groups = isG ? [/flower|petal|idol|plate|garland|candle/, /paper|ticket|receipt|newspaper|notice/, /bottle|cup|brewery|food|cake/, /sofa|seat|chair|cushion|furniture/, /cable|metal|wire|steel|slab|debris/, /leaf|shell|peel|fruit|vegetable/] : [/saree|sari|drape|pallu|weave/, /gold|silver|jewel|bangle|bead/, /sport|sneaker|athletic|jersey/, /bow|lace|romantic|coquette|fairy/, /shirt|tailor|office|blazer/, /denim|jeans|baggy|y2k/];
+  const content=other=>`${other.trend} ${other.pieces}`.toLowerCase();
+  const tags=groups.filter(re=>re.test(content(e)));
+  const candidates=els.filter(other=>other!==e).map(other=>({other,score:tags.filter(re=>re.test(content(other))).length*4+(other.fam===e.fam?1:0)})).sort((a,b)=>b.score-a.score||a.other.n-b.other.n);
+  return [...new Set([...curated,...candidates.map(({other})=>other.sym)])].slice(0,2).map(get);
+}
 function render(e, direction = 0) {
   interactionCleanup();
   current = e;
@@ -1056,6 +1124,7 @@ function render(e, direction = 0) {
         <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
+      <div class="related"><p class="kicker">${isG ? "More from the same street story" : "Pairs beautifully with…"}</p><div>${relatedElements(e).map(other=>`<button type="button" class="related-card" data-related="${other.sym}"><img src="${sceneImg(other)}" alt=""><span><b>${other.sym}</b> ${other.trend}</span><span aria-hidden="true">→</span></button>`).join("")}</div></div>
       <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
@@ -1101,6 +1170,7 @@ exhibit.addEventListener("click", ev => {
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
+  if (t.dataset.related) return goToRelated(get(t.dataset.related));
   if (t.dataset.go) return go(t.dataset.go);
 });
 function open(e, source = null) {
@@ -1146,6 +1216,13 @@ async function go(dir) {
   const control = focused && exhibit.querySelector(`[data-go="${focused}"]`);
   if (control) control.focus({ preventScroll: true });
   cardNavigating = false;
+}
+
+function goToRelated(e) {
+  if (!e || closingExhibit || cardNavigating) return;
+  clearLift(); liftedFrom=null; render(e,1);
+  exhibit.querySelector("h2").setAttribute("tabindex","-1");
+  exhibit.querySelector("h2").focus({preventScroll:true});
 }
 
 // Swipe the surrounding card surface; illustrated objects keep their own drag interaction.
@@ -1231,6 +1308,24 @@ async function shareImage(e) {
   if (d) { ctx.fillText(`${ED.dyeLabel.toUpperCase()} · ${d.name.toUpperCase()}`, 90, Math.min(H - 110, y + 80)); y += 40; }
   if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
   offerImage(c, `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, `Share image · ${e.sym}`);
+}
+
+async function shareMix() {
+  if(mix.length<2)return toast("Mix at least two ingredients first");
+  const selected=[...mix], out=culturalMix(selected), W=1080,H=1600;
+  const canvas=document.createElement("canvas");canvas.width=W;canvas.height=H;const ctx=canvas.getContext("2d");
+  await document.fonts.ready;
+  ctx.fillStyle="#F4EFE5";ctx.fillRect(0,0,W,H);ctx.fillStyle="#151515";ctx.textAlign="center";
+  ctx.font="600 24px Caudex,serif";ctx.fillText(`${ED.name.toUpperCase()} · ISSUE ${ED.issue}`,W/2,70);
+  ctx.font="400 62px Caudex,serif";let y=wrap(ctx,out.title,W/2,160,900,70);
+  const art=await loadImg("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${out.drawing}</svg>`));
+  ctx.drawImage(art,190,y+40,700,700);y+=800;
+  ctx.font="italic 30px Caudex,serif";y=wrap(ctx,out.caption,W/2,y,880,42);
+  ctx.font="600 24px Caudex,serif";ctx.fillText("THE INGREDIENTS",W/2,y+70);
+  const slotW=260,total=selected.length*slotW,start=(W-total)/2;
+  for(let i=0;i<selected.length;i++) {const e=selected[i],x=start+i*slotW;const img=await loadImg(sceneImg(e));ctx.drawImage(img,x+65,y+95,130,130);ctx.font="400 23px Caudex,serif";wrap(ctx,`${e.sym} · ${e.trend}`,x+slotW/2,y+260,slotW-20,30);}
+  ctx.font="400 22px Caudex,serif";ctx.fillText("Made in The Lab · nivivacious",W/2,H-45);
+  offerImage(canvas,`mix-${selected.map(e=>e.sym).join("-")}.png`,out.title);
 }
 
 // ---------- Search palette ----------
