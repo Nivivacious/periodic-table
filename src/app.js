@@ -490,23 +490,39 @@ function pileNote(list) {
   const when = TIMES[list.reduce((a, e) => a + e.n, 0) % TIMES.length];
   return `${where}, ${when}: ${joined}.`;
 }
-function lookName(list) {
-  if (isG) return pileNote(list);
+function lookName(list, r) {
+  // Name the look after the compound's everyday name when it is short, else its chemical name.
+  let label = null;
+  if (r && !r.none) { const c = (r.c || "").replace(/^the /i, "").split(",")[0].trim(); label = c && c.split(" ").length <= 2 ? c : r.n; }
+  const none = r && r.none && list.length > 1;
+  if (isG) return label ? `A ${lower(label)} pile. ${pileNote(list)}` : `${none ? "Side by side, not touching. " : ""}${pileNote(list)}`;
+  if (label) return `The ${label.replace(/\b[a-z]/g, m => m.toUpperCase())} Edit`;
   if (list.length === 1) return list[0].trend;
+  if (none) return `${lookName(list)}, worn as separates`;
   const word = (t, end) => { const w = t.split(/[\s-]+/).filter(x => !/^(and|the|of|a)$/i.test(x)); return end ? w[w.length - 1] : w[0]; };
   const first = word(list[0].trend), last = word(list[list.length - 1].trend, true), mid = list.length === 3 ? " " + word(list[1].trend) : "";
   return `${first}${mid} ${first.toLowerCase() === last.toLowerCase() ? "Edit" : last}`;
+}
+function chemHTML(r) {
+  if (!r) return "";
+  const src = r.w ? ` <a href="${r.w}" target="_blank" rel="noopener">${r.generic ? "Look it up" : "Wikipedia"}</a>` : "";
+  const kind = r.none ? "" : r.kind === "alloy" ? "Alloy" : r.trace ? "Predicted" : r.generic ? "By the rules" : "Real compound";
+  const name = r.none ? r.n : `${r.n}${r.c && r.c.toLowerCase() !== r.n.toLowerCase() ? ` · <em>${r.c}</em>` : ""}`;
+  const spec = r.spectator ? ` <span class="spec">${r.spectator} stays out of it: a spectator.</span>` : "";
+  return `<p class="chem-name">${kind ? `<span class="kicker">${kind}</span>` : ""}${name}</p><p class="chem-note">${r.note}${spec}${src}</p>`;
 }
 function renderMix() {
   shelf.querySelectorAll(".sh").forEach(b => b.classList.toggle("in", mix.some(e => e.sym === b.dataset.sym)));
   $("liquid").style.transform = `translateY(${240 - (mix.length ? 70 + mix.length * 42 : 0)}px)`;
   const cols = mix.length ? mix.map(famColor) : ["#B3245E"];
   ["lg0", "lg1", "lg2"].forEach((id, i) => $(id).setAttribute("stop-color", cols[Math.min(i, cols.length - 1)]));
-  $("formula").innerHTML = mix.length ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>·</i>") : "—";
+  const r = mix.length ? react(mix) : null;
+  $("formula").innerHTML = !mix.length ? "—" : (r.none || mix.length === 1) ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>+</i>") : sub(r.f);
+  $("chem").innerHTML = chemHTML(r);
   const ln = $("lookname");
-  ln.textContent = mix.length ? (isG ? lookName(mix) : `“${lookName(mix)}”`) : "Pick up to three elements from the shelf.";
+  ln.textContent = mix.length ? (isG ? lookName(mix, r) : `“${lookName(mix, r)}”`) : "Pick up to three elements from the shelf.";
   ln.classList.toggle("empty", !mix.length);
-  $("recipe").innerHTML = mix.map(e => `<li><b>${e.pieces.split(",")[0].trim()}</b> from ${e.trend}</li>`).join("");
+  $("recipe").innerHTML = mix.map(e => `<li><b>${e.pieces.split(",")[0].trim()}</b> from ${e.trend}${r && r.spectator === e.sym ? " (on the side)" : ""}</li>`).join("");
   $("slots").innerHTML = mix.map(e => `<button type="button" class="slot ${e.fam}" data-sym="${e.sym}" aria-label="Remove ${e.trend}"><img src="${sceneImg(e)}" alt=""><span>${e.sym}</span></button>`).join("");
   $("slots").querySelectorAll(".slot").forEach(s => s.addEventListener("click", () => { mix = mix.filter(e => e.sym !== s.dataset.sym); renderMix(); }));
 }
@@ -514,7 +530,8 @@ $("labRandom").addEventListener("click", () => { mix = []; [...els].sort(() => M
 $("labClear").addEventListener("click", () => { mix = []; renderMix(); });
 $("labCopy").addEventListener("click", async () => {
   if (!mix.length) return toast("Add an element first");
-  const text = `${mix.map(e => e.sym).join("·")} — “${lookName(mix)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
+  const r = react(mix);
+  const text = `${r.none ? mix.map(e => e.sym).join(" + ") : `${r.f} (${r.n})`} — “${lookName(mix, r)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
   try { await navigator.clipboard.writeText(text); toast("Formula copied"); } catch (err) { toast("Copy isn't available here"); }
 });
 renderMix();

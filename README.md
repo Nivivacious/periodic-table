@@ -22,11 +22,10 @@ The fashion edition is laid out as a magazine issue with museum-style exhibit ca
 - **Cover.** All 118 elements orbit as a draggable 3D sphere. "See the full table" flies every tile into its place on the periodic table.
 - **The Table.** The real periodic table, with:
   - a **timeline** slider and play button that lights up trends in the month the press named them (Jan 2025 → Oct 2026); on the garbage table it runs through one Bangalore year, January to December, by season
-  - family filters and a Gen Z filter
+  - family filters and a Gen Z filter (Peak Bangalore on the garbage table)
   - period and group highlighting
   - arrow-key navigation
-- **The Lab.** Mix up to three elements into a compound and get a named look. On the garbage table the compound is a field note: where, when, and what was in the pile.
-- **Gen Z.** 20 flip cards translate Gen Z and desi slang into the trends they describe. Also, 45 trends are flagged as Gen Z-led.
+- **The Lab.** Drop up to three elements into the flask and get the real chemistry: the compound or alloy they make (Na + Cl is table salt, Cu + Sn is bronze, Fe + Cr + Ni is the steel tiffin), with a one-line note and a Wikipedia link. The look is then named after the compound; on the garbage table it becomes a field note for the pile. Noble gases and the superheavy elements honestly refuse to react. About 280 compounds are curated; anything else is built from the element's most common oxidation state and named by the IUPAC rules.
 - **Families.** Ten halls, each with a one-line note on what its elements have in common.
 
 ## Exhibit cards
@@ -53,7 +52,8 @@ The source lives in `src/`:
 | `kit.js` | the illustration kit (people and backdrops) |
 | `junk.js` | the junk kit (bins, bags, cows, cones) |
 | `data.js` | the 118 trends and their sources |
-| `garbage.js` | the 118 finds, their field notes, and the garbage edition's story, slang and copy |
+| `garbage.js` | the 118 finds, their field notes, and the garbage edition's copy |
+| `chem.js` | the Lab's chemistry: curated compounds and alloys, plus the rules for the rest |
 | `app.js` | the logic |
 
 Rebuild `index.html` with:

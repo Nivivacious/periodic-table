@@ -325,6 +325,14 @@ dialog.sharebox::backdrop { background: rgba(236, 229, 215, .86); }
 .formula { margin: 0; font: 400 clamp(2.6rem, 5vw, 4.4rem)/1 var(--display); letter-spacing: -.02em; }
 .formula span { color: var(--c); }
 .formula i { font-style: normal; color: var(--rule); font-size: .5em; vertical-align: middle; margin: 0 .15em; }
+.chem:empty { display: none; }
+.chem-name { margin: 0; font: 400 1.25rem/1.25 var(--display); }
+.chem-name .kicker { display: block; margin: 0 0 .25rem; }
+.chem-name em { font-style: italic; color: var(--accent); }
+.chem-note { margin: .3rem 0 0; font: 400 1rem/1.4 var(--body); color: var(--ink-2); }
+.chem-note .spec { color: var(--muted); font-style: italic; }
+.chem-note a { color: var(--ink); text-decoration: underline; text-underline-offset: .18em; margin-left: .3em; }
+.readout .lookname { padding-top: .5rem; border-top: 1px solid var(--rule); }
 .lookname { margin: 0; font: italic 1.55rem/1.2 var(--body); }
 .lookname.empty { color: var(--muted); font-size: 1.15rem; }
 .recipe { margin: .2rem 0 0; padding-left: 1.2rem; display: grid; gap: .3rem; color: var(--ink-2); font-size: 1.05rem; }
@@ -583,7 +591,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
   <section class="view page band" data-view="lab" aria-labelledby="h-lab" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. We'll write the formula and name the look.</p></div></div>
+      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. We'll find the real compound they make, then name the look after it.</p></div></div>
       <div class="lab">
         <div class="bench">
           <div class="flask-wrap" id="flaskWrap">
@@ -607,6 +615,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
           <div class="readout">
             <p class="kicker">Formula</p>
             <p class="formula" id="formula">—</p>
+            <div class="chem" id="chem"></div>
             <p class="lookname empty" id="lookname">Pick up to three elements from the shelf.</p>
             <ol class="recipe" id="recipe"></ol>
             <div class="slots" id="slots"></div>
@@ -673,5 +682,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 /*JUNK*/
 /*DATA*/
 /*GARBAGE*/
+/*CHEM*/
 /*APP*/
 </script>
