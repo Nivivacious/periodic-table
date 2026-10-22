@@ -2155,7 +2155,7 @@ const CURATED = {
   "K-Na": { f: "NaK", n: "Sodium-potassium alloy", c: "NaK", w: "Sodium-potassium_alloy", kind: "alloy", note: "Two solid metals that make a liquid. Coolant in fast reactors." },
   "B-Fe-Nd": { f: "Nd2Fe14B", n: "Neodymium magnet", c: "the fridge-magnet-on-steroids", w: "Neodymium_magnet", note: "The strongest magnet you can buy. In every earbud and electric motor." },
   "Co-Sm": { f: "SmCo5", n: "Samarium-cobalt magnet", w: "Samarium%E2%80%93cobalt_magnet", note: "The magnet that keeps working when hot. Guitar pickups and jet sensors." },
-  "Nb-Ti": { f: "Nb·Ti", n: "Niobium-titanium", c: "MRI magnet wire", w: "Niobium%E2%80%93titanium", kind: "alloy", note: "Superconducting below −263 °C. Every MRI machine is wound with it." },
+  "Nb-Ti": { f: "Nb·Ti", n: "Niobium-titanium", c: "MRI magnet wire", w: "Niobium%E2%80%93titanium", kind: "alloy", note: "Superconducting below minus 263 °C. Every MRI machine is wound with it." },
   "Nb-Sn": { f: "Nb3Sn", n: "Niobium-tin", w: "Niobium%E2%80%93tin", note: "The other superconductor, for the biggest magnets at CERN." },
   "Ir-Pt": { f: "Pt·Ir", n: "Platinum-iridium", c: "the kilogram", w: "Platinum%E2%80%93iridium_alloy", kind: "alloy", note: "The metal of the old standard kilogram and the standard metre bar." },
   "Pt-Rh": { f: "Pt·Rh", n: "Platinum-rhodium", c: "thermocouple wire", w: "Thermocouple", kind: "alloy", note: "Measures furnace temperatures nothing else survives." },
@@ -2293,15 +2293,15 @@ const CURATED = {
   "Br-I": { f: "IBr", n: "Iodine monobromide", w: "Iodine_monobromide", note: "A dark red solid; grades fats in the lab." },
   "Br-Cl": { f: "BrCl", n: "Bromine chloride", w: "Bromine_monochloride", note: "A cooling-tower disinfectant." },
   "N-F": { f: "NF3", n: "Nitrogen trifluoride", w: "Nitrogen_trifluoride", note: "Cleans the chambers that make flat screens. A savage greenhouse gas." },
-  "Br-N": { f: "NBr3", n: "Nitrogen tribromide", w: "Nitrogen_tribromide", note: "Deep red, and explodes above −100 °C. Nobody has a use for it." },
+  "Br-N": { f: "NBr3", n: "Nitrogen tribromide", w: "Nitrogen_tribromide", note: "Deep red, and explodes above minus 100 °C. Nobody has a use for it." },
   "I-N": { f: "NI3", n: "Nitrogen triiodide", c: "the touch-powder", w: "Nitrogen_triiodide", note: "A feather touching it sets it off with a purple bang. The classic chemistry-teacher prank." },
   "N-Cl": { f: "NCl3", n: "Nitrogen trichloride", w: "Nitrogen_trichloride", note: "Explodes if you look at it wrong. Once used to bleach flour." },
   "O-P": { f: "P4O10", n: "Phosphorus pentoxide", w: "Phosphorus_pentoxide", note: "The driest thing in the lab. Sucks water out of everything." },
   "F-Xe": { f: "XeF2", n: "Xenon difluoride", w: "Xenon_difluoride", note: "A noble gas that bonded. In 1962 this upended a century of textbooks." },
   "O-Xe": { f: "XeO3", n: "Xenon trioxide", w: "Xenon_trioxide", note: "A noble-gas compound that explodes when dry." },
-  "F-Kr": { f: "KrF2", n: "Krypton difluoride", w: "Krypton_difluoride", note: "Krypton's only compound. Made in an electric discharge at −196 °C." },
+  "F-Kr": { f: "KrF2", n: "Krypton difluoride", w: "Krypton_difluoride", note: "Krypton's only compound. Made in an electric discharge at minus 196 °C." },
   "F-Rn": { f: "RnF2", n: "Radon difluoride", w: "Radon_difluoride", note: "The one radon compound anyone has made, and only in trace amounts." },
-  "Ar-F-H": { f: "HArF", n: "Argon fluorohydride", w: "Argon_fluorohydride", note: "Argon's only compound. Exists below −256 °C and nowhere else." },
+  "Ar-F-H": { f: "HArF", n: "Argon fluorohydride", w: "Argon_fluorohydride", note: "Argon's only compound. Exists below minus 256 °C and nowhere else." },
   "Cl-Fr-O": { f: "FrClO4", n: "Francium perchlorate", w: "Francium_compounds", note: "Carried down with caesium perchlorate in the only francium chemistry ever done." },
   "At-H": { f: "HAt", n: "Hydrogen astatide", w: "Astatine#Compounds", note: "Astatine's best-known compound, and still only ever a few atoms at a time." },
   "Cl-Rf": { f: "RfCl4", n: "Rutherfordium tetrachloride", w: "Rutherfordium#Experimental_chemistry", note: "Made a few atoms at a time and sniffed in a gas-phase experiment." },
@@ -2355,8 +2355,8 @@ function inert(syms) {
   if (!dead.length) return null;
   const s = dead[0];
   if (s === "He" || s === "Ne") return `${NAMES[s]} has never bonded with anything. Not once, not at any temperature.`;
-  if (s === "Ar") return "Argon has exactly one compound, HArF, and it only exists below −256 °C.";
-  if (s === "Kr") return "Krypton bonds only with fluorine, and only at −196 °C.";
+  if (s === "Ar") return "Argon has exactly one compound, HArF, and it only exists below minus 256 °C.";
+  if (s === "Kr") return "Krypton bonds only with fluorine, and only at minus 196 °C.";
   if (s === "Xe") return "Xenon bonds only with fluorine and oxygen.";
   if (s === "Rn") return "Radon has one compound, the difluoride, and only in trace amounts.";
   return `${NAMES[s]} has only ever existed a few atoms at a time, each gone in under a second. Nobody has made a compound of it.`;
