@@ -555,10 +555,20 @@ const flaskWrap = $("flaskWrap");
 flaskWrap.addEventListener("dragover", ev => { ev.preventDefault(); flaskWrap.classList.add("over"); });
 flaskWrap.addEventListener("dragleave", () => flaskWrap.classList.remove("over"));
 flaskWrap.addEventListener("drop", ev => { ev.preventDefault(); flaskWrap.classList.remove("over"); const e = get(ev.dataTransfer.getData("text/plain") || ""); if (e) addToMix(e); });
-$("shelfQ").addEventListener("input", ev => {
-  const t = ev.target.value.trim().toLowerCase();
-  shelf.querySelectorAll(".sh").forEach(b => { const e = get(b.dataset.sym); b.classList.toggle("hide", !!t && !`${e.sym} ${e.trend} ${e.el}`.toLowerCase().includes(t)); });
-});
+let shelfFamily = "";
+function filterShelf() {
+  const t = $("shelfQ").value.trim().toLowerCase();
+  let count = 0;
+  shelf.querySelectorAll(".sh").forEach(b => {
+    const e = get(b.dataset.sym);
+    const visible = (!shelfFamily || e.fam === shelfFamily) && (!t || `${e.sym} ${e.trend} ${e.el}`.toLowerCase().includes(t));
+    b.classList.toggle("hide", !visible);
+    if (visible) count++;
+  });
+  $("shelfCount").textContent = `${count} of ${els.length} elements${shelfFamily ? " · " + FAMILIES[shelfFamily] : " · All families"}`;
+  $("shelfEmpty").hidden = count > 0;
+}
+$("shelfQ").addEventListener("input", filterShelf);
 function addToMix(e) {
   if (mix.includes(e)) { toast(`${e.sym} is already in the flask`); return; }
   if (mix.length >= 3) mix.shift();
@@ -684,17 +694,19 @@ const HALL_NOTES = isG ? {
   lanthanide: "Rare earths. Heritage weaves, vintage finds, the almirah raids.",
   actinide: "Heavy, glowing, a little radioactive. Party looks that fade by morning.",
 };
-$("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
-  const m = els.filter(e => e.fam === k), show3 = [m[0], m[Math.floor(m.length / 2)], m[m.length - 1]];
-  return `<button type="button" class="hall ${k}" data-fam="${k}">
-    <div class="row"><div><p class="kicker">Hall ${ROMAN[i]}</p><h3>${name}</h3></div><span class="count">${m.length}</span></div>
-    <p class="hall-note">${HALL_NOTES[k]}</p>
-    <div class="minis" aria-hidden="true">${show3.map(e => `<div class="el ${e.fam}">${tileHTML(e, "h" + k + e.sym)}</div>`).join("")}</div>
-    <ul>${m.slice(0, 4).map(e => `<li><b>${e.sym}</b>${e.trend}</li>`).join("")}</ul>
-    <span class="link">See all ${m.length} on the table <span class="arr">→</span></span>
-  </button>`;
-}).join("");
-$("halls").addEventListener("click", ev => { const h = ev.target.closest(".hall"); if (!h) return; setFam(h.dataset.fam); show("table"); });
+const shelfFamilySelect = $("shelfFamily");
+shelfFamilySelect.innerHTML = `<option value="">All families · ${els.length}</option>` + Object.entries(FAMILIES).map(([key, name]) => `<option value="${key}">${name} · ${els.filter(e => e.fam === key).length}</option>`).join("");
+function chooseShelfFamily(value) {
+  shelfFamily = value;
+  shelfFamilySelect.value = value;
+  $("familyNote").textContent = value ? HALL_NOTES[value] : "Ten chemical families, each with its own character. Explore one, then switch families to build your mix.";
+  $("familyDot").style.setProperty("--family-col", value ? getComputedStyle(document.documentElement).getPropertyValue(`--${value}`).trim() : "#151515");
+  $("familyReset").hidden = !value;
+  filterShelf();
+}
+shelfFamilySelect.addEventListener("change", () => chooseShelfFamily(shelfFamilySelect.value));
+$("familyReset").addEventListener("click", () => { chooseShelfFamily(""); shelfFamilySelect.focus(); });
+chooseShelfFamily("");
 
 // Ink reveal: the cursor paints a printed version of the word
 function createInkReveal(ink, word) {
@@ -746,7 +758,7 @@ if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
 return { start: inkStart, stop: inkStop };
 }
 const inkEffects = {
-  families: createInkReveal($("ink"), ED.word),
+  lab: createInkReveal($("ink"), ED.word),
   sources: createInkReveal($("sourceInk"), isG ? "FIELD NOTES" : "SOURCES")
 };
 const inkStart = view => { Object.entries(inkEffects).forEach(([key, effect]) => key === view ? effect.start() : effect.stop()); };
@@ -1216,13 +1228,14 @@ $("closeMenu").addEventListener("click", () => menuSheet.close());
 // ---------- Views ----------
 const VIEWS = ["cover", "table", "lab", "families", "sources"];
 function show(v, opts = {}) {
+  if (v === "families") v = "lab";
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
   document.querySelectorAll(".sections [data-view]").forEach(t => t.dataset.view === v ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current"));
   if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
   if (menuSheet.open) menuSheet.close();
   v === "cover" ? orbitStart() : orbitStop();
-  (v === "families" || v === "sources") ? requestAnimationFrame(() => inkStart(v)) : inkStop();
+  (v === "lab" || v === "sources") ? requestAnimationFrame(() => inkStart(v)) : inkStop();
   if (v !== "table") stopPlay();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }

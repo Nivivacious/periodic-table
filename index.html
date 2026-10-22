@@ -670,6 +670,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 .mix-result{margin:24px 0;padding:20px;border:1px solid var(--ink);text-align:left}.mix-result[hidden]{display:none}.mix-art{display:block;width:100%;max-height:360px;margin:14px auto;aspect-ratio:1}.mix-result h3{font-size:30px;font-weight:400;margin:12px 0}.mix-result p,.mix-result li{font-size:15px;line-height:1.5}.mix-result ol{padding-left:20px}.mix-art{animation:mix-arrive .65s cubic-bezier(.2,.8,.2,1) both}@keyframes mix-arrive{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.mix-art{animation:none}}
+.family-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.family-picker{display:flex;align-items:center;gap:10px;border:1px solid currentColor;padding:10px 12px;flex:1;min-width:210px}.family-picker i{width:10px;height:10px;flex-shrink:0;border-radius:50%;background:var(--family-col,#151515)}.family-picker select{width:100%;font:inherit;color:inherit;border:0;background:transparent;cursor:pointer}.family-picker select:focus-visible{outline:2px solid var(--family-col);outline-offset:4px}.family-context{padding:8px 0 16px;min-height:86px}.family-context p{font-size:15px;line-height:1.5;margin:4px 0 8px}.shelf-count{margin:12px 0}.lab-ink{margin-bottom:32px}@media(max-width:600px){.family-picker{min-width:100%}.family-context{min-height:0}}
 </style>
 </head>
 <body>
@@ -690,7 +691,7 @@ dialog.sheet[open] .exhibit { animation: none; }
   </div>
   <nav class="sections band" aria-label="Sections">
     <button type="button" data-view="lab">The Lab</button>
-    <button type="button" data-view="families">Families</button>
+
     <button type="button" data-view="sources" data-t="navSources">Sources</button>
   </nav>
   <span class="progress" id="progress" aria-hidden="true"></span>
@@ -736,6 +737,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 
   <section class="view page band" data-view="lab" aria-labelledby="h-lab" hidden>
     <div class="wrap">
+      <div class="ink lab-ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
       <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. Discover their chemistry, then see the trends combine into a new outfit study.</p></div></div>
       <div class="lab">
         <div class="bench">
@@ -769,18 +771,12 @@ dialog.sheet[open] .exhibit { animation: none; }
           </div>
         </div>
         <div class="shelf">
+          <div class="family-toolbar"><label for="shelfFamily" class="kicker">Browse by family</label><div class="family-picker"><i id="familyDot" aria-hidden="true"></i><select id="shelfFamily" aria-describedby="familyNote"></select></div></div>
+          <div class="family-context"><p id="familyNote"></p><button type="button" class="link" id="familyReset" hidden>Show all families</button></div>
           <label class="search"><span class="sr">Filter the shelf</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="shelfQ" type="search" placeholder="Filter the shelf"></label>
-          <div class="shelf-grid" id="shelf"></div>
+          <p class="kicker shelf-count" id="shelfCount" role="status"></p><div class="shelf-grid" id="shelf"></div><p id="shelfEmpty" hidden>No elements match. Try another search or family.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="view page band" data-view="families" aria-labelledby="h-fam" hidden>
-    <div class="wrap">
-      <div class="ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
-      <div class="page-head"><div><p class="kicker">Families</p><h2 class="h-lg" id="h-fam" data-t="famH2">Ten halls, <em>one wardrobe.</em></h2><p class="lede">Grouped exactly as chemistry groups them. Open a hall to see only its elements on the table.</p></div></div>
-      <div class="halls" id="halls"></div>
     </div>
   </section>
 
@@ -818,7 +814,7 @@ dialog.sheet[open] .exhibit { animation: none; }
   <div class="menu-in">
     <button type="button" class="close" id="closeMenu">Close <span>×</span></button>
     <button type="button" class="mi" data-view="lab"><i>i.</i>The Lab</button>
-    <button type="button" class="mi" data-view="families"><i>ii.</i>Families</button>
+
     <button type="button" class="mi" data-view="sources"><i>iii.</i><span data-t="menuSources">Sources</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
@@ -3003,10 +2999,20 @@ const flaskWrap = $("flaskWrap");
 flaskWrap.addEventListener("dragover", ev => { ev.preventDefault(); flaskWrap.classList.add("over"); });
 flaskWrap.addEventListener("dragleave", () => flaskWrap.classList.remove("over"));
 flaskWrap.addEventListener("drop", ev => { ev.preventDefault(); flaskWrap.classList.remove("over"); const e = get(ev.dataTransfer.getData("text/plain") || ""); if (e) addToMix(e); });
-$("shelfQ").addEventListener("input", ev => {
-  const t = ev.target.value.trim().toLowerCase();
-  shelf.querySelectorAll(".sh").forEach(b => { const e = get(b.dataset.sym); b.classList.toggle("hide", !!t && !`${e.sym} ${e.trend} ${e.el}`.toLowerCase().includes(t)); });
-});
+let shelfFamily = "";
+function filterShelf() {
+  const t = $("shelfQ").value.trim().toLowerCase();
+  let count = 0;
+  shelf.querySelectorAll(".sh").forEach(b => {
+    const e = get(b.dataset.sym);
+    const visible = (!shelfFamily || e.fam === shelfFamily) && (!t || `${e.sym} ${e.trend} ${e.el}`.toLowerCase().includes(t));
+    b.classList.toggle("hide", !visible);
+    if (visible) count++;
+  });
+  $("shelfCount").textContent = `${count} of ${els.length} elements${shelfFamily ? " · " + FAMILIES[shelfFamily] : " · All families"}`;
+  $("shelfEmpty").hidden = count > 0;
+}
+$("shelfQ").addEventListener("input", filterShelf);
 function addToMix(e) {
   if (mix.includes(e)) { toast(`${e.sym} is already in the flask`); return; }
   if (mix.length >= 3) mix.shift();
@@ -3132,17 +3138,19 @@ const HALL_NOTES = isG ? {
   lanthanide: "Rare earths. Heritage weaves, vintage finds, the almirah raids.",
   actinide: "Heavy, glowing, a little radioactive. Party looks that fade by morning.",
 };
-$("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
-  const m = els.filter(e => e.fam === k), show3 = [m[0], m[Math.floor(m.length / 2)], m[m.length - 1]];
-  return `<button type="button" class="hall ${k}" data-fam="${k}">
-    <div class="row"><div><p class="kicker">Hall ${ROMAN[i]}</p><h3>${name}</h3></div><span class="count">${m.length}</span></div>
-    <p class="hall-note">${HALL_NOTES[k]}</p>
-    <div class="minis" aria-hidden="true">${show3.map(e => `<div class="el ${e.fam}">${tileHTML(e, "h" + k + e.sym)}</div>`).join("")}</div>
-    <ul>${m.slice(0, 4).map(e => `<li><b>${e.sym}</b>${e.trend}</li>`).join("")}</ul>
-    <span class="link">See all ${m.length} on the table <span class="arr">→</span></span>
-  </button>`;
-}).join("");
-$("halls").addEventListener("click", ev => { const h = ev.target.closest(".hall"); if (!h) return; setFam(h.dataset.fam); show("table"); });
+const shelfFamilySelect = $("shelfFamily");
+shelfFamilySelect.innerHTML = `<option value="">All families · ${els.length}</option>` + Object.entries(FAMILIES).map(([key, name]) => `<option value="${key}">${name} · ${els.filter(e => e.fam === key).length}</option>`).join("");
+function chooseShelfFamily(value) {
+  shelfFamily = value;
+  shelfFamilySelect.value = value;
+  $("familyNote").textContent = value ? HALL_NOTES[value] : "Ten chemical families, each with its own character. Explore one, then switch families to build your mix.";
+  $("familyDot").style.setProperty("--family-col", value ? getComputedStyle(document.documentElement).getPropertyValue(`--${value}`).trim() : "#151515");
+  $("familyReset").hidden = !value;
+  filterShelf();
+}
+shelfFamilySelect.addEventListener("change", () => chooseShelfFamily(shelfFamilySelect.value));
+$("familyReset").addEventListener("click", () => { chooseShelfFamily(""); shelfFamilySelect.focus(); });
+chooseShelfFamily("");
 
 // Ink reveal: the cursor paints a printed version of the word
 function createInkReveal(ink, word) {
@@ -3194,7 +3202,7 @@ if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
 return { start: inkStart, stop: inkStop };
 }
 const inkEffects = {
-  families: createInkReveal($("ink"), ED.word),
+  lab: createInkReveal($("ink"), ED.word),
   sources: createInkReveal($("sourceInk"), isG ? "FIELD NOTES" : "SOURCES")
 };
 const inkStart = view => { Object.entries(inkEffects).forEach(([key, effect]) => key === view ? effect.start() : effect.stop()); };
@@ -3664,13 +3672,14 @@ $("closeMenu").addEventListener("click", () => menuSheet.close());
 // ---------- Views ----------
 const VIEWS = ["cover", "table", "lab", "families", "sources"];
 function show(v, opts = {}) {
+  if (v === "families") v = "lab";
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
   document.querySelectorAll(".sections [data-view]").forEach(t => t.dataset.view === v ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current"));
   if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
   if (menuSheet.open) menuSheet.close();
   v === "cover" ? orbitStart() : orbitStop();
-  (v === "families" || v === "sources") ? requestAnimationFrame(() => inkStart(v)) : inkStop();
+  (v === "lab" || v === "sources") ? requestAnimationFrame(() => inkStart(v)) : inkStop();
   if (v !== "table") stopPlay();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
