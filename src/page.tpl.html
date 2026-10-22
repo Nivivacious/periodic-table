@@ -396,6 +396,7 @@ dialog.sharebox::backdrop { background: rgba(236, 229, 215, .86); }
 .hall .row { display: flex; justify-content: space-between; align-items: baseline; }
 .hall .kicker { font-size: .58rem; }
 .hall h3 { margin: .3rem 0 0; font: 400 1.6rem/1.05 var(--display); }
+.hall-note { margin: .7rem 0 0; font: italic .95rem/1.4 var(--body); color: var(--ink-2); }
 .hall .count { font: italic 400 2.6rem/1 var(--display); color: var(--c); }
 .hall .minis { display: flex; position: relative; height: 6.2rem; }
 .hall .minis .el { width: 4.2rem; position: absolute; top: 0; transition: transform .8s var(--ease); }
@@ -572,7 +573,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
       </div>
       <div class="tl" aria-label="Timeline">
         <button type="button" class="tl-play" id="tlPlay" aria-label="Play the year"><svg viewBox="0 0 10 10" aria-hidden="true"><path id="tlIcon" d="M2 1l7 4-7 4z"/></svg></button>
-        <div class="tl-mid"><p class="kicker"><span id="tlStart"></span><span>Drag to watch 2026 happen</span><span id="tlEnd"></span></p><input type="range" id="tl" min="0" max="1" value="1" aria-label="Month"></div>
+        <div class="tl-mid"><p class="kicker"><span id="tlStart"></span><span data-t="tlHint">Drag to watch 2026 happen</span><span id="tlEnd"></span></p><input type="range" id="tl" min="0" max="1" value="1" aria-label="Month"></div>
         <p class="tl-read" id="tlRead"></p>
       </div>
       <div class="tools"><div class="filters" id="filters"></div></div>

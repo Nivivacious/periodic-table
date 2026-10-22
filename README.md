@@ -21,13 +21,13 @@ The fashion edition is laid out as a magazine issue with museum-style exhibit ca
 
 - **Cover.** All 118 elements orbit as a draggable 3D sphere. "See the full table" flies every tile into its place on the periodic table.
 - **The Table.** The real periodic table, with:
-  - a **timeline** slider and play button that lights up trends in the month the press named them (Jan 2025 → Oct 2026)
+  - a **timeline** slider and play button that lights up trends in the month the press named them (Jan 2025 → Oct 2026); on the garbage table it runs through one Bangalore year, January to December, by season
   - family filters and a Gen Z filter
   - period and group highlighting
   - arrow-key navigation
-- **The Lab.** Mix up to three elements into a compound and get a named look.
+- **The Lab.** Mix up to three elements into a compound and get a named look. On the garbage table the compound is a field note: where, when, and what was in the pile.
 - **Gen Z.** 20 flip cards translate Gen Z and desi slang into the trends they describe. Also, 45 trends are flagged as Gen Z-led.
-- **Families.**
+- **Families.** Ten halls, each with a one-line note on what its elements have in common.
 
 ## Exhibit cards
 

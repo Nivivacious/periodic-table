@@ -53,6 +53,7 @@ const ED = isG ? {
   word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
 };
 document.documentElement.dataset.ed = ED.key;
+document.title = isG ? "The Periodic Table of Bangalore Garbage" : "The Periodic Table of Indian Fashion";
 if (chosen) { try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {} }
 else {
   // First visit: the cover asks which table they want.
@@ -62,6 +63,7 @@ else {
     try { localStorage.setItem("ptif-edition", "fashion"); } catch (err) {}
     document.getElementById("choose").hidden = true; document.querySelector(".cover-title").classList.remove("choosing");
     document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === "fashion")));
+    orbs.forEach((o, i) => { if (!o.e.other) return; o.e = els[i]; o.b.className = `orb ${o.e.fam}`; o.b.setAttribute("aria-label", `${o.e.sym}, ${o.e.trend}`); o.b.innerHTML = `<img src="${sceneImg(o.e)}" alt=""><span><b>${o.e.sym}</b>${o.e.trend}</span>`; });
   });
 }
 if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_COPY[el.dataset.t]; if (v != null) el.innerHTML = v; }
@@ -328,7 +330,8 @@ for (const [n, t] of tiles) {
 // ---------- Timeline: watch the year fill the table ----------
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthOf = (d) => { const m = /([A-Za-z]{3})\w*\s+(\d{4})/.exec(d || ""); return m ? (+m[2]) * 12 + MON.indexOf(m[1]) : null; };
-const fmtMonth = (i) => `${MON[i % 12]} ${Math.floor(i / 12)}`;
+const MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const fmtMonth = (i) => isG ? MONL[i % 12] : `${MON[i % 12]} ${Math.floor(i / 12)}`;
 const months = els.map(e => monthOf(e.src && e.src[3]));
 const tStart = Math.min(...months.filter(x => x != null)), tEnd = Math.max(...months.filter(x => x != null));
 const tl = $("tl");
@@ -338,7 +341,7 @@ function timeline() {
   const upto = tStart + Number(tl.value);
   let n = 0;
   els.forEach((e, i) => { const on = months[i] == null || months[i] <= upto; tiles.get(e.n).classList.toggle("future", !on); if (on) n++; });
-  $("tlRead").innerHTML = `By ${fmtMonth(upto)}: <b>${n}</b> of 118`;
+  $("tlRead").innerHTML = `${isG ? "Through" : "By"} ${fmtMonth(upto)}: <b>${n}</b> of 118`;
 }
 tl.addEventListener("input", () => { stopPlay(); timeline(); });
 let playTimer = 0;
@@ -356,13 +359,19 @@ timeline();
 const orbitEl = $("orbit"), sphere = $("sphere");
 const orbs = [];
 {
-  const N = els.length, GA = Math.PI * (3 - Math.sqrt(5));
-  els.forEach((e, i) => {
+  // Before an edition is chosen, the sphere mixes both tables: fashion on the even slots, garbage on the odd.
+  let orbEls = els;
+  if (!chosen) {
+    const other = (isG ? ELEMENTS : GARBAGE).map(([n, sym, el, trend, desc, pieces, tip, art]) => ({ n, sym, el, trend, art, fam: family(n), other: true }));
+    orbEls = els.map((e, i) => (i % 2 ? other[i] : e));
+  }
+  const N = orbEls.length, GA = Math.PI * (3 - Math.sqrt(5));
+  orbEls.forEach((e, i) => {
     const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = GA * i;
     const b = document.createElement("button");
     b.type = "button"; b.className = `orb ${e.fam}`; b.tabIndex = -1;
     b.setAttribute("aria-label", `${e.sym}, ${e.trend}`);
-    b.innerHTML = `<img src="${sceneImg(e)}" alt="" loading="lazy"><span><b>${e.sym}</b>${e.trend}</span>`;
+    b.innerHTML = `<img src="${e.other ? specImg("o" + e.sym, e.art) : sceneImg(e)}" alt="" loading="lazy"><span><b>${e.sym}</b>${e.trend}</span>`;
     sphere.appendChild(b);
     orbs.push({ b, e, x: Math.cos(th) * r, y, z: Math.sin(th) * r });
   });
@@ -402,7 +411,12 @@ orbitEl.addEventListener("pointermove", ev => {
 const endDrag = () => {
   if (!dragging) return;
   const d = dragging; dragging = null; orbitEl.classList.remove("drag");
-  if (d.moved < 6 && d.target) open(orbs.find(o => o.b === d.target).e);
+  if (d.moved < 6 && d.target) {
+    const e = orbs.find(o => o.b === d.target).e;
+    if (!chosen) { if (e.other) switchEdition(ED.other); else document.getElementById("chooseFashion").click(); }
+    if (e.other) return;
+    open(e);
+  }
 };
 orbitEl.addEventListener("pointerup", endDrag);
 orbitEl.addEventListener("pointercancel", endDrag);
@@ -470,7 +484,17 @@ function addToMix(e) {
   renderMix();
 }
 const famColor = (e) => getComputedStyle(document.documentElement).getPropertyValue(`--${e.fam}`).trim();
+const TIMES = ["6 am", "11 pm", "1.30 pm", "7.40 am", "4 pm", "2 am", "9.15 am", "6.30 pm"];
+function pileNote(list) {
+  const art = (t) => { const w = t.replace(/,.*$/, "").toLowerCase(); return /s$/.test(w) && !/ss$|us$/.test(w) ? w : (/^[aeiou]/.test(w) ? "an " : "a ") + w; };
+  const names = list.map(e => art(e.trend));
+  const joined = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
+  const where = (list[0].src && list[0].src[0]) || "Somewhere in Bangalore";
+  const when = TIMES[list.reduce((a, e) => a + e.n, 0) % TIMES.length];
+  return `${where}, ${when}: ${joined}.`;
+}
 function lookName(list) {
+  if (isG) return pileNote(list);
   if (list.length === 1) return list[0].trend;
   const word = (t, end) => { const w = t.split(/[\s-]+/).filter(x => !/^(and|the|of|a)$/i.test(x)); return end ? w[w.length - 1] : w[0]; };
   const first = word(list[0].trend), last = word(list[list.length - 1].trend, true), mid = list.length === 3 ? " " + word(list[1].trend) : "";
@@ -483,7 +507,7 @@ function renderMix() {
   ["lg0", "lg1", "lg2"].forEach((id, i) => $(id).setAttribute("stop-color", cols[Math.min(i, cols.length - 1)]));
   $("formula").innerHTML = mix.length ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>·</i>") : "—";
   const ln = $("lookname");
-  ln.textContent = mix.length ? `“${lookName(mix)}”` : "Pick up to three elements from the shelf.";
+  ln.textContent = mix.length ? (isG ? lookName(mix) : `“${lookName(mix)}”`) : "Pick up to three elements from the shelf.";
   ln.classList.toggle("empty", !mix.length);
   $("recipe").innerHTML = mix.map(e => `<li><b>${e.pieces.split(",")[0].trim()}</b> from ${e.trend}</li>`).join("");
   $("slots").innerHTML = mix.map(e => `<button type="button" class="slot ${e.fam}" data-sym="${e.sym}" aria-label="Remove ${e.trend}"><img src="${sceneImg(e)}" alt=""><span>${e.sym}</span></button>`).join("");
@@ -558,10 +582,34 @@ $("flipAll").addEventListener("click", ev => {
 
 }
 // ---------- Families ----------
+const HALL_NOTES = isG ? {
+  alkali: "Soft, reactive, gone by morning. Leaf litter, a ragi ball, cement sacks.",
+  alkaline: "Heavier, and they stay. Foam on the lake, a fridge on the footpath.",
+  transition: "The middle of the table and the middle of the road. Flowers, debris, a commode.",
+  post: "Things that were something else last week. Aloo bonda paper, a flex, a lost flyer.",
+  metalloid: "Half useful, half not. Silk offcuts, a gate notice, a tetra pak.",
+  nonmetal: "Mostly food, mostly eaten. The banana leaf, the cow's dinner, the hospital glove.",
+  halogen: "Sharp. A tilted slab, cable loops, a wristband, tissue snow.",
+  noble: "Things that sit on a wall and never react. The tiffin. The helmet. The Old Monk.",
+  lanthanide: "Rare, seasonal, back next year. Tabebuia petals, show pots, a Christmas tree.",
+  actinide: "Heavy and slow to decay. Thermocol, an AC unit, the metro barricade from 2019.",
+} : {
+  alkali: "Soft, bright, quick to react. The trends that go viral by lunch.",
+  alkaline: "Steadier than the alkalis. Belted pallus, bridal moods, things that last a season.",
+  transition: "The big middle of the table: the everyday looks that hold the wardrobe together.",
+  post: "Metal that remembers it was something else. Reworked, repurposed, re-draped.",
+  metalloid: "Half one thing, half another. Indo-Western, blokette, the in-betweens.",
+  nonmetal: "Light, loud, essential. Chatpata, handmade, the pieces you reach for first.",
+  halogen: "Sharp and a little dangerous. Statement accessories, the subversive jewellery.",
+  noble: "They do not react to anything. Opera glam, Oganesson: the looks that never go out.",
+  lanthanide: "Rare earths. Heritage weaves, vintage finds, the almirah raids.",
+  actinide: "Heavy, glowing, a little radioactive. Party looks that fade by morning.",
+};
 $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
   const m = els.filter(e => e.fam === k), show3 = [m[0], m[Math.floor(m.length / 2)], m[m.length - 1]];
   return `<button type="button" class="hall ${k}" data-fam="${k}">
     <div class="row"><div><p class="kicker">Hall ${ROMAN[i]}</p><h3>${name}</h3></div><span class="count">${m.length}</span></div>
+    <p class="hall-note">${HALL_NOTES[k]}</p>
     <div class="minis" aria-hidden="true">${show3.map(e => `<div class="el ${e.fam}">${tileHTML(e, "h" + k + e.sym)}</div>`).join("")}</div>
     <ul>${m.slice(0, 4).map(e => `<li><b>${e.sym}</b>${e.trend}</li>`).join("")}</ul>
     <span class="link">See all ${m.length} on the table <span class="arr">→</span></span>
