@@ -1658,5 +1658,6 @@ const FASHION_SHOP = {
 function fashionShopHTML(e) {
   if (isG || !FASHION_SHOP[e.n]) return "";
   const escape = value => String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-  return `<dt>Shop the look</dt><dd class="shop-look"><div class="shop-links">${FASHION_SHOP[e.n].map(item => `<a href="${escape(item.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(item.label)} at ${escape(item.retailer)} (opens in a new tab)"><span>${escape(item.label)}</span><small>${escape(item.retailer)} <span aria-hidden="true">↗</span></small></a>`).join("")}</div><p class="shop-note">Similar pieces. Availability varies.</p></dd>`;
+  const retailers = [...new Map(FASHION_SHOP[e.n].map(item => [item.retailer, item])).values()];
+  return `<div class="fact fact-shop"><dt>Shop the look</dt><dd class="shop-look"><div class="shop-links">${retailers.map(item => `<a href="${escape(item.url)}" target="_blank" rel="noopener noreferrer" title="${escape(item.label)}" aria-label="${escape(item.label)} at ${escape(item.retailer)} (opens in a new tab)">${escape(item.retailer)}<span aria-hidden="true">↗</span></a>`).join("")}</div></dd></div>`;
 }

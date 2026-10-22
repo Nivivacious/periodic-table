@@ -1110,13 +1110,13 @@ function render(e, direction = 0) {
       <h2>${e.trend}</h2>
       <p class="desc">${e.desc}</p>
       <dl class="facts">
-        <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
-        <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        <div class="fact fact-pieces"><dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd></div>
+        <div class="fact fact-tip"><dt>${ED.tipLabel}</dt><dd>${e.tip}</dd></div>
+        ${!isG && FASHION_SIGHTINGS[e.n] ? `<div class="fact fact-seen"><dt>Last Seen On</dt><dd class="last-seen"><a href="${FASHION_SIGHTINGS[e.n].url}" target="_blank" rel="noopener noreferrer">${FASHION_SIGHTINGS[e.n].actor}</a><span class="seen-note">${FASHION_SIGHTINGS[e.n].note}</span></dd></div>` : ""}
         ${fashionShopHTML(e)}
-        ${!isG && FASHION_SIGHTINGS[e.n] ? `<dt>Last Seen On</dt><dd class="last-seen"><a href="${FASHION_SIGHTINGS[e.n].url}" target="_blank" rel="noopener noreferrer">${FASHION_SIGHTINGS[e.n].actor}</a><span class="seen-note">${FASHION_SIGHTINGS[e.n].note}</span></dd>` : ""}
-        <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
-        ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
+        <div class="fact fact-palette"><dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd></div>
       </dl>
+      ${s ? `<p class="source-line"><span>${ED.srcLabel}</span> ${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</p>` : ""}
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
   exhibit.style.setProperty("--tint", famColor(e));

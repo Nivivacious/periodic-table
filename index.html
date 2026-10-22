@@ -695,13 +695,47 @@ dialog.comparison{width:min(820px,calc(100% - 24px));max-height:calc(100dvh - 24
 .sheet .wall > .related .related-card { min-width:0; width:100%; }
 .sheet .wall > .related .related-card > span:last-child { margin-left:auto; }
 @media(max-width:600px) { .sheet .wall > .related { max-width:12.5rem; } }
-/* Small, specific shopping links keep the card editorial. */
-.shop-links { display:grid; gap:6px; }
-.facts .shop-links a { display:flex; align-items:baseline; justify-content:space-between; gap:6px 14px; flex-wrap:wrap; text-decoration:none; font-size:.81rem; line-height:1.4; border-bottom:1px solid var(--rule); padding:2px 0 5px; }
-.shop-links a>span { text-decoration:underline; text-underline-offset:3px; }
-.shop-links a small { font:500 .57rem/1.4 var(--sans); letter-spacing:.04em; color:var(--muted); white-space:nowrap; }
-.shop-links a:hover small,.shop-links a:focus-visible small { color:var(--accent); }
-.facts .shop-note { margin:5px 0 0; font:italic .66rem/1.4 var(--body); color:var(--muted); }
+/* An editorial reading order, with quiet supporting detail. */
+.sheet .exhibit { align-items:start; gap:2.5rem; padding-top:3.2rem; }
+.sheet .placard { gap:.85rem; padding-top:.35rem; }
+.sheet .placard .no { font-size:.55rem; line-height:1.6; letter-spacing:.13em; border:0; padding:0; }
+.sheet .placard h2 { font-size:clamp(2rem,3.5vw,2.8rem); line-height:1.08; letter-spacing:-.025em; text-wrap:balance; }
+.sheet .placard .desc { font:400 .98rem/1.6 var(--body); max-width:44ch; }
+.sheet .facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.1rem 1.4rem; padding-top:1.2rem; margin-top:.35rem; }
+.sheet .fact { min-width:0; }
+.sheet .fact dt { padding:0; margin:0 0 .4rem; font:500 .54rem/1.4 var(--sans); letter-spacing:.12em; color:var(--muted); }
+.sheet .fact dd { font:400 .86rem/1.55 var(--body); margin:0; }
+.sheet .fact-pieces .pieces { gap:.15rem .55rem; font-size:.8rem; color:var(--ink-2); }
+.sheet .fact-tip dd { font-size:.92rem; }
+.sheet .fact-seen,.sheet .fact-shop,.sheet .fact-palette { grid-column:1/-1; }
+.sheet .fact-seen { padding-top:.9rem; border-top:1px solid var(--rule); }
+.sheet .last-seen { display:block; }
+.sheet .last-seen>a { font-size:.9rem; }
+.sheet .facts .seen-note { margin-top:.25rem; font-size:.76rem; line-height:1.5; max-width:46ch; }
+.sheet .shop-links { display:flex; flex-wrap:wrap; gap:.35rem 1.15rem; }
+.sheet .facts .shop-links a { display:inline-flex; align-items:baseline; gap:.3rem; font:500 .76rem/1.6 var(--sans); text-decoration:none; border-bottom:1px solid var(--rule); padding:.1rem 0; }
+.sheet .shop-links a span { font-size:.65rem; color:var(--muted); }
+.sheet .facts .shop-links a:hover { border-color:var(--accent); color:var(--accent); }
+.sheet .fact-palette { padding-top:.9rem; border-top:1px solid var(--rule); }
+.sheet .fact-palette .dyes { margin:0; }
+.sheet .fact-palette .dye-note { font-size:.7rem; line-height:1.45; margin:.4rem 0 0; }
+.sheet .source-line { margin:0; color:var(--muted); font:400 .69rem/1.55 var(--body); }
+.sheet .source-line>span { font:500 .5rem var(--sans); letter-spacing:.09em; text-transform:uppercase; margin-right:.45rem; }
+.sheet .source-line a { color:inherit; text-underline-offset:3px; }
+.sheet .ex-nav { gap:1.1rem; margin-top:.25rem; padding-top:.85rem; }
+.sheet .ex-nav .link { font-size:.56rem; letter-spacing:.13em; }
+.sheet .ex-nav .count { font-size:.52rem; letter-spacing:.1em; }
+.sheet .wall { padding:1.6rem; }
+@media(max-width:600px) {
+ .sheet .exhibit { gap:1.5rem; padding:3.1rem 1.25rem 1.4rem; }
+ .sheet .placard { gap:.8rem; padding:0; }
+ .sheet .placard h2 { font-size:2.1rem; }
+ .sheet .placard .desc { font-size:.95rem; }
+ .sheet .wall { padding:1.25rem; }
+ .sheet .facts { gap:1rem; }
+ .sheet .fact dd { font-size:.85rem; }
+}
+@media(max-width:380px) { .sheet .fact-pieces,.sheet .fact-tip { grid-column:1/-1; } }
 </style>
 </head>
 <body>
@@ -4849,7 +4883,8 @@ const FASHION_SHOP = {
 function fashionShopHTML(e) {
   if (isG || !FASHION_SHOP[e.n]) return "";
   const escape = value => String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-  return `<dt>Shop the look</dt><dd class="shop-look"><div class="shop-links">${FASHION_SHOP[e.n].map(item => `<a href="${escape(item.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(item.label)} at ${escape(item.retailer)} (opens in a new tab)"><span>${escape(item.label)}</span><small>${escape(item.retailer)} <span aria-hidden="true">↗</span></small></a>`).join("")}</div><p class="shop-note">Similar pieces. Availability varies.</p></dd>`;
+  const retailers = [...new Map(FASHION_SHOP[e.n].map(item => [item.retailer, item])).values()];
+  return `<div class="fact fact-shop"><dt>Shop the look</dt><dd class="shop-look"><div class="shop-links">${retailers.map(item => `<a href="${escape(item.url)}" target="_blank" rel="noopener noreferrer" title="${escape(item.label)}" aria-label="${escape(item.label)} at ${escape(item.retailer)} (opens in a new tab)">${escape(item.retailer)}<span aria-hidden="true">↗</span></a>`).join("")}</div></dd></div>`;
 }
 
 // ---------- Data ----------
@@ -5964,13 +5999,13 @@ function render(e, direction = 0) {
       <h2>${e.trend}</h2>
       <p class="desc">${e.desc}</p>
       <dl class="facts">
-        <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
-        <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        <div class="fact fact-pieces"><dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd></div>
+        <div class="fact fact-tip"><dt>${ED.tipLabel}</dt><dd>${e.tip}</dd></div>
+        ${!isG && FASHION_SIGHTINGS[e.n] ? `<div class="fact fact-seen"><dt>Last Seen On</dt><dd class="last-seen"><a href="${FASHION_SIGHTINGS[e.n].url}" target="_blank" rel="noopener noreferrer">${FASHION_SIGHTINGS[e.n].actor}</a><span class="seen-note">${FASHION_SIGHTINGS[e.n].note}</span></dd></div>` : ""}
         ${fashionShopHTML(e)}
-        ${!isG && FASHION_SIGHTINGS[e.n] ? `<dt>Last Seen On</dt><dd class="last-seen"><a href="${FASHION_SIGHTINGS[e.n].url}" target="_blank" rel="noopener noreferrer">${FASHION_SIGHTINGS[e.n].actor}</a><span class="seen-note">${FASHION_SIGHTINGS[e.n].note}</span></dd>` : ""}
-        <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
-        ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
+        <div class="fact fact-palette"><dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd></div>
       </dl>
+      ${s ? `<p class="source-line"><span>${ED.srcLabel}</span> ${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</p>` : ""}
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
   exhibit.style.setProperty("--tint", famColor(e));
