@@ -664,6 +664,7 @@ dialog.sheet[open] .exhibit { animation: none; }
   .sheet .depth-back, .sheet .depth-mid, .sheet .depth-person, .sheet .depth-front { transform: none !important; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+.mix-result{margin:24px 0;padding:20px;border:1px solid var(--ink);text-align:left}.mix-result[hidden]{display:none}.mix-art{display:block;width:100%;max-height:360px;margin:14px auto;aspect-ratio:1}.mix-result h3{font-size:30px;font-weight:400;margin:12px 0}.mix-result p,.mix-result li{font-size:15px;line-height:1.5}.mix-result ol{padding-left:20px}.mix-art{animation:mix-arrive .65s cubic-bezier(.2,.8,.2,1) both}@keyframes mix-arrive{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.mix-art{animation:none}}
 </style>
 
 <div class="curtain" id="curtain" hidden aria-hidden="true">
@@ -728,7 +729,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 
   <section class="view page band" data-view="lab" aria-labelledby="h-lab" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. We'll find the real compound they make, then name the look after it.</p></div></div>
+      <div class="page-head"><div><p class="kicker">The Lab</p><h2 class="h-lg" id="h-lab" data-t="labH2">Mix your own <em>compound.</em></h2><p class="lede" data-t="labLede">Drop up to three elements into the flask. Discover their chemistry, then see the trends combine into a new outfit study.</p></div></div>
       <div class="lab">
         <div class="bench">
           <div class="flask-wrap" id="flaskWrap">
@@ -754,6 +755,7 @@ dialog.sheet[open] .exhibit { animation: none; }
             <p class="formula" id="formula">·</p>
             <div class="chem" id="chem"></div>
             <p class="lookname empty" id="lookname">Pick up to three elements from the shelf.</p>
+            <section class="mix-result" id="mixResult" aria-live="polite" hidden></section>
             <ol class="recipe" id="recipe"></ol>
             <div class="slots" id="slots"></div>
             <div class="lab-actions"><button type="button" class="btn" id="labRandom">Random mix</button><button type="button" class="link" id="labCopy">Copy formula</button><button type="button" class="link" id="labClear">Empty flask</button></div>

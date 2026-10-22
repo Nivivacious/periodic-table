@@ -590,6 +590,41 @@ function lookName(list, r) {
   const first = word(list[0].trend), last = word(list[list.length - 1].trend, true), mid = list.length === 3 ? " " + word(list[1].trend) : "";
   return `${first}${mid} ${first.toLowerCase() === last.toLowerCase() ? "Edit" : last}`;
 }
+// The cultural mix has its own outcome, independent of the chemistry result.
+function culturalMix(list) {
+  const title = lookName(list);
+  const roles = isG ? ["Foundation", "Structure", "Finishing detail"] : ["Silhouette", "Contrast", "Finishing detail"];
+  const notes = list.map((e, i) => `${roles[i]} from ${e.trend}.`);
+  const id = "mix" + list.map(e => e.sym).join("");
+  let drawing;
+  if (isG) {
+    // Recompose existing objects on one shared plinth rather than repeating cards.
+    drawing = `<rect width="100" height="100" fill="${P.paper}"/><ellipse cx="50" cy="87" rx="39" ry="5" fill="${P.grey}" opacity=".25"/><path d="M13 86H87V92H13Z" fill="${P.beige}" ${OL}/>`;
+    drawing += list.map((e, i) => {
+      const objs = e.art.obj || e.art.back || [];
+      const x = list.length === 2 ? [-8, 10][i] : [-17, 16, 0][i];
+      return `<g class="mix-part" style="--delay:${i * 120}ms" transform="translate(${x} ${i === 2 ? -14 : 0})">${objs.map(o => { const [name, ...args] = Array.isArray(o) ? o : [o]; return OBJ[name] ? OBJ[name](...args) : ""; }).join("")}</g>`;
+    }).join("");
+  } else {
+    const figures = list.map(e => (e.art.figs || [])[0] || {});
+    const f = { ...figures[0], x: 50, s: 1, flip: false };
+    // Keep the first silhouette and introduce a second fabric palette and lower half.
+    if (figures[1]) for (const key of ["low", "l", "y", "shoe", "pt", "lay"]) if (figures[1][key] !== undefined) f[key] = figures[1][key];
+    f.a = [...new Set(figures.flatMap(o => o.a || []))];
+    const finish = figures[figures.length - 1];
+    if (figures.length === 3 && finish.c) f.c = finish.c;
+    for (const key of ["hold", "hc2", "ac", "h"]) if (finish[key] !== undefined) f[key] = finish[key];
+    drawing = scene(id, {bg:list[0].art.bg, gr:list[list.length-1].art.gr, figs:[f], obj:list.flatMap(e => e.art.obj || []).slice(0,3)});
+  }
+  return {title, notes, drawing, caption:isG ? "An imagined found-object sculpture. A new composition from your finds." : "A new outfit study. One silhouette, with details borrowed from every selected trend."};
+}
+function renderCulturalMix() {
+  const result = $("mixResult");
+  result.hidden = mix.length < 2;
+  if (result.hidden) { result.innerHTML = ""; return; }
+  const out = culturalMix(mix);
+  result.innerHTML = `<p class="kicker">${isG ? "Your street sculpture" : "Your outfit study"} · ${mix.map(e => e.sym).join(" + ")}</p><svg class="mix-art" viewBox="0 0 100 100" role="img" aria-label="${isG ? "Sculpture" : "Outfit"} combining ${mix.map(e=>e.trend).join(", ")}">${out.drawing}</svg><h3>${out.title}</h3><p>${out.caption}</p><ol>${out.notes.map(n=>`<li>${n}</li>`).join("")}</ol>`;
+}
 function chemHTML(r) {
   if (!r) return "";
   const src = r.w ? ` <a href="${r.w}" target="_blank" rel="noopener">${r.generic ? "Look it up" : "Wikipedia"}</a>` : "";
@@ -606,8 +641,9 @@ function renderMix() {
   const r = mix.length ? react(mix) : null;
   $("formula").innerHTML = !mix.length ? "·" : (r.none || mix.length === 1) ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>+</i>") : sub(r.f);
   $("chem").innerHTML = chemHTML(r);
+  renderCulturalMix();
   const ln = $("lookname");
-  ln.textContent = mix.length ? (isG ? lookName(mix, r) : `“${lookName(mix, r)}”`) : "Pick up to three elements from the shelf.";
+  ln.textContent = mix.length ? (isG ? lookName(mix) : `“${lookName(mix)}”`) : "Pick up to three elements from the shelf.";
   ln.classList.toggle("empty", !mix.length);
   $("recipe").innerHTML = mix.map(e => `<li><b>${e.pieces.split(",")[0].trim()}</b> from ${e.trend}${r && r.spectator === e.sym ? " (on the side)" : ""}</li>`).join("");
   $("slots").innerHTML = mix.map(e => `<button type="button" class="slot ${e.fam}" data-sym="${e.sym}" aria-label="Remove ${e.trend}"><img src="${sceneImg(e)}" alt=""><span>${e.sym}</span></button>`).join("");
@@ -618,7 +654,8 @@ $("labClear").addEventListener("click", () => { mix = []; renderMix(); });
 $("labCopy").addEventListener("click", async () => {
   if (!mix.length) return toast("Add an element first");
   const r = react(mix);
-  const text = `${r.none ? mix.map(e => e.sym).join(" + ") : `${r.f} (${r.n})`}: “${lookName(mix, r)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
+  const outcome = mix.length > 1 ? culturalMix(mix) : null;
+  const text = `${outcome ? outcome.title + ": " + outcome.notes.join(" ") + "\n" : ""}${r.none ? mix.map(e => e.sym).join(" + ") : `${r.f} (${r.n})`}: “${lookName(mix, r)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
   try { await navigator.clipboard.writeText(text); toast("Formula copied"); } catch (err) { toast("Copy isn't available here"); }
 });
 renderMix();
