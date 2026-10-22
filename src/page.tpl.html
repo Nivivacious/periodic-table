@@ -465,7 +465,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
 /* Colophon */
 .colophon { border-top: 1px solid var(--ink); margin-top: 4rem; }
-.colophon .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1rem 3rem; align-items: baseline; padding-block: 1.6rem 2.4rem; }
+.colophon .wrap { display: flex; justify-content: space-between; gap: 1rem 3rem; align-items: baseline; padding-block: 1.6rem 2.4rem; }
 .colophon .wm { font: 500 .95rem var(--display); letter-spacing: .3em; text-transform: uppercase; }
 .colophon p { margin: 0; font: italic 1rem/1.4 var(--body); color: var(--ink-2); }
 .colophon small { font: 600 .6rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
@@ -545,16 +545,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 .dye-note { margin: .4rem 0 0; font: italic .95rem/1.35 var(--body); color: var(--muted); }
 .dye-note b { font-style: normal; font-weight: 400; color: var(--ink); }
 .dye-note a { text-decoration: none; border-bottom: 1px solid var(--accent); color: var(--ink); }
-/* Tear sheet */
-.sheet-actions { display: flex; gap: 1.4rem; align-items: center; align-self: end; }
-.board { position: relative; height: clamp(26rem, 70vh, 44rem); border: 1px solid var(--ink); background: var(--card); overflow: hidden; touch-action: none; }
-.board::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: 3rem 3rem; opacity: .35; }
-.pin { position: absolute; --r: 0deg; transform: rotate(var(--r)); cursor: grab; transition: transform .5s var(--ease), box-shadow .3s ease; }
-.pin .card { --w: 9.5rem; box-shadow: 0 8px 18px -10px rgba(21,21,21,.45); }
-.pin.lift { cursor: grabbing; transition: none; z-index: 5; transform: rotate(0deg) scale(1.04); }
-.pin .unpin { position: absolute; top: -.6rem; right: -.6rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid var(--ink); background: var(--paper); font: 600 .9rem/1 var(--sans); cursor: pointer; opacity: 0; transition: opacity .25s ease; }
-.pin:hover .unpin, .pin:focus-within .unpin { opacity: 1; }
-.board-empty { margin: 1rem 0 0; font: italic 1.1rem var(--body); color: var(--muted); text-align: center; }
 /* Frieze */
 .frieze { overflow: hidden; border-bottom: 1px solid var(--rule); }
 .frieze svg { display: block; width: 100%; height: clamp(72px, 9vw, 120px); }
@@ -584,9 +574,6 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
   .cover-title h1 em.lit { --mr: 170px; }
 }
 @media (max-width: 980px) {
-  .sheet-actions { align-self: start; }
-  .pin .card { --w: 7.4rem; }
-  .pin .unpin { opacity: 1; }
   .portal { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
@@ -602,7 +589,6 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
     <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
-      <button type="button" class="tool" data-view="tearsheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v9l3 3M18 4v9l-3 3M4 20h16M8 16h8"/></svg><span class="lbl" id="sheetLabel">Tear sheet</span><span class="count" id="pincount">0</span></button>
       <button type="button" class="tool" id="soundBtn" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="soundWave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11" opacity=".25"/></svg><span class="lbl" id="soundLbl">Sound off</span></button>
       <button type="button" class="tool menu" id="openMenu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
@@ -709,21 +695,12 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
     </div>
   </section>
 
-  <section class="view page band" data-view="tearsheet" aria-labelledby="h-sheet" hidden>
-    <div class="wrap">
-      <div class="page-head"><div><p class="kicker" id="sheetKicker">Tear sheet</p><h2 class="h-lg" id="h-sheet"><span id="sheetH2">Your <em>tear sheet.</em></span></h2><p class="lede" id="sheetLede"></p></div>
-        <div class="sheet-actions"><button type="button" class="btn" id="sheetSave">Save as image</button><button type="button" class="link" id="sheetClear">Clear</button></div></div>
-      <div class="board" id="board"></div>
-      <p class="board-empty" id="boardEmpty" hidden></p>
-    </div>
-  </section>
   </main>
 
 <footer class="colophon band">
   <div class="frieze" id="frieze"><svg id="friezeSvg" viewBox="0 0 1200 100" preserveAspectRatio="xMidYMax slice" aria-label="A frieze of figures crossing the page; tap one to open it"></svg></div>
   <div class="wrap">
     <span class="wm" data-t="colophonWm">The Fashion Elements</span>
-    <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes and drawings are ours.</p>
     <small>Issue 01 · 2026</small>
   </div>
 </footer>
@@ -745,7 +722,6 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
     <button type="button" class="mi" data-view="lab"><i>i.</i>The Lab</button>
     <button type="button" class="mi" data-view="families"><i>ii.</i>Families</button>
     <button type="button" class="mi" data-view="sources"><i>iii.</i><span data-t="menuSources">Sources</span></button>
-    <button type="button" class="mi" data-view="tearsheet"><i>iv.</i><span data-sheet-tool>Tear sheet</span> <span class="count" data-pincount>0</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
 </dialog>

@@ -33,77 +33,6 @@ function eyesWake() {
 }
 function eyesSleep() { document.removeEventListener("pointermove", onLook); clearTimeout(blinkTimer); }
 
-// ---------- The tear sheet (fashion) / the skip (garbage) ----------
-const PIN_KEY = "ptif-pins-" + ED.key;
-let pins = store.get(PIN_KEY, []).filter(p => get(p.s));
-const isPinned = (e) => pins.some(p => p.s === e.sym);
-function savePins() { store.set(PIN_KEY, pins); $("pincount").textContent = pins.length; document.querySelectorAll("[data-pincount]").forEach(n => n.textContent = pins.length); }
-function togglePin(e) {
-  if (isPinned(e)) { pins = pins.filter(p => p.s !== e.sym); toast(`${e.sym} taken off the ${ED.sheet.tool.toLowerCase()}`); }
-  else {
-    const n = pins.length;
-    pins.push({ s: e.sym, x: 8 + (n * 17) % 70 + Math.random() * 6, y: 6 + ((n * 23) % 50) + Math.random() * 8, r: Math.round((Math.random() - .5) * 16), d: dyeState.get(e.sym) || "" });
-    toast(`${e.sym} ${isG ? "thrown in" : "pinned"}`);
-  }
-  savePins(); renderSheetIfOpen();
-}
-const board = $("board");
-function renderSheetIfOpen() { if (!document.querySelector('[data-view="tearsheet"]').hidden) renderSheet(); }
-function renderSheet() {
-  savePins();
-  $("boardEmpty").hidden = pins.length > 0;
-  board.innerHTML = pins.map((p, i) => {
-    const e = get(p.s); if (p.d) dyeState.set(e.sym, p.d);
-    return `<div class="pin ${e.fam}" data-i="${i}" style="left:${p.x}%;top:${p.y}%;--r:${p.r}deg">${cardHTML(e)}<button type="button" class="unpin" aria-label="Remove ${e.trend}">×</button></div>`;
-  }).join("");
-}
-// Drag the pinned cards around with the pointer; a tap opens the card.
-let pinDrag = null;
-board.addEventListener("pointerdown", ev => {
-  const pin = ev.target.closest(".pin"); if (!pin || ev.target.closest(".unpin")) return;
-  const r = board.getBoundingClientRect(), p = pins[+pin.dataset.i];
-  pinDrag = { pin, p, r, x0: ev.clientX, y0: ev.clientY, px: p.x, py: p.y, moved: false };
-  pin.setPointerCapture(ev.pointerId); pin.classList.add("lift");
-  board.append(pin);
-});
-board.addEventListener("pointermove", ev => {
-  if (!pinDrag) return;
-  const { pin, p, r } = pinDrag, dx = ev.clientX - pinDrag.x0, dy = ev.clientY - pinDrag.y0;
-  if (Math.hypot(dx, dy) > 4) pinDrag.moved = true;
-  p.x = Math.max(-5, Math.min(92, pinDrag.px + dx / r.width * 100)); p.y = Math.max(-5, Math.min(92, pinDrag.py + dy / r.height * 100));
-  pin.style.left = p.x + "%"; pin.style.top = p.y + "%";
-});
-board.addEventListener("pointerup", ev => {
-  if (!pinDrag) return;
-  const { pin, p, moved } = pinDrag; pinDrag = null; pin.classList.remove("lift");
-  if (moved) { p.r = Math.round((Math.random() - .5) * 14); pins.splice(pins.indexOf(p), 1); pins.push(p); savePins(); renderSheet(); }
-  else open(get(p.s));
-});
-board.addEventListener("pointercancel", () => { if (pinDrag) { pinDrag.pin.classList.remove("lift"); pinDrag = null; } });
-board.addEventListener("click", ev => {
-  const b = ev.target.closest(".unpin"); if (!b) return;
-  const pin = b.closest(".pin"); pins.splice(+pin.dataset.i, 1); savePins(); renderSheet();
-});
-$("sheetClear").addEventListener("click", () => { if (!pins.length) return; pins = []; savePins(); renderSheet(); toast(isG ? "Skip emptied" : "Tear sheet cleared"); });
-$("sheetSave").addEventListener("click", async () => {
-  if (!pins.length) return toast(ED.sheet.empty);
-  const W = 1600, H = 1000, c = document.createElement("canvas"); c.width = W; c.height = H;
-  const ctx = c.getContext("2d");
-  if (document.fonts) await document.fonts.ready;
-  ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = "#151515"; ctx.textAlign = "center"; ctx.font = "600 22px Caudex, serif";
-  ctx.fillText(`${ED.name.toUpperCase()}  ·  ${ED.sheet.tool.toUpperCase()}`, W / 2, 56);
-  ctx.fillRect(60, 78, W - 120, 1.5);
-  const cw = 320;
-  for (const p of pins) await drawCard(ctx, get(p.s), 60 + p.x / 100 * (W - 120 - cw), 100 + p.y / 100 * (H - 160 - cw * 1.4), cw, p.r);
-  ctx.fillStyle = "#77716A"; ctx.textAlign = "right"; ctx.font = "600 18px Caudex, serif"; ctx.fillText("ISSUE 01 · 2026", W - 60, H - 36);
-  offerImage(c, `${ED.sheet.file}.png`, ED.sheet.tool);
-});
-$("sheetLabel").textContent = ED.sheet.tool;
-$("sheetKicker").textContent = ED.sheet.kicker; $("sheetH2").innerHTML = ED.sheet.h2; $("sheetLede").textContent = ED.sheet.lede; $("boardEmpty").textContent = ED.sheet.empty;
-document.querySelectorAll("[data-sheet-tool]").forEach(n => n.textContent = ED.sheet.tool);
-savePins();
-
 // ---------- The living colophon: a frieze under the credits ----------
 const fz = $("friezeSvg"), FZW = 1200;
 let walkers = [], fzRAF = 0, fzT = 0, fzNext = 0, fzHover = false;
@@ -204,5 +133,3 @@ if (coverEm && fine) {
   coverEm.addEventListener("pointerleave", () => coverEm.classList.remove("lit"));
 }
 
-// Deep link straight to the sheet
-if (location.hash === "#tearsheet") show("tearsheet", { keepScroll: true });

@@ -470,7 +470,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
 /* Colophon */
 .colophon { border-top: 1px solid var(--ink); margin-top: 4rem; }
-.colophon .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1rem 3rem; align-items: baseline; padding-block: 1.6rem 2.4rem; }
+.colophon .wrap { display: flex; justify-content: space-between; gap: 1rem 3rem; align-items: baseline; padding-block: 1.6rem 2.4rem; }
 .colophon .wm { font: 500 .95rem var(--display); letter-spacing: .3em; text-transform: uppercase; }
 .colophon p { margin: 0; font: italic 1rem/1.4 var(--body); color: var(--ink-2); }
 .colophon small { font: 600 .6rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
@@ -550,16 +550,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 .dye-note { margin: .4rem 0 0; font: italic .95rem/1.35 var(--body); color: var(--muted); }
 .dye-note b { font-style: normal; font-weight: 400; color: var(--ink); }
 .dye-note a { text-decoration: none; border-bottom: 1px solid var(--accent); color: var(--ink); }
-/* Tear sheet */
-.sheet-actions { display: flex; gap: 1.4rem; align-items: center; align-self: end; }
-.board { position: relative; height: clamp(26rem, 70vh, 44rem); border: 1px solid var(--ink); background: var(--card); overflow: hidden; touch-action: none; }
-.board::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: 3rem 3rem; opacity: .35; }
-.pin { position: absolute; --r: 0deg; transform: rotate(var(--r)); cursor: grab; transition: transform .5s var(--ease), box-shadow .3s ease; }
-.pin .card { --w: 9.5rem; box-shadow: 0 8px 18px -10px rgba(21,21,21,.45); }
-.pin.lift { cursor: grabbing; transition: none; z-index: 5; transform: rotate(0deg) scale(1.04); }
-.pin .unpin { position: absolute; top: -.6rem; right: -.6rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid var(--ink); background: var(--paper); font: 600 .9rem/1 var(--sans); cursor: pointer; opacity: 0; transition: opacity .25s ease; }
-.pin:hover .unpin, .pin:focus-within .unpin { opacity: 1; }
-.board-empty { margin: 1rem 0 0; font: italic 1.1rem var(--body); color: var(--muted); text-align: center; }
 /* Frieze */
 .frieze { overflow: hidden; border-bottom: 1px solid var(--rule); }
 .frieze svg { display: block; width: 100%; height: clamp(72px, 9vw, 120px); }
@@ -589,9 +579,6 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
   .cover-title h1 em.lit { --mr: 170px; }
 }
 @media (max-width: 980px) {
-  .sheet-actions { align-self: start; }
-  .pin .card { --w: 7.4rem; }
-  .pin .unpin { opacity: 1; }
   .portal { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
@@ -609,7 +596,6 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
     <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
-      <button type="button" class="tool" data-view="tearsheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v9l3 3M18 4v9l-3 3M4 20h16M8 16h8"/></svg><span class="lbl" id="sheetLabel">Tear sheet</span><span class="count" id="pincount">0</span></button>
       <button type="button" class="tool" id="soundBtn" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="soundWave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11" opacity=".25"/></svg><span class="lbl" id="soundLbl">Sound off</span></button>
       <button type="button" class="tool menu" id="openMenu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
@@ -716,21 +702,12 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
     </div>
   </section>
 
-  <section class="view page band" data-view="tearsheet" aria-labelledby="h-sheet" hidden>
-    <div class="wrap">
-      <div class="page-head"><div><p class="kicker" id="sheetKicker">Tear sheet</p><h2 class="h-lg" id="h-sheet"><span id="sheetH2">Your <em>tear sheet.</em></span></h2><p class="lede" id="sheetLede"></p></div>
-        <div class="sheet-actions"><button type="button" class="btn" id="sheetSave">Save as image</button><button type="button" class="link" id="sheetClear">Clear</button></div></div>
-      <div class="board" id="board"></div>
-      <p class="board-empty" id="boardEmpty" hidden></p>
-    </div>
-  </section>
   </main>
 
 <footer class="colophon band">
   <div class="frieze" id="frieze"><svg id="friezeSvg" viewBox="0 0 1200 100" preserveAspectRatio="xMidYMax slice" aria-label="A frieze of figures crossing the page; tap one to open it"></svg></div>
   <div class="wrap">
     <span class="wm" data-t="colophonWm">The Fashion Elements</span>
-    <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes and drawings are ours.</p>
     <small>Issue 01 · 2026</small>
   </div>
 </footer>
@@ -752,7 +729,6 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
     <button type="button" class="mi" data-view="lab"><i>i.</i>The Lab</button>
     <button type="button" class="mi" data-view="families"><i>ii.</i>Families</button>
     <button type="button" class="mi" data-view="sources"><i>iii.</i><span data-t="menuSources">Sources</span></button>
-    <button type="button" class="mi" data-view="tearsheet"><i>iv.</i><span data-sheet-tool>Tear sheet</span> <span class="count" data-pincount>0</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
 </dialog>
@@ -2000,7 +1976,6 @@ const G_COPY = {
   srcH2: "Where we <em>saw it.</em>",
   srcLede: "Every find on the table was seen on a Bangalore road in 2025–26. Here is where, and when.",
   colophonWm: "The Garbage Elements",
-  colophonP: "The symbols, numbers and families are the real periodic table. Every find was seen on a Bangalore road in 2025–26, listed under Field Notes. Notes and drawings are ours. The city did the rest.",
   palSearch: "Try Koramangala, a find, a symbol",
 };
 
@@ -2427,14 +2402,12 @@ const ED = isG ? {
   tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
   word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table", otherTitle: "The Periodic Table of Indian Fashion",
   dyeLabel: "Season", dyeNote: "Same find, another Bangalore month.",
-  sheet: { tool: "The skip", kicker: "The skip", h2: "Your <em>skip.</em>", lede: "Everything you threw in, from any card. Drag it around, pile it up, then save the mess as an image.", empty: "The skip is empty. Open any find and press “Throw in”.", pin: "Throw in the skip", unpin: "Take it out", file: "the-skip" },
 } : {
   key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
   flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
   tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
   word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table", otherTitle: "The Periodic Table of Bangalore Garbage",
   dyeLabel: "Colourways", dyeNote: "The season's colours, each one named by the press.",
-  sheet: { tool: "Tear sheet", kicker: "Tear sheet", h2: "Your <em>tear sheet.</em>", lede: "Pull cards off the table and lay them out the way a stylist tears pages from a magazine. Drag to arrange, then save it as an image.", empty: "Nothing pinned yet. Open any card and press “Pin to tear sheet”.", pin: "Pin to tear sheet", unpin: "Unpin", file: "tear-sheet" },
 };
 document.documentElement.dataset.ed = ED.key;
 document.title = isG ? "The Periodic Table of Bangalore Garbage" : "The Periodic Table of Indian Fashion";
@@ -2528,7 +2501,6 @@ function setDye(e, key) {
   exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
   const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
   flick();
-  renderSheetIfOpen();
 }
 
 // ---------- Images ----------
@@ -3080,7 +3052,7 @@ function render(e) {
         <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="btn ghost" data-pin>${isPinned(e) ? ED.sheet.unpin : ED.sheet.pin}</button><button type="button" class="link" data-copy>Copy</button></div>
+      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
   exhibit.style.setProperty("--tint", famColor(e));
@@ -3109,7 +3081,6 @@ exhibit.addEventListener("click", ev => {
   if (t.hasAttribute("data-close")) return sheet.close();
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
-  if (t.hasAttribute("data-pin")) { togglePin(current); t.textContent = isPinned(current) ? ED.sheet.unpin : ED.sheet.pin; return; }
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
   if (t.dataset.go) return go(t.dataset.go);
 });
@@ -3231,7 +3202,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "lab", "families", "sources", "tearsheet"];
+const VIEWS = ["cover", "table", "lab", "families", "sources"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
@@ -3241,7 +3212,6 @@ function show(v, opts = {}) {
   v === "cover" ? orbitStart() : orbitStop();
   v === "families" ? requestAnimationFrame(inkStart) : inkStop();
   if (v !== "table") stopPlay();
-  if (v === "tearsheet") renderSheet();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
 document.addEventListener("click", ev => {
@@ -3318,77 +3288,6 @@ function eyesWake() {
   if (lastLook) lookAt(...lastLook);
 }
 function eyesSleep() { document.removeEventListener("pointermove", onLook); clearTimeout(blinkTimer); }
-
-// ---------- The tear sheet (fashion) / the skip (garbage) ----------
-const PIN_KEY = "ptif-pins-" + ED.key;
-let pins = store.get(PIN_KEY, []).filter(p => get(p.s));
-const isPinned = (e) => pins.some(p => p.s === e.sym);
-function savePins() { store.set(PIN_KEY, pins); $("pincount").textContent = pins.length; document.querySelectorAll("[data-pincount]").forEach(n => n.textContent = pins.length); }
-function togglePin(e) {
-  if (isPinned(e)) { pins = pins.filter(p => p.s !== e.sym); toast(`${e.sym} taken off the ${ED.sheet.tool.toLowerCase()}`); }
-  else {
-    const n = pins.length;
-    pins.push({ s: e.sym, x: 8 + (n * 17) % 70 + Math.random() * 6, y: 6 + ((n * 23) % 50) + Math.random() * 8, r: Math.round((Math.random() - .5) * 16), d: dyeState.get(e.sym) || "" });
-    toast(`${e.sym} ${isG ? "thrown in" : "pinned"}`);
-  }
-  savePins(); renderSheetIfOpen();
-}
-const board = $("board");
-function renderSheetIfOpen() { if (!document.querySelector('[data-view="tearsheet"]').hidden) renderSheet(); }
-function renderSheet() {
-  savePins();
-  $("boardEmpty").hidden = pins.length > 0;
-  board.innerHTML = pins.map((p, i) => {
-    const e = get(p.s); if (p.d) dyeState.set(e.sym, p.d);
-    return `<div class="pin ${e.fam}" data-i="${i}" style="left:${p.x}%;top:${p.y}%;--r:${p.r}deg">${cardHTML(e)}<button type="button" class="unpin" aria-label="Remove ${e.trend}">×</button></div>`;
-  }).join("");
-}
-// Drag the pinned cards around with the pointer; a tap opens the card.
-let pinDrag = null;
-board.addEventListener("pointerdown", ev => {
-  const pin = ev.target.closest(".pin"); if (!pin || ev.target.closest(".unpin")) return;
-  const r = board.getBoundingClientRect(), p = pins[+pin.dataset.i];
-  pinDrag = { pin, p, r, x0: ev.clientX, y0: ev.clientY, px: p.x, py: p.y, moved: false };
-  pin.setPointerCapture(ev.pointerId); pin.classList.add("lift");
-  board.append(pin);
-});
-board.addEventListener("pointermove", ev => {
-  if (!pinDrag) return;
-  const { pin, p, r } = pinDrag, dx = ev.clientX - pinDrag.x0, dy = ev.clientY - pinDrag.y0;
-  if (Math.hypot(dx, dy) > 4) pinDrag.moved = true;
-  p.x = Math.max(-5, Math.min(92, pinDrag.px + dx / r.width * 100)); p.y = Math.max(-5, Math.min(92, pinDrag.py + dy / r.height * 100));
-  pin.style.left = p.x + "%"; pin.style.top = p.y + "%";
-});
-board.addEventListener("pointerup", ev => {
-  if (!pinDrag) return;
-  const { pin, p, moved } = pinDrag; pinDrag = null; pin.classList.remove("lift");
-  if (moved) { p.r = Math.round((Math.random() - .5) * 14); pins.splice(pins.indexOf(p), 1); pins.push(p); savePins(); renderSheet(); }
-  else open(get(p.s));
-});
-board.addEventListener("pointercancel", () => { if (pinDrag) { pinDrag.pin.classList.remove("lift"); pinDrag = null; } });
-board.addEventListener("click", ev => {
-  const b = ev.target.closest(".unpin"); if (!b) return;
-  const pin = b.closest(".pin"); pins.splice(+pin.dataset.i, 1); savePins(); renderSheet();
-});
-$("sheetClear").addEventListener("click", () => { if (!pins.length) return; pins = []; savePins(); renderSheet(); toast(isG ? "Skip emptied" : "Tear sheet cleared"); });
-$("sheetSave").addEventListener("click", async () => {
-  if (!pins.length) return toast(ED.sheet.empty);
-  const W = 1600, H = 1000, c = document.createElement("canvas"); c.width = W; c.height = H;
-  const ctx = c.getContext("2d");
-  if (document.fonts) await document.fonts.ready;
-  ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = "#151515"; ctx.textAlign = "center"; ctx.font = "600 22px Caudex, serif";
-  ctx.fillText(`${ED.name.toUpperCase()}  ·  ${ED.sheet.tool.toUpperCase()}`, W / 2, 56);
-  ctx.fillRect(60, 78, W - 120, 1.5);
-  const cw = 320;
-  for (const p of pins) await drawCard(ctx, get(p.s), 60 + p.x / 100 * (W - 120 - cw), 100 + p.y / 100 * (H - 160 - cw * 1.4), cw, p.r);
-  ctx.fillStyle = "#77716A"; ctx.textAlign = "right"; ctx.font = "600 18px Caudex, serif"; ctx.fillText("ISSUE 01 · 2026", W - 60, H - 36);
-  offerImage(c, `${ED.sheet.file}.png`, ED.sheet.tool);
-});
-$("sheetLabel").textContent = ED.sheet.tool;
-$("sheetKicker").textContent = ED.sheet.kicker; $("sheetH2").innerHTML = ED.sheet.h2; $("sheetLede").textContent = ED.sheet.lede; $("boardEmpty").textContent = ED.sheet.empty;
-document.querySelectorAll("[data-sheet-tool]").forEach(n => n.textContent = ED.sheet.tool);
-savePins();
 
 // ---------- The living colophon: a frieze under the credits ----------
 const fz = $("friezeSvg"), FZW = 1200;
@@ -3490,8 +3389,6 @@ if (coverEm && fine) {
   coverEm.addEventListener("pointerleave", () => coverEm.classList.remove("lit"));
 }
 
-// Deep link straight to the sheet
-if (location.hash === "#tearsheet") show("tearsheet", { keepScroll: true });
 
 </script>
 </body>

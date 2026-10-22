@@ -28,8 +28,6 @@ The fashion edition is laid out as a magazine issue with museum-style exhibit ca
 - **The Lab.** Drop up to three elements into the flask and get the real chemistry: the compound or alloy they make (Na + Cl is table salt, Cu + Sn is bronze, Fe + Cr + Ni is the steel tiffin), with a one-line note and a Wikipedia link. The look is then named after the compound; on the garbage table it becomes a field note for the pile. Noble gases and the superheavy elements honestly refuse to react. About 280 compounds are curated; anything else is built from the element's most common oxidation state and named by the IUPAC rules.
 - **Families.** Ten halls, each with a one-line note on what its elements have in common.
 
-- **Tear sheet** (the **Skip** on the garbage table). Pin any card to a board, drag the cards around like stickers, and save the board as an image. Kept in your browser.
-
 ## Exhibit cards
 
 - **Shop the look.** Hotspots on the illustration light up each piece.
@@ -63,7 +61,7 @@ The source lives in `src/`:
 | `garbage.js` | the 118 finds, their field notes, and the garbage edition's copy |
 | `chem.js` | the Lab's chemistry: curated compounds and alloys, plus the rules for the rest |
 | `app.js` | the logic |
-| `extras.js` | the tear sheet, eyes, frieze, portal and brocade |
+| `extras.js` | the eyes, frieze, portal and brocade |
 
 Rebuild `index.html` with:
 

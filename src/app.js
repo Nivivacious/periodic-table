@@ -47,14 +47,12 @@ const ED = isG ? {
   tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
   word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table", otherTitle: "The Periodic Table of Indian Fashion",
   dyeLabel: "Season", dyeNote: "Same find, another Bangalore month.",
-  sheet: { tool: "The skip", kicker: "The skip", h2: "Your <em>skip.</em>", lede: "Everything you threw in, from any card. Drag it around, pile it up, then save the mess as an image.", empty: "The skip is empty. Open any find and press “Throw in”.", pin: "Throw in the skip", unpin: "Take it out", file: "the-skip" },
 } : {
   key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
   flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
   tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
   word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table", otherTitle: "The Periodic Table of Bangalore Garbage",
   dyeLabel: "Colourways", dyeNote: "The season's colours, each one named by the press.",
-  sheet: { tool: "Tear sheet", kicker: "Tear sheet", h2: "Your <em>tear sheet.</em>", lede: "Pull cards off the table and lay them out the way a stylist tears pages from a magazine. Drag to arrange, then save it as an image.", empty: "Nothing pinned yet. Open any card and press “Pin to tear sheet”.", pin: "Pin to tear sheet", unpin: "Unpin", file: "tear-sheet" },
 };
 document.documentElement.dataset.ed = ED.key;
 document.title = isG ? "The Periodic Table of Bangalore Garbage" : "The Periodic Table of Indian Fashion";
@@ -148,7 +146,6 @@ function setDye(e, key) {
   exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
   const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
   flick();
-  renderSheetIfOpen();
 }
 
 // ---------- Images ----------
@@ -700,7 +697,7 @@ function render(e) {
         <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="btn ghost" data-pin>${isPinned(e) ? ED.sheet.unpin : ED.sheet.pin}</button><button type="button" class="link" data-copy>Copy</button></div>
+      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
   exhibit.style.setProperty("--tint", famColor(e));
@@ -729,7 +726,6 @@ exhibit.addEventListener("click", ev => {
   if (t.hasAttribute("data-close")) return sheet.close();
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
-  if (t.hasAttribute("data-pin")) { togglePin(current); t.textContent = isPinned(current) ? ED.sheet.unpin : ED.sheet.pin; return; }
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
   if (t.dataset.go) return go(t.dataset.go);
 });
@@ -851,7 +847,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "lab", "families", "sources", "tearsheet"];
+const VIEWS = ["cover", "table", "lab", "families", "sources"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
@@ -861,7 +857,6 @@ function show(v, opts = {}) {
   v === "cover" ? orbitStart() : orbitStop();
   v === "families" ? requestAnimationFrame(inkStart) : inkStop();
   if (v !== "table") stopPlay();
-  if (v === "tearsheet") renderSheet();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
 document.addEventListener("click", ev => {
