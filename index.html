@@ -136,6 +136,22 @@ html[data-ed="garbage"] { --accent: #2F6B4F; }
 .cover-title h1 { margin: 0; font: 400 clamp(3rem, 7vw, 6.8rem)/.9 var(--display); letter-spacing: -.035em; text-wrap: balance; }
 .cover-title h1 .l2 { display: block; }
 .cover-title.choosing > :not(.choose) { display: none; }
+/* Before an edition is chosen, the title offers both possibilities. */
+.edition-rotator { display: grid; perspective: 900px; margin-top: .16em; line-height: 1.2; font-size: clamp(1.9rem, 6.5vw, 6.2rem); }
+.edition-rotator em { grid-area: 1 / 1; white-space: nowrap; backface-visibility: hidden; transform-origin: center; animation: edition-word 6s cubic-bezier(.22,1,.36,1) infinite; }
+.edition-rotator em + em { animation-delay: -3s; }
+#choose:focus-within .edition-rotator em { animation-play-state: paused; }
+@keyframes edition-word {
+  0%,38%,100% { opacity: 1; transform: translateY(0) rotateX(0); }
+  44% { opacity: 0; transform: translateY(-.45em) rotateX(45deg); }
+  45%,88% { opacity: 0; transform: translateY(.45em) rotateX(-45deg); }
+  94% { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edition-rotator { display: flex; flex-wrap: wrap; gap: .15em .25em; justify-content: center; font-size: clamp(1.5rem,4vw,3rem); }
+  .edition-rotator em { opacity: 1; transform: none; animation: none; }
+  .edition-rotator em + em::before { content: "or "; font-size: .65em; color: var(--muted); }
+}
 .choices { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; pointer-events: auto; }
 .choice { cursor: pointer; background: var(--card); border: 1px solid var(--ink); padding: 1.1rem 1.6rem 1rem; border-radius: 2px; display: grid; gap: .35rem; text-align: center; min-width: 15rem; transition: background .5s var(--ease), color .5s var(--ease), transform .5s var(--ease); }
 .choice em { font: italic 400 2.4rem/1.05 var(--display); color: var(--accent); }
@@ -686,7 +702,7 @@ dialog.sheet[open] .exhibit { animation: none; }
       <div class="cover-title">
       <div class="choose" id="choose" hidden>
         <p class="kicker">Two tables · 118 elements each</p>
-        <h1>The Periodic Table of</h1>
+        <h1 class="choose-heading" aria-label="The Periodic Table of Indian Fashion or Bangalore Garbage">The Periodic Table of<span class="edition-rotator" aria-hidden="true"><em>Indian Fashion</em><em>Bangalore Garbage</em></span></h1>
         <div class="choices"><button type="button" class="choice" id="chooseFashion"><em>Indian Fashion</em><span>Trends the press named in 2025 and 2026</span></button><button type="button" class="choice" data-ed="garbage"><em>Bangalore Garbage</em><span>Things we found on the footpath</span></button></div>
       </div>
       <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
@@ -768,6 +784,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 
   <section class="view page band" data-view="sources" aria-labelledby="h-src" hidden>
     <div class="wrap">
+      <div class="ink"><canvas id="sourceInk" role="img" aria-label="SOURCES. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
       <div class="page-head"><div><p class="kicker" data-t="srcKicker">Sources</p><h2 class="h-lg" id="h-src" data-t="srcH2">Who's <em>saying so.</em></h2><p class="lede" data-t="srcLede">Every trend on the table was named in a fashion story from 2025 or 2026. Here is where we read it.</p></div></div>
       <div class="srclist" id="srclist"></div>
     </div>
@@ -2044,7 +2061,7 @@ const G_COPY = {
   storyLede: "Five things we kept finding on footpaths between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.",
   labH2: "Mix your own <em>pile.</em>",
   labLede: "Drop up to three elements into the flask. We'll find the real compound they make, then write the field note for the pile.",
-  tlHint: "Drag through a Bangalore year",
+  tlHint: "Drag through the field notes",
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",
@@ -2820,9 +2837,12 @@ for (const [n, t] of tiles) {
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthOf = (d) => { const m = /([A-Za-z]{3})\w*\s+(\d{4})/.exec(d || ""); return m ? (+m[2]) * 12 + MON.indexOf(m[1]) : null; };
 const MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const fmtMonth = (i) => isG ? MONL[i % 12] : `${MON[i % 12]} ${Math.floor(i / 12)}`;
+const fmtMonth = (i) => `${MON[i % 12]} ${Math.floor(i / 12)}`;
 const months = els.map(e => monthOf(e.src && e.src[3]));
-const tStart = Math.min(...months.filter(x => x != null)), tEnd = Math.max(...months.filter(x => x != null));
+// Both issues cover the same publication window. Preserve each card's source date.
+const coverageEnd = 2026 * 12 + 9;
+const today = new Date(), currentMonth = today.getFullYear() * 12 + today.getMonth();
+const tStart = Math.min(...months.filter(x => x != null)), tEnd = Math.max(tStart, Math.min(coverageEnd, currentMonth));
 const tl = $("tl");
 tl.max = tEnd - tStart; tl.value = tEnd - tStart;
 $("tlStart").textContent = fmtMonth(tStart); $("tlEnd").textContent = fmtMonth(tEnd);
@@ -3086,7 +3106,9 @@ $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
 $("halls").addEventListener("click", ev => { const h = ev.target.closest(".hall"); if (!h) return; setFam(h.dataset.fam); show("table"); });
 
 // Ink reveal: the cursor paints a printed version of the word
-const ink = $("ink"), ictx = ink.getContext("2d");
+function createInkReveal(ink, word) {
+const ictx = ink.getContext("2d");
+ink.setAttribute("aria-label", `${word}. Move across the word to paint it.`);
 let inkW = 0, inkH = 0, blobs = [], inkRAF = 0, lastInk = 0, inkPat = null, autoT = 0;
 function inkSize() {
   const r = ink.getBoundingClientRect(), d = devicePixelRatio || 1;
@@ -3099,7 +3121,7 @@ function inkSize() {
 }
 function inkDraw() {
   ictx.clearRect(0, 0, inkW, inkH);
-  const word = ED.word, fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
+  const fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
   ictx.font = `400 ${fs}px Caudex, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
   ictx.fillStyle = "#151515"; ictx.fillText(word, cx, cy);
   if (!blobs.length) return;
@@ -3124,11 +3146,20 @@ function inkFrame(t) {
   inkDraw();
   inkRAF = requestAnimationFrame(inkFrame);
 }
-ink.addEventListener("pointermove", ev => { const r = ink.getBoundingClientRect(); lastInk = performance.now(); inkAdd(ev.clientX - r.left, ev.clientY - r.top); });
-const inkStart = () => { inkSize(); inkDraw(); if (!inkRAF) inkRAF = requestAnimationFrame(inkFrame); };
+ink.addEventListener("pointermove", ev => { if (reduced) return; const r = ink.getBoundingClientRect(); lastInk = performance.now(); inkAdd(ev.clientX - r.left, ev.clientY - r.top); });
+const inkStart = () => { inkSize(); inkDraw(); if (!reduced && !inkRAF) inkRAF = requestAnimationFrame(inkFrame); };
 const inkStop = () => { cancelAnimationFrame(inkRAF); inkRAF = 0; };
 addEventListener("resize", () => { if (inkRAF) inkSize(); });
 if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
+
+return { start: inkStart, stop: inkStop };
+}
+const inkEffects = {
+  families: createInkReveal($("ink"), ED.word),
+  sources: createInkReveal($("sourceInk"), isG ? "FIELD NOTES" : "SOURCES")
+};
+const inkStart = view => { Object.entries(inkEffects).forEach(([key, effect]) => key === view ? effect.start() : effect.stop()); };
+const inkStop = () => Object.values(inkEffects).forEach(effect => effect.stop());
 
 // ---------- Sources ----------
 $("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]}, ${e.src[1]}</a>` : `<span class="note">${e.src[0]}, ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
@@ -3600,7 +3631,7 @@ function show(v, opts = {}) {
   if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
   if (menuSheet.open) menuSheet.close();
   v === "cover" ? orbitStart() : orbitStop();
-  v === "families" ? requestAnimationFrame(inkStart) : inkStop();
+  (v === "families" || v === "sources") ? requestAnimationFrame(() => inkStart(v)) : inkStop();
   if (v !== "table") stopPlay();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }

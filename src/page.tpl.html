@@ -131,6 +131,22 @@ html[data-ed="garbage"] { --accent: #2F6B4F; }
 .cover-title h1 { margin: 0; font: 400 clamp(3rem, 7vw, 6.8rem)/.9 var(--display); letter-spacing: -.035em; text-wrap: balance; }
 .cover-title h1 .l2 { display: block; }
 .cover-title.choosing > :not(.choose) { display: none; }
+/* Before an edition is chosen, the title offers both possibilities. */
+.edition-rotator { display: grid; perspective: 900px; margin-top: .16em; line-height: 1.2; font-size: clamp(1.9rem, 6.5vw, 6.2rem); }
+.edition-rotator em { grid-area: 1 / 1; white-space: nowrap; backface-visibility: hidden; transform-origin: center; animation: edition-word 6s cubic-bezier(.22,1,.36,1) infinite; }
+.edition-rotator em + em { animation-delay: -3s; }
+#choose:focus-within .edition-rotator em { animation-play-state: paused; }
+@keyframes edition-word {
+  0%,38%,100% { opacity: 1; transform: translateY(0) rotateX(0); }
+  44% { opacity: 0; transform: translateY(-.45em) rotateX(45deg); }
+  45%,88% { opacity: 0; transform: translateY(.45em) rotateX(-45deg); }
+  94% { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edition-rotator { display: flex; flex-wrap: wrap; gap: .15em .25em; justify-content: center; font-size: clamp(1.5rem,4vw,3rem); }
+  .edition-rotator em { opacity: 1; transform: none; animation: none; }
+  .edition-rotator em + em::before { content: "or "; font-size: .65em; color: var(--muted); }
+}
 .choices { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; pointer-events: auto; }
 .choice { cursor: pointer; background: var(--card); border: 1px solid var(--ink); padding: 1.1rem 1.6rem 1rem; border-radius: 2px; display: grid; gap: .35rem; text-align: center; min-width: 15rem; transition: background .5s var(--ease), color .5s var(--ease), transform .5s var(--ease); }
 .choice em { font: italic 400 2.4rem/1.05 var(--display); color: var(--accent); }
@@ -679,7 +695,7 @@ dialog.sheet[open] .exhibit { animation: none; }
       <div class="cover-title">
       <div class="choose" id="choose" hidden>
         <p class="kicker">Two tables · 118 elements each</p>
-        <h1>The Periodic Table of</h1>
+        <h1 class="choose-heading" aria-label="The Periodic Table of Indian Fashion or Bangalore Garbage">The Periodic Table of<span class="edition-rotator" aria-hidden="true"><em>Indian Fashion</em><em>Bangalore Garbage</em></span></h1>
         <div class="choices"><button type="button" class="choice" id="chooseFashion"><em>Indian Fashion</em><span>Trends the press named in 2025 and 2026</span></button><button type="button" class="choice" data-ed="garbage"><em>Bangalore Garbage</em><span>Things we found on the footpath</span></button></div>
       </div>
       <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
@@ -761,6 +777,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 
   <section class="view page band" data-view="sources" aria-labelledby="h-src" hidden>
     <div class="wrap">
+      <div class="ink"><canvas id="sourceInk" role="img" aria-label="SOURCES. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
       <div class="page-head"><div><p class="kicker" data-t="srcKicker">Sources</p><h2 class="h-lg" id="h-src" data-t="srcH2">Who's <em>saying so.</em></h2><p class="lede" data-t="srcLede">Every trend on the table was named in a fashion story from 2025 or 2026. Here is where we read it.</p></div></div>
       <div class="srclist" id="srclist"></div>
     </div>

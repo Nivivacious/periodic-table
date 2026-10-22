@@ -391,9 +391,12 @@ for (const [n, t] of tiles) {
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthOf = (d) => { const m = /([A-Za-z]{3})\w*\s+(\d{4})/.exec(d || ""); return m ? (+m[2]) * 12 + MON.indexOf(m[1]) : null; };
 const MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const fmtMonth = (i) => isG ? MONL[i % 12] : `${MON[i % 12]} ${Math.floor(i / 12)}`;
+const fmtMonth = (i) => `${MON[i % 12]} ${Math.floor(i / 12)}`;
 const months = els.map(e => monthOf(e.src && e.src[3]));
-const tStart = Math.min(...months.filter(x => x != null)), tEnd = Math.max(...months.filter(x => x != null));
+// Both issues cover the same publication window. Preserve each card's source date.
+const coverageEnd = 2026 * 12 + 9;
+const today = new Date(), currentMonth = today.getFullYear() * 12 + today.getMonth();
+const tStart = Math.min(...months.filter(x => x != null)), tEnd = Math.max(tStart, Math.min(coverageEnd, currentMonth));
 const tl = $("tl");
 tl.max = tEnd - tStart; tl.value = tEnd - tStart;
 $("tlStart").textContent = fmtMonth(tStart); $("tlEnd").textContent = fmtMonth(tEnd);
@@ -657,7 +660,9 @@ $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
 $("halls").addEventListener("click", ev => { const h = ev.target.closest(".hall"); if (!h) return; setFam(h.dataset.fam); show("table"); });
 
 // Ink reveal: the cursor paints a printed version of the word
-const ink = $("ink"), ictx = ink.getContext("2d");
+function createInkReveal(ink, word) {
+const ictx = ink.getContext("2d");
+ink.setAttribute("aria-label", `${word}. Move across the word to paint it.`);
 let inkW = 0, inkH = 0, blobs = [], inkRAF = 0, lastInk = 0, inkPat = null, autoT = 0;
 function inkSize() {
   const r = ink.getBoundingClientRect(), d = devicePixelRatio || 1;
@@ -670,7 +675,7 @@ function inkSize() {
 }
 function inkDraw() {
   ictx.clearRect(0, 0, inkW, inkH);
-  const word = ED.word, fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
+  const fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
   ictx.font = `400 ${fs}px Caudex, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
   ictx.fillStyle = "#151515"; ictx.fillText(word, cx, cy);
   if (!blobs.length) return;
@@ -695,11 +700,20 @@ function inkFrame(t) {
   inkDraw();
   inkRAF = requestAnimationFrame(inkFrame);
 }
-ink.addEventListener("pointermove", ev => { const r = ink.getBoundingClientRect(); lastInk = performance.now(); inkAdd(ev.clientX - r.left, ev.clientY - r.top); });
-const inkStart = () => { inkSize(); inkDraw(); if (!inkRAF) inkRAF = requestAnimationFrame(inkFrame); };
+ink.addEventListener("pointermove", ev => { if (reduced) return; const r = ink.getBoundingClientRect(); lastInk = performance.now(); inkAdd(ev.clientX - r.left, ev.clientY - r.top); });
+const inkStart = () => { inkSize(); inkDraw(); if (!reduced && !inkRAF) inkRAF = requestAnimationFrame(inkFrame); };
 const inkStop = () => { cancelAnimationFrame(inkRAF); inkRAF = 0; };
 addEventListener("resize", () => { if (inkRAF) inkSize(); });
 if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
+
+return { start: inkStart, stop: inkStop };
+}
+const inkEffects = {
+  families: createInkReveal($("ink"), ED.word),
+  sources: createInkReveal($("sourceInk"), isG ? "FIELD NOTES" : "SOURCES")
+};
+const inkStart = view => { Object.entries(inkEffects).forEach(([key, effect]) => key === view ? effect.start() : effect.stop()); };
+const inkStop = () => Object.values(inkEffects).forEach(effect => effect.stop());
 
 // ---------- Sources ----------
 $("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]}, ${e.src[1]}</a>` : `<span class="note">${e.src[0]}, ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
@@ -1171,7 +1185,7 @@ function show(v, opts = {}) {
   if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: "instant" });
   if (menuSheet.open) menuSheet.close();
   v === "cover" ? orbitStart() : orbitStop();
-  v === "families" ? requestAnimationFrame(inkStart) : inkStop();
+  (v === "families" || v === "sources") ? requestAnimationFrame(() => inkStart(v)) : inkStop();
   if (v !== "table") stopPlay();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }

@@ -382,7 +382,7 @@ const G_COPY = {
   storyLede: "Five things we kept finding on footpaths between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.",
   labH2: "Mix your own <em>pile.</em>",
   labLede: "Drop up to three elements into the flask. We'll find the real compound they make, then write the field note for the pile.",
-  tlHint: "Drag through a Bangalore year",
+  tlHint: "Drag through the field notes",
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",
