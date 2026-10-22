@@ -313,16 +313,15 @@ const counts = {};
 for (const e of els) counts[e.fam] = (counts[e.fam] || 0) + 1;
 const key = document.createElement("section");
 key.className = "key"; key.setAttribute("aria-label", "Key");
-key.innerHTML = `
-  <ul class="keylist">${Object.entries(FAMILIES).map(([k, name]) => `<li class="${k}">${name}<span>${counts[k]}</span></li>`).join("")}</ul>`;
+key.appendChild($("filters"));
 const narrow = matchMedia("(max-width: 980px)");
 const placeKey = () => (narrow.matches ? $("mobileKey") : grid).appendChild(key);
 narrow.addEventListener("change", placeKey);
 placeKey();
 
 let activeFam = null, zOnly = false;
-$("filters").innerHTML = `<button type="button" class="filt" data-fam="" aria-pressed="true">All</button><button type="button" class="filt z" data-z aria-pressed="false"><i></i>${ED.flag.label}</button>` +
-  Object.entries(FAMILIES).map(([k, name]) => `<button type="button" class="filt ${k}" data-fam="${k}" aria-pressed="false"><i></i>${name}</button>`).join("");
+$("filters").innerHTML = `<button type="button" class="filt" data-fam="" aria-pressed="true">All<span class="family-count">${els.length}</span></button><button type="button" class="filt z" data-z aria-pressed="false"><i></i>${ED.flag.label}<span class="family-count">${els.filter(e => e.z).length}</span></button>` +
+  Object.entries(FAMILIES).map(([k, name]) => `<button type="button" class="filt ${k}" data-fam="${k}" aria-pressed="false"><i></i>${name}<span class="family-count">${counts[k]}</span></button>`).join("");
 $("filters").addEventListener("click", ev => {
   const b = ev.target.closest(".filt"); if (!b) return;
   if (b.hasAttribute("data-z")) { zOnly = !zOnly; b.setAttribute("aria-pressed", String(zOnly)); }
@@ -1125,7 +1124,7 @@ function render(e, direction = 0) {
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
       <div class="related"><p class="kicker">${isG ? "More from the same street story" : "Pairs beautifully with…"}</p><div>${relatedElements(e).map(other=>`<button type="button" class="related-card" data-related="${other.sym}"><img src="${sceneImg(other)}" alt=""><span><b>${other.sym}</b> ${other.trend}</span><span aria-hidden="true">→</span></button>`).join("")}</div></div>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
+      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
   exhibit.style.setProperty("--tint", famColor(e));
@@ -1167,7 +1166,6 @@ exhibit.addEventListener("click", ev => {
   if (t.hasAttribute("data-close")) return closeExhibit();
   if (t.hasAttribute("data-replay")) return replayScene();
   if (t.hasAttribute("data-motion")) { motionPaused = !motionPaused; store.set("ptif-motion-paused", motionPaused); return syncScenePlayback(); }
-  if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
   if (t.dataset.related) return goToRelated(get(t.dataset.related));
