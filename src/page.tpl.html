@@ -537,7 +537,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" data-view="cover">Cover</button>
     <button type="button" data-view="table">The Table</button>
     <button type="button" data-view="lab">The Lab</button>
-    <button type="button" data-view="genz" data-t="navGenz">Gen Z</button>
     <button type="button" data-view="families">Families</button>
     <button type="button" data-view="sources" data-t="navSources">Sources</button>
   </nav>
@@ -622,17 +621,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     </div>
   </section>
 
-  <section class="view page band" data-view="genz" aria-labelledby="h-genz" hidden>
-    <div class="wrap">
-      <div class="page-head">
-        <div><p class="kicker" data-t="genzKicker">Gen Z</p><h2 class="h-lg" id="h-genz">Say it in <em>Gen Z.</em></h2><p class="lede" data-t="genzLede">Twenty words, translated into fashion. Tap a card to flip it. The slang meanings and examples are ours. The trends are sourced.</p>
-          <div class="filters" id="slangFilter" style="margin-top:1.6rem"><button type="button" class="filt" data-o="" aria-pressed="true">All</button><button type="button" class="filt" data-o="Internet" aria-pressed="false">Internet slang</button><button type="button" class="filt" data-o="Desi" aria-pressed="false">Desi slang</button><button type="button" class="link" id="flipAll">Flip all</button></div></div>
-        <div class="cols" aria-hidden="true"><div class="col" id="col0"></div><div class="col rev" id="col1"></div><div class="col" id="col2"></div></div>
-      </div>
-      <div class="slang" id="slang"></div>
-    </div>
-  </section>
-
   <section class="view page band" data-view="families" aria-labelledby="h-fam" hidden>
     <div class="wrap">
       <div class="ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
@@ -653,7 +641,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <footer class="colophon band">
   <div class="wrap">
     <span class="wm" data-t="colophonWm">The Fashion Elements</span>
-    <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes, slang and drawings are ours.</p>
+    <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes and drawings are ours.</p>
     <small>Issue 01 · 2026</small>
   </div>
 </footer>
@@ -674,9 +662,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="mi" data-view="cover"><i>i.</i>Cover</button>
     <button type="button" class="mi" data-view="table"><i>ii.</i>The Table</button>
     <button type="button" class="mi" data-view="lab"><i>iii.</i>The Lab</button>
-    <button type="button" class="mi" data-view="genz"><i>iv.</i><span data-t="menuGenz">Gen Z</span></button>
-    <button type="button" class="mi" data-view="families"><i>v.</i>Families</button>
-    <button type="button" class="mi" data-view="sources"><i>vi.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="families"><i>iv.</i>Families</button>
+    <button type="button" class="mi" data-view="sources"><i>v.</i><span data-t="menuSources">Sources</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
   </div>
 </dialog>

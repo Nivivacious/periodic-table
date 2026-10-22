@@ -388,6 +388,6 @@ const G_COPY = {
   srcH2: "Where we <em>saw it.</em>",
   srcLede: "Every find on the table was seen on a Bangalore road in 2025–26. Here is where, and when.",
   colophonWm: "The Garbage Elements",
-  colophonP: "The symbols, numbers and families are the real periodic table. Every find was seen on a Bangalore road in 2025–26, listed under Field Notes. Notes, slang and drawings are ours. The city did the rest.",
+  colophonP: "The symbols, numbers and families are the real periodic table. Every find was seen on a Bangalore road in 2025–26, listed under Field Notes. Notes and drawings are ours. The city did the rest.",
   palSearch: "Try Koramangala, a find, a symbol",
 };

@@ -82,9 +82,6 @@ document.addEventListener("click", ev => {
   switchEdition(b.dataset.ed || ED.other);
 });
 
-// The slang section belongs to the fashion edition only.
-if (isG) document.querySelectorAll('[data-view="genz"]').forEach(el => el.remove());
-
 const ELEMENTS_IN = isG ? GARBAGE : ELEMENTS;
 const els = ELEMENTS_IN.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
@@ -522,65 +519,6 @@ $("labCopy").addEventListener("click", async () => {
 });
 renderMix();
 
-// ---------- Gen Z slang × fashion ----------
-const F_SLANG = [
-  ["Ate", "verb", "Internet", "Did it perfectly. If it was really good, they 'left no crumbs'.", "Ho", "Pre-draped saree, corset blouse, concert night. She ate."],
-  ["Main character energy", "noun", "Internet", "Dressing like the whole story is about you.", "C", "Mirror-work bralette with cargos and a bold bindi? Main character energy."],
-  ["Delulu", "adjective", "Internet", "Lovingly delusional. Dreaming big on purpose.", "Fe", "Tulle skirt to a Monday meeting. Delulu is the solulu."],
-  ["It's giving…", "phrase", "Internet", "It's evoking something. Finish the sentence with the vibe.", "Dy", "Low-rise jeans and a mirror-work choli? It's giving 2003 Bollywood."],
-  ["No cap", "phrase", "Internet", "No lie. Completely serious.", "Bi", "No cap, a bindi goes with everything you own."],
-  ["Era", "noun", "Internet", "A phase you're fully committed to.", "Na", "I'm in my Nani's-saree era."],
-  ["Jugaad", "noun", "Desi", "A clever, make-it-work hack.", "Tm", "A screenshot and a trip to the local darzi. Peak jugaad."],
-  ["Aura points", "noun", "Internet", "An invisible score for how cool you seem.", "As", "Swapped the smartwatch for a tiny vintage dial. Plus a thousand aura."],
-  ["Rizz", "noun", "Internet", "Charm. The ability to pull people in.", "Rb", "Rekha-level kajal is pure rizz."],
-  ["Understood the assignment", "phrase", "Internet", "Got the brief exactly right.", "Ge", "Ikat scarf, cargos, oxidised jhumkas. Understood the assignment."],
-  ["Girl math", "noun", "Internet", "Logic that makes a purchase feel free.", "Tc", "A ₹300 thrifted blazer? That's basically money in the bank."],
-  ["Mogging", "verb", "Internet", "Outshining everyone standing next to you.", "Xe", "Those jhumkas are mogging the entire room."],
-  ["Pookie", "noun", "Internet", "Someone or something sweet and lovable.", "Ba", "Ribbon in the braid, ballet flats on. Pookie behaviour."],
-  ["Slay", "verb", "Internet", "To do something brilliantly, usually with style.", "Cs", "Corset saree at the college fest. Slay."],
-  ["Drip", "noun", "Internet", "A seriously good outfit or set of accessories.", "Sb", "Glass, kundan and oxidised bangles on one wrist. That's drip."],
-  ["Paisa vasool", "phrase", "Desi", "Worth every rupee you paid.", "Th", "Beaten-up Sambas from the thrift market. Full paisa vasool."],
-  ["Fit check", "noun", "Internet", "Showing off today's outfit, usually on camera.", "Ar", "Fit check: 90s jacket, nani's earrings, thrifted corset."],
-  ["Bindaas", "adjective", "Desi", "Carefree and fearless.", "Pu", "Blazer over a tulle skirt, totally bindaas."],
-  ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Li", "Lowkey carrying a real paperback everywhere."],
-  ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "B", "Football jersey plus hair bow: blokette, the newest core."],
-];
-if (!isG) {
-const SLANG = F_SLANG;
-const slangEl = $("slang");
-slangEl.innerHTML = SLANG.map(([w, pos, origin, mean, sym, line], i) => {
-  const e = get(sym);
-  return `<div class="sl ${e.fam}" data-o="${origin}" role="button" tabindex="0" aria-pressed="false" aria-label="${w}: flip for the fashion translation">
-    <div class="sl-in">
-      <div class="sl-front"><span class="sl-ghost" aria-hidden="true">${e.sym}</span><p class="sl-tag">${origin} slang · No. ${String(i + 1).padStart(2, "0")}</p><div><p class="sl-word">${w}</p><p class="sl-pos">${pos}</p></div><p class="sl-tap">Flip to translate</p></div>
-      <div class="sl-back"><img src="${sceneImg(e)}" alt=""><p class="sl-means">${mean}</p><p class="sl-line">“${line}”</p><button type="button" class="sl-open" data-sym="${e.sym}"><b>${e.sym}</b>${e.trend} →</button></div>
-    </div>
-  </div>`;
-}).join("");
-slangEl.querySelectorAll(".sl").forEach(c => {
-  const flip = () => { c.classList.toggle("flipped"); c.setAttribute("aria-pressed", String(c.classList.contains("flipped"))); flick(); };
-  c.addEventListener("click", ev => { const o = ev.target.closest(".sl-open"); if (o) { ev.stopPropagation(); return open(get(o.dataset.sym)); } flip(); });
-  c.addEventListener("keydown", ev => { if ((ev.key === "Enter" || ev.key === " ") && ev.target === c) { ev.preventDefault(); flip(); } });
-});
-$("slangFilter").addEventListener("click", ev => {
-  const b = ev.target.closest(".filt"); if (!b) return;
-  $("slangFilter").querySelectorAll(".filt").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-  slangEl.querySelectorAll(".sl").forEach(c => c.hidden = !!b.dataset.o && c.dataset.o !== b.dataset.o);
-});
-let allFlipped = false;
-$("flipAll").addEventListener("click", ev => {
-  allFlipped = !allFlipped;
-  ev.currentTarget.textContent = allFlipped ? "Flip back" : "Flip all";
-  [...slangEl.querySelectorAll(".sl:not([hidden])")].forEach((c, i) => setTimeout(() => { c.classList.toggle("flipped", allFlipped); c.setAttribute("aria-pressed", String(allFlipped)); }, i * 60));
-});
-{
-  const zEls = els.filter(e => e.z), cols = [[], [], []];
-  zEls.forEach((e, i) => cols[i % 3].push(e));
-  cols.forEach((list, i) => { const html = list.map(e => `<button type="button" class="ccard ${e.fam}" data-sym="${e.sym}" tabindex="-1"><img src="${sceneImg(e)}" alt=""><span>${e.trend}</span></button>`).join(""); $("col" + i).innerHTML = html + html; });
-  document.querySelectorAll(".ccard").forEach(c => c.addEventListener("click", () => open(get(c.dataset.sym))));
-}
-
-}
 // ---------- Families ----------
 const HALL_NOTES = isG ? {
   alkali: "Soft, reactive, gone by morning. Leaf litter, a ragi ball, cement sacks.",
@@ -813,7 +751,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = isG ? ["cover", "table", "lab", "families", "sources"] : ["cover", "table", "lab", "genz", "families", "sources"];
+const VIEWS = ["cover", "table", "lab", "families", "sources"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
