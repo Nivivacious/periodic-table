@@ -485,6 +485,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 @keyframes sway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
 @keyframes obob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 
+@media (max-width: 1320px) { .mast-top .issue { display: none; } .edflip { border-left: 0; padding-left: 0; } }
 @media (max-width: 980px) {
   .mast-top { grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; }
   .issue { display: none; }
@@ -549,8 +550,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     </div>
   </div>
   <nav class="sections band" aria-label="Sections">
-    <button type="button" data-view="cover">Cover</button>
-    <button type="button" data-view="table">The Table</button>
     <button type="button" data-view="lab">The Lab</button>
     <button type="button" data-view="families">Families</button>
     <button type="button" data-view="sources" data-t="navSources">Sources</button>
@@ -675,11 +674,9 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <dialog class="menu-sheet" id="menuSheet" aria-label="Menu">
   <div class="menu-in">
     <button type="button" class="close" id="closeMenu">Close <span>×</span></button>
-    <button type="button" class="mi" data-view="cover"><i>i.</i>Cover</button>
-    <button type="button" class="mi" data-view="table"><i>ii.</i>The Table</button>
-    <button type="button" class="mi" data-view="lab"><i>iii.</i>The Lab</button>
-    <button type="button" class="mi" data-view="families"><i>iv.</i>Families</button>
-    <button type="button" class="mi" data-view="sources"><i>v.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="lab"><i>i.</i>The Lab</button>
+    <button type="button" class="mi" data-view="families"><i>ii.</i>Families</button>
+    <button type="button" class="mi" data-view="sources"><i>iii.</i><span data-t="menuSources">Sources</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
 </dialog>
