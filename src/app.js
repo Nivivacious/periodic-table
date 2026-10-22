@@ -712,6 +712,18 @@ async function closeExhibit() {
 }
 // A short, material-aware performance for the existing SVG artwork.
 let sceneAnimations = [], exhibitAnimations = [];
+let motionPaused = store.get("ptif-motion-paused", false);
+function syncScenePlayback() {
+  sceneAnimations.forEach(a => motionPaused || document.hidden ? a.pause() : a.play());
+  const button = exhibit.querySelector("[data-motion]");
+  if (button) {
+    button.setAttribute("aria-pressed", String(motionPaused));
+    button.setAttribute("aria-label", motionPaused ? "Resume illustration motion" : "Pause illustration motion");
+    button.textContent = motionPaused ? "Play" : "Pause";
+  }
+}
+function replayScene() { motionPaused = false; store.set("ptif-motion-paused", false); playSceneMoment(current); }
+document.addEventListener("visibilitychange", () => { if (sheet.open) syncScenePlayback(); });
 function stopSceneMotion() {
   sceneAnimations.forEach(a => a.cancel()); sceneAnimations = [];
 }
@@ -731,16 +743,16 @@ function sceneFrames(kind, n) {
   const a = 1 + (n % 5) * .12;
   const still = { transform: "none" };
   const motions = {
-    chew: [still, { transform: "translate(.7px,.5px) rotate(2deg)" }, still],
-    hop: [still, { transform: `translateY(${-2 * a}px) rotate(-3deg)`, offset: .35 }, still],
-    drift: [still, { transform: `translate(${a}px,${-2 * a}px)`, opacity: .65 }, still],
-    ripple: [still, { transform: `scaleX(${1 + a * .06})`, opacity: .8 }, still],
-    rock: [still, { transform: `rotate(${4 * a}deg)` }, { transform: "rotate(-2deg)" }, still],
-    jewel: [still, { transform: `rotate(${5 * a}deg)` }, { transform: "rotate(-3deg)" }, still],
-    breeze: [still, { transform: `skewX(${2 * a}deg) rotate(1deg)` }, { transform: "skewX(-1deg)" }, still],
-    greet: [still, { transform: "rotate(-1.5deg) translateY(-.6px)" }, still],
-    turn: [still, { transform: `rotate(${8 * a}deg)` }, still],
-    settle: [still, { transform: "translateY(-.8px) rotate(.6deg)" }, still]
+    chew: [still, { transform: "translate(1.5px,1px) rotate(5deg)" }, still],
+    hop: [still, { transform: `translateY(${-5 * a}px) rotate(-7deg)`, offset: .35 }, still],
+    drift: [still, { transform: `translate(${3 * a}px,${-5 * a}px)`, opacity: .65 }, still],
+    ripple: [still, { transform: `scaleX(${1 + a * .15})`, opacity: .8 }, still],
+    rock: [still, { transform: `rotate(${10 * a}deg)` }, { transform: "rotate(-6deg)" }, still],
+    jewel: [still, { transform: `rotate(${12 * a}deg)` }, { transform: "rotate(-8deg)" }, still],
+    breeze: [still, { transform: `skewX(${6 * a}deg) rotate(3deg)` }, { transform: "skewX(-4deg) rotate(-2deg)" }, still],
+    greet: [still, { transform: "rotate(-3deg) translateY(-2px)" }, still],
+    turn: [still, { transform: `rotate(${25 * a}deg)` }, still],
+    settle: [still, { transform: "translateY(-2.5px) rotate(2deg)" }, still]
   };
   return motions[kind];
 }
@@ -751,7 +763,8 @@ function playSceneMoment(e, delay = 0) {
   const candidates = [...svg.querySelectorAll(".detail, .ob, [class^='set-'], .cow-mouth")];
   // Select details by their material, with a stable variation for every element.
   const picked = candidates.filter(node => motionKind(node.getAttribute("class")) !== "settle");
-  const actors = picked.slice(0, 4);
+  const priority = node => node.classList.contains("cow-mouth") ? 0 : node.classList.contains("detail") ? 1 : node.classList.contains("ob") ? 2 : 3;
+  const actors = picked.sort((a, b) => priority(a) - priority(b)).slice(0, 4);
   if (!actors.length) {
     const subject = svg.querySelector(".fg, .ob"); if (subject) actors.push(subject);
   }
@@ -760,11 +773,12 @@ function playSceneMoment(e, delay = 0) {
     node.style.transformBox = "fill-box";
     node.style.transformOrigin = /jewel|breeze/.test(kind) ? "top center" : kind === "rock" || node.classList.contains("fg") ? "bottom center" : "center";
     sceneAnimations.push(node.animate(sceneFrames(kind, e.n), {
-      duration: kind === "chew" ? 480 : 1300 + (e.n % 4) * 120,
-      delay: delay + i * 110, iterations: kind === "chew" ? 5 : 2,
+      duration: kind === "chew" ? 650 : 2000 + (e.n % 4) * 180,
+      delay: delay + i * 140, iterations: Infinity,
       easing: "cubic-bezier(.45,0,.25,1)"
     }));
   });
+  syncScenePlayback();
 }
 function revealExhibit(direction = 0) {
   exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = [];
@@ -791,7 +805,7 @@ function render(e, direction = 0) {
   const s = e.src;
   exhibit.innerHTML = `
     <button type="button" class="close" data-close>Close <span>×</span></button>
-    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"${reduced ? " hidden" : ""}><span aria-hidden="true">↻</span> Replay moment</button></div>
+    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div></div>
     <div class="placard ${e.fam}">
       <p class="no">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -813,9 +827,9 @@ function render(e, direction = 0) {
     const r = c3d.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
     const y = Math.max(0, Math.min(1, (ev.clientY - r.top) / r.height));
-    flipper.style.transform = `rotateY(${(x - .5) * 10}deg) rotateX(${(.5 - y) * 8}deg)`;
-    c3d.style.setProperty("--depth-x", `${(x - .5) * 2}px`);
-    c3d.style.setProperty("--depth-y", `${(y - .5) * 2}px`);
+    flipper.style.transform = `rotateY(${(x - .5) * 16}deg) rotateX(${(.5 - y) * 12}deg)`;
+    c3d.style.setProperty("--depth-x", `${(x - .5) * 4}px`);
+    c3d.style.setProperty("--depth-y", `${(y - .5) * 4}px`);
     c3d.style.setProperty("--light-x", `${x * 100}%`); c3d.style.setProperty("--light-y", `${y * 100}%`);
     glare.style.setProperty("--gx", `${x * 100}%`); glare.style.setProperty("--gy", `${y * 100}%`);
   };
@@ -829,7 +843,7 @@ function render(e, direction = 0) {
   bindHots();
   eyesWake();
   revealExhibit(direction);
-  playSceneMoment(e, direction ? 300 : 650);
+  playSceneMoment(e, direction ? 150 : 250);
 }
 // Hotspots and the list of pieces light each other up
 function bindHots() {
@@ -841,7 +855,8 @@ function bindHots() {
 exhibit.addEventListener("click", ev => {
   const t = ev.target.closest("button"); if (!t) return;
   if (t.hasAttribute("data-close")) return closeExhibit();
-  if (t.hasAttribute("data-replay")) return playSceneMoment(current);
+  if (t.hasAttribute("data-replay")) return replayScene();
+  if (t.hasAttribute("data-motion")) { motionPaused = !motionPaused; store.set("ptif-motion-paused", motionPaused); return syncScenePlayback(); }
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
@@ -888,7 +903,7 @@ document.addEventListener("keydown", ev => {
   if (!sheet.open || ev.target.matches("input, textarea, select") || ev.altKey || ev.ctrlKey || ev.metaKey) return;
   if (ev.key === "ArrowRight") { ev.preventDefault(); go(1); }
   if (ev.key === "ArrowLeft") { ev.preventDefault(); go(-1); }
-  if (ev.key.toLowerCase() === "r") playSceneMoment(current);
+  if (ev.key.toLowerCase() === "r") replayScene();
 });
 
 // ---------- Share as an image (1080 × 1920, for stories) ----------
