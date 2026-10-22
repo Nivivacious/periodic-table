@@ -1,6 +1,6 @@
 // The junk kit: things found on a Bangalore footpath, drawn to the same scale as the fashion figures.
 // Everything stands on the ground line at y=84 unless it says otherwise.
-const TXT = (x, y, t, size = 4, c = "ink", w = 700, extra = "") => `<text x="${x}" y="${y}" font-family="Archivo Narrow,sans-serif" font-size="${size}" font-weight="${w}" text-anchor="middle" fill="${col(c)}" ${extra}>${t}</text>`;
+const TXT = (x, y, t, size = 4, c = "ink", w = 700, extra = "") => `<text x="${x}" y="${y}" font-family="Caudex,serif" font-size="${size}" font-weight="${w}" text-anchor="middle" fill="${col(c)}" ${extra}>${t}</text>`;
 const JUNK = {
   // Bags, bins and boxes
   bag: (x = 50, c = "black", s = 1) => `<g transform="translate(${x} 84) scale(${s})"><path d="M-11,0 Q-14,-10 -9,-17 L-3,-19 L-5,-24 L0,-21 L5,-25 L3,-19 L9,-17 Q14,-10 11,0Z" fill="${col(c)}" ${OL}/><path d="M-6,-8 q6,4 12,-2 M-8,-14 q4,3 8,0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".7"/></g>`,

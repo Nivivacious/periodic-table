@@ -579,7 +579,7 @@ function inkSize() {
 function inkDraw() {
   ictx.clearRect(0, 0, inkW, inkH);
   const word = ED.word, fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
-  ictx.font = `400 ${fs}px "Bodoni Moda", Didot, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
+  ictx.font = `400 ${fs}px Caudex, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
   ictx.fillStyle = "#151515"; ictx.fillText(word, cx, cy);
   if (!blobs.length) return;
   ictx.save(); ictx.beginPath();
@@ -682,7 +682,7 @@ async function shareImage(e) {
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
-  ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
+  ctx.font = '600 26px Caudex, serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
   // Card
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
@@ -694,17 +694,17 @@ async function shareImage(e) {
   const sc = Math.max(aw / art.width, ah / art.height);
   ctx.drawImage(art, ax + (aw - art.width * sc) / 2, ay + ah - art.height * sc, art.width * sc, art.height * sc);
   ctx.restore(); ctx.lineWidth = 2; ctx.strokeRect(ax, ay, aw, ah);
-  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = '600 92px "Bodoni Moda", serif'; ctx.fillText(e.sym, cx + 50, cy + 128);
-  ctx.fillStyle = "#151515"; ctx.font = '600 24px "Archivo Narrow", sans-serif'; ctx.fillText(String(e.n), cx + 54, cy + 160);
-  ctx.textAlign = "center"; ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText(e.el.toUpperCase(), W / 2 + 40, cy + 104);
-  ctx.font = 'italic 44px "Cormorant Garamond", serif'; ctx.fillText(e.trend, W / 2, cy + ch - 90);
+  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = '600 92px Caudex, serif'; ctx.fillText(e.sym, cx + 50, cy + 128);
+  ctx.fillStyle = "#151515"; ctx.font = '600 24px Caudex, serif'; ctx.fillText(String(e.n), cx + 54, cy + 160);
+  ctx.textAlign = "center"; ctx.font = '600 26px Caudex, serif'; ctx.fillText(e.el.toUpperCase(), W / 2 + 40, cy + 104);
+  ctx.font = 'italic 44px Caudex, serif'; ctx.fillText(e.trend, W / 2, cy + ch - 90);
   // Placard
   ctx.textAlign = "left"; ctx.fillStyle = "#151515";
-  ctx.font = '400 84px "Bodoni Moda", serif';
+  ctx.font = '400 84px Caudex, serif';
   let y = wrap(ctx, e.trend, 90, cy + ch + 140, W - 180, 92);
-  ctx.font = 'italic 42px "Cormorant Garamond", serif'; ctx.fillStyle = "#3A3833";
+  ctx.font = 'italic 42px Caudex, serif'; ctx.fillStyle = "#3A3833";
   y = wrap(ctx, e.desc, 90, y + 70, W - 180, 52);
-  ctx.font = '600 24px "Archivo Narrow", sans-serif'; ctx.fillStyle = "#77716A";
+  ctx.font = '600 24px Caudex, serif'; ctx.fillStyle = "#77716A";
   if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
   c.toBlob(async blob => {
     if (!blob) return toast("Couldn't make the image");

@@ -112,7 +112,7 @@ function fig(id, o) {
   if (top === "slip") { S("M-6.5,-48 Q0,-46 6.5,-48 L8,-38 L13,-6 H-13 L-8,-38Z", c, o.pt); }
   if (top === "anarkali") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-39 L21,-4 H-21 L-8,-39Z", c, o.pt); S("M-19.6,-7.2 H19.6 L21,-4 H-21Z", b); }
   if (top === "gown") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-39 L17,0 H-17 L-8,-39Z", c, o.pt); }
-  if (top === "jersey") { S("M-10,-49 Q0,-51 10,-49 L11,-27 H-11Z", c, o.pt); g.push(`<text x="0" y="-33" font-family="Archivo Narrow, sans-serif" font-weight="700" font-size="8" text-anchor="middle" fill="${P.ivory}">${o.num || 7}</text>`); line("M-3,-50 L0,-46 L3,-50", "ivory", 0.8); }
+  if (top === "jersey") { S("M-10,-49 Q0,-51 10,-49 L11,-27 H-11Z", c, o.pt); g.push(`<text x="0" y="-33" font-family="Caudex, serif" font-weight="700" font-size="8" text-anchor="middle" fill="${P.ivory}">${o.num || 7}</text>`); line("M-3,-50 L0,-46 L3,-50", "ivory", 0.8); }
   if (top === "hoodie") { S("M-11,-49 Q0,-51.5 11,-49 L12,-26 H-12Z", c, o.pt); S("M-7,-50 Q0,-44 7,-50 Q0,-47 -7,-50Z", "ink", null, `fill-opacity=".2"`); line("M-2,-46 V-41 M2,-46 V-41", "ivory", 0.5); }
 
   // Arms with sleeves
@@ -249,8 +249,8 @@ const SET = {
   confetti: () => [[12, 20, "red"], [26, 10, "yellow"], [40, 22, "blue"], [62, 12, "rani"], [78, 24, "green"], [88, 10, "orange"], [20, 38, "pink"], [84, 40, "yellow"]].map(([x, y, c]) => `<rect x="${x}" y="${y}" width="2.6" height="1.4" fill="${col(c)}" transform="rotate(${x} ${x} ${y})"/>`).join(""),
   sparkles: (c = "yellow") => [[16, 20, 3], [84, 18, 2.4], [80, 46, 2], [20, 50, 2]].map(([x, y, r]) => `<path d="M${x},${y - r * 2} L${x + r * .5},${y - r * .5} L${x + r * 2},${y} L${x + r * .5},${y + r * .5} L${x},${y + r * 2} L${x - r * .5},${y + r * .5} L${x - r * 2},${y} L${x - r * .5},${y - r * .5}Z" fill="${col(c)}"/>`).join(""),
   hearts: (c = "pink") => [[16, 22], [84, 30], [78, 14], [22, 46]].map(([x, y]) => `<path d="M${x},${y + 2} c-4,-3 -3,-6.5 0,-4.5 c3,-2 4,1.5 0,4.5Z" fill="${col(c)}" ${OL}/>`).join(""),
-  signs: () => `<rect x="6" y="18" width="24" height="10" rx="1" fill="${P.red}" ${OL}/><text x="18" y="25.4" font-family="Archivo Narrow,sans-serif" font-size="5.6" font-weight="700" text-anchor="middle" fill="${P.paper}">SALE</text>`,
-  tags: () => `<path d="M74,22 h14 l4,5 l-4,5 h-14Z" fill="${P.paper}" ${OL}/><text x="82" y="29" font-family="Archivo Narrow,sans-serif" font-size="5.4" font-weight="700" text-anchor="middle" fill="${P.ink}">₹199</text>`,
+  signs: () => `<rect x="6" y="18" width="24" height="10" rx="1" fill="${P.red}" ${OL}/><text x="18" y="25.4" font-family="Caudex,serif" font-size="5.6" font-weight="700" text-anchor="middle" fill="${P.paper}">SALE</text>`,
+  tags: () => `<path d="M74,22 h14 l4,5 l-4,5 h-14Z" fill="${P.paper}" ${OL}/><text x="82" y="29" font-family="Caudex,serif" font-size="5.4" font-weight="700" text-anchor="middle" fill="${P.ink}">₹199</text>`,
   rings: () => [[82, 22, "yellow"], [74, 30, "blue"], [88, 34, "red"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${col(c)}" stroke-width="1.6"/>`).join(""),
 };
 

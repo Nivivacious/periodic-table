@@ -8,9 +8,9 @@
 <meta name="description" content="The real periodic table, with every element symbol matched to a fashion trend named in 2025–26 fashion coverage.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Archivo+Narrow:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap">
 <style>
-/* Layout: a magazine issue on ivory stock. Masthead with centred wordmark and a hairline section nav; each section is a "page" with a kicker, a Bodoni headline and generous margins. Opened elements are shown as museum exhibits: a framed card beside a placard. One rani accent; family colours appear only on the table itself. Single light look by design (it is printed matter). */
+/* Layout: a magazine issue on ivory stock. Masthead with centred wordmark and a hairline section nav; each section is a "page" with a kicker, a Caudex headline and generous margins. Opened elements are shown as museum exhibits: a framed card beside a placard. One rani accent; family colours appear only on the table itself. Single light look by design (it is printed matter). */
 :root {
   --paper: #F4EFE5;
   --paper-2: #ECE5D7;
@@ -33,9 +33,9 @@
   --lanthanide: #A0457E;
   --actinide: #7A4528;
 
-  --display: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
-  --body: "Cormorant Garamond", Garamond, "Times New Roman", serif;
-  --sans: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --display: Caudex, Georgia, "Times New Roman", serif;
+  --body: Caudex, Georgia, "Times New Roman", serif;
+  --sans: Caudex, Georgia, "Times New Roman", serif;
 
   --ease: cubic-bezier(.7, 0, .2, 1);
   --ease-out: cubic-bezier(.2, .7, .2, 1);
@@ -802,7 +802,7 @@ function fig(id, o) {
   if (top === "slip") { S("M-6.5,-48 Q0,-46 6.5,-48 L8,-38 L13,-6 H-13 L-8,-38Z", c, o.pt); }
   if (top === "anarkali") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-39 L21,-4 H-21 L-8,-39Z", c, o.pt); S("M-19.6,-7.2 H19.6 L21,-4 H-21Z", b); }
   if (top === "gown") { S("M-7.5,-49 Q0,-51 7.5,-49 L8,-39 L17,0 H-17 L-8,-39Z", c, o.pt); }
-  if (top === "jersey") { S("M-10,-49 Q0,-51 10,-49 L11,-27 H-11Z", c, o.pt); g.push(`<text x="0" y="-33" font-family="Archivo Narrow, sans-serif" font-weight="700" font-size="8" text-anchor="middle" fill="${P.ivory}">${o.num || 7}</text>`); line("M-3,-50 L0,-46 L3,-50", "ivory", 0.8); }
+  if (top === "jersey") { S("M-10,-49 Q0,-51 10,-49 L11,-27 H-11Z", c, o.pt); g.push(`<text x="0" y="-33" font-family="Caudex, serif" font-weight="700" font-size="8" text-anchor="middle" fill="${P.ivory}">${o.num || 7}</text>`); line("M-3,-50 L0,-46 L3,-50", "ivory", 0.8); }
   if (top === "hoodie") { S("M-11,-49 Q0,-51.5 11,-49 L12,-26 H-12Z", c, o.pt); S("M-7,-50 Q0,-44 7,-50 Q0,-47 -7,-50Z", "ink", null, `fill-opacity=".2"`); line("M-2,-46 V-41 M2,-46 V-41", "ivory", 0.5); }
 
   // Arms with sleeves
@@ -939,8 +939,8 @@ const SET = {
   confetti: () => [[12, 20, "red"], [26, 10, "yellow"], [40, 22, "blue"], [62, 12, "rani"], [78, 24, "green"], [88, 10, "orange"], [20, 38, "pink"], [84, 40, "yellow"]].map(([x, y, c]) => `<rect x="${x}" y="${y}" width="2.6" height="1.4" fill="${col(c)}" transform="rotate(${x} ${x} ${y})"/>`).join(""),
   sparkles: (c = "yellow") => [[16, 20, 3], [84, 18, 2.4], [80, 46, 2], [20, 50, 2]].map(([x, y, r]) => `<path d="M${x},${y - r * 2} L${x + r * .5},${y - r * .5} L${x + r * 2},${y} L${x + r * .5},${y + r * .5} L${x},${y + r * 2} L${x - r * .5},${y + r * .5} L${x - r * 2},${y} L${x - r * .5},${y - r * .5}Z" fill="${col(c)}"/>`).join(""),
   hearts: (c = "pink") => [[16, 22], [84, 30], [78, 14], [22, 46]].map(([x, y]) => `<path d="M${x},${y + 2} c-4,-3 -3,-6.5 0,-4.5 c3,-2 4,1.5 0,4.5Z" fill="${col(c)}" ${OL}/>`).join(""),
-  signs: () => `<rect x="6" y="18" width="24" height="10" rx="1" fill="${P.red}" ${OL}/><text x="18" y="25.4" font-family="Archivo Narrow,sans-serif" font-size="5.6" font-weight="700" text-anchor="middle" fill="${P.paper}">SALE</text>`,
-  tags: () => `<path d="M74,22 h14 l4,5 l-4,5 h-14Z" fill="${P.paper}" ${OL}/><text x="82" y="29" font-family="Archivo Narrow,sans-serif" font-size="5.4" font-weight="700" text-anchor="middle" fill="${P.ink}">₹199</text>`,
+  signs: () => `<rect x="6" y="18" width="24" height="10" rx="1" fill="${P.red}" ${OL}/><text x="18" y="25.4" font-family="Caudex,serif" font-size="5.6" font-weight="700" text-anchor="middle" fill="${P.paper}">SALE</text>`,
+  tags: () => `<path d="M74,22 h14 l4,5 l-4,5 h-14Z" fill="${P.paper}" ${OL}/><text x="82" y="29" font-family="Caudex,serif" font-size="5.4" font-weight="700" text-anchor="middle" fill="${P.ink}">₹199</text>`,
   rings: () => [[82, 22, "yellow"], [74, 30, "blue"], [88, 34, "red"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${col(c)}" stroke-width="1.6"/>`).join(""),
 };
 
@@ -989,7 +989,7 @@ function scene(id, o) {
 
 // The junk kit: things found on a Bangalore footpath, drawn to the same scale as the fashion figures.
 // Everything stands on the ground line at y=84 unless it says otherwise.
-const TXT = (x, y, t, size = 4, c = "ink", w = 700, extra = "") => `<text x="${x}" y="${y}" font-family="Archivo Narrow,sans-serif" font-size="${size}" font-weight="${w}" text-anchor="middle" fill="${col(c)}" ${extra}>${t}</text>`;
+const TXT = (x, y, t, size = 4, c = "ink", w = 700, extra = "") => `<text x="${x}" y="${y}" font-family="Caudex,serif" font-size="${size}" font-weight="${w}" text-anchor="middle" fill="${col(c)}" ${extra}>${t}</text>`;
 const JUNK = {
   // Bags, bins and boxes
   bag: (x = 50, c = "black", s = 1) => `<g transform="translate(${x} 84) scale(${s})"><path d="M-11,0 Q-14,-10 -9,-17 L-3,-19 L-5,-24 L0,-21 L5,-25 L3,-19 L9,-17 Q14,-10 11,0Z" fill="${col(c)}" ${OL}/><path d="M-6,-8 q6,4 12,-2 M-8,-14 q4,3 8,0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".7"/></g>`,
@@ -2531,7 +2531,7 @@ function inkSize() {
 function inkDraw() {
   ictx.clearRect(0, 0, inkW, inkH);
   const word = ED.word, fs = Math.min(inkH * 0.95, inkW / (word.length * 0.6)), cx = inkW / 2, cy = inkH * 0.56;
-  ictx.font = `400 ${fs}px "Bodoni Moda", Didot, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
+  ictx.font = `400 ${fs}px Caudex, Georgia, serif`; ictx.textAlign = "center"; ictx.textBaseline = "middle";
   ictx.fillStyle = "#151515"; ictx.fillText(word, cx, cy);
   if (!blobs.length) return;
   ictx.save(); ictx.beginPath();
@@ -2634,7 +2634,7 @@ async function shareImage(e) {
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
-  ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
+  ctx.font = '600 26px Caudex, serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
   // Card
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
@@ -2646,17 +2646,17 @@ async function shareImage(e) {
   const sc = Math.max(aw / art.width, ah / art.height);
   ctx.drawImage(art, ax + (aw - art.width * sc) / 2, ay + ah - art.height * sc, art.width * sc, art.height * sc);
   ctx.restore(); ctx.lineWidth = 2; ctx.strokeRect(ax, ay, aw, ah);
-  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = '600 92px "Bodoni Moda", serif'; ctx.fillText(e.sym, cx + 50, cy + 128);
-  ctx.fillStyle = "#151515"; ctx.font = '600 24px "Archivo Narrow", sans-serif'; ctx.fillText(String(e.n), cx + 54, cy + 160);
-  ctx.textAlign = "center"; ctx.font = '600 26px "Archivo Narrow", sans-serif'; ctx.fillText(e.el.toUpperCase(), W / 2 + 40, cy + 104);
-  ctx.font = 'italic 44px "Cormorant Garamond", serif'; ctx.fillText(e.trend, W / 2, cy + ch - 90);
+  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = '600 92px Caudex, serif'; ctx.fillText(e.sym, cx + 50, cy + 128);
+  ctx.fillStyle = "#151515"; ctx.font = '600 24px Caudex, serif'; ctx.fillText(String(e.n), cx + 54, cy + 160);
+  ctx.textAlign = "center"; ctx.font = '600 26px Caudex, serif'; ctx.fillText(e.el.toUpperCase(), W / 2 + 40, cy + 104);
+  ctx.font = 'italic 44px Caudex, serif'; ctx.fillText(e.trend, W / 2, cy + ch - 90);
   // Placard
   ctx.textAlign = "left"; ctx.fillStyle = "#151515";
-  ctx.font = '400 84px "Bodoni Moda", serif';
+  ctx.font = '400 84px Caudex, serif';
   let y = wrap(ctx, e.trend, 90, cy + ch + 140, W - 180, 92);
-  ctx.font = 'italic 42px "Cormorant Garamond", serif'; ctx.fillStyle = "#3A3833";
+  ctx.font = 'italic 42px Caudex, serif'; ctx.fillStyle = "#3A3833";
   y = wrap(ctx, e.desc, 90, y + 70, W - 180, 52);
-  ctx.font = '600 24px "Archivo Narrow", sans-serif'; ctx.fillStyle = "#77716A";
+  ctx.font = '600 24px Caudex, serif'; ctx.fillStyle = "#77716A";
   if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
   c.toBlob(async blob => {
     if (!blob) return toast("Couldn't make the image");
