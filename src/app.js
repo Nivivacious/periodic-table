@@ -311,16 +311,9 @@ addCell("series", { gridRow: 10 }, "Actinides");
 
 const counts = {};
 for (const e of els) counts[e.fam] = (counts[e.fam] || 0) + 1;
-const sample = get("Fe");
 const key = document.createElement("section");
 key.className = "key"; key.setAttribute("aria-label", "Key");
 key.innerHTML = `
-  <div class="how" aria-hidden="true">
-    <div class="el ${sample.fam}">${tileHTML(sample, "k" + sample.sym)}</div>
-    <p>Number &amp; symbol<span>26, Fe, as on any periodic table</span></p>
-    <p>The drawing<span>the ${ED.noun.toLowerCase()}, illustrated</span></p>
-    <p>${ED.noun}<span>${sample.sym} stands for ${sample.trend}</span></p>
-  </div>
   <ul class="keylist">${Object.entries(FAMILIES).map(([k, name]) => `<li class="${k}">${name}<span>${counts[k]}</span></li>`).join("")}</ul>`;
 const narrow = matchMedia("(max-width: 980px)");
 const placeKey = () => (narrow.matches ? $("mobileKey") : grid).appendChild(key);
