@@ -397,7 +397,6 @@ const G_PICKS = ["S", "Be", "Tm", "Np", "Rb", "Fl", "Db", "Og"];
 // Copy that changes with the edition. Keys match data-t attributes in the page.
 const G_COPY = {
   curtainOf: "elements of Bangalore garbage",
-  wordmark: "The Garbage Elements",
   keptLbl: "Pile",
   navGenz: "Slang", navSources: "Field Notes", menuGenz: "Slang", menuSources: "Field Notes", menuWardrobe: "Pile",
   coverKicker: "The cover story · 118 finds",
@@ -410,7 +409,6 @@ const G_COPY = {
   labLede: "Drop up to three elements into the flask. We'll write the formula and name the pile.",
   genzKicker: "Slang",
   genzLede: "Twenty words, translated into garbage. Tap a card to flip it. The meanings and examples are ours. The finds are real.",
-  picksLede: "The finds we'd bet on still being there next week.",
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",

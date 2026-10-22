@@ -5,7 +5,7 @@ Two periodic tables in one site, with a toggle in the masthead:
 - **The Periodic Table of Indian Fashion.** 118 trends the fashion press named in 2025–26.
 - **The Periodic Table of Bangalore Garbage.** 118 things found on Bangalore footpaths in 2025–26, with field notes on where and when.
 
-Both use the same magazine layout and museum-style exhibit cards. The edition is remembered in the browser and can be linked directly with `?ed=garbage`.
+On a first visit the cover asks which table you want. Both use the same magazine layout and museum-style exhibit cards. The edition is remembered in the browser and can be linked directly with `?ed=garbage`.
 
 The fashion edition is laid out as a magazine issue with museum-style exhibit cards. It uses the real 118-element periodic table. Every element keeps its true symbol, number and family, and each symbol stands for a fashion trend with matching initials, named in 2025–26 fashion coverage.
 
@@ -25,10 +25,9 @@ The fashion edition is laid out as a magazine issue with museum-style exhibit ca
   - family filters and a Gen Z filter
   - period and group highlighting
   - arrow-key navigation
-- **The Story.** The 2026 story in five scrolls. Each chapter has a fan of cards and a **then-vs-now** drag slider.
 - **The Lab.** Mix up to three elements into a compound and get a named look.
 - **Gen Z.** 20 flip cards translate Gen Z and desi slang into the trends they describe. Also, 45 trends are flagged as Gen Z-led.
-- **Editor's Picks**, **Families** and **Wardrobe**. Wardrobe holds your saved cards, stored in your browser.
+- **Families** and **Wardrobe**. Wardrobe holds your saved cards, stored in your browser.
 
 ## Exhibit cards
 

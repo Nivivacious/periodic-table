@@ -131,6 +131,14 @@ html.switching body { opacity: 0; transition: opacity .25s ease; }
 .cover-title .kicker { margin-bottom: 1.6rem; }
 .cover-title h1 { margin: 0; font: 400 clamp(3rem, 7vw, 6.8rem)/.9 var(--display); letter-spacing: -.035em; text-wrap: balance; }
 .cover-title h1 .l2 { display: block; }
+.cover-title.choosing > :not(.choose) { display: none; }
+.choices { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; pointer-events: auto; }
+.choice { cursor: pointer; background: var(--card); border: 1px solid var(--ink); padding: 1.1rem 1.6rem 1rem; border-radius: 2px; display: grid; gap: .35rem; text-align: center; min-width: 15rem; transition: background .5s var(--ease), color .5s var(--ease), transform .5s var(--ease); }
+.choice em { font: italic 400 2.4rem/1.05 var(--display); color: var(--accent); }
+.choice span { font: 600 .62rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.choice:hover { background: var(--ink); transform: translateY(-2px); }
+.choice:hover em { color: var(--paper); }
+.choice:hover span { color: var(--paper-2); }
 .cover-title h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
 .cover-title .lede { margin-top: 1.4rem; text-align: center; font-size: 1.2rem; max-width: 32rem; }
 .cover-title .ctas { display: flex; gap: 2.2rem; justify-content: center; align-items: center; margin-top: 2rem; pointer-events: auto; flex-wrap: wrap; }
@@ -517,7 +525,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <header class="mast">
   <div class="mast-top band">
     <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
-    <button type="button" class="wordmark" data-view="cover" data-t="wordmark">The Fashion Elements</button>
+    <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
       <button type="button" class="tool" data-view="wardrobe"><span class="lbl" data-t="keptLbl">Wardrobe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg><span class="count" id="wcount">0</span></button>
@@ -528,10 +536,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <nav class="sections band" aria-label="Sections">
     <button type="button" data-view="cover">Cover</button>
     <button type="button" data-view="table">The Table</button>
-    <button type="button" data-view="story">The Story</button>
     <button type="button" data-view="lab">The Lab</button>
     <button type="button" data-view="genz" data-t="navGenz">Gen Z</button>
-    <button type="button" data-view="picks">Editor's Picks</button>
     <button type="button" data-view="families">Families</button>
     <button type="button" data-view="sources" data-t="navSources">Sources</button>
   </nav>
@@ -543,10 +549,15 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <div class="orbit" id="orbit">
       <div class="sphere" id="sphere"></div>
       <div class="cover-title">
-        <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
+      <div class="choose" id="choose" hidden>
+        <p class="kicker">Two tables · 118 elements each</p>
+        <h1>The Periodic Table of</h1>
+        <div class="choices"><button type="button" class="choice" id="chooseFashion"><em>Indian Fashion</em><span>Trends the press named in 2025–26</span></button><button type="button" class="choice" data-ed="garbage"><em>Bangalore Garbage</em><span>Things we found on the footpath</span></button></div>
+      </div>
+      <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
         <h1 id="h-cover" data-t="coverH1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
         <p class="lede" data-t="coverLede">Every real element symbol, matched to a trend the fashion press named in 2025 and 2026.</p>
-        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link" data-view="story">Read the story <span class="arr">→</span></button><button type="button" class="link swap" data-ed-switch>See the garbage table <span class="arr">→</span></button></div>
+        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link swap" data-ed-switch>See the garbage table <span class="arr">→</span></button></div>
       </div>
       <div class="cover-foot band">
         <button type="button" class="today" id="today"></button>
@@ -569,16 +580,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
       <div class="tools"><div class="filters" id="filters"></div></div>
       <div class="mobile-key" id="mobileKey"></div>
       <div class="scroller"><div class="table" id="tableGrid"></div></div>
-    </div>
-  </section>
-
-  <section class="view band" data-view="story" aria-labelledby="h-story" hidden>
-    <div class="wrap">
-      <div class="story-intro">
-        <div><p class="kicker">The Story</p><h2 class="h-xl" id="h-story" data-t="storyH2">What India <em>wore</em> this year.</h2></div>
-        <p class="lede" data-t="storyLede">Five shifts that kept coming up in the fashion press between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.</p>
-      </div>
-      <div id="chapters"></div>
     </div>
   </section>
 
@@ -633,13 +634,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     </div>
   </section>
 
-  <section class="view page band" data-view="picks" aria-labelledby="h-picks" hidden>
-    <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Editor's Picks</p><h2 class="h-lg" id="h-picks">Eight cards <em>worth holding.</em></h2><p class="lede" data-t="picksLede">The trends we'd bet on for the rest of the season.</p></div></div>
-      <div class="picks" id="picks"></div>
-    </div>
-  </section>
-
   <section class="view page band" data-view="families" aria-labelledby="h-fam" hidden>
     <div class="wrap">
       <div class="ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
@@ -687,13 +681,11 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="close" id="closeMenu">Close <span>×</span></button>
     <button type="button" class="mi" data-view="cover"><i>i.</i>Cover</button>
     <button type="button" class="mi" data-view="table"><i>ii.</i>The Table</button>
-    <button type="button" class="mi" data-view="story"><i>iii.</i>The Story</button>
-    <button type="button" class="mi" data-view="lab"><i>iv.</i>The Lab</button>
-    <button type="button" class="mi" data-view="genz"><i>v.</i><span data-t="menuGenz">Gen Z</span></button>
-    <button type="button" class="mi" data-view="picks"><i>vi.</i>Editor's Picks</button>
-    <button type="button" class="mi" data-view="families"><i>vii.</i>Families</button>
-    <button type="button" class="mi" data-view="sources"><i>viii.</i><span data-t="menuSources">Sources</span></button>
-    <button type="button" class="mi" data-view="wardrobe"><i>ix.</i><span data-t="menuWardrobe">Wardrobe</span></button>
+    <button type="button" class="mi" data-view="lab"><i>iii.</i>The Lab</button>
+    <button type="button" class="mi" data-view="genz"><i>iv.</i><span data-t="menuGenz">Gen Z</span></button>
+    <button type="button" class="mi" data-view="families"><i>v.</i>Families</button>
+    <button type="button" class="mi" data-view="sources"><i>vi.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="wardrobe"><i>vii.</i><span data-t="menuWardrobe">Wardrobe</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
   </div>
 </dialog>

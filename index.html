@@ -136,6 +136,14 @@ html.switching body { opacity: 0; transition: opacity .25s ease; }
 .cover-title .kicker { margin-bottom: 1.6rem; }
 .cover-title h1 { margin: 0; font: 400 clamp(3rem, 7vw, 6.8rem)/.9 var(--display); letter-spacing: -.035em; text-wrap: balance; }
 .cover-title h1 .l2 { display: block; }
+.cover-title.choosing > :not(.choose) { display: none; }
+.choices { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; pointer-events: auto; }
+.choice { cursor: pointer; background: var(--card); border: 1px solid var(--ink); padding: 1.1rem 1.6rem 1rem; border-radius: 2px; display: grid; gap: .35rem; text-align: center; min-width: 15rem; transition: background .5s var(--ease), color .5s var(--ease), transform .5s var(--ease); }
+.choice em { font: italic 400 2.4rem/1.05 var(--display); color: var(--accent); }
+.choice span { font: 600 .62rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.choice:hover { background: var(--ink); transform: translateY(-2px); }
+.choice:hover em { color: var(--paper); }
+.choice:hover span { color: var(--paper-2); }
 .cover-title h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
 .cover-title .lede { margin-top: 1.4rem; text-align: center; font-size: 1.2rem; max-width: 32rem; }
 .cover-title .ctas { display: flex; gap: 2.2rem; justify-content: center; align-items: center; margin-top: 2rem; pointer-events: auto; flex-wrap: wrap; }
@@ -524,7 +532,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 <header class="mast">
   <div class="mast-top band">
     <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
-    <button type="button" class="wordmark" data-view="cover" data-t="wordmark">The Fashion Elements</button>
+    <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
       <button type="button" class="tool" data-view="wardrobe"><span class="lbl" data-t="keptLbl">Wardrobe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg><span class="count" id="wcount">0</span></button>
@@ -535,10 +543,8 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   <nav class="sections band" aria-label="Sections">
     <button type="button" data-view="cover">Cover</button>
     <button type="button" data-view="table">The Table</button>
-    <button type="button" data-view="story">The Story</button>
     <button type="button" data-view="lab">The Lab</button>
     <button type="button" data-view="genz" data-t="navGenz">Gen Z</button>
-    <button type="button" data-view="picks">Editor's Picks</button>
     <button type="button" data-view="families">Families</button>
     <button type="button" data-view="sources" data-t="navSources">Sources</button>
   </nav>
@@ -550,10 +556,15 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <div class="orbit" id="orbit">
       <div class="sphere" id="sphere"></div>
       <div class="cover-title">
-        <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
+      <div class="choose" id="choose" hidden>
+        <p class="kicker">Two tables · 118 elements each</p>
+        <h1>The Periodic Table of</h1>
+        <div class="choices"><button type="button" class="choice" id="chooseFashion"><em>Indian Fashion</em><span>Trends the press named in 2025–26</span></button><button type="button" class="choice" data-ed="garbage"><em>Bangalore Garbage</em><span>Things we found on the footpath</span></button></div>
+      </div>
+      <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
         <h1 id="h-cover" data-t="coverH1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
         <p class="lede" data-t="coverLede">Every real element symbol, matched to a trend the fashion press named in 2025 and 2026.</p>
-        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link" data-view="story">Read the story <span class="arr">→</span></button><button type="button" class="link swap" data-ed-switch>See the garbage table <span class="arr">→</span></button></div>
+        <div class="ctas"><button type="button" class="btn" id="toTable">See the full table <span>→</span></button><button type="button" class="link swap" data-ed-switch>See the garbage table <span class="arr">→</span></button></div>
       </div>
       <div class="cover-foot band">
         <button type="button" class="today" id="today"></button>
@@ -576,16 +587,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
       <div class="tools"><div class="filters" id="filters"></div></div>
       <div class="mobile-key" id="mobileKey"></div>
       <div class="scroller"><div class="table" id="tableGrid"></div></div>
-    </div>
-  </section>
-
-  <section class="view band" data-view="story" aria-labelledby="h-story" hidden>
-    <div class="wrap">
-      <div class="story-intro">
-        <div><p class="kicker">The Story</p><h2 class="h-xl" id="h-story" data-t="storyH2">What India <em>wore</em> this year.</h2></div>
-        <p class="lede" data-t="storyLede">Five shifts that kept coming up in the fashion press between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.</p>
-      </div>
-      <div id="chapters"></div>
     </div>
   </section>
 
@@ -640,13 +641,6 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     </div>
   </section>
 
-  <section class="view page band" data-view="picks" aria-labelledby="h-picks" hidden>
-    <div class="wrap">
-      <div class="page-head"><div><p class="kicker">Editor's Picks</p><h2 class="h-lg" id="h-picks">Eight cards <em>worth holding.</em></h2><p class="lede" data-t="picksLede">The trends we'd bet on for the rest of the season.</p></div></div>
-      <div class="picks" id="picks"></div>
-    </div>
-  </section>
-
   <section class="view page band" data-view="families" aria-labelledby="h-fam" hidden>
     <div class="wrap">
       <div class="ink" id="inkWrap"><canvas id="ink" role="img" aria-label="ELEMENTAL. Move across the word to paint it."></canvas><p class="kicker ink-hint">Move across the word</p></div>
@@ -694,13 +688,11 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="close" id="closeMenu">Close <span>×</span></button>
     <button type="button" class="mi" data-view="cover"><i>i.</i>Cover</button>
     <button type="button" class="mi" data-view="table"><i>ii.</i>The Table</button>
-    <button type="button" class="mi" data-view="story"><i>iii.</i>The Story</button>
-    <button type="button" class="mi" data-view="lab"><i>iv.</i>The Lab</button>
-    <button type="button" class="mi" data-view="genz"><i>v.</i><span data-t="menuGenz">Gen Z</span></button>
-    <button type="button" class="mi" data-view="picks"><i>vi.</i>Editor's Picks</button>
-    <button type="button" class="mi" data-view="families"><i>vii.</i>Families</button>
-    <button type="button" class="mi" data-view="sources"><i>viii.</i><span data-t="menuSources">Sources</span></button>
-    <button type="button" class="mi" data-view="wardrobe"><i>ix.</i><span data-t="menuWardrobe">Wardrobe</span></button>
+    <button type="button" class="mi" data-view="lab"><i>iii.</i>The Lab</button>
+    <button type="button" class="mi" data-view="genz"><i>iv.</i><span data-t="menuGenz">Gen Z</span></button>
+    <button type="button" class="mi" data-view="families"><i>v.</i>Families</button>
+    <button type="button" class="mi" data-view="sources"><i>vi.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="wardrobe"><i>vii.</i><span data-t="menuWardrobe">Wardrobe</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
   </div>
 </dialog>
@@ -1929,7 +1921,6 @@ const G_PICKS = ["S", "Be", "Tm", "Np", "Rb", "Fl", "Db", "Og"];
 // Copy that changes with the edition. Keys match data-t attributes in the page.
 const G_COPY = {
   curtainOf: "elements of Bangalore garbage",
-  wordmark: "The Garbage Elements",
   keptLbl: "Pile",
   navGenz: "Slang", navSources: "Field Notes", menuGenz: "Slang", menuSources: "Field Notes", menuWardrobe: "Pile",
   coverKicker: "The cover story · 118 finds",
@@ -1942,7 +1933,6 @@ const G_COPY = {
   labLede: "Drop up to three elements into the flask. We'll write the formula and name the pile.",
   genzKicker: "Slang",
   genzLede: "Twenty words, translated into garbage. Tap a card to flip it. The meanings and examples are ours. The finds are real.",
-  picksLede: "The finds we'd bet on still being there next week.",
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",
@@ -1994,7 +1984,8 @@ const ED_KEYS = ["fashion", "garbage"];
 const edFromUrl = new URLSearchParams(location.search).get("ed");
 let edKey = ED_KEYS.includes(edFromUrl) ? edFromUrl : null;
 if (!edKey) { try { edKey = localStorage.getItem("ptif-edition"); } catch (err) {} }
-if (!ED_KEYS.includes(edKey)) edKey = "fashion";
+const chosen = ED_KEYS.includes(edKey);
+if (!chosen) edKey = "fashion";
 const isG = edKey === "garbage";
 const ED = isG ? {
   key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
@@ -2008,10 +1999,20 @@ const ED = isG ? {
   word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
 };
 document.documentElement.dataset.ed = ED.key;
-try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {}
+if (chosen) { try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {} }
+else {
+  // First visit: the cover asks which table they want.
+  document.querySelector(".cover-title").classList.add("choosing");
+  document.getElementById("choose").hidden = false;
+  document.getElementById("chooseFashion").addEventListener("click", () => {
+    try { localStorage.setItem("ptif-edition", "fashion"); } catch (err) {}
+    document.getElementById("choose").hidden = true; document.querySelector(".cover-title").classList.remove("choosing");
+    document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === "fashion")));
+  });
+}
 if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_COPY[el.dataset.t]; if (v != null) el.innerHTML = v; }
 if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
-document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === ED.key)));
+document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(chosen && b.dataset.ed === ED.key)));
 document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.insertAdjacentHTML("beforeend", `${ED.otherLabel} <span class="arr">→</span>`); });
 function switchEdition(key) {
   if (!ED_KEYS.includes(key) || key === ED.key) return;
@@ -2410,40 +2411,6 @@ $("toTable").addEventListener("click", orbitToTable);
   t.addEventListener("click", () => open(e));
 }
 
-// ---------- The Story ----------
-const CLEAN_GIRL = { bg: "cream", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "palazzo", l: "beige", h: "lowbun", a: ["hoops"], ac: "gold", hold: "coffee", hc2: "beige", shoe: "jutti" }] };
-const RED_BRIDE = { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ top: "blouse", c: "red", pt: "zari", low: "lehenga", l: "red", pl: "zari", b: "gold", lay: ["veil"], y: "red", h: "bun", a: ["matha", "bignath", "choker"] }] };
-const ALL_PINK = { bg: "pink", gr: "hot", set: ["sparkles"], figs: [{ top: "corset", c: "hot", low: "skirt", l: "hot", h: "pony", hc: "yellow", a: ["hoops", "scrunchie"], ac: "white", shoe: "heel", hold: "clutch", hc2: "white" }] };
-const F_STORY = [
-  { title: "Craft beat <em>the logo.</em>", text: "Visible handwork became the status symbol: chikankari, crochet, zari and handloom, worn without a single logo.", syms: ["H", "Nb", "Zr"] },
-  { title: "Gen Z found the best vintage store <em>at home.</em>", text: "Instead of resale apps, young Indians raided their grandmothers' almirahs, then took screenshots to the local tailor.", syms: ["Na", "Tm", "U"] },
-  { title: "Goodbye clean girl. Hello, <em>Indian Baddie.</em>", text: "The slick bun and bare skin gave way to kajal, bindis, kamarbandhs and mirror work, loud on purpose.", syms: ["Bk", "C", "Bi"], ba: [CLEAN_GIRL, "C", "Clean girl", "Indian Baddie"] },
-  { interlude: true, title: "And all-pink handed over to <em>cherry red.</em>", syms: ["Cn"], ba: [ALL_PINK, "Cn", "Barbiecore", "Cherry red"] },
-  { title: "The saree stopped waiting <em>for weddings.</em>", text: "Worn to work, to college and to concerts: pre-draped, with trainers, with a shirt as the blouse.", syms: ["Se", "Sr", "Pd"] },
-  { title: "Weddings went <em>moody.</em>", text: "Plum, merlot and fig replaced bridal red, gothic alt-brides arrived, and the cocktail blazer stole couture week.", syms: ["Mo", "Al", "Zn"], ba: [RED_BRIDE, "Mo", "Bridal red", "Moody opulence"] },
-];
-const STORY = isG ? G_STORY : F_STORY;
-const baHTML = ([before, afterSym, lb, la], id) => {
-  const after = get(afterSym);
-  return `<div class="ba-wrap"><div class="ba" id="${id}"><img src="${specImg("before" + id, before, "0 0 100 100")}" alt="${lb}"><img class="after" src="${sceneImg(after, "0 0 100 100")}" alt="${la}"><span class="line"></span><span class="knob" aria-hidden="true">↔</span><span class="tag l">Then · ${lb}</span><span class="tag r">Now · ${la}</span><input type="range" min="0" max="100" value="50" aria-label="Compare ${lb} and ${la}"></div><p class="ba-cap">Drag to compare</p></div>`;
-};
-let chNo = 0;
-$("chapters").innerHTML = STORY.map((c, i) => {
-  const lead = get(c.syms[0]);
-  const via = lead.src ? `<p class="via">${ED.via(lead.src)}</p>` : "";
-  if (c.interlude) return `<div class="interlude"><p class="kicker">Interlude · Colour</p><h3>${c.title}</h3>${baHTML(c.ba, "ba" + i)}${via}</div>`;
-  chNo++;
-  return `<article class="chapter">
-    <div class="ch-text"><p class="ch-num">${ROMAN[chNo - 1]}.</p><h3>${c.title}</h3><p>${c.text}</p>${via}</div>
-    <div class="ch-art"><div class="fan">${c.syms.map(s => cardHTML(get(s), { attrs: ` data-sym="${s}" role="button" tabindex="0" aria-label="Open ${get(s).trend}"` })).join("")}</div>${c.ba ? baHTML(c.ba, "ba" + i) : ""}</div>
-  </article>`;
-}).join("");
-$("chapters").addEventListener("click", ev => { const c = ev.target.closest(".fan .card"); if (c) open(get(c.dataset.sym)); });
-$("chapters").addEventListener("keydown", ev => { const c = ev.target.closest(".fan .card"); if (c && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); open(get(c.dataset.sym)); } });
-document.querySelectorAll(".ba input").forEach(r => r.addEventListener("input", () => r.parentElement.style.setProperty("--split", r.value + "%")));
-const fanObs = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("in"); }), { threshold: .35 });
-document.querySelectorAll(".fan").forEach(f => fanObs.observe(f));
-
 // ---------- The Lab ----------
 let mix = [];
 const shelf = $("shelf");
@@ -2552,11 +2519,8 @@ $("flipAll").addEventListener("click", ev => {
   document.querySelectorAll(".ccard").forEach(c => c.addEventListener("click", () => open(get(c.dataset.sym))));
 }
 
-// ---------- Editor's Picks ----------
-const PICKS = isG ? G_PICKS : ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
+// ---------- Card list markup (used by the Pile / Wardrobe) ----------
 const pickHTML = (e, i) => `<button type="button" class="pick" data-sym="${e.sym}"><span class="pn">No. ${ROMAN[i] || i + 1}</span>${cardHTML(e)}<div><p class="kicker">${e.el} · ${e.src ? e.src[0] : FAMILIES[e.fam]}</p><h3>${e.trend}</h3><p>${e.desc}</p></div></button>`;
-$("picks").innerHTML = PICKS.map(get).map(pickHTML).join("");
-$("picks").addEventListener("click", ev => { const p = ev.target.closest(".pick"); if (p) open(get(p.dataset.sym)); });
 
 // ---------- Families ----------
 $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
@@ -2741,7 +2705,7 @@ const palette = $("palette"), palq = $("palq"), pallist = $("pallist");
 let palSel = 0, palRes = [];
 function palRender() {
   const t = palq.value.trim().toLowerCase();
-  palRes = !t ? PICKS.map(get)
+  palRes = !t ? [...els].sort(() => Math.random() - .5).slice(0, 8)
     : els.map(e => {
       const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? ED.flagSearch : ""}`.toLowerCase();
       const sc = e.sym.toLowerCase() === t ? 100 : e.trend.toLowerCase().startsWith(t) ? 60 : e.trend.toLowerCase().includes(t) ? 40 : e.el.toLowerCase().startsWith(t) ? 30 : hay.includes(t) ? 10 : 0;
@@ -2778,7 +2742,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "story", "lab", "genz", "picks", "families", "sources", "wardrobe"];
+const VIEWS = ["cover", "table", "lab", "genz", "families", "sources", "wardrobe"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);

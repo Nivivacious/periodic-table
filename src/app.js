@@ -38,7 +38,8 @@ const ED_KEYS = ["fashion", "garbage"];
 const edFromUrl = new URLSearchParams(location.search).get("ed");
 let edKey = ED_KEYS.includes(edFromUrl) ? edFromUrl : null;
 if (!edKey) { try { edKey = localStorage.getItem("ptif-edition"); } catch (err) {} }
-if (!ED_KEYS.includes(edKey)) edKey = "fashion";
+const chosen = ED_KEYS.includes(edKey);
+if (!chosen) edKey = "fashion";
 const isG = edKey === "garbage";
 const ED = isG ? {
   key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
@@ -52,10 +53,20 @@ const ED = isG ? {
   word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
 };
 document.documentElement.dataset.ed = ED.key;
-try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {}
+if (chosen) { try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {} }
+else {
+  // First visit: the cover asks which table they want.
+  document.querySelector(".cover-title").classList.add("choosing");
+  document.getElementById("choose").hidden = false;
+  document.getElementById("chooseFashion").addEventListener("click", () => {
+    try { localStorage.setItem("ptif-edition", "fashion"); } catch (err) {}
+    document.getElementById("choose").hidden = true; document.querySelector(".cover-title").classList.remove("choosing");
+    document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === "fashion")));
+  });
+}
 if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_COPY[el.dataset.t]; if (v != null) el.innerHTML = v; }
 if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
-document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ed === ED.key)));
+document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(chosen && b.dataset.ed === ED.key)));
 document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.insertAdjacentHTML("beforeend", `${ED.otherLabel} <span class="arr">→</span>`); });
 function switchEdition(key) {
   if (!ED_KEYS.includes(key) || key === ED.key) return;
@@ -454,40 +465,6 @@ $("toTable").addEventListener("click", orbitToTable);
   t.addEventListener("click", () => open(e));
 }
 
-// ---------- The Story ----------
-const CLEAN_GIRL = { bg: "cream", gr: "beige", set: [["mirror", "sky"]], figs: [{ x: 44, top: "fittee", c: "white", low: "palazzo", l: "beige", h: "lowbun", a: ["hoops"], ac: "gold", hold: "coffee", hc2: "beige", shoe: "jutti" }] };
-const RED_BRIDE = { bg: "maroon", gr: "red", set: ["marigold"], figs: [{ top: "blouse", c: "red", pt: "zari", low: "lehenga", l: "red", pl: "zari", b: "gold", lay: ["veil"], y: "red", h: "bun", a: ["matha", "bignath", "choker"] }] };
-const ALL_PINK = { bg: "pink", gr: "hot", set: ["sparkles"], figs: [{ top: "corset", c: "hot", low: "skirt", l: "hot", h: "pony", hc: "yellow", a: ["hoops", "scrunchie"], ac: "white", shoe: "heel", hold: "clutch", hc2: "white" }] };
-const F_STORY = [
-  { title: "Craft beat <em>the logo.</em>", text: "Visible handwork became the status symbol: chikankari, crochet, zari and handloom, worn without a single logo.", syms: ["H", "Nb", "Zr"] },
-  { title: "Gen Z found the best vintage store <em>at home.</em>", text: "Instead of resale apps, young Indians raided their grandmothers' almirahs, then took screenshots to the local tailor.", syms: ["Na", "Tm", "U"] },
-  { title: "Goodbye clean girl. Hello, <em>Indian Baddie.</em>", text: "The slick bun and bare skin gave way to kajal, bindis, kamarbandhs and mirror work, loud on purpose.", syms: ["Bk", "C", "Bi"], ba: [CLEAN_GIRL, "C", "Clean girl", "Indian Baddie"] },
-  { interlude: true, title: "And all-pink handed over to <em>cherry red.</em>", syms: ["Cn"], ba: [ALL_PINK, "Cn", "Barbiecore", "Cherry red"] },
-  { title: "The saree stopped waiting <em>for weddings.</em>", text: "Worn to work, to college and to concerts: pre-draped, with trainers, with a shirt as the blouse.", syms: ["Se", "Sr", "Pd"] },
-  { title: "Weddings went <em>moody.</em>", text: "Plum, merlot and fig replaced bridal red, gothic alt-brides arrived, and the cocktail blazer stole couture week.", syms: ["Mo", "Al", "Zn"], ba: [RED_BRIDE, "Mo", "Bridal red", "Moody opulence"] },
-];
-const STORY = isG ? G_STORY : F_STORY;
-const baHTML = ([before, afterSym, lb, la], id) => {
-  const after = get(afterSym);
-  return `<div class="ba-wrap"><div class="ba" id="${id}"><img src="${specImg("before" + id, before, "0 0 100 100")}" alt="${lb}"><img class="after" src="${sceneImg(after, "0 0 100 100")}" alt="${la}"><span class="line"></span><span class="knob" aria-hidden="true">↔</span><span class="tag l">Then · ${lb}</span><span class="tag r">Now · ${la}</span><input type="range" min="0" max="100" value="50" aria-label="Compare ${lb} and ${la}"></div><p class="ba-cap">Drag to compare</p></div>`;
-};
-let chNo = 0;
-$("chapters").innerHTML = STORY.map((c, i) => {
-  const lead = get(c.syms[0]);
-  const via = lead.src ? `<p class="via">${ED.via(lead.src)}</p>` : "";
-  if (c.interlude) return `<div class="interlude"><p class="kicker">Interlude · Colour</p><h3>${c.title}</h3>${baHTML(c.ba, "ba" + i)}${via}</div>`;
-  chNo++;
-  return `<article class="chapter">
-    <div class="ch-text"><p class="ch-num">${ROMAN[chNo - 1]}.</p><h3>${c.title}</h3><p>${c.text}</p>${via}</div>
-    <div class="ch-art"><div class="fan">${c.syms.map(s => cardHTML(get(s), { attrs: ` data-sym="${s}" role="button" tabindex="0" aria-label="Open ${get(s).trend}"` })).join("")}</div>${c.ba ? baHTML(c.ba, "ba" + i) : ""}</div>
-  </article>`;
-}).join("");
-$("chapters").addEventListener("click", ev => { const c = ev.target.closest(".fan .card"); if (c) open(get(c.dataset.sym)); });
-$("chapters").addEventListener("keydown", ev => { const c = ev.target.closest(".fan .card"); if (c && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); open(get(c.dataset.sym)); } });
-document.querySelectorAll(".ba input").forEach(r => r.addEventListener("input", () => r.parentElement.style.setProperty("--split", r.value + "%")));
-const fanObs = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("in"); }), { threshold: .35 });
-document.querySelectorAll(".fan").forEach(f => fanObs.observe(f));
-
 // ---------- The Lab ----------
 let mix = [];
 const shelf = $("shelf");
@@ -596,11 +573,8 @@ $("flipAll").addEventListener("click", ev => {
   document.querySelectorAll(".ccard").forEach(c => c.addEventListener("click", () => open(get(c.dataset.sym))));
 }
 
-// ---------- Editor's Picks ----------
-const PICKS = isG ? G_PICKS : ["C", "Sr", "Na", "Zn", "Bi", "Pd", "Hf", "Og"];
+// ---------- Card list markup (used by the Pile / Wardrobe) ----------
 const pickHTML = (e, i) => `<button type="button" class="pick" data-sym="${e.sym}"><span class="pn">No. ${ROMAN[i] || i + 1}</span>${cardHTML(e)}<div><p class="kicker">${e.el} · ${e.src ? e.src[0] : FAMILIES[e.fam]}</p><h3>${e.trend}</h3><p>${e.desc}</p></div></button>`;
-$("picks").innerHTML = PICKS.map(get).map(pickHTML).join("");
-$("picks").addEventListener("click", ev => { const p = ev.target.closest(".pick"); if (p) open(get(p.dataset.sym)); });
 
 // ---------- Families ----------
 $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
@@ -785,7 +759,7 @@ const palette = $("palette"), palq = $("palq"), pallist = $("pallist");
 let palSel = 0, palRes = [];
 function palRender() {
   const t = palq.value.trim().toLowerCase();
-  palRes = !t ? PICKS.map(get)
+  palRes = !t ? [...els].sort(() => Math.random() - .5).slice(0, 8)
     : els.map(e => {
       const hay = `${e.sym} ${e.el} ${e.trend} ${e.desc} ${e.pieces} ${e.src ? e.src[0] : ""} ${e.z ? ED.flagSearch : ""}`.toLowerCase();
       const sc = e.sym.toLowerCase() === t ? 100 : e.trend.toLowerCase().startsWith(t) ? 60 : e.trend.toLowerCase().includes(t) ? 40 : e.el.toLowerCase().startsWith(t) ? 30 : hay.includes(t) ? 10 : 0;
@@ -822,7 +796,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "story", "lab", "genz", "picks", "families", "sources", "wardrobe"];
+const VIEWS = ["cover", "table", "lab", "genz", "families", "sources", "wardrobe"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
