@@ -981,16 +981,13 @@ function bindSceneInteractions(e) {
   const frame = exhibit.querySelector(".frame"), svg = frame && frame.querySelector("svg");
   if (!svg) return;
   const abort = new AbortController(), signal = abort.signal, temporary = new Set();
-  let draggingArt = null, lensOn = false, layersOn = false;
+  let draggingArt = null, lensOn = false;
   const listen = (node, type, fn) => node.addEventListener(type, fn, { signal });
   const controls = exhibit.querySelector(".art-tools");
   const hint = exhibit.querySelector(".art-hint");
   const lens = document.createElement("div"); lens.className = "inspection-lens"; lens.hidden = true; lens.setAttribute("aria-hidden", "true");
   const lensSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   lensSvg.innerHTML = scene("lens" + (uid++), artOf(e)); lens.appendChild(lensSvg); frame.appendChild(lens);
-  const tags = document.createElement("div"); tags.className = "layer-tags"; tags.setAttribute("aria-hidden","true");
-  for(const [cls,label] of [["depth-back","Backdrop"],["depth-person","Subject"],["depth-front","Objects"]]) if(svg.querySelector("."+cls)) { const tag=document.createElement("span");tag.className=cls;tag.textContent=label;tags.appendChild(tag); }
-  frame.appendChild(tags);
   const point = (ev, target = svg) => {
     const matrix = target.getScreenCTM(); if (!matrix) return {x:50,y:50};
     return new DOMPoint(ev.clientX,ev.clientY).matrixTransform(matrix.inverse());
@@ -1003,15 +1000,8 @@ function bindSceneInteractions(e) {
     lensSvg.setAttribute("viewBox",`${p.x-17} ${p.y-17} 34 34`);
     lens.hidden = !lensOn;
   };
-  const setLayers = on => {
-    if(on && lensOn) setLens(false);
-    layersOn = on; exhibit.classList.toggle("layers-open",on);
-    controls.querySelector("[data-layers]").setAttribute("aria-pressed",String(on));
-    sceneAnimations.forEach(a => on ? a.pause() : (motionPaused || document.hidden ? a.pause() : a.play()));
-    hint.textContent = on ? "Backdrop · subject · foreground" : "Drag an object · swipe beside the illustration to browse · hold Inspect or Layers";
-  };
   const setLens = on => {
-    lensOn = on; if(on && layersOn) setLayers(false);
+    lensOn = on;
     exhibit.classList.toggle("lens-open",on);
     controls.querySelector("[data-lens]").setAttribute("aria-pressed",String(on));
     showLens();
@@ -1020,7 +1010,7 @@ function bindSceneInteractions(e) {
   const signature=signatureFor(e), signatureButton=document.createElement("button");
   signatureButton.type="button";signatureButton.className="moment-control signature-control";signatureButton.textContent=signature.label;controls.prepend(signatureButton);
   const signatureAction=()=>{
-    if(lensOn || layersOn || draggingArt)return;
+    if(lensOn || draggingArt)return;
     const target=svg.querySelector(signature.selector)||svg.querySelector(".depth-front, .depth-person");
     if(!target)return;
     target.style.transformBox="fill-box";target.style.transformOrigin=signature.kind==="tie"?"center": "bottom center";
@@ -1043,21 +1033,21 @@ function bindSceneInteractions(e) {
     const name = (node.getAttribute("class")||"object").replace(/\b(?:detail|ob|fg|cow-mouth)\b/g,"").replace(/-/g," ").trim()||"illustrated subject";
     node.setAttribute("aria-label",`Move ${name}. Drag, press Enter, or use arrow keys.`);
     const react = () => {
-      if(reduced || draggingArt || lensOn || layersOn || motionPaused) return;
+      if(reduced || draggingArt || lensOn || motionPaused) return;
       addTransient(node.animate(sceneFrames(motionKind(node.getAttribute("class")||""),e.n+2),{duration:650,easing:"ease-out"}));
     };
     listen(node,"pointerenter",react); listen(node,"focus",react);
     listen(node,"keydown",ev=>{
       if(ev.key==="Enter" || ev.key===" "){ev.preventDefault();ev.stopPropagation();react();return;}
       const d={ArrowLeft:[-7,0],ArrowRight:[7,0],ArrowUp:[0,-7],ArrowDown:[0,7]}[ev.key];
-      if(!d || lensOn || layersOn) return;
+      if(!d || lensOn) return;
       ev.preventDefault();ev.stopPropagation();
       if(!reduced) addTransient(node.animate([{transform:`translate(${d[0]}px,${d[1]}px)`},{transform:"none"}],{duration:850,easing:"cubic-bezier(.2,1.5,.4,1)"}));
     });
   });
   listen(svg,"pointerdown",ev=>{
     if(lensOn){showLens(ev);return;}
-    if(layersOn || ev.target.closest(".hot")) return;
+    if(ev.target.closest(".hot")) return;
     const node=ev.target.closest("[data-move]"); if(!node) return;
     ev.preventDefault();ev.stopPropagation();
     for(const a of sceneAnimations) if(a.effect.target===node || node.contains(a.effect.target)) a.cancel();
@@ -1082,7 +1072,7 @@ function bindSceneInteractions(e) {
   listen(frame,"pointermove",ev=>{if(lensOn)showLens(ev);});
   listen(frame,"pointerleave",()=>{if(lensOn)lens.hidden=true;});
   listen(frame,"pointerenter",ev=>{if(lensOn)showLens(ev);});
-  for(const [selector,set] of [["[data-lens]",setLens],["[data-layers]",setLayers]]){
+  for(const [selector,set] of [["[data-lens]",setLens]]){
     const button=controls.querySelector(selector);
     listen(button,"pointerdown",ev=>{ev.preventDefault();button.setPointerCapture(ev.pointerId);set(true);});
     listen(button,"pointermove",ev=>{if(selector==="[data-lens]" && lensOn)showLens(ev);});
@@ -1091,11 +1081,11 @@ function bindSceneInteractions(e) {
   }
   // Holding the art itself provides a touch-friendly loupe without dragging an object.
   let holdTimer=0;
-  listen(frame,"pointerdown",ev=>{if(draggingArt||layersOn||ev.target.closest(".hot"))return;const x=ev.clientX,y=ev.clientY;holdTimer=setTimeout(()=>{setLens(true);showLens({clientX:x,clientY:y});},420);});
+  listen(frame,"pointerdown",ev=>{if(draggingArt||ev.target.closest(".hot"))return;const x=ev.clientX,y=ev.clientY;holdTimer=setTimeout(()=>{setLens(true);showLens({clientX:x,clientY:y});},420);});
   const clearHold=()=>{clearTimeout(holdTimer);holdTimer=0;};
   listen(frame,"pointermove",()=>{if(!lensOn)clearHold();});
   listen(frame,"pointerup",()=>{clearHold();if(lensOn)setLens(false);});listen(frame,"pointercancel",()=>{clearHold();setLens(false);});
-  interactionCleanup=()=>{clearHold();abort.abort();temporary.forEach(a=>a.cancel());signatureButton.remove();lens.remove();tags.remove();exhibit.classList.remove("layers-open","lens-open","object-drag");};
+  interactionCleanup=()=>{clearHold();abort.abort();temporary.forEach(a=>a.cancel());signatureButton.remove();lens.remove();exhibit.classList.remove("lens-open","object-drag");};
 }
 
 function relatedElements(e) {
@@ -1112,7 +1102,7 @@ function render(e, direction = 0) {
   const s = e.src;
   exhibit.innerHTML = `
     <button type="button" class="close" data-close>Close <span>×</span></button>
-    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div><div class="art-tools"><button type="button" class="moment-control" data-lens aria-pressed="false">Inspect</button><button type="button" class="moment-control" data-layers aria-pressed="false">Layers</button></div><p class="art-hint">Drag an object · swipe beside the illustration to browse · hold Inspect or Layers</p></div>
+    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div><div class="art-tools"><button type="button" class="moment-control" data-lens aria-pressed="false">Inspect</button></div><p class="art-hint">Drag an object · swipe beside the illustration to browse · hold Inspect to zoom</p></div>
     <div class="placard ${e.fam}">
       <p class="no">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -1131,7 +1121,7 @@ function render(e, direction = 0) {
   flick();
   const flipper = exhibit.querySelector(".flipper"), c3d = exhibit.querySelector(".c3d"), glare = exhibit.querySelector(".glare");
   const pose = (ev) => {
-    if (reduced || exhibit.matches(".object-drag, .lens-open, .layers-open") || closingExhibit || (ev.pointerType === "touch" && !ev.buttons)) return;
+    if (reduced || exhibit.matches(".object-drag, .lens-open") || closingExhibit || (ev.pointerType === "touch" && !ev.buttons)) return;
     const r = c3d.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
     const y = Math.max(0, Math.min(1, (ev.clientY - r.top) / r.height));
