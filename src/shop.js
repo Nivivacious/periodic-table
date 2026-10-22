@@ -1,5 +1,5 @@
-// Trend-specific shopping destinations. Researched 22 October 2026.
-// Similar pieces and specialist services; listings and availability can change.
+// Trend-specific shopping destinations. Availability audited 22 October 2026.
+// Similar pieces and specialist services; sizes and stock can change.
 const FASHION_SHOP = {
   "1": [
     {
@@ -47,13 +47,7 @@ const FASHION_SHOP = {
     {
       "label": "Statement belt",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/belts/kazo/kazo-women-statement-buckle-broad-elasticated-belt/31398421/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Statement belt",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/h-m-women-black-double-strap-statement-belt/p/29621276",
+      "url": "https://www.myntra.com/belts/punnu/punnu-women-embellished-tang-statement-buckle-belt/37866432/buy",
       "kind": "product"
     }
   ],
@@ -79,9 +73,9 @@ const FASHION_SHOP = {
       "kind": "product"
     },
     {
-      "label": "Mirror work blouse",
+      "label": "Mirror work stitched blouse",
       "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/soch-women-red-mirror-work-blouse/p/7125493",
+      "url": "https://www.nykaafashion.com/indy-raaga-chocolate-brown-georgette-mirror-work-stitched-blouse/p/15997703",
       "kind": "product"
     }
   ],
@@ -89,7 +83,7 @@ const FASHION_SHOP = {
     {
       "label": "Satin slip skirt",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/Skirts/H%26M/HM-Satin-Slip-Skirt/34168096/buy",
+      "url": "https://www.myntra.com/skirts/tikhiimli/tikhi-imli-women-satin-front-slit-maxi-a-line-skirt/40257414/buy",
       "kind": "product"
     },
     {
@@ -100,12 +94,6 @@ const FASHION_SHOP = {
     }
   ],
   "8": [
-    {
-      "label": "Ombre lehenga",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/lehenga-choli/koskii/koskii-grey--blue-mirrorwork-ready-to-wear-ombre-lehenga--blouse-with-dupatta/11682718/buy",
-      "kind": "product"
-    },
     {
       "label": "Ombre lehenga",
       "retailer": "Nykaa Fashion",
@@ -119,19 +107,13 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/dresses/quiero/quiero-women-gorgeous-green-checked-summer-gingham-dress/17171792/buy",
       "kind": "product"
-    },
-    {
-      "label": "Gingham dress",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/gap-women-s-gingham-check-peplum-dress/p/23591773",
-      "kind": "product"
     }
   ],
   "10": [
     {
-      "label": "Neon top",
+      "label": "Fluorescent green V-neck top",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/tops/neon%2Bfemme/neon-femme-top/43163877/buy",
+      "url": "https://www.myntra.com/tops/tokyotalkies/tokyo-talkies-v-neck-short-sleeves-top/23400900/buy",
       "kind": "product"
     },
     {
@@ -199,10 +181,10 @@ const FASHION_SHOP = {
   ],
   "15": [
     {
-      "label": "Trench coat",
+      "label": "bebe Notched Lapel Knee Length Trench Coat",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/trench-coats",
-      "kind": "collection"
+      "url": "https://www.myntra.com/coats/bebe/bebe-notched-lapel-knee-length-trench-coat/46468399/buy",
+      "kind": "product"
     },
     {
       "label": "Trench coats",
@@ -215,13 +197,7 @@ const FASHION_SHOP = {
     {
       "label": "Track jacket",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/jackets/blissclub/blissclub-womenon-the-go-aeroflo-lightweight-running-sporty-track-jacket/21668532/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Track jacket",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/silvertraq-women-track-jacket-3/p/2184034",
+      "url": "https://www.myntra.com/Jackets/Puma/Puma-T7-ALWAYS-ON-Womens-Short-Track-Jacket/41963923/buy",
       "kind": "product"
     }
   ],
@@ -229,7 +205,7 @@ const FASHION_SHOP = {
     {
       "label": "Ivory lehenga",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/lehenga-choli/alizeh/alizeh-ivory-color-net-designer-wedding-lehenga-choli-with-dupatta/32036549/buy",
+      "url": "https://www.myntra.com/lehenga-choli/ethniqlo/ethniqlo-ivory-embroidered-lehenga-choli/37424287/buy",
       "kind": "product"
     },
     {
@@ -297,10 +273,10 @@ const FASHION_SHOP = {
   ],
   "22": [
     {
-      "label": "Tote bag",
+      "label": "ZOUK Paisley Ethnic Motifs Jute Laptop Compartment Zip Detail Shopper Tote Bag",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/women-bags-tote",
-      "kind": "collection"
+      "url": "https://www.myntra.com/handbags/zouk/zouk-paisley-ethnic-motifs-jute-laptop-compartment-zip-detail-shopper-tote-bag/30944250/buy",
+      "kind": "product"
     },
     {
       "label": "Leather tote",
@@ -318,8 +294,8 @@ const FASHION_SHOP = {
     },
     {
       "label": "Velvet blazer",
-      "retailer": "H&M",
-      "url": "https://www2.hm.com/en_in/productpage.1214589001.html",
+      "retailer": "Nykaa Fashion",
+      "url": "https://www.nykaafashion.com/volcape-lydia-velvet-blazer/p/18447152",
       "kind": "product"
     }
   ],
@@ -327,7 +303,7 @@ const FASHION_SHOP = {
     {
       "label": "Banarasi blouse corset",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/saree-blouse/abhishti/abhishti-woven-design-banarasi-panelled-corset-saree-blouse/28425848/buy",
+      "url": "https://www.myntra.com/saree-blouse/amodinidesignerstudio/amodini-designer-studio-woven-designed-kashi-banarsi-corset-style-padded-saree-blouse/33254673/buy",
       "kind": "product"
     },
     {
@@ -357,21 +333,9 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/hatke/a/products/15212676/buy?ep=rd_111110626",
       "kind": "product"
-    },
-    {
-      "label": "Ballet tulle skirt",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/ballet-tulle-skirt-p02878600.html",
-      "kind": "product"
     }
   ],
   "27": [
-    {
-      "label": "Black lace top bows",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/tops/stylecast/stylecast-women-black-lace--bow-detailed-square-neck-top/31035134/buy",
-      "kind": "product"
-    },
     {
       "label": "Black lace top",
       "retailer": "Zara",
@@ -380,12 +344,6 @@ const FASHION_SHOP = {
     }
   ],
   "28": [
-    {
-      "label": "Botanical print dress",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/ethnic-dresses/soch/soch-women-olive-gadwal-botanical-printed-a-line-sleeveless-dress/38507142/buy",
-      "kind": "product"
-    },
     {
       "label": "Botanical print dress",
       "retailer": "Nykaa Fashion",
@@ -409,12 +367,6 @@ const FASHION_SHOP = {
   ],
   "30": [
     {
-      "label": "Zardozi jacket set",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/kurta-sets/soch/soch-round-neck-zardozi-kurta-with-trousers--jacket/24586178/buy",
-      "kind": "product"
-    },
-    {
       "label": "Zardozi velvet jacket",
       "retailer": "Nykaa Fashion",
       "url": "https://www.nykaafashion.com/weaverstory-purple-hand-embroidered-zardozi-silk-velvet-sleeveless-jacket/p/14744309",
@@ -427,25 +379,13 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/bracelet/nui/nui-women-gold-plated-cuff-bracelet/37163955/buy",
       "kind": "product"
-    },
-    {
-      "label": "Gold cuff",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/metal-cuff-bracelet-p01124200.html",
-      "kind": "product"
     }
   ],
   "32": [
     {
-      "label": "Ikat scarf",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/scarves/ravaiyaa/ravaiyaa-women-satin-ikat-printed-casual-scarf/31266895/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Ikat scarf",
+      "label": "Ikat pashmina scarf",
       "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/toniq-monochrome-ikat-print-black-white-scarf/p/23803305",
+      "url": "https://www.nykaafashion.com/october-red-navy-blue-pure-pashmina-scarf-ikat/p/21187976",
       "kind": "product"
     }
   ],
@@ -454,12 +394,6 @@ const FASHION_SHOP = {
       "label": "Analogue leather strap watch",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/watches/sonata/sonata-men-brass-dial--leather-straps-analogue-watch-77105nl15w/31276546/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Analogue leather strap watch",
-      "retailer": "Nykaa",
-      "url": "https://www.nykaa.com/ingersoll-mens-analogue-classic-automatic-watch-with-leather-strap-i00903b-m/p/14069382",
       "kind": "product"
     }
   ],
@@ -479,22 +413,16 @@ const FASHION_SHOP = {
   ],
   "35": [
     {
-      "label": "Brooches",
+      "label": "DressBerry Women Embellished Bird Shaped Brooch",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/women-brooches",
-      "kind": "collection"
+      "url": "https://www.myntra.com/brooch/dressberry/dressberry-women-embellished-bird-shaped-brooch/30992829/buy",
+      "kind": "product"
     },
     {
       "label": "Saree brooches",
       "retailer": "Kushal’s",
       "url": "https://www.kushals.com/collections/latest-trendy-brooches",
       "kind": "collection"
-    },
-    {
-      "label": "Floral brooch",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/accessher-elegant-gold-plated-round-shaped-floral-brooch/p/23650575",
-      "kind": "product"
     }
   ],
   "36": [
@@ -527,10 +455,10 @@ const FASHION_SHOP = {
   ],
   "38": [
     {
-      "label": "White sneakers",
+      "label": "Puma Carina Slim Perf Women Sneakers",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/sneakers-women-white",
-      "kind": "collection"
+      "url": "https://www.myntra.com/casual-shoes/puma/puma-carina-slim-perf-women-sneakers/24919932/buy",
+      "kind": "product"
     },
     {
       "label": "White sneakers",
@@ -541,10 +469,10 @@ const FASHION_SHOP = {
   ],
   "39": [
     {
-      "label": "Low rise jeans",
+      "label": "MANGO Women Straight Fit Low-Rise Light Fade Jeans",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/low-rise-jeans-women",
-      "kind": "collection"
+      "url": "https://www.myntra.com/jeans/mango/mango-women-straight-fit-low-rise-light-fade-jeans/39423347/buy",
+      "kind": "product"
     },
     {
       "label": "Low-rise jeans",
@@ -558,12 +486,6 @@ const FASHION_SHOP = {
       "label": "Tissue zari saree",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/sarees/threadbox/thread-box-zari-tissue-saree/38815928/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Tissue zari saree",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/soch-gold-tissue-kasavu-saree-with-zari-woven-ethnic-motifs-and-temple-borders-with-unstitched/p/11849576",
       "kind": "product"
     }
   ],
@@ -587,12 +509,6 @@ const FASHION_SHOP = {
       "retailer": "Nykaa Fashion",
       "url": "https://www.nykaafashion.com/pink-ethnic-plum-purple-sequins-embroidered-net-lehenga-choli/p/12172149",
       "kind": "product"
-    },
-    {
-      "label": "Plum tissue lehenga",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/gajra-gang-plum-tissue-brocade-semi-stitched-lehenga-unstitched-blouse-dupatta-diwalicious-set-of-3/p/22711186",
-      "kind": "product"
     }
   ],
   "43": [
@@ -601,26 +517,14 @@ const FASHION_SHOP = {
       "retailer": "SZN2",
       "url": "https://szn2.in/product/levis-levis-vintage-denim-jacket-c61495",
       "kind": "product"
-    },
-    {
-      "label": "Pre-loved jackets",
-      "retailer": "Bombay Closet Cleanse",
-      "url": "https://bombayclosetcleanse.in/collections/hoodies-jackets",
-      "kind": "collection"
     }
   ],
   "44": [
     {
-      "label": "Crisp cotton shirts",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/white-cotton-shirts-women",
-      "kind": "collection"
-    },
-    {
-      "label": "Workwear blazers",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/woman-blazers-l1055.html",
-      "kind": "collection"
+      "label": "White cotton shirt",
+      "retailer": "H&M",
+      "url": "https://www2.hm.com/en_in/productpage.1134781001.html",
+      "kind": "product"
     }
   ],
   "45": [
@@ -641,7 +545,7 @@ const FASHION_SHOP = {
     {
       "label": "Pre draped saree",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/sarees/mabishbysonaljain/mabish-by-sonal-jain-pre-draped-sarree-/32374077/buy",
+      "url": "https://www.myntra.com/saree/mabish-by-sonal-jain/mabish-by-sonal-jain-pre-draped-saree/32374076/buy",
       "kind": "product"
     },
     {
@@ -669,7 +573,7 @@ const FASHION_SHOP = {
     {
       "label": "Cape saree",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/sarees/indya/indya-x-shraddha-kapoor-pink--gold-toned-beads--stones-ready-to-wear-embroidered-cape-saree-tunic/15511110/buy",
+      "url": "https://www.myntra.com/saree/qissa/qissa-sequinned-cape-pre-draped-saree/30770923/buy",
       "kind": "product"
     },
     {
@@ -681,10 +585,10 @@ const FASHION_SHOP = {
   ],
   "49": [
     {
-      "label": "Leather jacket",
+      "label": "TANDUL Lapel Collar Leather Jacket",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/women-leather-jacket",
-      "kind": "collection"
+      "url": "https://www.myntra.com/jackets/tandul/tandul-lapel-collar-leather-jacket/30895166/buy",
+      "kind": "product"
     },
     {
       "label": "Leather jackets",
@@ -699,12 +603,6 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/casual-shoes/puma/puma-speedcat-suede-ballet-womens-shoes/35163323/buy",
       "kind": "product"
-    },
-    {
-      "label": "Speedcat Ballet",
-      "retailer": "Puma",
-      "url": "https://in.puma.com/in/en/pd/speedcat-womens-ballet-shoes/401287?swatch=02",
-      "kind": "collection"
     }
   ],
   "51": [
@@ -713,12 +611,6 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/bangle/teejh/teejh-oxidised-silver-plated-bangle/15606218/buy",
       "kind": "product"
-    },
-    {
-      "label": "Oxidised bangles",
-      "retailer": "Kushal’s",
-      "url": "https://www.kushals.com/collections/oxidised-bangles",
-      "kind": "collection"
     }
   ],
   "52": [
@@ -737,15 +629,9 @@ const FASHION_SHOP = {
   ],
   "53": [
     {
-      "label": "Indigo saree",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/sarees/taavi/taavi-indigo-hand-block-printed-saree/29988675/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Indigo saree",
+      "label": "Indigo handloom cotton saree",
       "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/soch-indigo-art-silk-stripes-saree-with-unstitched-blouse-piece/p/20835220",
+      "url": "https://www.nykaafashion.com/angoshobha-indigo-handloom-cotton-saree-with-unstitched/p/12249276",
       "kind": "product"
     }
   ],
@@ -754,12 +640,6 @@ const FASHION_SHOP = {
       "label": "Oversized jhumka earrings",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/earrings/rubans/rubans-22k-gold-plated-kundan--pearl-studded-oversized-dangle-jhumka-earrings/30453709/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Oversized jhumka earrings",
-      "retailer": "Nykaa",
-      "url": "https://www.nykaa.com/silvermerc-designs-gold-plated-traditional-oversized-dome-shaped-jhumkas-earrings/p/22553008",
       "kind": "product"
     }
   ],
@@ -807,38 +687,26 @@ const FASHION_SHOP = {
   ],
   "58": [
     {
-      "label": "Cobalt blue trousers",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/trousers/vero-moda/vero-moda-women-cobalt-blue-defender-straight-fit-chino-trousers/120093/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Cobalt blue trousers",
+      "label": "Cobalt blue wide-leg trousers",
       "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/fablestreet-cobalt-blue-wide-leg-solid-pant/p/444651",
+      "url": "https://www.nykaafashion.com/style-junkiie-cobalt-blue-flared-pant/p/21168038",
       "kind": "product"
     }
   ],
   "59": [
     {
-      "label": "Printed co-ords",
+      "label": "Libas Floral Printed Tunic With Trousers Co-Ords",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/co-ords?f=Gender%3Amen+women%2Cwomen%3A%3ATop+Pattern%3APrinted",
-      "kind": "collection"
-    },
-    {
-      "label": "Mixed print co ord set",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/ekta-textiles-teal-mixed-floral-print-straight-co-ord-set/p/26184422",
+      "url": "https://www.myntra.com/co-ords/libas/libas-floral-printed-tunic-with-trousers-co-ords/34139775/buy",
       "kind": "product"
     }
   ],
   "60": [
     {
-      "label": "Babydoll dress",
+      "label": "Tokyo Talkies Women Babydoll Short Dresses",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/babydoll-dress-women",
-      "kind": "collection"
+      "url": "https://www.myntra.com/dresses/tokyo+talkies/tokyo-talkies-women-babydoll-short-dresses/32013522/buy",
+      "kind": "product"
     },
     {
       "label": "Babydoll dress",
@@ -849,15 +717,9 @@ const FASHION_SHOP = {
   ],
   "61": [
     {
-      "label": "Pastel lehenga",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/lehenga-choli/koskii/koskii-pastel-green-ready-to-wear-lehenga--blouse-with-dupatta/12435344/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Pastel lehenga",
+      "label": "Pastel green lehenga set",
       "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/pink-ethnic-pastel-pink-taffeta-silk-semi-stitched-lehenga-with-unstitched-choli-and-dupatta/p/24777409",
+      "url": "https://www.nykaafashion.com/soniya-g-pastel-green-lehenga-with-blouse-and-dupatta/p/25502628",
       "kind": "product"
     }
   ],
@@ -881,12 +743,6 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/trousers/h26m/hm-carpenter-trousers-/39474298/buy",
       "kind": "product"
-    },
-    {
-      "label": "Carpenter trousers",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/plain-carpenter-trousers-p09959763.html",
-      "kind": "product"
     }
   ],
   "64": [
@@ -894,12 +750,6 @@ const FASHION_SHOP = {
       "label": "Gingham midi dress",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/dresses/sugnaa/sugnaa-women-sleeveless-checked-cotton-gingham-midi-dress/44210305/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Gingham midi dress",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/gingham-check-midi-dress-p03152302.html",
       "kind": "product"
     }
   ],
@@ -920,12 +770,6 @@ const FASHION_SHOP = {
   "66": [
     {
       "label": "Cropped choli blouse",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/lehenga-choli/ethnovog/ethnovog-customised-made-to-measure-lehenga--cropped-blouse/9697313/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Cropped choli blouse",
       "retailer": "H&M",
       "url": "https://www2.hm.com/en_in/productpage.1333639001.html",
       "kind": "product"
@@ -936,12 +780,6 @@ const FASHION_SHOP = {
       "label": "Halter blouse saree",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/saree-blouse/vamas-thedesignerblouses/vamas---the-designer-blouses-women-halter-neck-padded-readymade-saree-blouse/33205458/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Halter blouse saree",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/nirmooha-pre-draped-chiffon-printed-saree-with-halter-neck-blouse/p/7361441",
       "kind": "product"
     }
   ],
@@ -963,7 +801,7 @@ const FASHION_SHOP = {
     {
       "label": "Oversized blazer",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/blazers/hm/hm-women-oversized-blazer/23498506/buy",
+      "url": "https://www.myntra.com/blazers/h26m/hm-oversized-blazer/46057548/buy",
       "kind": "product"
     },
     {
@@ -1007,19 +845,13 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/nehru-jackets/tahvo/tahvo-men-multicolored--printed-bandhgala-nehru-jacket/18741918/buy",
       "kind": "product"
-    },
-    {
-      "label": "Bandhgala jacket",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/jb-studio-men-black-solid-bandhgala-jacket/p/12179004",
-      "kind": "product"
     }
   ],
   "73": [
     {
       "label": "Boucle jacket",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/jackets/hm/hm-boucle-jacket/37649838/buy",
+      "url": "https://www.myntra.com/jackets/mango/mango-boucle-collarless-tailored-jacket/37886351/buy",
       "kind": "product"
     },
     {
@@ -1031,10 +863,10 @@ const FASHION_SHOP = {
   ],
   "74": [
     {
-      "label": "Chiffon dress",
+      "label": "Katalyn Floral Embroidered Chiffon A-Line Dress",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/chiffon-dresses-dresses",
-      "kind": "collection"
+      "url": "https://www.myntra.com/dresses/katalyn/katalyn-floral-embroidered-chiffon-a-line-dress/44995527/buy",
+      "kind": "product"
     },
     {
       "label": "Chiffon dress",
@@ -1047,7 +879,7 @@ const FASHION_SHOP = {
     {
       "label": "Empire waist puff sleeve dress",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/dresses/glitchez/glitchez-puff-sleeves-gathered-empire-mini-dress/31535242/buy",
+      "url": "https://www.myntra.com/dresses/allaboutyou/all-about-you-puff-sleeve-empire-dress/29893432/buy",
       "kind": "product"
     },
     {
@@ -1059,10 +891,10 @@ const FASHION_SHOP = {
   ],
   "76": [
     {
-      "label": "Pencil skirt",
+      "label": "JINJIN FASHION Pencil Midi Length Skirts",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/women-pencil-skirts",
-      "kind": "collection"
+      "url": "https://www.myntra.com/skirts/jinjin+fashion/jinjin-fashion-pencil-midi-length-skirts/39574327/buy",
+      "kind": "product"
     },
     {
       "label": "Pencil skirts",
@@ -1076,12 +908,6 @@ const FASHION_SHOP = {
       "label": "Lace camisole",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/camisoles/nykd/nykd-adjustable-lace--detail-cotton-camisole/30764077/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Lace camisole",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/cider-textured-lace-womens-v-neck-strappy-lace-camisole-black/p/29418850",
       "kind": "product"
     }
   ],
@@ -1130,24 +956,12 @@ const FASHION_SHOP = {
   "81": [
     {
       "label": "Teal trousers",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/trousers/w/w-teal-blue-ankle-length-casual-trousers/1175299/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Teal trousers",
       "retailer": "Nykaa Fashion",
       "url": "https://www.nykaafashion.com/am-swan-women-s-luxury-banana-crepe-straight-fit-with-flap-pocket-teal-trouser/p/29523926",
       "kind": "product"
     }
   ],
   "82": [
-    {
-      "label": "Gathered clutch",
-      "retailer": "Nykaa",
-      "url": "https://www.nykaa.com/miraggio-faustine-soft-gathered-women-clutch-blue/p/3622271",
-      "kind": "product"
-    },
     {
       "label": "Soft clutch",
       "retailer": "H&M",
@@ -1171,25 +985,13 @@ const FASHION_SHOP = {
   ],
   "84": [
     {
-      "label": "Polka dot dress",
+      "label": "Trendyol Polka Dot Printed Shoulder Straps Sheath Maxi Dress",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/polka-dot-dress-women",
-      "kind": "collection"
-    },
-    {
-      "label": "Polka-dot dress",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/polka-dot-dress-p02878621.html",
+      "url": "https://www.myntra.com/dresses/trendyol/trendyol-polka-dot-printed-shoulder-straps-sheath-maxi-dress/29789628/buy",
       "kind": "product"
     }
   ],
   "85": [
-    {
-      "label": "Zebra print skirt",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/skirts/na-kd/na-kd-women-zebra-print-straight-midi-skirt/22011596/buy",
-      "kind": "product"
-    },
     {
       "label": "Zebra midi skirt",
       "retailer": "Zara",
@@ -1215,7 +1017,7 @@ const FASHION_SHOP = {
     {
       "label": "Fringe skirt",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/skirts/hm/hm-fringe-trimmed-skirt/22262714/buy",
+      "url": "https://www.myntra.com/skirts/mango/mango-fringed-midi-a-line-skirt/33746174/buy",
       "kind": "product"
     },
     {
@@ -1293,7 +1095,7 @@ const FASHION_SHOP = {
     {
       "label": "Varsity cardigan",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/sweaters/highstar/high-star-women-coloblocked-varsity-cardigan-sweaters/30916460/buy",
+      "url": "https://www.myntra.com/sweaters/dressberry/dressberry-cherry-red-preppy-college-cool-whipped-for-varsity-cardigan/17931816/buy",
       "kind": "product"
     },
     {
@@ -1307,8 +1109,8 @@ const FASHION_SHOP = {
     {
       "label": "Oversized blazer",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/oversized-blazer",
-      "kind": "collection"
+      "url": "https://www.myntra.com/blazers/h26m/hm-oversized-blazer/46057548/buy",
+      "kind": "product"
     },
     {
       "label": "Oversized blazers",
@@ -1319,15 +1121,9 @@ const FASHION_SHOP = {
   ],
   "95": [
     {
-      "label": "Multi-print scarves",
+      "label": "CrossKulture Women Printed Scarf",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/multi-printed-scarves",
-      "kind": "collection"
-    },
-    {
-      "label": "Printed scarf",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/max-women-printed-scarf/p/28333711",
+      "url": "https://www.myntra.com/scarves/crosskulture/crosskulture-women-printed-scarf/43090389/buy",
       "kind": "product"
     }
   ],
@@ -1347,10 +1143,10 @@ const FASHION_SHOP = {
   ],
   "97": [
     {
-      "label": "Kajal and kohl",
+      "label": "Maybelline New York Set of 2 Smudge Proof Colossal Kajal with Aloe Vera 0.35g Each - Black",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/kajal-kohl",
-      "kind": "collection"
+      "url": "https://www.myntra.com/kajal/maybelline/maybelline-new-york-set-of-2-smudge-proof-colossal-kajal-with-aloe-vera-035g-each---black/2471538/buy",
+      "kind": "product"
     },
     {
       "label": "Kajal",
@@ -1361,15 +1157,9 @@ const FASHION_SHOP = {
   ],
   "98": [
     {
-      "label": "Crocs jibbitz",
+      "label": "Crocs Classic clogs",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/jibbitz/crocs/crocs-black-jibbitz-letter-p/27874688/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Crocs jibbitz",
-      "retailer": "Nykaa",
-      "url": "https://www.nykaa.com/crocs-football-helmet-jibbitz-shoe-charm/p/5161512",
+      "url": "https://www.myntra.com/sandals/crocs/crocs-unisex-clogs-sandals/40762560/buy",
       "kind": "product"
     }
   ],
@@ -1389,10 +1179,10 @@ const FASHION_SHOP = {
   ],
   "100": [
     {
-      "label": "Faux fur coat",
+      "label": "Miss Mosa By Akanksha Women Black Tesky Luxury Fur Coats",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/faux-fur-coat",
-      "kind": "collection"
+      "url": "https://www.myntra.com/coats/miss+mosa+by+akanksha/miss-mosa-by-akanksha--women-black-tesky-luxury-fur-coats/32296475/buy",
+      "kind": "product"
     },
     {
       "label": "Faux-fur coats",
@@ -1403,15 +1193,9 @@ const FASHION_SHOP = {
   ],
   "101": [
     {
-      "label": "Sequin saree",
+      "label": "Saree mall Floral Sequinned Pure Georgette Sarees",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/sequin-saree",
-      "kind": "collection"
-    },
-    {
-      "label": "Sequin saree",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/dress-dazzle-black-georgette-sequin-saree-with-unstitched/p/21580707",
+      "url": "https://www.myntra.com/sarees/saree+mall/saree-mall-floral-sequinned-pure-georgette-sarees/33482297/buy",
       "kind": "product"
     }
   ],
@@ -1435,25 +1219,13 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/skirts/pookiie/pookiie-women-satin-lace-trim-maxi-skirt/40143342/buy",
       "kind": "product"
-    },
-    {
-      "label": "Lace-trim satin skirt",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/lace-trim-satin-midi-skirt-p04391538.html",
-      "kind": "product"
     }
   ],
   "104": [
     {
       "label": "Relaxed-fit blazer",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/blazers/boohoo/boohoo-relaxed-fit-blazer/24826032/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Fluid relaxed blazer",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/fluid-relaxed-fit-blazer-p04651736.html",
+      "url": "https://www.myntra.com/blazers/phosphorus/phosphorus-relaxed-fit-double-breasted-semiformal-blazer/37833703/buy",
       "kind": "product"
     }
   ],
@@ -1463,12 +1235,6 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/jeans/stylecast/stylecast-men-baggy-fit-mid-rise-dark-jeans/40045115/buy",
       "kind": "product"
-    },
-    {
-      "label": "Dark baggy jeans",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/snitch-men-dark-brown-washed-baggy-fit-casual-jeans/p/22781864",
-      "kind": "product"
     }
   ],
   "106": [
@@ -1476,12 +1242,6 @@ const FASHION_SHOP = {
       "label": "Saree gown",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/dresses/oneknotone/one-knot-one-one-shoulder-embellished-satin-maxi-saree-gown/29528248/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Saree gown",
-      "retailer": "Nykaa Fashion",
-      "url": "https://www.nykaafashion.com/afew-rahul-mishra-saree-gown/p/24867940",
       "kind": "product"
     }
   ],
@@ -1501,10 +1261,10 @@ const FASHION_SHOP = {
   ],
   "108": [
     {
-      "label": "Silver ring",
+      "label": "Silver-toned rhodium-plated ring",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/silver-rings-for-men",
-      "kind": "collection"
+      "url": "https://www.myntra.com/ring/ixia+by+giva/ixia-by-giva-men-rhodium-plated-finger-ring/45908863/buy",
+      "kind": "product"
     },
     {
       "label": "Silver ring",
@@ -1544,12 +1304,6 @@ const FASHION_SHOP = {
   "111": [
     {
       "label": "Red heels",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/heels/elle/elle-women-red-solid-block-heels/17079116/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Red heels",
       "retailer": "Nykaa Fashion",
       "url": "https://www.nykaafashion.com/shoetopia-women-red-heels/p/9894631",
       "kind": "product"
@@ -1575,20 +1329,14 @@ const FASHION_SHOP = {
       "retailer": "Myntra",
       "url": "https://www.myntra.com/hair-accessory/hairdramaco/hair-drama-co-women-abstract-floral-print-silk-satin-bandana-head-wrap-scarf/35155309/buy",
       "kind": "product"
-    },
-    {
-      "label": "Silk bandana scarf",
-      "retailer": "Zara",
-      "url": "https://www.zara.com/in/en/floral-beaded-silk-bandana-scarf-p03921010.html",
-      "kind": "product"
     }
   ],
   "114": [
     {
-      "label": "Flare jeans",
+      "label": "ONLY Women Flared High-Rise Jeans",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/women-flare-jeans",
-      "kind": "collection"
+      "url": "https://www.myntra.com/jeans/only/only-women-flared-high-rise-jeans/40482432/buy",
+      "kind": "product"
     },
     {
       "label": "Flared jeans",
@@ -1599,7 +1347,7 @@ const FASHION_SHOP = {
   ],
   "115": [
     {
-      "label": "Long robe coat",
+      "label": "Long belted coats",
       "retailer": "Myntra",
       "url": "https://www.myntra.com/women-long-coat",
       "kind": "collection"
@@ -1614,12 +1362,6 @@ const FASHION_SHOP = {
   "116": [
     {
       "label": "Lilac knit sweater",
-      "retailer": "Myntra",
-      "url": "https://www.myntra.com/sweaters/levis/levis-self-design-knitted-round-neck-pure-cotton-pullover/26296512/buy",
-      "kind": "product"
-    },
-    {
-      "label": "Lilac knit sweater",
       "retailer": "Nykaa Fashion",
       "url": "https://www.nykaafashion.com/madame-cable-knit-embellished-lilac-sweater/p/13852186",
       "kind": "product"
@@ -1627,10 +1369,10 @@ const FASHION_SHOP = {
   ],
   "117": [
     {
-      "label": "Tuxedos",
+      "label": "MANQ Men Black Solid Slim Fit Tuxedo Suit",
       "retailer": "Myntra",
-      "url": "https://www.myntra.com/mens-tuxedo",
-      "kind": "collection"
+      "url": "https://www.myntra.com/suits/manq/manq-men-black-solid-slim-fit-tuxedo-suit/10777826/buy",
+      "kind": "product"
     },
     {
       "label": "Tuxedo jacket",
@@ -1640,12 +1382,6 @@ const FASHION_SHOP = {
     }
   ],
   "118": [
-    {
-      "label": "Evening opera gloves",
-      "retailer": "Fancydresswale",
-      "url": "https://www.fancydresswale.com/products/fancydresswale-women-evening-opera-satin-gloves-fingerless-gathered-lace-sequins-bridal-and-costume-party-gloves",
-      "kind": "product"
-    },
     {
       "label": "Black velvet gown",
       "retailer": "Myntra",
