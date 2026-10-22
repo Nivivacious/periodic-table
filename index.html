@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Periodic Table of Indian Fashion</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="The real periodic table, with every element symbol matched to a fashion trend named in 2025–26 fashion coverage.">
+<meta name="description" content="The real periodic table, with every element symbol matched to a fashion trend named in 2025 and 2026 fashion coverage.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap">
@@ -650,7 +650,7 @@ dialog.sheet[open] .exhibit { animation: none; }
       <div class="choose" id="choose" hidden>
         <p class="kicker">Two tables · 118 elements each</p>
         <h1>The Periodic Table of</h1>
-        <div class="choices"><button type="button" class="choice" id="chooseFashion"><em>Indian Fashion</em><span>Trends the press named in 2025–26</span></button><button type="button" class="choice" data-ed="garbage"><em>Bangalore Garbage</em><span>Things we found on the footpath</span></button></div>
+        <div class="choices"><button type="button" class="choice" id="chooseFashion"><em>Indian Fashion</em><span>Trends the press named in 2025 and 2026</span></button><button type="button" class="choice" data-ed="garbage"><em>Bangalore Garbage</em><span>Things we found on the footpath</span></button></div>
       </div>
       <p class="kicker" data-t="coverKicker">The cover story · 118 trends</p>
         <h1 id="h-cover" data-t="coverH1">The Periodic Table <span class="l2">of <em>Indian Fashion</em></span></h1>
@@ -731,7 +731,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 
   <section class="view page band" data-view="sources" aria-labelledby="h-src" hidden>
     <div class="wrap">
-      <div class="page-head"><div><p class="kicker" data-t="srcKicker">Sources</p><h2 class="h-lg" id="h-src" data-t="srcH2">Who's <em>saying so.</em></h2><p class="lede" data-t="srcLede">Every trend on the table was named in a 2025–26 fashion story. Here is where we read it.</p></div></div>
+      <div class="page-head"><div><p class="kicker" data-t="srcKicker">Sources</p><h2 class="h-lg" id="h-src" data-t="srcH2">Who's <em>saying so.</em></h2><p class="lede" data-t="srcLede">Every trend on the table was named in a fashion story from 2025 or 2026. Here is where we read it.</p></div></div>
       <div class="srclist" id="srclist"></div>
     </div>
   </section>
@@ -2011,7 +2011,7 @@ const G_COPY = {
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",
-  srcLede: "Every find on the table was seen on a Bangalore road in 2025–26. Here is where, and when.",
+  srcLede: "Every find on the table was seen on a Bangalore road in 2025 or 2026. Here is where, and when.",
   colophonWm: "The Garbage Elements",
   palSearch: "Try Koramangala, a find, a symbol",
 };
@@ -2152,10 +2152,10 @@ const CURATED = {
   "Bi-Sn": { f: "Bi·Sn", n: "Bismuth-tin solder", c: "lead-free solder", w: "Solder", kind: "alloy", note: "Melts at 138 °C, below boiling water. Fire sprinklers trip on it." },
   "K-Na": { f: "NaK", n: "Sodium-potassium alloy", c: "NaK", w: "Sodium-potassium_alloy", kind: "alloy", note: "Two solid metals that make a liquid. Coolant in fast reactors." },
   "B-Fe-Nd": { f: "Nd2Fe14B", n: "Neodymium magnet", c: "the fridge-magnet-on-steroids", w: "Neodymium_magnet", note: "The strongest magnet you can buy. In every earbud and electric motor." },
-  "Co-Sm": { f: "SmCo5", n: "Samarium-cobalt magnet", w: "Samarium–cobalt_magnet", note: "The magnet that keeps working when hot. Guitar pickups and jet sensors." },
-  "Nb-Ti": { f: "Nb·Ti", n: "Niobium-titanium", c: "MRI magnet wire", w: "Niobium–titanium", kind: "alloy", note: "Superconducting below −263 °C. Every MRI machine is wound with it." },
-  "Nb-Sn": { f: "Nb3Sn", n: "Niobium-tin", w: "Niobium–tin", note: "The other superconductor, for the biggest magnets at CERN." },
-  "Ir-Pt": { f: "Pt·Ir", n: "Platinum-iridium", c: "the kilogram", w: "Platinum–iridium_alloy", kind: "alloy", note: "The metal of the old standard kilogram and the standard metre bar." },
+  "Co-Sm": { f: "SmCo5", n: "Samarium-cobalt magnet", w: "Samarium%E2%80%93cobalt_magnet", note: "The magnet that keeps working when hot. Guitar pickups and jet sensors." },
+  "Nb-Ti": { f: "Nb·Ti", n: "Niobium-titanium", c: "MRI magnet wire", w: "Niobium%E2%80%93titanium", kind: "alloy", note: "Superconducting below −263 °C. Every MRI machine is wound with it." },
+  "Nb-Sn": { f: "Nb3Sn", n: "Niobium-tin", w: "Niobium%E2%80%93tin", note: "The other superconductor, for the biggest magnets at CERN." },
+  "Ir-Pt": { f: "Pt·Ir", n: "Platinum-iridium", c: "the kilogram", w: "Platinum%E2%80%93iridium_alloy", kind: "alloy", note: "The metal of the old standard kilogram and the standard metre bar." },
   "Pt-Rh": { f: "Pt·Rh", n: "Platinum-rhodium", c: "thermocouple wire", w: "Thermocouple", kind: "alloy", note: "Measures furnace temperatures nothing else survives." },
   "Co-Cr": { f: "Co·Cr", n: "Cobalt-chrome", c: "the hip joint", w: "Cobalt-chrome", kind: "alloy", note: "Knee and hip replacements, dental crowns." },
   "Mg-Zn": { f: "Mg·Zn", n: "Magnesium-zinc alloy", w: "Magnesium_alloy", kind: "alloy", note: "Laptop shells and camera bodies. Light enough to carry all day." },
@@ -2169,7 +2169,7 @@ const CURATED = {
   "Cd-S": { f: "CdS", n: "Cadmium sulfide", c: "cadmium yellow", w: "Cadmium_sulfide", note: "Van Gogh's yellow. Also the light sensor in a streetlamp." },
   "Cd-Te": { f: "CdTe", n: "Cadmium telluride", c: "thin-film solar", w: "Cadmium_telluride", note: "The second most-made solar panel material." },
   "Cd-Se": { f: "CdSe", n: "Cadmium selenide", c: "quantum dots", w: "Cadmium_selenide", note: "The dots in a QLED TV." },
-  "Ge-Si": { f: "SiGe", n: "Silicon-germanium", w: "Silicon–germanium", kind: "alloy", note: "The fast transistor inside a 5G chip." },
+  "Ge-Si": { f: "SiGe", n: "Silicon-germanium", w: "Silicon%E2%80%93germanium", kind: "alloy", note: "The fast transistor inside a 5G chip." },
   "Co-Li-O": { f: "LiCoO2", n: "Lithium cobalt oxide", c: "the phone battery cathode", w: "Lithium_cobalt_oxide", note: "Why your phone lasts a day. Why cobalt mining is a story." },
   "Fe-Li-O-P": { f: "LiFePO4", n: "Lithium iron phosphate", c: "the e-scooter battery", w: "Lithium_iron_phosphate", note: "The safer, cobalt-free cell in electric scooters and buses." },
   "Mo-S": { f: "MoS2", n: "Molybdenum disulfide", c: "dry lubricant", w: "Molybdenum_disulfide", note: "The grey grease in a bike chain spray." },
@@ -2689,8 +2689,8 @@ for (const e of els) {
   grid.appendChild(b);
 }
 const addCell = (cls, style, html) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, style); d.innerHTML = html; grid.appendChild(d); };
-addCell("placeholder", { gridRow: 6, gridColumn: 3 }, "57–71");
-addCell("placeholder", { gridRow: 7, gridColumn: 3 }, "89–103");
+addCell("placeholder", { gridRow: 6, gridColumn: 3 }, "57 to 71");
+addCell("placeholder", { gridRow: 7, gridColumn: 3 }, "89 to 103");
 addCell("gapline", { gridRow: 8 }, "");
 addCell("series", { gridRow: 9 }, "Lanthanides");
 addCell("series", { gridRow: 10 }, "Actinides");

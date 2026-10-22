@@ -297,8 +297,8 @@ for (const e of els) {
   grid.appendChild(b);
 }
 const addCell = (cls, style, html) => { const d = document.createElement("div"); d.className = cls; Object.assign(d.style, style); d.innerHTML = html; grid.appendChild(d); };
-addCell("placeholder", { gridRow: 6, gridColumn: 3 }, "57–71");
-addCell("placeholder", { gridRow: 7, gridColumn: 3 }, "89–103");
+addCell("placeholder", { gridRow: 6, gridColumn: 3 }, "57 to 71");
+addCell("placeholder", { gridRow: 7, gridColumn: 3 }, "89 to 103");
 addCell("gapline", { gridRow: 8 }, "");
 addCell("series", { gridRow: 9 }, "Lanthanides");
 addCell("series", { gridRow: 10 }, "Actinides");

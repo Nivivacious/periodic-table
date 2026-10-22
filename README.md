@@ -2,12 +2,12 @@
 
 Two periodic tables in one site, with a toggle in the masthead:
 
-- **The Periodic Table of Indian Fashion.** 118 trends the fashion press named in 2025–26.
-- **The Periodic Table of Bangalore Garbage.** 118 things found on Bangalore footpaths in 2025–26, with field notes on where and when.
+- **The Periodic Table of Indian Fashion.** 118 trends the fashion press named in 2025 and 2026.
+- **The Periodic Table of Bangalore Garbage.** 118 things found on Bangalore footpaths in 2025 and 2026, with field notes on where and when.
 
 On a first visit the cover asks which table you want. Both use the same magazine layout and museum-style exhibit cards. The edition is remembered in the browser and can be linked directly with `?ed=garbage`.
 
-The fashion edition is laid out as a magazine issue with museum-style exhibit cards. It uses the real 118-element periodic table. Every element keeps its true symbol, number and family, and each symbol stands for a fashion trend with matching initials, named in 2025–26 fashion coverage.
+The fashion edition is laid out as a magazine issue with museum-style exhibit cards. It uses the real 118-element periodic table. Every element keeps its true symbol, number and family, and each symbol stands for a fashion trend with matching initials, named in 2025 and 2026 fashion coverage.
 
 - **Sourced trends.** Each card links to the article that named the trend. Sources include:
   - ELLE India, Harper's Bazaar India, Cosmopolitan India and Man's World India

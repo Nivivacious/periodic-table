@@ -386,7 +386,7 @@ const G_COPY = {
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",
-  srcLede: "Every find on the table was seen on a Bangalore road in 2025–26. Here is where, and when.",
+  srcLede: "Every find on the table was seen on a Bangalore road in 2025 or 2026. Here is where, and when.",
   colophonWm: "The Garbage Elements",
   palSearch: "Try Koramangala, a find, a symbol",
 };
