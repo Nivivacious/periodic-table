@@ -256,14 +256,14 @@ dialog.sheet[open] .exhibit { animation: pop .7s var(--ease-out); }
 @keyframes flip { from { transform: rotateY(-180deg) scale(.94); } to { transform: none; } }
 .flipper .card { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .c3d:hover .glare { opacity: .8; }
-.placard { display: grid; gap: .9rem; min-width: 0; align-content: center; }
+.placard { display: grid; gap: 1rem; min-width: 0; align-content: center; }
 .placard .no { font: 600 .66rem var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin: 0; border-left: 2px solid var(--ink); padding-left: .7rem; }
 .placard .no b { color: var(--c); font-weight: 600; }
 .placard h2 { margin: 0; font: 400 clamp(2.2rem, 4vw, 3.4rem)/1 var(--display); letter-spacing: -.02em; }
-.placard .desc { margin: 0; font: italic 1.3rem/1.38 var(--body); color: var(--ink-2); }
-.facts { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: .55rem 1.2rem; margin: .4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rule); }
-.facts dt { font: 600 .6rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding-top: .3rem; }
-.facts dd { margin: 0; font-size: 1.08rem; line-height: 1.35; }
+.placard .desc { margin: 0; font: italic 1.08rem/1.55 var(--body); text-wrap: pretty; max-width: 48ch; color: var(--ink-2); }
+.facts { display: grid; grid-template-columns: 6.2rem minmax(0, 1fr); gap: .9rem 1rem; margin: .4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rule); }
+.facts dt { font: 600 .6rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: .25rem; }
+.facts dd { margin: 0; font-size: .92rem; line-height: 1.55; text-wrap: pretty; }
 .facts dd a { text-decoration: none; border-bottom: 1px solid var(--accent); }
 .pieces { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .2rem .9rem; }
 .pieces li { cursor: default; padding: .05rem .4rem; margin: 0 -.4rem; border-radius: 2px; transition: color .25s ease, background .25s ease, transform .25s var(--ease); }
@@ -661,6 +661,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 .mix-result{margin:24px 0;padding:20px;border:1px solid var(--ink);text-align:left}.mix-result[hidden]{display:none}.mix-art{display:block;width:100%;max-height:360px;margin:14px auto;aspect-ratio:1}.mix-result h3{font-size:30px;font-weight:400;margin:12px 0}.mix-result p,.mix-result li{font-size:15px;line-height:1.5}.mix-result ol{padding-left:20px}.mix-art{animation:mix-arrive .65s cubic-bezier(.2,.8,.2,1) both}@keyframes mix-arrive{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.mix-art{animation:none}}
 .family-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.family-picker{display:flex;align-items:center;gap:10px;border:1px solid currentColor;padding:10px 12px;flex:1;min-width:210px}.family-picker i{width:10px;height:10px;flex-shrink:0;border-radius:50%;background:var(--family-col,#151515)}.family-picker select{width:100%;font:inherit;color:inherit;border:0;background:transparent;cursor:pointer}.family-picker select:focus-visible{outline:2px solid var(--family-col);outline-offset:4px}.family-context{padding:8px 0 16px;min-height:86px}.family-context p{font-size:15px;line-height:1.5;margin:4px 0 8px}.shelf-count{margin:12px 0}.lab-ink{margin-bottom:32px}@media(max-width:600px){.family-picker{min-width:100%}.family-context{min-height:0}}
+.sheet .card .cap{font-size:.74em;line-height:1.35}.sheet .card .banner{font-size:.52em;letter-spacing:.12em}.sheet .dye-note{font-size:.78rem;line-height:1.5}.sheet .art-hint{font-size:.7rem;line-height:1.5;max-width:32ch;margin:12px auto 0;text-align:center}.sheet .pieces{gap:.3rem .8rem}.sheet .ex-actions .btn,.sheet .ex-actions .link,.sheet .ex-nav .link{font-size:.67rem}@media(max-width:600px){.placard .desc{font-size:1rem;line-height:1.5}.facts{grid-template-columns:5.2rem minmax(0,1fr);gap:.8rem .75rem}.facts dd{font-size:.9rem}.placard .no{font-size:.58rem;letter-spacing:.12em}}
 </style>
 
 <div class="curtain" id="curtain" hidden aria-hidden="true">
