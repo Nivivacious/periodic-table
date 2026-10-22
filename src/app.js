@@ -292,7 +292,7 @@ for (const e of els) {
   b.dataset.row = row; b.dataset.col = col;
   b.setAttribute("aria-label", `${e.n}, ${e.sym}, ${e.trend}`);
   b.innerHTML = tileHTML(e, "t" + e.sym);
-  b.addEventListener("click", () => open(e));
+  b.addEventListener("click", () => open(e, b));
   tiles.set(e.n, b);
   grid.appendChild(b);
 }
@@ -469,7 +469,7 @@ const endDrag = () => {
     const e = orbs.find(o => o.b === d.target).e;
     if (!chosen) { if (e.other) switchEdition(ED.other); else document.getElementById("chooseFashion").click(); }
     if (e.other) return;
-    open(e);
+    open(e, d.target);
   }
 };
 orbitEl.addEventListener("pointerup", endDrag);
@@ -681,12 +681,41 @@ $("srclist").addEventListener("click", ev => { const b = ev.target.closest(".t")
 // ---------- The exhibit (card + placard) ----------
 const sheet = $("sheet"), exhibit = $("exhibit");
 let current = null;
+let liftedFrom = null, liftAnimation = null, closingExhibit = false;
+function clearLift() {
+  if (liftAnimation) { liftAnimation.cancel(); liftAnimation = null; }
+  sheet.classList.remove("travelling");
+  document.querySelectorAll(".lift-origin, .lift-neighbour").forEach(n => {
+    n.classList.remove("lift-origin", "lift-neighbour");
+    n.style.removeProperty("--nudge");
+  });
+}
+function liftCard(back = false) {
+  if (reduced || !liftedFrom || !liftedFrom.isConnected) return null;
+  if (liftAnimation) { liftAnimation.cancel(); liftAnimation = null; }
+  const card = exhibit.querySelector(".c3d"), from = liftedFrom.getBoundingClientRect();
+  if (!card || !from.width || !from.height || from.bottom < 0 || from.top > innerHeight) return null;
+  const to = card.getBoundingClientRect();
+  const origin = `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
+  const frames = [{ transform: origin, opacity: .65 }, { transform: "none", opacity: 1 }];
+  sheet.classList.add("travelling");
+  liftAnimation = card.animate(back ? frames.reverse() : frames, {
+    duration: back ? 330 : 600, easing: "cubic-bezier(.22,1,.36,1)", fill: "both"
+  });
+  return liftAnimation;
+}
+async function closeExhibit() {
+  if (closingExhibit) return;
+  closingExhibit = true;
+  try { const animation = liftCard(true); if (animation) await animation.finished; } catch (_) {}
+  sheet.close(); clearLift(); closingExhibit = false;
+}
 function render(e) {
   current = e;
   const s = e.src;
   exhibit.innerHTML = `
     <button type="button" class="close" data-close>Close <span>×</span></button>
-    <div class="wall"><div class="c3d"><div class="flipper flip">${cardHTML(e, { hot: true })}</div></div></div>
+    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div></div>
     <div class="placard ${e.fam}">
       <p class="no">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -703,14 +732,23 @@ function render(e) {
   exhibit.style.setProperty("--tint", famColor(e));
   flick();
   const flipper = exhibit.querySelector(".flipper"), c3d = exhibit.querySelector(".c3d"), glare = exhibit.querySelector(".glare");
-  flipper.addEventListener("animationend", () => flipper.classList.remove("flip"), { once: true });
-  c3d.addEventListener("pointermove", ev => {
-    if (flipper.classList.contains("flip") || !fine) return;
-    const r = c3d.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
-    flipper.style.transform = `rotateY(${(x - .5) * 12}deg) rotateX(${(.5 - y) * 10}deg)`;
+  const pose = (ev) => {
+    if (reduced || closingExhibit || (ev.pointerType === "touch" && !ev.buttons)) return;
+    const r = c3d.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+    const y = Math.max(0, Math.min(1, (ev.clientY - r.top) / r.height));
+    flipper.style.transform = `rotateY(${(x - .5) * 10}deg) rotateX(${(.5 - y) * 8}deg)`;
+    c3d.style.setProperty("--depth-x", `${(x - .5) * 2}px`);
+    c3d.style.setProperty("--depth-y", `${(y - .5) * 2}px`);
     glare.style.setProperty("--gx", `${x * 100}%`); glare.style.setProperty("--gy", `${y * 100}%`);
-  });
-  c3d.addEventListener("pointerleave", () => flipper.style.transform = "");
+  };
+  const resetPose = () => {
+    flipper.style.transform = "";
+    c3d.style.setProperty("--depth-x", "0px"); c3d.style.setProperty("--depth-y", "0px");
+  };
+  c3d.addEventListener("pointermove", pose);
+  c3d.addEventListener("pointerdown", pose);
+  ["pointerleave", "pointerup", "pointercancel"].forEach(type => c3d.addEventListener(type, resetPose));
   bindHots();
   eyesWake();
 }
@@ -723,19 +761,43 @@ function bindHots() {
 }
 exhibit.addEventListener("click", ev => {
   const t = ev.target.closest("button"); if (!t) return;
-  if (t.hasAttribute("data-close")) return sheet.close();
+  if (t.hasAttribute("data-close")) return closeExhibit();
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
   if (t.dataset.go) return go(t.dataset.go);
 });
-function open(e) { if (!e) return; render(e); if (!sheet.open) sheet.showModal(); }
+function open(e, source = null) {
+  if (!e || closingExhibit) return;
+  clearLift();
+  liftedFrom = source || tiles.get(e.n);
+  render(e);
+  if (!sheet.open) sheet.showModal();
+  if (!reduced && liftedFrom) {
+    liftedFrom.classList.add("lift-origin");
+    if (liftedFrom.classList.contains("el")) {
+      const row = Number(liftedFrom.dataset.row), col = Number(liftedFrom.dataset.col);
+      tiles.forEach(tile => {
+        const dx = Number(tile.dataset.col) - col, dy = Number(tile.dataset.row) - row;
+        if (Math.abs(dx) + Math.abs(dy) === 1) {
+          tile.style.setProperty("--nudge", `translate(${dx * 5}px, ${dy * 5}px)`);
+          tile.classList.add("lift-neighbour");
+        }
+      });
+    }
+    const animation = liftCard();
+    if (animation) animation.finished.then(() => { animation.cancel(); if (liftAnimation === animation) { liftAnimation = null; sheet.classList.remove("travelling"); } }).catch(() => {});
+  }
+}
 function go(dir) {
+  if (closingExhibit) return;
+  clearLift(); liftedFrom = null;
   if (dir === "r") { let r; do { r = els[Math.floor(Math.random() * els.length)]; } while (r === current); return render(r); }
   render(els[(current.n - 1 + Number(dir) + els.length) % els.length]);
 }
-sheet.addEventListener("click", ev => { if (ev.target === sheet) sheet.close(); });
-sheet.addEventListener("close", eyesSleep);
+sheet.addEventListener("click", ev => { if (ev.target === sheet) closeExhibit(); });
+sheet.addEventListener("cancel", ev => { ev.preventDefault(); closeExhibit(); });
+sheet.addEventListener("close", () => { clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
 document.addEventListener("keydown", ev => {
   if (!sheet.open) return;
   if (ev.key === "ArrowRight") go(1);

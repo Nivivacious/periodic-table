@@ -61,7 +61,7 @@ function fig(id, o) {
   if (h === "bun") dot(0, -71.5, 5, hc, OL);
   if (h === "lowbun") dot(0, -52.5, 4.2, hc, OL);
   if (lay.includes("veil")) S("M-12,-62 Q-12,-79 0,-79 Q12,-79 12,-62 L16,-22 L11,-23 L8.5,-58 Q0,-69 -8.5,-58 L-11,-23 L-16,-22Z", y, o.py, `fill-opacity=".6"`);
-  if (lay.includes("pallu")) S("M-8.5,-48 L-15,-16 L-9.5,-18Z", y, o.py);
+  if (lay.includes("pallu")) { g.push(`<g class="detail detail-pallu">`); S("M-8.5,-48 L-15,-16 L-9.5,-18Z", y, o.py); g.push("</g>"); }
   if (lay.includes("dupatta")) { S("M-8.5,-48 L-14,-12 L-10,-12 L-6,-46Z", y, o.py); S("M8.5,-48 L14,-12 L10,-12 L6,-46Z", y, o.py); }
   if (lay.includes("cape")) S("M-8.5,-49 L-18,-8 H18 L8.5,-49Z", y, o.py, `fill-opacity=".75"`);
 
@@ -154,6 +154,7 @@ function fig(id, o) {
 
   // Accessories
   for (const a of acc) {
+    g.push(`<g class="detail detail-${a}">`);
     if (a === "jhumka") for (const d of [-1, 1]) { dot(d * 9.8, -57, 1.1, ac, OL); g.push(`<path d="M${d * 9.8 - 1.6},-53.5 Q${d * 9.8},-57 ${d * 9.8 + 1.6},-53.5Z" fill="${ac}" ${OL}/>`); }
     if (a === "bigjhumka") for (const d of [-1, 1]) { dot(d * 10.2, -57, 1.3, ac, OL); g.push(`<path d="M${d * 10.2 - 3.6},-48.5 Q${d * 10.2},-57 ${d * 10.2 + 3.6},-48.5Z" fill="${ac}" ${OL}/>`); for (const k of [-2.4, 0, 2.4]) dot(d * 10.2 + k, -47.2, 0.8, "white", OL); }
     if (a === "hoops") for (const d of [-1, 1]) g.push(`<circle cx="${d * 10}" cy="-54" r="2.6" fill="none" stroke="${ac}" stroke-width="0.9"/>`);
@@ -194,6 +195,7 @@ function fig(id, o) {
     if (a === "scarf") { S("M-6,-50.5 Q0,-46 6,-50.5 L5,-47 Q0,-44 -5,-47Z", o.ac2 || "red"); S("M3,-47 L6,-36 L3,-36 L1.5,-46Z", o.ac2 || "red"); }
     if (a === "tie") S("M-1.2,-48 H1.2 L1.8,-36 L0,-34 L-1.8,-36Z", o.ac2 || "red");
     if (a === "pocketsq") S("M4,-45 L7,-45 L6,-43 L4.5,-43Z", "white");
+    g.push("</g>");
   }
 
   // Held items, in the right hand at (11.7,-30)
@@ -286,13 +288,13 @@ const OBJ = {
 
 function scene(id, o) {
   const parts = [patterns(id), `<rect width="100" height="100" fill="${col(o.bg || "sky")}"/>`];
-  for (const s of o.set || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="set-${name}">${(SET[name] || OBJ[name])(...args)}</g>`); }
+  for (const s of o.set || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="depth-back"><g class="set-${name}">${(SET[name] || OBJ[name])(...args)}</g></g>`); }
   parts.push(`<rect y="84" width="100" height="16" fill="${col(o.gr || "beige")}"/><path d="M0,84 H100" stroke="${P.ink}" stroke-width=".6"/>`);
-  for (const s of o.back || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(OBJ[name](...args)); }
-  for (const f of o.figs || []) parts.push(fig(id, f));
+  for (const s of o.back || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="depth-mid"><g class="ob ob-${name}">${OBJ[name](...args)}</g></g>`); }
+  for (const f of o.figs || []) parts.push(`<g class="depth-person">${fig(id, f)}</g>`);
   const z = o.zoom || 1;
   if (z !== 1) parts.push(`<g transform="translate(50 84) scale(${z}) translate(-50 -84)">`);
-  for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="ob">${OBJ[name](...args)}</g>`); }
+  for (const s of o.obj || []) { const [name, ...args] = Array.isArray(s) ? s : [s]; parts.push(`<g class="depth-front"><g class="ob ob-${name}">${OBJ[name](...args)}</g></g>`); }
   if (z !== 1) parts.push("</g>");
   return parts.join("");
 }

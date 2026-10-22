@@ -577,6 +577,40 @@ html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,
 @media (max-width: 980px) {
   .portal { display: none; }
 }
+/* Exhibit delighters: source-to-card travel, layered paper art and brief performances. */
+.lift-origin { opacity: .3 !important; }
+.el.lift-neighbour { transform: var(--nudge) !important; transition: transform .5s var(--ease-out); }
+dialog.sheet[open] .exhibit { animation: none; }
+.sheet.travelling .exhibit { overflow: visible; }
+.sheet .c3d { transform-origin: top left; --depth-x: 0px; --depth-y: 0px; }
+.sheet .depth-back, .sheet .depth-mid, .sheet .depth-person, .sheet .depth-front { transition: transform .18s ease-out; }
+.sheet .depth-back { transform: translate(calc(var(--depth-x) * -1), calc(var(--depth-y) * -1)); }
+.sheet .depth-mid { transform: translate(calc(var(--depth-x) * .5), calc(var(--depth-y) * .5)); }
+.sheet .depth-person { transform: translate(calc(var(--depth-x) * 1.5), calc(var(--depth-y) * 1.5)); }
+.sheet .depth-front { transform: translate(calc(var(--depth-x) * 2.8), calc(var(--depth-y) * 2.8)); }
+.sheet .detail, .sheet .ob, .sheet .cow-mouth { transform-box: fill-box; transform-origin: center; }
+.sheet .detail-jhumka, .sheet .detail-bigjhumka, .sheet .detail-hoops,
+.sheet .detail-necklace, .sheet .detail-layered, .sheet .detail-pearls,
+.sheet .detail-scarf, .sheet .detail-pallu, .sheet .detail-bow,
+.sheet .ob-bunting, .sheet .ob-flex, .sheet .ob-papers,
+.sheet .set-bunting, .sheet .set-flex {
+  transform-origin: top center; animation: detail-sway 1.6s .65s ease-in-out 3;
+}
+.sheet .ob-bottle { transform-origin: bottom center; animation: bottle-rock 1.4s .65s ease-in-out 2; }
+.sheet .ob-crow, .sheet .ob-crows, .sheet .ob-pigeon,
+.sheet .set-crow, .sheet .set-crows, .sheet .set-pigeon { animation: bird-hop 1.3s .8s ease-in-out 2; }
+.sheet .ob-smoke { animation: smoke-drift 2s .6s ease-out 2; }
+.sheet .ob-puddle { animation: puddle-ripple 1.8s .7s ease-in-out 2; }
+.sheet .cow-mouth { animation: cow-chew .65s .8s ease-in-out 6; }
+@keyframes detail-sway { 0%,100% { transform: rotate(0); } 25% { transform: rotate(5deg); } 70% { transform: rotate(-3deg); } }
+@keyframes bottle-rock { 0%,100% { transform: rotate(0); } 30% { transform: rotate(7deg); } 65% { transform: rotate(-4deg); } }
+@keyframes bird-hop { 0%,35%,100% { transform: translateY(0); } 18% { transform: translateY(-2px) rotate(-3deg); } }
+@keyframes smoke-drift { 0%,100% { transform: translateY(0); opacity: 1; } 65% { transform: translate(1px,-3px); opacity: .55; } }
+@keyframes puddle-ripple { 0%,100% { transform: scaleX(1); } 50% { transform: scaleX(1.12); } }
+@keyframes cow-chew { 0%,100% { transform: translate(0,0); } 50% { transform: translate(.7px,.6px) rotate(3deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .sheet .depth-back, .sheet .depth-mid, .sheet .depth-person, .sheet .depth-front { transform: none !important; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 
