@@ -57,6 +57,7 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .h-xl { margin: 0; font: 400 clamp(2.8rem, 6.4vw, 6.2rem)/.92 var(--display); letter-spacing: -.03em; text-wrap: balance; }
 .h-lg { margin: 0; font: 400 clamp(2.2rem, 4.4vw, 3.9rem)/.98 var(--display); letter-spacing: -.025em; text-wrap: balance; }
 .h-xl em, .h-lg em { font-style: italic; color: var(--accent); }
+.table-hint.lede { font-size: .66rem; color: var(--muted); }
 .lede { margin: 0; font: italic 1.25rem/1.45 var(--body); color: var(--ink-2); max-width: 40rem; }
 .link { display: inline-flex; align-items: center; gap: .55rem; background: none; border: 0; padding: .2rem 0; cursor: pointer; font: 600 .7rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); text-decoration: none; position: relative; }
 .link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: currentColor; transform-origin: right; transition: transform .6s var(--ease); }
@@ -708,7 +709,7 @@ dialog.sheet[open] .exhibit { animation: none; }
   <section class="view page band" data-view="table" aria-labelledby="h-table" hidden>
     <div class="wrap">
       <div class="page-head">
-        <div><p class="kicker">The Table</p><h2 class="h-lg" id="h-table">All 118, <em>at a glance.</em></h2><p class="lede">Hover to explore. Tap to open.</p></div>
+        <div><p class="kicker">The Table</p><h2 class="h-lg" id="h-table">All 118, <em>at a glance.</em></h2><p class="lede table-hint">Hover to explore. Tap to open.</p></div>
         <label class="search"><span class="sr">Search the table</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search a trend or symbol" data-t-ph="tableSearch"></label>
       </div>
       <div class="tl" aria-label="Timeline">
