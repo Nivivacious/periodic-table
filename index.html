@@ -235,7 +235,8 @@ html[data-ed="garbage"] { --accent: #2F6B4F; }
 .hot g { cursor: pointer; }
 .hot g .pulse { fill: none; stroke: var(--accent); stroke-width: .8; transform-box: fill-box; transform-origin: center; animation: hp 2s ease-out infinite; }
 @keyframes hp { from { transform: scale(.6); opacity: .9; } to { transform: scale(2.4); opacity: 0; } }
-.hot g.on .dot { fill: var(--ink); }
+.hot g.on .dot { fill: var(--ink); r: 3; stroke-width: 1; }
+.hot g.on .pulse { stroke: var(--ink); animation-duration: 1s; }
 
 dialog.sheet { border: 0; padding: 0; background: transparent; color: var(--ink); width: min(980px, calc(100% - 32px)); max-width: none; max-height: calc(100% - 32px); overflow: visible; }
 dialog.sheet::backdrop { background: rgba(236, 229, 215, .86); backdrop-filter: blur(6px); }
@@ -259,8 +260,9 @@ dialog.sheet[open] .exhibit { animation: pop .7s var(--ease-out); }
 .facts dd { margin: 0; font-size: 1.08rem; line-height: 1.35; }
 .facts dd a { text-decoration: none; border-bottom: 1px solid var(--accent); }
 .pieces { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .2rem .9rem; }
-.pieces li { cursor: default; transition: color .3s ease; }
-.pieces li.on { color: var(--accent); }
+.pieces li { cursor: default; padding: .05rem .4rem; margin: 0 -.4rem; border-radius: 2px; transition: color .25s ease, background .25s ease, transform .25s var(--ease); }
+.pieces li.on { color: var(--paper); background: var(--accent); transform: translateY(-1px); font-weight: 700; }
+.pieces li.on::after { color: transparent; }
 .pieces li::after { content: " ·"; color: var(--rule); }
 .pieces li:last-child::after { content: ""; }
 .ex-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-top: .4rem; }
