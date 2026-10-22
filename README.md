@@ -19,7 +19,7 @@ The fashion edition is laid out as a magazine issue with museum-style exhibit ca
 
 ## Sections
 
-- **Cover.** All 118 elements orbit as a draggable 3D sphere. "See the full table" flies every tile into its place on the periodic table. Below it is the **Element of the day**, which changes daily.
+- **Cover.** All 118 elements orbit as a draggable 3D sphere. "See the full table" flies every tile into its place on the periodic table.
 - **The Table.** The real periodic table, with:
   - a **timeline** slider and play button that lights up trends in the month the press named them (Jan 2025 → Oct 2026)
   - family filters and a Gen Z filter
@@ -27,13 +27,13 @@ The fashion edition is laid out as a magazine issue with museum-style exhibit ca
   - arrow-key navigation
 - **The Lab.** Mix up to three elements into a compound and get a named look.
 - **Gen Z.** 20 flip cards translate Gen Z and desi slang into the trends they describe. Also, 45 trends are flagged as Gen Z-led.
-- **Families** and **Wardrobe**. Wardrobe holds your saved cards, stored in your browser.
+- **Families.**
 
 ## Exhibit cards
 
 - **Shop the look.** Hotspots on the illustration light up each piece.
 - **Share.** Makes a 1080×1920 story image you can download or share.
-- **Save and copy.** Saves the card to your Wardrobe or copies it.
+- **Copy.** Copies the card as text.
 
 ## Extras
 

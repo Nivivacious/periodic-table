@@ -217,19 +217,6 @@ $("soundBtn").addEventListener("click", () => {
 });
 
 // ---------- Saved ----------
-let saved = store.get(isG ? "ptif-saved-garbage" : "ptif-saved", []);
-const isSaved = (e) => saved.includes(e.sym);
-function toggleSave(e) {
-  saved = isSaved(e) ? saved.filter(s => s !== e.sym) : [...saved, e.sym];
-  store.set(isG ? "ptif-saved-garbage" : "ptif-saved", saved);
-  toast(isSaved(e) ? `Saved · ${e.sym} ${e.trend}` : `Removed · ${e.sym} ${e.trend}`);
-  syncSaved();
-}
-function syncSaved() {
-  $("wcount").textContent = saved.length;
-  document.querySelectorAll("[data-save]").forEach(b => { const on = saved.includes(b.dataset.save); b.setAttribute("aria-pressed", String(on)); b.textContent = on ? "Saved" : "Save"; });
-  renderWardrobe();
-}
 async function copyTrend(e) {
   const text = `${e.sym} · ${e.trend}: ${e.desc}${e.src ? ` (${e.src[0]}, ${e.src[3]})` : ""}`;
   try { await navigator.clipboard.writeText(text); toast("Copied"); } catch (err) { toast("Copy isn't available here"); }
@@ -456,14 +443,6 @@ function orbitToTable() {
 }
 $("toTable").addEventListener("click", orbitToTable);
 
-// Element of the day
-{
-  const e = els[Math.floor(Date.now() / 864e5) % els.length];
-  const t = $("today");
-  t.innerHTML = `<img src="${sceneImg(e)}" alt=""><span><span class="kicker">Element of the day</span><b>${e.sym} · ${e.trend}</b><small>${e.src ? (isG ? "" : "via ") + e.src[0] : e.el}</small></span>`;
-  t.setAttribute("aria-label", `Element of the day: ${e.trend}`);
-  t.addEventListener("click", () => open(e));
-}
 
 // ---------- The Lab ----------
 let mix = [];
@@ -573,9 +552,6 @@ $("flipAll").addEventListener("click", ev => {
   document.querySelectorAll(".ccard").forEach(c => c.addEventListener("click", () => open(get(c.dataset.sym))));
 }
 
-// ---------- Card list markup (used by the Pile / Wardrobe) ----------
-const pickHTML = (e, i) => `<button type="button" class="pick" data-sym="${e.sym}"><span class="pn">No. ${ROMAN[i] || i + 1}</span>${cardHTML(e)}<div><p class="kicker">${e.el} · ${e.src ? e.src[0] : FAMILIES[e.fam]}</p><h3>${e.trend}</h3><p>${e.desc}</p></div></button>`;
-
 // ---------- Families ----------
 $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
   const m = els.filter(e => e.fam === k), show3 = [m[0], m[Math.floor(m.length / 2)], m[m.length - 1]];
@@ -637,15 +613,6 @@ if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
 $("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a>` : `<span class="note">${e.src[0]} — ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
 $("srclist").addEventListener("click", ev => { const b = ev.target.closest(".t"); if (b) open(get(b.dataset.sym)); });
 
-// ---------- Wardrobe ----------
-function renderWardrobe() {
-  const list = saved.map(get).filter(Boolean);
-  const wg = $("wgrid"), k = list.map(e => e.sym).join(",");
-  if (wg.dataset.key !== k) { wg.dataset.key = k; wg.innerHTML = list.map(pickHTML).join(""); }
-  $("wempty").hidden = list.length > 0;
-}
-$("wgrid").addEventListener("click", ev => { const p = ev.target.closest(".pick"); if (p) open(get(p.dataset.sym)); });
-
 // ---------- The exhibit (card + placard) ----------
 const sheet = $("sheet"), exhibit = $("exhibit");
 let current = null;
@@ -664,10 +631,9 @@ function render(e) {
         <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-save="${e.sym}" aria-pressed="false">Save</button><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
+      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
-  syncSaved();
   flick();
   const flipper = exhibit.querySelector(".flipper"), c3d = exhibit.querySelector(".c3d"), glare = exhibit.querySelector(".glare");
   flipper.addEventListener("animationend", () => flipper.classList.remove("flip"), { once: true });
@@ -687,7 +653,6 @@ function render(e) {
 exhibit.addEventListener("click", ev => {
   const t = ev.target.closest("button"); if (!t) return;
   if (t.hasAttribute("data-close")) return sheet.close();
-  if (t.hasAttribute("data-save")) return toggleSave(current);
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
   if (t.dataset.go) return go(t.dataset.go);
@@ -703,7 +668,6 @@ document.addEventListener("keydown", ev => {
   if (ev.key === "ArrowRight") go(1);
   if (ev.key === "ArrowLeft") go(-1);
 });
-document.querySelectorAll("[data-deal]").forEach(b => b.addEventListener("click", () => open(els[Math.floor(Math.random() * els.length)])));
 
 // ---------- Share as an image (1080 × 1920, for stories) ----------
 const loadImg = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
@@ -796,7 +760,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "lab", "genz", "families", "sources", "wardrobe"];
+const VIEWS = ["cover", "table", "lab", "genz", "families", "sources"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
@@ -842,7 +806,6 @@ function curtain() {
 }
 
 // ---------- Start ----------
-syncSaved();
 const h = location.hash.slice(1);
 const fromHash = h && !VIEWS.includes(h) && get(h);
 show(fromHash ? "table" : (VIEWS.includes(h) ? h : "cover"), { keepScroll: true });
