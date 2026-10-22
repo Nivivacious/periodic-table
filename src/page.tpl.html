@@ -661,6 +661,11 @@ dialog.sheet[open] .exhibit { animation: none; }
 .mix-flight{position:fixed;z-index:1000;pointer-events:none;border-radius:6px;box-shadow:0 10px 30px #0003}.mix-status{font:italic .85rem/1.4 var(--body);color:var(--muted);min-height:1.2em}.flask-wrap.mixing .flask{animation:mix-swirl .35s ease-in-out infinite alternate}.flask-wrap.mixing{background:radial-gradient(ellipse,color-mix(in srgb,var(--accent) 12%,transparent),transparent 70%)}@keyframes mix-swirl{from{transform:rotate(-5deg) scale(.98)}to{transform:rotate(5deg) scale(1.04)}}.family-context{border-left:2px solid var(--family-col,var(--rule));padding-left:12px;transition:border-color .4s ease,background .4s ease;background:color-mix(in srgb,var(--family-col,var(--rule)) 4%,transparent)}.placard{touch-action:pan-y}.sheet .card-in{touch-action:pan-y}@media(prefers-reduced-motion:reduce){.flask-wrap.mixing .flask{animation:none}.family-context{transition:none}}
 .mix-challenge{padding:18px 20px;margin-bottom:24px;border:1px solid var(--rule);background:var(--card)}.mix-challenge h3{font:400 1.5rem/1.2 var(--display);margin:8px 0}.mix-challenge>p:not(.kicker){font:italic .9rem/1.5 var(--body);color:var(--ink-2)}.mix-challenge>div{display:flex;gap:20px;flex-wrap:wrap}.related{border-top:1px solid var(--rule);padding-top:12px}.related>div{display:flex;gap:8px;flex-wrap:wrap}.related-card{display:flex;align-items:center;gap:8px;flex:1;min-width:150px;text-align:left;background:transparent;border:1px solid var(--rule);padding:6px;cursor:pointer;font:400 .8rem/1.3 var(--body);transition:border-color .2s,transform .2s}.related-card:hover{border-color:var(--accent);transform:translateY(-2px)}.related-card img{width:36px;height:40px;object-fit:cover}.related-card b{font-weight:600;color:var(--accent)}.signature-control{border:1px solid var(--rule)!important}.lab-actions button:disabled{opacity:.4;cursor:default}.sheet .art-tools{flex-wrap:wrap}.sheet .related .kicker{font-size:.55rem;margin:0 0 8px}@media(prefers-reduced-motion:reduce){.related-card{transition:none}}
 .key .filters{display:grid;grid-template-columns:repeat(2,max-content);justify-content:center;align-items:stretch;gap:.25rem 1.5rem}.key .filt{font:400 .8rem/1.35 var(--body);text-transform:none;letter-spacing:0;min-height:32px;gap:.5rem;padding:.25rem .35rem;text-align:left;border-radius:2px;transition:background .2s,border-color .2s}.key .filt i{flex-shrink:0}.key .family-count{color:var(--muted);font-size:.75rem;font-variant-numeric:tabular-nums;margin-left:.15rem}.key .filt[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 9%,transparent);border-bottom-color:var(--c)}.key .filt:focus-visible{outline:2px solid var(--c);outline-offset:2px}@media(max-width:980px){.mobile-key .filters{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:.2rem .8rem}.mobile-key .filt{font-size:.82rem;min-height:40px;flex-wrap:wrap;column-gap:.4rem}.mobile-key{margin-top:1rem}}@media(prefers-reduced-motion:reduce){.key .filt{transition:none}}
+.facts .seen-note { display: block; margin-top: .22rem; font-size: .8rem; line-height: 1.5; color: var(--muted); }
+.card-share { position: absolute; top: .65rem; right: 6.2rem; z-index: 3; width: 36px; height: 36px; display: grid; place-items: center; border: 0; background: none; color: var(--muted); cursor: pointer; border-radius: 50%; }
+.card-share svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.card-share:hover { color: var(--ink); background: var(--paper-2); }
+.card-share:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 
 <div class="curtain" id="curtain" hidden aria-hidden="true">
@@ -815,6 +820,7 @@ dialog.sheet[open] .exhibit { animation: none; }
 /*DATA*/
 /*GARBAGE*/
 /*CHEM*/
+/*SEEN*/
 /*APP*/
 /*EXTRAS*/
 </script>

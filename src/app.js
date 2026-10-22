@@ -1101,6 +1101,7 @@ function render(e, direction = 0) {
   current = e;
   const s = e.src;
   exhibit.innerHTML = `
+    <button type="button" class="card-share" data-share aria-label="Share this card as an image" title="Share image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M5 12v8h14v-8"/></svg></button>
     <button type="button" class="close" data-close>Close <span>×</span></button>
     <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div><div class="art-tools"><button type="button" class="moment-control" data-lens aria-pressed="false">Inspect</button></div><p class="art-hint">Drag an object · swipe beside the illustration to browse · hold Inspect to zoom</p></div>
     <div class="placard ${e.fam}">
@@ -1110,11 +1111,11 @@ function render(e, direction = 0) {
       <dl class="facts">
         <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
         <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        ${!isG && FASHION_SIGHTINGS[e.n] ? `<dt>Last Seen On</dt><dd class="last-seen"><a href="${FASHION_SIGHTINGS[e.n].url}" target="_blank" rel="noopener noreferrer">${FASHION_SIGHTINGS[e.n].actor}</a><span class="seen-note">${FASHION_SIGHTINGS[e.n].note}</span></dd>` : ""}
         <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
       <div class="related"><p class="kicker">${isG ? "More from the same street story" : "Pairs beautifully with…"}</p><div>${relatedElements(e).map(other=>`<button type="button" class="related-card" data-related="${other.sym}"><img src="${sceneImg(other)}" alt=""><span><b>${other.sym}</b> ${other.trend}</span><span aria-hidden="true">→</span></button>`).join("")}</div></div>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
   exhibit.style.setProperty("--tint", famColor(e));
