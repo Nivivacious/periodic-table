@@ -76,11 +76,10 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .issue { font: 600 .62rem var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 .wordmark { font: 500 1.3rem/1 var(--display); letter-spacing: .34em; text-transform: uppercase; text-decoration: none; white-space: nowrap; padding-left: .34em; cursor: pointer; background: none; border: 0; }
 .mast-left { display: flex; align-items: center; gap: 1.1rem; min-width: 0; }
-.edswitch { display: inline-flex; border: 1px solid var(--ink); border-radius: 2px; overflow: hidden; }
-.edswitch button { background: none; border: 0; cursor: pointer; padding: .38rem .7rem; font: 600 .6rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); transition: background .4s var(--ease), color .4s var(--ease); }
-.edswitch button + button { border-left: 1px solid var(--ink); }
-.edswitch button:hover { color: var(--ink); }
-.edswitch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.edflip { display: inline-flex; align-items: center; gap: .5rem; background: none; border: 1px solid var(--ink); border-radius: 2px; cursor: pointer; padding: .38rem .7rem; font: 600 .6rem var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--ink); transition: background .4s var(--ease), color .4s var(--ease); }
+.edflip .arr { transition: transform .4s var(--ease); }
+.edflip:hover { background: var(--ink); color: var(--paper); }
+.edflip:hover .arr { transform: translateX(3px); }
 html[data-ed="garbage"] { --accent: #2F6B4F; }
 html.switching body { opacity: 0; transition: opacity .25s ease; }
 .menu-ed { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); display: grid; gap: .6rem; justify-items: start; }
@@ -533,7 +532,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 
 <header class="mast">
   <div class="mast-top band">
-    <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
+    <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><button type="button" class="edflip" data-ed-switch></button></div>
     <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
@@ -614,7 +613,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
           </div>
           <div class="readout">
             <p class="kicker">Formula</p>
-            <p class="formula" id="formula">—</p>
+            <p class="formula" id="formula">·</p>
             <div class="chem" id="chem"></div>
             <p class="lookname empty" id="lookname">Pick up to three elements from the shelf.</p>
             <ol class="recipe" id="recipe"></ol>
@@ -673,7 +672,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="mi" data-view="lab"><i>iii.</i>The Lab</button>
     <button type="button" class="mi" data-view="families"><i>iv.</i>Families</button>
     <button type="button" class="mi" data-view="sources"><i>v.</i><span data-t="menuSources">Sources</span></button>
-    <div class="menu-ed"><p class="kicker">Edition</p><div class="edswitch" role="group" aria-label="Edition"><button type="button" data-ed="fashion" aria-pressed="true">Fashion</button><button type="button" data-ed="garbage" aria-pressed="false">Garbage</button></div></div>
+    <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
 </dialog>
 

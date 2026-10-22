@@ -69,7 +69,7 @@ else {
 if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_COPY[el.dataset.t]; if (v != null) el.innerHTML = v; }
 if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
 document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(chosen && b.dataset.ed === ED.key)));
-document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.insertAdjacentHTML("beforeend", `${ED.otherLabel} <span class="arr">→</span>`); });
+document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.setAttribute("aria-label", ED.otherLabel); b.insertAdjacentHTML("beforeend", `${b.classList.contains("edflip") ? ED.other.charAt(0).toUpperCase() + ED.other.slice(1) + " edition" : ED.otherLabel} <span class="arr">→</span>`); });
 function switchEdition(key) {
   if (!ED_KEYS.includes(key) || key === ED.key) return;
   try { localStorage.setItem("ptif-edition", key); } catch (err) {}
@@ -517,7 +517,7 @@ function renderMix() {
   const cols = mix.length ? mix.map(famColor) : ["#B3245E"];
   ["lg0", "lg1", "lg2"].forEach((id, i) => $(id).setAttribute("stop-color", cols[Math.min(i, cols.length - 1)]));
   const r = mix.length ? react(mix) : null;
-  $("formula").innerHTML = !mix.length ? "—" : (r.none || mix.length === 1) ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>+</i>") : sub(r.f);
+  $("formula").innerHTML = !mix.length ? "·" : (r.none || mix.length === 1) ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>+</i>") : sub(r.f);
   $("chem").innerHTML = chemHTML(r);
   const ln = $("lookname");
   ln.textContent = mix.length ? (isG ? lookName(mix, r) : `“${lookName(mix, r)}”`) : "Pick up to three elements from the shelf.";
@@ -531,7 +531,7 @@ $("labClear").addEventListener("click", () => { mix = []; renderMix(); });
 $("labCopy").addEventListener("click", async () => {
   if (!mix.length) return toast("Add an element first");
   const r = react(mix);
-  const text = `${r.none ? mix.map(e => e.sym).join(" + ") : `${r.f} (${r.n})`} — “${lookName(mix, r)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
+  const text = `${r.none ? mix.map(e => e.sym).join(" + ") : `${r.f} (${r.n})`}: “${lookName(mix, r)}”: ${mix.map(e => e.pieces.split(",")[0].trim()).join(" + ")}`;
   try { await navigator.clipboard.writeText(text); toast("Formula copied"); } catch (err) { toast("Copy isn't available here"); }
 });
 renderMix();
@@ -618,7 +618,7 @@ addEventListener("resize", () => { if (inkRAF) inkSize(); });
 if (document.fonts) document.fonts.ready.then(() => { if (inkRAF) inkDraw(); });
 
 // ---------- Sources ----------
-$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]} — ${e.src[1]}</a>` : `<span class="note">${e.src[0]} — ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
+$("srclist").innerHTML = els.map(e => `<div class="src ${e.fam}"><span class="s">${e.sym}</span><span><button type="button" class="t" data-sym="${e.sym}">${e.trend}</button>${e.z ? `<span class="z">${ED.flag.label}</span>` : ""}</span>${e.src ? `${e.src[2] ? `<a href="${e.src[2]}" target="_blank" rel="noopener">${e.src[0]}, ${e.src[1]}</a>` : `<span class="note">${e.src[0]}, ${e.src[1]}</span>`}<span class="d">${e.src[3]}</span>` : "<span></span><span></span>"}</div>`).join("");
 $("srclist").addEventListener("click", ev => { const b = ev.target.closest(".t"); if (b) open(get(b.dataset.sym)); });
 
 // ---------- The exhibit (card + placard) ----------
