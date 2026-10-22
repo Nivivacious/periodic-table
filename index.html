@@ -614,6 +614,41 @@ dialog.sheet[open] .exhibit { animation: none; }
 .dye:active { transform: scale(.94); }
 .sheet .hot g:focus-visible { outline: none; }
 .sheet .hot g:focus-visible .dot { stroke: var(--ink); stroke-width: 1.5; }
+/* The same drawings can be touched, inspected and separated into paper layers. */
+.scroll-cover { min-height: 220vh; overflow: clip; }
+.scroll-cover .orbit { position: sticky; top: 6rem; touch-action: pan-y; }
+.cover-explore[hidden] { display: none; }
+.cover-explore { pointer-events: auto; font-size: .65rem; }
+.art-tools { display: flex; justify-content: center; gap: .3rem; border-top: 1px solid var(--rule); padding-top: .3rem; }
+.art-tools button[aria-pressed="true"] { color: var(--ink); background: rgba(255,255,255,.65); }
+.art-hint { max-width: 18rem; margin: -.6rem 0 0; text-align: center; font: italic .68rem/1.5 var(--body); color: var(--muted); }
+.sheet .wall { gap: .8rem; }
+.sheet .frame > svg { position: relative; z-index: 1; }
+.sheet .frame > svg.colour-before { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.sheet [data-move] { cursor: grab; touch-action: none; transform-box: fill-box; }
+.sheet [data-move]:focus-visible { outline: none; filter: drop-shadow(0 0 1px var(--accent)); }
+.sheet .object-drag [data-move] { cursor: grabbing; }
+.inspection-lens { position: absolute; z-index: 6; width: 132px; height: 132px; border-radius: 50%; overflow: hidden; border: 3px solid var(--paper); outline: 1px solid var(--ink); box-shadow: 0 12px 30px rgba(20,15,10,.3); transform: translate(-50%,-50%); pointer-events: none; }
+.inspection-lens[hidden] { display: none; }
+.inspection-lens svg { width: 100%; height: 100%; display: block; }
+.sheet .lens-open .frame { overflow: visible; cursor: zoom-in; }
+.sheet .layers-open .frame, .sheet .layers-open .frame > svg { overflow: visible; }
+.sheet .layers-open .hot { opacity: 0; pointer-events: none; }
+.sheet .layers-open .depth-back { transform: translate(-15px,-10px) rotate(-4deg); opacity: .65; }
+.sheet .layers-open .depth-mid { transform: translate(-3px,-2px); }
+.sheet .layers-open .depth-person { transform: translate(12px,3px) rotate(2deg); }
+.sheet .layers-open .depth-front { transform: translate(22px,9px) rotate(4deg); }
+.sheet .season-rain { pointer-events: none; }
+.layer-tags { display: none; position: absolute; inset: 0; pointer-events: none; z-index: 7; }
+.layers-open .layer-tags { display: block; }
+.layer-tags span { position: absolute; padding: .2rem .3rem; background: var(--paper); border: 1px solid var(--rule); font: 500 .48rem var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+.layer-tags span::after { content: ""; position: absolute; top: 50%; width: 12px; border-top: 1px solid var(--ink); }
+.layer-tags .depth-back { left: -35px; top: 12%; transform: none !important; opacity: 1 !important; }
+.layer-tags .depth-back::after { left: 100%; }
+.layer-tags .depth-person { right: -30px; top: 45%; transform: none !important; }
+.layer-tags .depth-front { right: -34px; bottom: 12%; transform: none !important; }
+.layer-tags .depth-person::after, .layer-tags .depth-front::after { right: 100%; }
+@media(max-width:600px) { .inspection-lens { width: 110px; height: 110px; } .art-hint { font-size: .65rem; } }
 @media (prefers-reduced-motion: reduce) {
   .sheet .depth-back, .sheet .depth-mid, .sheet .depth-person, .sheet .depth-front { transform: none !important; }
 }
@@ -623,12 +658,12 @@ dialog.sheet[open] .exhibit { animation: none; }
 <body>
 
 <div class="curtain" id="curtain" hidden aria-hidden="true">
-  <div><p class="kicker">Issue 01 · Autumn/Winter 2026</p><p class="count" id="curtainCount">000</p><p class="of" data-t="curtainOf">elements of Indian fashion</p></div>
+  <div><p class="kicker" data-issue-label="season">Issue 01 · Autumn/Winter 2026</p><p class="count" id="curtainCount">000</p><p class="of" data-t="curtainOf">elements of Indian fashion</p></div>
 </div>
 
 <header class="mast">
   <div class="mast-top band">
-    <div class="mast-left"><span class="issue">Issue 01 · Autumn/Winter 2026</span><button type="button" class="edflip" data-ed-switch></button></div>
+    <div class="mast-left"><span class="issue" data-issue-label="season">Issue 01 · Autumn/Winter 2026</span><button type="button" class="edflip" data-ed-switch></button></div>
     <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
@@ -744,7 +779,7 @@ dialog.sheet[open] .exhibit { animation: none; }
   <div class="frieze" id="frieze"><svg id="friezeSvg" viewBox="0 0 1200 100" preserveAspectRatio="xMidYMax slice" aria-label="A frieze of figures crossing the page; tap one to open it"></svg></div>
   <div class="wrap">
     <span class="wm" data-t="colophonWm">The Fashion Elements</span>
-    <small>Issue 01 · 2026</small>
+    <small data-issue-label="year">Issue 01 · 2026</small>
   </div>
   <p class="rights">Personal Project By Nivivacious. All Rights Reserved.</p>
 </footer>
@@ -2436,18 +2471,21 @@ const chosen = ED_KEYS.includes(edKey);
 if (!chosen) edKey = "fashion";
 const isG = edKey === "garbage";
 const ED = isG ? {
-  key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
+  key: "garbage", issue: "02", name: "The Garbage Elements", noun: "Find", nouns: "finds",
   flag: { label: "Peak Bangalore", short: "PEAK BLR", led: "Peak Bangalore" },
   tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
   word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table", otherTitle: "The Periodic Table of Indian Fashion",
   dyeLabel: "Season", dyeNote: "Same find, another Bangalore month.",
 } : {
-  key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
+  key: "fashion", issue: "01", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
   flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
   tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
   word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table", otherTitle: "The Periodic Table of Bangalore Garbage",
   dyeLabel: "Colourways", dyeNote: "The season's colours, each one named by the press.",
 };
+document.querySelectorAll("[data-issue-label]").forEach(node => {
+  node.textContent = `Issue ${ED.issue} · ${node.dataset.issueLabel === "season" ? "Autumn/Winter 2026" : "2026"}`;
+});
 document.documentElement.dataset.ed = ED.key;
 document.title = isG ? "The Periodic Table of Bangalore Garbage" : "The Periodic Table of Indian Fashion";
 if (chosen) { try { localStorage.setItem("ptif-edition", ED.key); } catch (err) {} }
@@ -2535,8 +2573,11 @@ function dyeNote(e) {
 }
 function setDye(e, key) {
   if (key) dyeState.set(e.sym, key); else dyeState.delete(e.sym);
-  const svg = exhibit.querySelector(".frame svg");
-  if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); playSceneMoment(e, 150); }
+  interactionCleanup();
+  exhibit.querySelectorAll(".colour-before").forEach(n => n.remove());
+  const svg = exhibit.querySelector(".frame > svg:not(.colour-before)");
+  const previousArt = svg && !reduced ? svg.cloneNode(true) : null;
+  if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); playSceneMoment(e, 150); bindSceneInteractions(e); colourReveal(svg, previousArt, key); }
   exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
   const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
   flick();
@@ -2826,20 +2867,41 @@ const orbs = [];
 }
 let ax = -0.22, ay = 0, vx = 0, vy = 0.0018, orbitRAF = 0, dragging = null;
 const AUTO = 0.0018;
+const coverSection = orbitEl.closest(".cover");
+if (!reduced) coverSection.classList.add("scroll-cover");
+const coverExplore = document.createElement("button");
+coverExplore.type = "button"; coverExplore.className = "cover-explore btn"; coverExplore.textContent = "Explore the full table";
+coverExplore.hidden = true; orbitEl.querySelector(".cover-foot").appendChild(coverExplore);
+coverExplore.addEventListener("click", orbitToTable);
+function coverProgress() {
+  if (reduced || !$("choose").hidden) return 0;
+  const travel = Math.max(1, coverSection.offsetHeight - orbitEl.offsetHeight);
+  return Math.max(0, Math.min(1, (scrollY - coverSection.offsetTop) / (travel * .75)));
+}
 function orbitFrame() {
   if (!dragging) { vy += (AUTO - vy) * 0.02; vx *= 0.94; }
   ay += vy; ax = Math.max(-0.9, Math.min(0.9, ax + vx));
   const W = orbitEl.clientWidth, H = orbitEl.clientHeight, R = Math.min(W * 0.46, H * 0.42), P = 1100;
   const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax);
   const half = orbs[0] ? orbs[0].b.offsetWidth / 2 : 33;
+  const raw = coverProgress(), unfold = raw * raw * (3 - 2 * raw);
+  const title = orbitEl.querySelector(".cover-title");
+  title.style.opacity = String(Math.max(0, 1 - raw * 2.6));
+  title.style.visibility = raw > .42 ? "hidden" : "visible";
+  coverExplore.hidden = raw < .75;
+  orbitEl.querySelector(".drag-hint").textContent = raw > .5 ? "Scroll up to gather · tap any tile" : "Drag to spin · scroll to unfold";
   for (const o of orbs) {
     const x1 = o.x * cy + o.z * sy, z1 = -o.x * sy + o.z * cy;
     const y2 = o.y * cx - z1 * sx, z2 = o.y * sx + z1 * cx;
     const k = P / (P - z2 * R);
-    o.b.style.transform = `translate3d(${(W / 2 + x1 * R * k - half).toFixed(1)}px, ${(H / 2 + y2 * R * k - half * 1.4).toFixed(1)}px, 0) scale(${(k * 0.92).toFixed(3)}) rotateY(${(x1 * 26).toFixed(1)}deg) rotateX(${(-y2 * 20).toFixed(1)}deg)`;
-    o.b.style.opacity = (0.1 + 0.9 * Math.max(0, (z2 + 1) / 2) ** 1.5).toFixed(3);
+    const [row, col] = place(o.e.n), cell = Math.min(W * .94 / 18, H * .82 / 14);
+    const gridScale = cell / (half * 2), targetX = (W - cell * 18) / 2 + (col - 1) * cell;
+    const targetY = H * .08 + (row - 1) * cell * 1.4;
+    const px = W / 2 + x1 * R * k - half, py = H / 2 + y2 * R * k - half * 1.4;
+    o.b.style.transform = `translate3d(${(px + (targetX - px) * unfold).toFixed(1)}px, ${(py + (targetY - py) * unfold).toFixed(1)}px, 0) scale(${(k * .92 * (1 - unfold) + gridScale * .92 * unfold).toFixed(3)}) rotateY(${(x1 * 26 * (1 - unfold)).toFixed(1)}deg) rotateX(${(-y2 * 20 * (1 - unfold)).toFixed(1)}deg)`;
+    o.b.style.opacity = ((.1 + .9 * Math.max(0, (z2 + 1) / 2) ** 1.5) * (1 - unfold) + unfold).toFixed(3);
     o.b.style.zIndex = String(Math.round(500 + z2 * 400));
-    o.b.style.pointerEvents = z2 > -0.2 ? "auto" : "none";
+    o.b.style.pointerEvents = unfold > .6 || z2 > -.2 ? "auto" : "none";
   }
   orbitRAF = requestAnimationFrame(orbitFrame);
 }
@@ -2867,7 +2929,7 @@ const endDrag = () => {
   }
 };
 orbitEl.addEventListener("pointerup", endDrag);
-orbitEl.addEventListener("pointercancel", endDrag);
+orbitEl.addEventListener("pointercancel", () => { dragging = null; orbitEl.classList.remove("drag"); });
 const orbitStart = () => { if (!orbitRAF) orbitRAF = requestAnimationFrame(orbitFrame); };
 const orbitStop = () => { cancelAnimationFrame(orbitRAF); orbitRAF = 0; };
 
@@ -3172,6 +3234,8 @@ function playSceneMoment(e, delay = 0) {
       easing: "cubic-bezier(.45,0,.25,1)"
     }));
   });
+  const rain = svg.querySelector(".season-rain");
+  if(rain) sceneAnimations.push(rain.animate([{transform:"translate(2px,-10px)"},{transform:"translate(-2px,10px)"}],{duration:750,iterations:Infinity,easing:"linear"}));
   syncScenePlayback();
 }
 function revealExhibit(direction = 0) {
@@ -3194,12 +3258,134 @@ function revealExhibit(direction = 0) {
     }));
   });
 }
+// Direct interaction with the existing art. Every mode has a keyboard control.
+let interactionCleanup = () => {};
+function colourReveal(svg, old, key) {
+  if (!svg || reduced) return;
+  if (old) {
+    old.classList.add("colour-before"); old.setAttribute("aria-hidden", "true");
+    svg.parentElement.insertBefore(old, svg);
+    const wipe = svg.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 850, easing: "cubic-bezier(.22,1,.36,1)" });
+    wipe.finished.catch(() => {}).finally(() => old.remove());
+  }
+  if (isG && key === "monsoon") {
+    const rain = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    rain.classList.add("season-rain"); rain.setAttribute("aria-hidden", "true");
+    rain.innerHTML = Array.from({length:22}, (_, i) => `<path d="M${(i * 23) % 100},${(i * 37) % 90} l-2,7" stroke="#ddeaf1" stroke-width=".65" opacity=".75"/>`).join("");
+    svg.appendChild(rain);
+    sceneAnimations.push(rain.animate([{transform:"translate(2px,-10px)"},{transform:"translate(-2px,10px)"}],{duration:750,iterations:Infinity,easing:"linear"}));
+    syncScenePlayback();
+  }
+}
+function bindSceneInteractions(e) {
+  const frame = exhibit.querySelector(".frame"), svg = frame && frame.querySelector("svg");
+  if (!svg) return;
+  const abort = new AbortController(), signal = abort.signal, temporary = new Set();
+  let draggingArt = null, lensOn = false, layersOn = false;
+  const listen = (node, type, fn) => node.addEventListener(type, fn, { signal });
+  const controls = exhibit.querySelector(".art-tools");
+  const hint = exhibit.querySelector(".art-hint");
+  const lens = document.createElement("div"); lens.className = "inspection-lens"; lens.hidden = true; lens.setAttribute("aria-hidden", "true");
+  const lensSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  lensSvg.innerHTML = scene("lens" + (uid++), artOf(e)); lens.appendChild(lensSvg); frame.appendChild(lens);
+  const tags = document.createElement("div"); tags.className = "layer-tags"; tags.setAttribute("aria-hidden","true");
+  for(const [cls,label] of [["depth-back","Backdrop"],["depth-person","Subject"],["depth-front","Objects"]]) if(svg.querySelector("."+cls)) { const tag=document.createElement("span");tag.className=cls;tag.textContent=label;tags.appendChild(tag); }
+  frame.appendChild(tags);
+  const point = (ev, target = svg) => {
+    const matrix = target.getScreenCTM(); if (!matrix) return {x:50,y:50};
+    return new DOMPoint(ev.clientX,ev.clientY).matrixTransform(matrix.inverse());
+  };
+  const showLens = ev => {
+    const p = ev ? point(ev) : {x:50,y:50};
+    const r = frame.getBoundingClientRect();
+    lens.style.left = `${ev ? Math.max(0,Math.min(r.width,ev.clientX-r.left)) : r.width/2}px`;
+    lens.style.top = `${ev ? Math.max(0,Math.min(r.height,ev.clientY-r.top)) : r.height/2}px`;
+    lensSvg.setAttribute("viewBox",`${p.x-17} ${p.y-17} 34 34`);
+    lens.hidden = !lensOn;
+  };
+  const setLayers = on => {
+    if(on && lensOn) setLens(false);
+    layersOn = on; exhibit.classList.toggle("layers-open",on);
+    controls.querySelector("[data-layers]").setAttribute("aria-pressed",String(on));
+    sceneAnimations.forEach(a => on ? a.pause() : (motionPaused || document.hidden ? a.pause() : a.play()));
+    hint.textContent = on ? "Backdrop · subject · foreground" : "Drag an object · hold Inspect to zoom · hold Layers to separate";
+  };
+  const setLens = on => {
+    lensOn = on; if(on && layersOn) setLayers(false);
+    exhibit.classList.toggle("lens-open",on);
+    controls.querySelector("[data-lens]").setAttribute("aria-pressed",String(on));
+    showLens();
+  };
+  const addTransient = animation => { temporary.add(animation); animation.finished.catch(()=>{}).finally(()=>temporary.delete(animation)); };
+  const actors = [...new Set([...sceneAnimations.map(a=>a.effect.target), ...svg.querySelectorAll(".fg, .ob")])].filter(n=>n && svg.contains(n)).slice(0,7);
+  actors.forEach((node,i) => {
+    node.dataset.move = "true";
+    if(!node.querySelector("[data-move]")){node.setAttribute("tabindex","0");node.setAttribute("role","button");}
+    const name = (node.getAttribute("class")||"object").replace(/\b(?:detail|ob|fg|cow-mouth)\b/g,"").replace(/-/g," ").trim()||"illustrated subject";
+    node.setAttribute("aria-label",`Move ${name}. Drag, press Enter, or use arrow keys.`);
+    const react = () => {
+      if(reduced || draggingArt || lensOn || layersOn || motionPaused) return;
+      addTransient(node.animate(sceneFrames(motionKind(node.getAttribute("class")||""),e.n+2),{duration:650,easing:"ease-out"}));
+    };
+    listen(node,"pointerenter",react); listen(node,"focus",react);
+    listen(node,"keydown",ev=>{
+      if(ev.key==="Enter" || ev.key===" "){ev.preventDefault();ev.stopPropagation();react();return;}
+      const d={ArrowLeft:[-7,0],ArrowRight:[7,0],ArrowUp:[0,-7],ArrowDown:[0,7]}[ev.key];
+      if(!d || lensOn || layersOn) return;
+      ev.preventDefault();ev.stopPropagation();
+      if(!reduced) addTransient(node.animate([{transform:`translate(${d[0]}px,${d[1]}px)`},{transform:"none"}],{duration:850,easing:"cubic-bezier(.2,1.5,.4,1)"}));
+    });
+  });
+  listen(svg,"pointerdown",ev=>{
+    if(lensOn){showLens(ev);return;}
+    if(layersOn || ev.target.closest(".hot")) return;
+    const node=ev.target.closest("[data-move]"); if(!node) return;
+    ev.preventDefault();ev.stopPropagation();
+    for(const a of sceneAnimations) if(a.effect.target===node || node.contains(a.effect.target)) a.cancel();
+    const parent=node.parentElement, p=point(ev,parent);
+    draggingArt={node,parent,x:p.x,y:p.y,pointer:ev.pointerId};
+    svg.setPointerCapture(ev.pointerId);exhibit.classList.add("object-drag");
+  });
+  listen(svg,"pointermove",ev=>{
+    if(lensOn){showLens(ev);return;}
+    if(!draggingArt) return;
+    const p=point(ev,draggingArt.parent), dx=Math.max(-12,Math.min(12,p.x-draggingArt.x)),dy=Math.max(-10,Math.min(10,p.y-draggingArt.y));
+    draggingArt.node.style.transform=`translate(${dx}px,${dy}px) rotate(${dx*.3}deg)`;
+  });
+  const release = () => {
+    if(!draggingArt)return;
+    const {node,pointer}=draggingArt, from=node.style.transform;
+    draggingArt=null;node.style.transform="";exhibit.classList.remove("object-drag");
+    if(svg.hasPointerCapture(pointer))svg.releasePointerCapture(pointer);
+    if(!reduced){const spring=node.animate(from ? [{transform:from},{transform:"none"}] : sceneFrames(motionKind(node.getAttribute("class")||""),e.n+3),{duration:900,easing:"cubic-bezier(.16,1.55,.32,1)"});addTransient(spring);spring.finished.then(()=>{if(sheet.open && current===e)playSceneMoment(e);}).catch(()=>{});}
+  };
+  listen(svg,"pointerup",release);listen(svg,"pointercancel",release);
+  listen(frame,"pointermove",ev=>{if(lensOn)showLens(ev);});
+  listen(frame,"pointerleave",()=>{if(lensOn)lens.hidden=true;});
+  listen(frame,"pointerenter",ev=>{if(lensOn)showLens(ev);});
+  for(const [selector,set] of [["[data-lens]",setLens],["[data-layers]",setLayers]]){
+    const button=controls.querySelector(selector);
+    listen(button,"pointerdown",ev=>{ev.preventDefault();button.setPointerCapture(ev.pointerId);set(true);});
+    listen(button,"pointermove",ev=>{if(selector==="[data-lens]" && lensOn)showLens(ev);});
+    listen(button,"pointerup",()=>set(false));listen(button,"pointercancel",()=>set(false));
+    listen(button,"click",ev=>{if(ev.detail===0)set(button.getAttribute("aria-pressed")!=="true");});
+  }
+  // Holding the art itself provides a touch-friendly loupe without dragging an object.
+  let holdTimer=0;
+  listen(frame,"pointerdown",ev=>{if(draggingArt||layersOn||ev.target.closest(".hot"))return;const x=ev.clientX,y=ev.clientY;holdTimer=setTimeout(()=>{setLens(true);showLens({clientX:x,clientY:y});},420);});
+  const clearHold=()=>{clearTimeout(holdTimer);holdTimer=0;};
+  listen(frame,"pointermove",()=>{if(!lensOn)clearHold();});
+  listen(frame,"pointerup",()=>{clearHold();if(lensOn)setLens(false);});listen(frame,"pointercancel",()=>{clearHold();setLens(false);});
+  interactionCleanup=()=>{clearHold();abort.abort();temporary.forEach(a=>a.cancel());lens.remove();tags.remove();exhibit.classList.remove("layers-open","lens-open","object-drag");};
+}
+
 function render(e, direction = 0) {
+  interactionCleanup();
   current = e;
   const s = e.src;
   exhibit.innerHTML = `
     <button type="button" class="close" data-close>Close <span>×</span></button>
-    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div></div>
+    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div><div class="art-tools"><button type="button" class="moment-control" data-lens aria-pressed="false">Inspect</button><button type="button" class="moment-control" data-layers aria-pressed="false">Layers</button></div><p class="art-hint">Drag an object · hold Inspect to zoom · hold Layers to separate</p></div>
     <div class="placard ${e.fam}">
       <p class="no">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -3217,7 +3403,7 @@ function render(e, direction = 0) {
   flick();
   const flipper = exhibit.querySelector(".flipper"), c3d = exhibit.querySelector(".c3d"), glare = exhibit.querySelector(".glare");
   const pose = (ev) => {
-    if (reduced || closingExhibit || (ev.pointerType === "touch" && !ev.buttons)) return;
+    if (reduced || exhibit.matches(".object-drag, .lens-open, .layers-open") || closingExhibit || (ev.pointerType === "touch" && !ev.buttons)) return;
     const r = c3d.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
     const y = Math.max(0, Math.min(1, (ev.clientY - r.top) / r.height));
@@ -3238,6 +3424,7 @@ function render(e, direction = 0) {
   eyesWake();
   revealExhibit(direction);
   playSceneMoment(e, direction ? 150 : 250);
+  bindSceneInteractions(e);
 }
 // Hotspots and the list of pieces light each other up
 function bindHots() {
@@ -3292,7 +3479,7 @@ function go(dir) {
 
 sheet.addEventListener("click", ev => { if (ev.target === sheet) closeExhibit(); });
 sheet.addEventListener("cancel", ev => { ev.preventDefault(); closeExhibit(); });
-sheet.addEventListener("close", () => { stopSceneMotion(); exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = []; clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
+sheet.addEventListener("close", () => { interactionCleanup(); stopSceneMotion(); exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = []; clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
 document.addEventListener("keydown", ev => {
   if (!sheet.open || ev.target.matches("input, textarea, select") || ev.altKey || ev.ctrlKey || ev.metaKey) return;
   if (ev.key === "ArrowRight") { ev.preventDefault(); go(1); }
@@ -3346,7 +3533,7 @@ async function shareImage(e) {
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
-  ctx.font = '600 26px Caudex, serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
+  ctx.font = '600 26px Caudex, serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE ${ED.issue}`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
   await drawCard(ctx, e, cx, cy, cw);
@@ -3454,7 +3641,7 @@ function curtain() {
 const h = location.hash.slice(1);
 const fromHash = h && !VIEWS.includes(h) && get(h);
 show(fromHash ? "table" : (VIEWS.includes(h) ? h : "cover"), { keepScroll: true });
-if (fromHash) open(fromHash);
+if (fromHash) requestAnimationFrame(() => open(fromHash));
 else if (!h || h === "cover") curtain();
 
 // Extras: colourways, eyes that follow you, the tear sheet, the living colophon,
