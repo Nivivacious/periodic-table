@@ -142,7 +142,7 @@ function dyeNote(e) {
 function setDye(e, key) {
   if (key) dyeState.set(e.sym, key); else dyeState.delete(e.sym);
   const svg = exhibit.querySelector(".frame svg");
-  if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); }
+  if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); playSceneMoment(e, 150); }
   exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
   const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
   flick();
@@ -710,12 +710,88 @@ async function closeExhibit() {
   try { const animation = liftCard(true); if (animation) await animation.finished; } catch (_) {}
   sheet.close(); clearLift(); closingExhibit = false;
 }
-function render(e) {
+// A short, material-aware performance for the existing SVG artwork.
+let sceneAnimations = [], exhibitAnimations = [];
+function stopSceneMotion() {
+  sceneAnimations.forEach(a => a.cancel()); sceneAnimations = [];
+}
+function motionKind(name) {
+  if (/cow-mouth/.test(name)) return "chew";
+  if (/(?:crow|crows|pigeon)/.test(name)) return "hop";
+  if (/(?:smoke|clouds|steam)/.test(name)) return "drift";
+  if (/(?:puddle|foam|water)/.test(name)) return "ripple";
+  if (/(?:bottle|rum|can20|coconut|cylinder)/.test(name)) return "rock";
+  if (/(?:jhumka|hoops|necklace|layered|pearls|chain|beads|bangles|tikka|matha|nath)/.test(name)) return "jewel";
+  if (/(?:pallu|scarf|bow|veil|dupatta|cape|bunting|flex|papers|poster|bag|leaves|garland|flowers|tabebuia|tree)/.test(name)) return "breeze";
+  if (/(?:dog|sitter|sweeper|istri)/.test(name)) return "greet";
+  if (/(?:vinyl|wheel|tyre)/.test(name)) return "turn";
+  return "settle";
+}
+function sceneFrames(kind, n) {
+  const a = 1 + (n % 5) * .12;
+  const still = { transform: "none" };
+  const motions = {
+    chew: [still, { transform: "translate(.7px,.5px) rotate(2deg)" }, still],
+    hop: [still, { transform: `translateY(${-2 * a}px) rotate(-3deg)`, offset: .35 }, still],
+    drift: [still, { transform: `translate(${a}px,${-2 * a}px)`, opacity: .65 }, still],
+    ripple: [still, { transform: `scaleX(${1 + a * .06})`, opacity: .8 }, still],
+    rock: [still, { transform: `rotate(${4 * a}deg)` }, { transform: "rotate(-2deg)" }, still],
+    jewel: [still, { transform: `rotate(${5 * a}deg)` }, { transform: "rotate(-3deg)" }, still],
+    breeze: [still, { transform: `skewX(${2 * a}deg) rotate(1deg)` }, { transform: "skewX(-1deg)" }, still],
+    greet: [still, { transform: "rotate(-1.5deg) translateY(-.6px)" }, still],
+    turn: [still, { transform: `rotate(${8 * a}deg)` }, still],
+    settle: [still, { transform: "translateY(-.8px) rotate(.6deg)" }, still]
+  };
+  return motions[kind];
+}
+function playSceneMoment(e, delay = 0) {
+  stopSceneMotion();
+  if (reduced || !e) return;
+  const svg = exhibit.querySelector(".frame svg"); if (!svg) return;
+  const candidates = [...svg.querySelectorAll(".detail, .ob, [class^='set-'], .cow-mouth")];
+  // Select details by their material, with a stable variation for every element.
+  const picked = candidates.filter(node => motionKind(node.getAttribute("class")) !== "settle");
+  const actors = picked.slice(0, 4);
+  if (!actors.length) {
+    const subject = svg.querySelector(".fg, .ob"); if (subject) actors.push(subject);
+  }
+  actors.forEach((node, i) => {
+    const kind = motionKind(node.getAttribute("class") || "");
+    node.style.transformBox = "fill-box";
+    node.style.transformOrigin = /jewel|breeze/.test(kind) ? "top center" : kind === "rock" || node.classList.contains("fg") ? "bottom center" : "center";
+    sceneAnimations.push(node.animate(sceneFrames(kind, e.n), {
+      duration: kind === "chew" ? 480 : 1300 + (e.n % 4) * 120,
+      delay: delay + i * 110, iterations: kind === "chew" ? 5 : 2,
+      easing: "cubic-bezier(.45,0,.25,1)"
+    }));
+  });
+}
+function revealExhibit(direction = 0) {
+  exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = [];
+  if (reduced) return;
+  const card = exhibit.querySelector(".flipper");
+  if (direction && card) exhibitAnimations.push(card.animate([
+    { opacity: 0, transform: `translateX(${direction * 20}px) rotate(${direction * 2}deg)` },
+    { opacity: 1, transform: "none" }
+  ], { duration: 520, easing: "cubic-bezier(.22,1,.36,1)" }));
+  exhibit.querySelectorAll(".placard > *, .moment-control").forEach((node, i) => {
+    exhibitAnimations.push(node.animate([
+      { opacity: 0, transform: `translateY(${direction ? 8 : 12}px)` },
+      { opacity: 1, transform: "none" }
+    ], { duration: 550, delay: Math.min(i * 45, 240), easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" }));
+  });
+  exhibit.querySelectorAll(".depth-back, .depth-person, .depth-front").forEach((node, i) => {
+    exhibitAnimations.push(node.animate([{ opacity: .35 }, { opacity: 1 }], {
+      duration: 650, delay: 120 + Math.min(i, 5) * 65, fill: "backwards", easing: "ease-out"
+    }));
+  });
+}
+function render(e, direction = 0) {
   current = e;
   const s = e.src;
   exhibit.innerHTML = `
     <button type="button" class="close" data-close>Close <span>×</span></button>
-    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div></div>
+    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"${reduced ? " hidden" : ""}><span aria-hidden="true">↻</span> Replay moment</button></div>
     <div class="placard ${e.fam}">
       <p class="no">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -740,6 +816,7 @@ function render(e) {
     flipper.style.transform = `rotateY(${(x - .5) * 10}deg) rotateX(${(.5 - y) * 8}deg)`;
     c3d.style.setProperty("--depth-x", `${(x - .5) * 2}px`);
     c3d.style.setProperty("--depth-y", `${(y - .5) * 2}px`);
+    c3d.style.setProperty("--light-x", `${x * 100}%`); c3d.style.setProperty("--light-y", `${y * 100}%`);
     glare.style.setProperty("--gx", `${x * 100}%`); glare.style.setProperty("--gy", `${y * 100}%`);
   };
   const resetPose = () => {
@@ -751,6 +828,8 @@ function render(e) {
   ["pointerleave", "pointerup", "pointercancel"].forEach(type => c3d.addEventListener(type, resetPose));
   bindHots();
   eyesWake();
+  revealExhibit(direction);
+  playSceneMoment(e, direction ? 300 : 650);
 }
 // Hotspots and the list of pieces light each other up
 function bindHots() {
@@ -762,6 +841,7 @@ function bindHots() {
 exhibit.addEventListener("click", ev => {
   const t = ev.target.closest("button"); if (!t) return;
   if (t.hasAttribute("data-close")) return closeExhibit();
+  if (t.hasAttribute("data-replay")) return playSceneMoment(current);
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
   if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
@@ -791,17 +871,24 @@ function open(e, source = null) {
 }
 function go(dir) {
   if (closingExhibit) return;
+  const focused = document.activeElement && document.activeElement.dataset.go;
   clearLift(); liftedFrom = null;
-  if (dir === "r") { let r; do { r = els[Math.floor(Math.random() * els.length)]; } while (r === current); return render(r); }
-  render(els[(current.n - 1 + Number(dir) + els.length) % els.length]);
+  let next;
+  if (dir === "r") { do { next = els[Math.floor(Math.random() * els.length)]; } while (next === current); }
+  else next = els[(current.n - 1 + Number(dir) + els.length) % els.length];
+  render(next, dir === "r" ? 1 : Number(dir));
+  const control = focused && exhibit.querySelector(`[data-go="${focused}"]`);
+  if (control) control.focus({ preventScroll: true });
 }
+
 sheet.addEventListener("click", ev => { if (ev.target === sheet) closeExhibit(); });
 sheet.addEventListener("cancel", ev => { ev.preventDefault(); closeExhibit(); });
-sheet.addEventListener("close", () => { clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
+sheet.addEventListener("close", () => { stopSceneMotion(); exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = []; clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
 document.addEventListener("keydown", ev => {
-  if (!sheet.open) return;
-  if (ev.key === "ArrowRight") go(1);
-  if (ev.key === "ArrowLeft") go(-1);
+  if (!sheet.open || ev.target.matches("input, textarea, select") || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+  if (ev.key === "ArrowRight") { ev.preventDefault(); go(1); }
+  if (ev.key === "ArrowLeft") { ev.preventDefault(); go(-1); }
+  if (ev.key.toLowerCase() === "r") playSceneMoment(current);
 });
 
 // ---------- Share as an image (1080 × 1920, for stories) ----------

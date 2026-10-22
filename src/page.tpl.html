@@ -588,26 +588,25 @@ dialog.sheet[open] .exhibit { animation: none; }
 .sheet .depth-mid { transform: translate(calc(var(--depth-x) * .5), calc(var(--depth-y) * .5)); }
 .sheet .depth-person { transform: translate(calc(var(--depth-x) * 1.5), calc(var(--depth-y) * 1.5)); }
 .sheet .depth-front { transform: translate(calc(var(--depth-x) * 2.8), calc(var(--depth-y) * 2.8)); }
-.sheet .detail, .sheet .ob, .sheet .cow-mouth { transform-box: fill-box; transform-origin: center; }
-.sheet .detail-jhumka, .sheet .detail-bigjhumka, .sheet .detail-hoops,
-.sheet .detail-necklace, .sheet .detail-layered, .sheet .detail-pearls,
-.sheet .detail-scarf, .sheet .detail-pallu, .sheet .detail-bow,
-.sheet .ob-bunting, .sheet .ob-flex, .sheet .ob-papers,
-.sheet .set-bunting, .sheet .set-flex {
-  transform-origin: top center; animation: detail-sway 1.6s .65s ease-in-out 3;
-}
-.sheet .ob-bottle { transform-origin: bottom center; animation: bottle-rock 1.4s .65s ease-in-out 2; }
-.sheet .ob-crow, .sheet .ob-crows, .sheet .ob-pigeon,
-.sheet .set-crow, .sheet .set-crows, .sheet .set-pigeon { animation: bird-hop 1.3s .8s ease-in-out 2; }
-.sheet .ob-smoke { animation: smoke-drift 2s .6s ease-out 2; }
-.sheet .ob-puddle { animation: puddle-ripple 1.8s .7s ease-in-out 2; }
-.sheet .cow-mouth { animation: cow-chew .65s .8s ease-in-out 6; }
-@keyframes detail-sway { 0%,100% { transform: rotate(0); } 25% { transform: rotate(5deg); } 70% { transform: rotate(-3deg); } }
-@keyframes bottle-rock { 0%,100% { transform: rotate(0); } 30% { transform: rotate(7deg); } 65% { transform: rotate(-4deg); } }
-@keyframes bird-hop { 0%,35%,100% { transform: translateY(0); } 18% { transform: translateY(-2px) rotate(-3deg); } }
-@keyframes smoke-drift { 0%,100% { transform: translateY(0); opacity: 1; } 65% { transform: translate(1px,-3px); opacity: .55; } }
-@keyframes puddle-ripple { 0%,100% { transform: scaleX(1); } 50% { transform: scaleX(1.12); } }
-@keyframes cow-chew { 0%,100% { transform: translate(0,0); } 50% { transform: translate(.7px,.6px) rotate(3deg); } }
+/* Light follows the hand like a softly lit paper exhibit. */
+.sheet .wall { position: relative; background: radial-gradient(ellipse at 50% 35%, color-mix(in oklab, var(--paper-2) 84%, white), var(--paper-2) 75%); gap: 1.4rem; }
+.sheet .flipper .card { transition: box-shadow .4s ease; }
+.sheet .flipper .card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: .55; background: radial-gradient(ellipse at var(--light-x, 35%) var(--light-y, 20%), rgba(255,255,255,.3), transparent 65%); box-shadow: inset 0 1px 0 rgba(255,255,255,.8), inset 0 -1px 0 rgba(40,30,10,.12); }
+.sheet .c3d:hover .card { box-shadow: 0 0 0 1px rgba(21,21,21,.18), 0 32px 45px -24px rgba(40,30,10,.5); }
+.moment-control { border: 0; padding: .5rem .75rem; background: none; color: var(--muted); font: 500 .61rem var(--sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; display: inline-flex; gap: .55rem; align-items: center; border-radius: 2rem; transition: color .25s, background .25s; }
+.moment-control[hidden] { display: none; }
+.moment-control span { font-size: 1.05rem; transition: transform .6s var(--ease-out); }
+.moment-control:hover, .moment-control:focus-visible { color: var(--ink); background: rgba(255,255,255,.4); }
+.moment-control:hover span { transform: rotate(-90deg); }
+.moment-control:focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+.ex-nav .link .arr { display: inline-block; transition: transform .35s var(--ease-out); }
+.ex-nav [data-go="1"]:hover .arr { transform: translateX(4px); }
+.ex-nav [data-go="-1"]:hover .arr { transform: translateX(-4px); }
+.dye { transition: transform .3s var(--ease-out), box-shadow .3s; }
+.dye:hover { transform: translateY(-3px) scale(1.08); }
+.dye:active { transform: scale(.94); }
+.sheet .hot g:focus-visible { outline: none; }
+.sheet .hot g:focus-visible .dot { stroke: var(--ink); stroke-width: 1.5; }
 @media (prefers-reduced-motion: reduce) {
   .sheet .depth-back, .sheet .depth-mid, .sheet .depth-person, .sheet .depth-front { transform: none !important; }
 }
