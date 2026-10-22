@@ -45,12 +45,16 @@ const ED = isG ? {
   key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
   flag: { label: "Peak Bangalore", short: "PEAK BLR", led: "Peak Bangalore" },
   tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
-  word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table",
+  word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table", otherTitle: "The Periodic Table of Indian Fashion",
+  dyeLabel: "Season", dyeNote: "Same find, another Bangalore month.",
+  sheet: { tool: "The skip", kicker: "The skip", h2: "Your <em>skip.</em>", lede: "Everything you threw in, from any card. Drag it around, pile it up, then save the mess as an image.", empty: "The skip is empty. Open any find and press “Throw in”.", pin: "Throw in the skip", unpin: "Take it out", file: "the-skip" },
 } : {
   key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
   flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
   tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
-  word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
+  word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table", otherTitle: "The Periodic Table of Bangalore Garbage",
+  dyeLabel: "Colourways", dyeNote: "The season's colours, each one named by the press.",
+  sheet: { tool: "Tear sheet", kicker: "Tear sheet", h2: "Your <em>tear sheet.</em>", lede: "Pull cards off the table and lay them out the way a stylist tears pages from a magazine. Drag to arrange, then save it as an image.", empty: "Nothing pinned yet. Open any card and press “Pin to tear sheet”.", pin: "Pin to tear sheet", unpin: "Unpin", file: "tear-sheet" },
 };
 document.documentElement.dataset.ed = ED.key;
 document.title = isG ? "The Periodic Table of Bangalore Garbage" : "The Periodic Table of Indian Fashion";
@@ -70,16 +74,17 @@ if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_C
 if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
 document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(chosen && b.dataset.ed === ED.key)));
 document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.setAttribute("aria-label", ED.otherLabel); b.insertAdjacentHTML("beforeend", `${b.classList.contains("edflip") ? ED.other.charAt(0).toUpperCase() + ED.other.slice(1) + " edition" : ED.otherLabel} <span class="arr">→</span>`); });
-function switchEdition(key) {
+function switchEdition(key, from) {
   if (!ED_KEYS.includes(key) || key === ED.key) return;
   try { localStorage.setItem("ptif-edition", key); } catch (err) {}
   const u = new URL(location.href); u.searchParams.set("ed", key); u.hash = "";
+  const wait = portalGrow(from);
   document.documentElement.classList.add("switching");
-  setTimeout(() => location.assign(u.toString()), 260);
+  setTimeout(() => location.assign(u.toString()), wait);
 }
 document.addEventListener("click", ev => {
   const b = ev.target.closest("[data-ed], [data-ed-switch]"); if (!b) return;
-  switchEdition(b.dataset.ed || ED.other);
+  switchEdition(b.dataset.ed || ED.other, b);
 });
 
 const ELEMENTS_IN = isG ? GARBAGE : ELEMENTS;
@@ -94,6 +99,58 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (err) {} },
 };
 
+// ---------- Colourways (fashion) and seasons (garbage) ----------
+// Each fashion dye is a colour the press named this season; `by` points at the element whose source said so.
+const DYES = isG ? [
+  { k: "monsoon", name: "Monsoon", when: "July to September", scene: { bg: "grey", gr: "kaapi" }, add: [["puddle", 36, "sky", 20], ["puddle", 72, "sky", 12]] },
+  { k: "summer", name: "Summer", when: "March to May", scene: { bg: "peach", gr: "beige" }, add: [["sun", "yellow", 82, 18]] },
+  { k: "tabebuia", name: "Tabebuia week", when: "late January", scene: { bg: "sky", gr: "grey" }, add: [["tabebuia", 20], ["petals", 50]] },
+  { k: "diwali", name: "Diwali night", when: "October", scene: { bg: "night", gr: "black" }, add: ["stars", "diyas", ["sparkles", "yellow"]] },
+  { k: "winter", name: "Winter morning", when: "December, before the fog lifts", scene: { bg: "lav", gr: "grey" }, add: [["moon", 82, 18]] },
+] : [
+  { k: "cloud", name: "Cloud Dancer", hex: "#EFECE4", by: "Cl" },
+  { k: "cherry", name: "Cherry Red", hex: "#A8182C", by: "Cn" },
+  { k: "butter", name: "Butter Yellow", hex: "#F2DF8E", by: "Yb" },
+  { k: "mocha", name: "Mocha", hex: "#8E6652", by: "Ca" },
+  { k: "cobalt", name: "Cobalt", hex: "#2E4EA3", by: "Ce" },
+  { k: "teal", name: "Teal Luxe", hex: "#1F6B74", by: "Tl" },
+  { k: "burgundy", name: "Burgundy", hex: "#6B1F30", src: typeof S_ELLE_PALETTE !== "undefined" ? S_ELLE_PALETTE : null },
+  { k: "pistachio", name: "Pistachio", hex: "#BBD39A", by: "Pm" },
+  { k: "lilac", name: "Lilac", hex: "#B59AD4", by: "Lv" },
+];
+const dyeState = new Map();
+const dyeOf = (e) => DYES.find(d => d.k === dyeState.get(e.sym)) || null;
+function artOf(e) {
+  const d = dyeOf(e);
+  if (!d) return e.art;
+  const a = JSON.parse(JSON.stringify(e.art));
+  if (isG) { Object.assign(a, d.scene); a.set = [...(a.set || []), ...d.add]; return a; }
+  for (const f of a.figs || []) { f.c = d.hex; f.l = d.hex; f.y = d.hex; if (f.hc2) f.hc2 = d.hex; }
+  return a;
+}
+const dyeSource = (d) => d.src || (d.by && get(d.by) && get(d.by).src) || null;
+function dyesHTML(e) {
+  const cur = dyeState.get(e.sym) || "";
+  const sw = (d) => `<button type="button" class="dye${cur === d.k ? " on" : ""}" data-dye="${d.k}" aria-pressed="${cur === d.k}" aria-label="${d.name}" title="${d.name}" style="--d:${d.hex || "transparent"}">${d.hex ? "" : `<i class="s-${d.k}"></i>`}</button>`;
+  return `<div class="dyes"><button type="button" class="dye orig${cur ? "" : " on"}" data-dye="" aria-pressed="${!cur}" aria-label="As drawn" title="As drawn"></button>${DYES.map(sw).join("")}</div><p class="dye-note">${dyeNote(e)}</p>`;
+}
+function dyeNote(e) {
+  const d = dyeOf(e);
+  if (!d) return ED.dyeNote;
+  if (isG) return `${d.name}, ${d.when}.`;
+  const s = dyeSource(d);
+  return `<b>${d.name}.</b> ${s ? `As reported by ${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}.` : ""}`;
+}
+function setDye(e, key) {
+  if (key) dyeState.set(e.sym, key); else dyeState.delete(e.sym);
+  const svg = exhibit.querySelector(".frame svg");
+  if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); }
+  exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
+  const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
+  flick();
+  renderSheetIfOpen();
+}
+
 // ---------- Images ----------
 const imgCache = new Map();
 function specImg(id, spec, vb = "6 10 88 88") {
@@ -101,7 +158,7 @@ function specImg(id, spec, vb = "6 10 88 88") {
   if (!imgCache.has(key)) imgCache.set(key, "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" preserveAspectRatio="xMidYMid slice">${scene("i" + id.replace(/\W/g, ""), spec)}</svg>`));
   return imgCache.get(key);
 }
-const sceneImg = (e, vb) => specImg(e.sym, e.art, vb);
+const sceneImg = (e, vb) => { const d = dyeOf(e); return specImg(e.sym + (d ? "-" + d.k : ""), artOf(e), vb); };
 
 // ---------- Hotspots: where each key piece sits on the figure ----------
 const PIECE_WORDS = {
@@ -144,15 +201,18 @@ function hotspots(e) {
 // ---------- Shared markup ----------
 const tileHTML = (e, id) => `${e.z ? `<span class="zdot" title="${ED.flag.label}"></span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
 let uid = 0;
+function hotHTML(e) {
+  const hs = hotspots(e);
+  return hs.length ? `<g class="hot">${hs.map(h => `<g data-i="${h.i}" tabindex="0" role="button" aria-label="${h.p}"><circle class="pulse" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/><circle class="dot" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/></g>`).join("")}</g>` : "";
+}
 function cardHTML(e, opts = {}) {
-  const hs = opts.hot ? hotspots(e) : [];
-  const hot = hs.length ? `<g class="hot">${hs.map(h => `<g data-i="${h.i}" tabindex="0" role="button" aria-label="${h.p}"><circle class="pulse" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/><circle class="dot" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/></g>`).join("")}</g>` : "";
+  const hot = opts.hot ? hotHTML(e) : "";
   return `<div class="card ${e.fam}"${opts.attrs || ""}>
     <div class="card-in">
       <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
       <div class="idx br"><b>${e.sym}</b><span>${e.n}</span></div>
       <div class="banner">${e.el}</div>
-      <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="${opts.hot ? "false" : "true"}">${scene("c" + (uid++) + e.sym, e.art)}${hot}</svg></div>
+      <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="${opts.hot ? "false" : "true"}">${scene("c" + (uid++) + e.sym, artOf(e))}${hot}</svg></div>
       <p class="cap">${e.trend}</p>
     </div>
     <div class="glare"></div>
@@ -637,11 +697,13 @@ function render(e) {
       <dl class="facts">
         <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
         <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
+      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="btn ghost" data-pin>${isPinned(e) ? ED.sheet.unpin : ED.sheet.pin}</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
+  exhibit.style.setProperty("--tint", famColor(e));
   flick();
   const flipper = exhibit.querySelector(".flipper"), c3d = exhibit.querySelector(".c3d"), glare = exhibit.querySelector(".glare");
   flipper.addEventListener("animationend", () => flipper.classList.remove("flip"), { once: true });
@@ -652,7 +714,11 @@ function render(e) {
     glare.style.setProperty("--gx", `${x * 100}%`); glare.style.setProperty("--gy", `${y * 100}%`);
   });
   c3d.addEventListener("pointerleave", () => flipper.style.transform = "");
-  // Hotspots and the list of pieces light each other up
+  bindHots();
+  eyesWake();
+}
+// Hotspots and the list of pieces light each other up
+function bindHots() {
   const lis = [...exhibit.querySelectorAll(".pieces li")], hots = [...exhibit.querySelectorAll(".hot g")];
   const light = (i) => { lis.forEach(l => l.classList.toggle("on", l.dataset.i === String(i))); hots.forEach(h => h.classList.toggle("on", h.dataset.i === String(i))); };
   hots.forEach(h => { ["pointerenter", "focus", "click"].forEach(t => h.addEventListener(t, () => light(h.dataset.i))); });
@@ -663,6 +729,8 @@ exhibit.addEventListener("click", ev => {
   if (t.hasAttribute("data-close")) return sheet.close();
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
+  if (t.hasAttribute("data-pin")) { togglePin(current); t.textContent = isPinned(current) ? ED.sheet.unpin : ED.sheet.pin; return; }
+  if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
   if (t.dataset.go) return go(t.dataset.go);
 });
 function open(e) { if (!e) return; render(e); if (!sheet.open) sheet.showModal(); }
@@ -671,6 +739,7 @@ function go(dir) {
   render(els[(current.n - 1 + Number(dir) + els.length) % els.length]);
 }
 sheet.addEventListener("click", ev => { if (ev.target === sheet) sheet.close(); });
+sheet.addEventListener("close", eyesSleep);
 document.addEventListener("keydown", ev => {
   if (!sheet.open) return;
   if (ev.key === "ArrowRight") go(1);
@@ -684,28 +753,49 @@ function wrap(ctx, text, x, y, maxW, lh) {
   for (const w of words) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > maxW && line) { ctx.fillText(line, x, y); y += lh; line = w; } else line = t; }
   ctx.fillText(line, x, y); return y;
 }
+// Draw one card on a canvas: top-left (x, y), width w, optional rotation about its centre.
+async function drawCard(ctx, e, x, y, w, rot = 0) {
+  const h = w * 1.4, col = famColor(e);
+  const art = await loadImg(sceneImg(e, "0 0 100 100"));
+  ctx.save();
+  if (rot) { ctx.translate(x + w / 2, y + h / 2); ctx.rotate(rot * Math.PI / 180); ctx.translate(-(x + w / 2), -(y + h / 2)); }
+  ctx.shadowColor = "rgba(21,21,21,.18)"; ctx.shadowBlur = w * .06; ctx.shadowOffsetY = w * .02;
+  ctx.fillStyle = "#FBF7EE"; ctx.fillRect(x, y, w, h);
+  ctx.shadowColor = "transparent";
+  ctx.strokeStyle = "#151515"; ctx.lineWidth = Math.max(1, w * .004); ctx.strokeRect(x + w * .033, y + w * .033, w - w * .066, h - w * .066);
+  const ax = x + w * .14, ay = y + w * .19, aw = w * .72, ah = h - w * .42;
+  ctx.save(); ctx.beginPath(); ctx.rect(ax, ay, aw, ah); ctx.clip();
+  const sc = Math.max(aw / art.width, ah / art.height);
+  ctx.drawImage(art, ax + (aw - art.width * sc) / 2, ay + ah - art.height * sc, art.width * sc, art.height * sc);
+  ctx.restore(); ctx.lineWidth = Math.max(1, w * .0026); ctx.strokeRect(ax, ay, aw, ah);
+  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = `600 ${w * .118}px Caudex, serif`; ctx.fillText(e.sym, x + w * .064, y + w * .164);
+  ctx.fillStyle = "#151515"; ctx.font = `600 ${w * .031}px Caudex, serif`; ctx.fillText(String(e.n), x + w * .069, y + w * .205);
+  ctx.textAlign = "center"; ctx.font = `600 ${w * .033}px Caudex, serif`; ctx.fillText(e.el.toUpperCase(), x + w / 2 + w * .05, y + w * .133);
+  ctx.font = `italic ${w * .056}px Caudex, serif`; ctx.fillText(e.trend, x + w / 2, y + h - w * .115);
+  ctx.restore();
+}
+function offerImage(c, name, label) {
+  c.toBlob(async blob => {
+    if (!blob) return toast("Couldn't make the image");
+    const url = URL.createObjectURL(blob), file = new File([blob], name, { type: "image/png" });
+    const canShare = navigator.canShare && navigator.canShare({ files: [file] });
+    $("shareIn").innerHTML = `<p class="kicker">${label}</p><img src="${url}" alt="${label}"><p>If the download doesn't start, press and hold (or right-click) the image to save it.</p>
+      <div class="ex-actions"><a class="btn" href="${url}" download="${file.name}">Download</a>${canShare ? `<button type="button" class="btn ghost" id="nativeShare">Share</button>` : ""}<button type="button" class="link" id="closeShare">Close</button></div>`;
+    $("closeShare").addEventListener("click", () => $("sharebox").close());
+    if (canShare) $("nativeShare").addEventListener("click", () => navigator.share({ files: [file], title: label }).catch(() => {}));
+    $("sharebox").showModal();
+  }, "image/png");
+}
 async function shareImage(e) {
   const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H;
-  const ctx = c.getContext("2d"), col = famColor(e);
+  const ctx = c.getContext("2d");
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
   ctx.font = '600 26px Caudex, serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
-  // Card
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
-  ctx.fillStyle = "#FBF7EE"; ctx.fillRect(cx, cy, cw, ch);
-  ctx.strokeStyle = "#151515"; ctx.lineWidth = 3; ctx.strokeRect(cx + 26, cy + 26, cw - 52, ch - 52);
-  const art = await loadImg(sceneImg(e, "0 0 100 100"));
-  const ax = cx + 110, ay = cy + 150, aw = cw - 220, ah = ch - 330;
-  ctx.save(); ctx.beginPath(); ctx.rect(ax, ay, aw, ah); ctx.clip();
-  const sc = Math.max(aw / art.width, ah / art.height);
-  ctx.drawImage(art, ax + (aw - art.width * sc) / 2, ay + ah - art.height * sc, art.width * sc, art.height * sc);
-  ctx.restore(); ctx.lineWidth = 2; ctx.strokeRect(ax, ay, aw, ah);
-  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = '600 92px Caudex, serif'; ctx.fillText(e.sym, cx + 50, cy + 128);
-  ctx.fillStyle = "#151515"; ctx.font = '600 24px Caudex, serif'; ctx.fillText(String(e.n), cx + 54, cy + 160);
-  ctx.textAlign = "center"; ctx.font = '600 26px Caudex, serif'; ctx.fillText(e.el.toUpperCase(), W / 2 + 40, cy + 104);
-  ctx.font = 'italic 44px Caudex, serif'; ctx.fillText(e.trend, W / 2, cy + ch - 90);
+  await drawCard(ctx, e, cx, cy, cw);
   // Placard
   ctx.textAlign = "left"; ctx.fillStyle = "#151515";
   ctx.font = '400 84px Caudex, serif';
@@ -713,17 +803,10 @@ async function shareImage(e) {
   ctx.font = 'italic 42px Caudex, serif'; ctx.fillStyle = "#3A3833";
   y = wrap(ctx, e.desc, 90, y + 70, W - 180, 52);
   ctx.font = '600 24px Caudex, serif'; ctx.fillStyle = "#77716A";
+  const d = dyeOf(e);
+  if (d) { ctx.fillText(`${ED.dyeLabel.toUpperCase()} · ${d.name.toUpperCase()}`, 90, Math.min(H - 110, y + 80)); y += 40; }
   if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
-  c.toBlob(async blob => {
-    if (!blob) return toast("Couldn't make the image");
-    const url = URL.createObjectURL(blob), file = new File([blob], `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, { type: "image/png" });
-    const canShare = navigator.canShare && navigator.canShare({ files: [file] });
-    $("shareIn").innerHTML = `<p class="kicker">Share image · ${e.sym}</p><img src="${url}" alt="${e.trend} card image"><p>If the download doesn't start, press and hold (or right-click) the image to save it.</p>
-      <div class="ex-actions"><a class="btn" href="${url}" download="${file.name}">Download</a>${canShare ? `<button type="button" class="btn ghost" id="nativeShare">Share</button>` : ""}<button type="button" class="link" id="closeShare">Close</button></div>`;
-    $("closeShare").addEventListener("click", () => $("sharebox").close());
-    if (canShare) $("nativeShare").addEventListener("click", () => navigator.share({ files: [file], title: e.trend }).catch(() => {}));
-    $("sharebox").showModal();
-  }, "image/png");
+  offerImage(c, `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, `Share image · ${e.sym}`);
 }
 
 // ---------- Search palette ----------
@@ -768,7 +851,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "lab", "families", "sources"];
+const VIEWS = ["cover", "table", "lab", "families", "sources", "tearsheet"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
@@ -778,6 +861,7 @@ function show(v, opts = {}) {
   v === "cover" ? orbitStart() : orbitStop();
   v === "families" ? requestAnimationFrame(inkStart) : inkStop();
   if (v !== "table") stopPlay();
+  if (v === "tearsheet") renderSheet();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
 document.addEventListener("click", ev => {
@@ -806,7 +890,7 @@ function curtain() {
   const finish = () => { if (done) return; done = true; num.textContent = "118"; el.classList.add("out"); setTimeout(() => { el.hidden = true; el.classList.remove("out"); }, 1000); };
   (function step(t) {
     if (done) return;
-    const p = Math.min(1, (t - t0) / dur), eased = 1 - Math.pow(1 - p, 3);
+    const p = Math.max(0, Math.min(1, (t - t0) / dur)), eased = 1 - Math.pow(1 - p, 3);
     num.textContent = String(Math.round(eased * 118)).padStart(3, "0");
     p < 1 ? requestAnimationFrame(step) : setTimeout(finish, 250);
   })(t0);

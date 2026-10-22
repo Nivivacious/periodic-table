@@ -86,7 +86,6 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .edflip:hover { color: var(--accent); }
 .edflip:hover .arr { transform: translateX(3px); }
 html[data-ed="garbage"] { --accent: #2F6B4F; }
-html.switching body { opacity: 0; transition: opacity .25s ease; }
 .menu-ed { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); display: grid; gap: .6rem; justify-items: start; }
 .menu-ed .edflip { border-left: 0; padding-left: 0; }
 .src .note { color: var(--ink-2); }
@@ -530,6 +529,69 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   .today { max-width: none; }
   .drag-hint { display: none; }
 }
+
+/* ---------- Extras: colourways, tinted exhibit, tear sheet, frieze, portal, brocade ---------- */
+.exhibit { --tint: var(--ink); background: color-mix(in oklab, var(--paper) 94%, var(--tint)); transition: background .7s var(--ease); }
+.wall { background: color-mix(in oklab, var(--paper-2) 88%, var(--tint)); transition: background .7s var(--ease); }
+.placard .no { border-left-color: var(--c); }
+.dyes { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; }
+.dye { --d: transparent; width: 1.35rem; height: 1.35rem; border-radius: 50%; border: 1px solid var(--ink); background: var(--d); cursor: pointer; padding: 0; position: relative; box-shadow: inset 0 0 0 2px var(--paper); transition: transform .3s var(--ease); overflow: hidden; }
+.dye:hover { transform: translateY(-2px); }
+.dye.on { box-shadow: inset 0 0 0 2px var(--paper), 0 0 0 1.5px var(--ink); }
+.dye.orig { background: repeating-linear-gradient(135deg, var(--paper) 0 3px, var(--ink) 3px 4px); }
+.dye i { position: absolute; inset: 2px; border-radius: 50%; display: block; }
+.dye .s-monsoon { background: linear-gradient(#A9A6A0, #7A4528); }
+.dye .s-summer { background: linear-gradient(#F3C9A4, #D9C4A3); }
+.dye .s-tabebuia { background: linear-gradient(#A9CBE6 50%, #E58A9B 50%); }
+.dye .s-diwali { background: radial-gradient(circle at 50% 60%, #F2B330 0 25%, #1B2340 30%); }
+.dye .s-winter { background: linear-gradient(#B7A5D8, #A9A6A0); }
+.dye-note { margin: .4rem 0 0; font: italic .95rem/1.35 var(--body); color: var(--muted); }
+.dye-note b { font-style: normal; font-weight: 400; color: var(--ink); }
+.dye-note a { text-decoration: none; border-bottom: 1px solid var(--accent); color: var(--ink); }
+/* Tear sheet */
+.sheet-actions { display: flex; gap: 1.4rem; align-items: center; align-self: end; }
+.board { position: relative; height: clamp(26rem, 70vh, 44rem); border: 1px solid var(--ink); background: var(--card); overflow: hidden; touch-action: none; }
+.board::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: 3rem 3rem; opacity: .35; }
+.pin { position: absolute; --r: 0deg; transform: rotate(var(--r)); cursor: grab; transition: transform .5s var(--ease), box-shadow .3s ease; }
+.pin .card { --w: 9.5rem; box-shadow: 0 8px 18px -10px rgba(21,21,21,.45); }
+.pin.lift { cursor: grabbing; transition: none; z-index: 5; transform: rotate(0deg) scale(1.04); }
+.pin .unpin { position: absolute; top: -.6rem; right: -.6rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid var(--ink); background: var(--paper); font: 600 .9rem/1 var(--sans); cursor: pointer; opacity: 0; transition: opacity .25s ease; }
+.pin:hover .unpin, .pin:focus-within .unpin { opacity: 1; }
+.board-empty { margin: 1rem 0 0; font: italic 1.1rem var(--body); color: var(--muted); text-align: center; }
+/* Frieze */
+.frieze { overflow: hidden; border-bottom: 1px solid var(--rule); }
+.frieze svg { display: block; width: 100%; height: clamp(72px, 9vw, 120px); }
+.frieze .walker { cursor: pointer; }
+.frieze .walker:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.frieze .walker .fg { animation: sway 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.frieze .walker .ob { animation: obob 1.4s ease-in-out infinite; transform-box: fill-box; }
+.frieze:hover .walker .fg, .frieze:hover .walker .ob { animation-play-state: paused; }
+/* Portal */
+.portal { position: fixed; left: 0; top: 0; z-index: 95; width: 300px; height: 180px; border: 1px solid var(--ink); border-radius: 22px; background: var(--paper); overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-6px) scale(.97); transition: opacity .35s ease, transform .45s var(--ease); box-shadow: 0 30px 60px -30px rgba(21,21,21,.6); }
+.portal.on { opacity: 1; transform: none; }
+.portal-strip { position: absolute; left: 0; top: 24px; display: flex; gap: 10px; width: max-content; animation: pstrip 26s linear infinite; }
+.portal-strip img { width: 86px; height: 86px; object-fit: cover; border: 1px solid var(--ink); background: var(--card); }
+@keyframes pstrip { to { transform: translateX(-50%); } }
+.portal-t { position: absolute; left: 0; right: 0; bottom: 14px; margin: 0; text-align: center; font: 600 .6rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); }
+.portal.grow { left: 0 !important; top: 0 !important; width: 100vw; height: 100vh; border-radius: 0; border-color: transparent; transition: left .8s var(--ease), top .8s var(--ease), width .8s var(--ease), height .8s var(--ease), border-radius .8s var(--ease), opacity .35s ease; }
+.portal.grow .portal-strip { top: 50%; transform: translateY(-50%); animation-duration: 40s; }
+.portal.grow .portal-strip img { width: 160px; height: 160px; transition: width .8s var(--ease), height .8s var(--ease); }
+.portal.grow .portal-t { bottom: 18vh; font-size: .8rem; transition: bottom .8s var(--ease); }
+html.switching .mast, html.switching main, html.switching .colophon { opacity: 0; transition: opacity .5s ease .3s; }
+/* Brocade in the title */
+@property --mr { syntax: "<length>"; inherits: false; initial-value: 0px; }
+html[data-ed="fashion"] .cover-title h1 em { --brocade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect width='36' height='36' fill='%238A1446'/%3E%3Cpath d='M18 2 L30 18 L18 34 L6 18Z' fill='%23E9B949'/%3E%3Cpath d='M0 0 L8 18 L0 36Z M36 0 L28 18 L36 36Z' fill='%23E9B949'/%3E%3Ccircle cx='18' cy='18' r='3' fill='%23FBF3DF'/%3E%3Ccircle cx='0' cy='18' r='2' fill='%23FBF3DF'/%3E%3Ccircle cx='36' cy='18' r='2' fill='%23FBF3DF'/%3E%3Ccircle cx='18' cy='0' r='2' fill='%23FBF3DF'/%3E%3Ccircle cx='18' cy='36' r='2' fill='%23FBF3DF'/%3E%3C/svg%3E"); }
+html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%236F6C66'/%3E%3Cpath d='M0 22H44 M22 0V22 M11 22V44 M33 22V44' stroke='%232A2823' stroke-width='3.5'/%3E%3Cpath d='M3 9h7 M28 13h9 M6 33h6 M34 37h7' stroke='%23C7C3BA' stroke-width='2.2' stroke-linecap='round'/%3E%3Ccircle cx='26' cy='7' r='1.5' fill='%23C7C3BA'/%3E%3Ccircle cx='16' cy='37' r='1.5' fill='%23C7C3BA'/%3E%3C/svg%3E"); }
+@media (pointer: fine) {
+  .cover-title h1 em { pointer-events: auto; --mx: 50%; --my: 50%; --mr: 0px; color: transparent; -webkit-background-clip: text; background-clip: text; background-image: radial-gradient(circle at var(--mx) var(--my), transparent 0, transparent calc(var(--mr) * .5), var(--accent) var(--mr)), var(--brocade); background-size: auto, 36px 36px; transition: --mr .6s var(--ease); }
+  .cover-title h1 em.lit { --mr: 170px; }
+}
+@media (max-width: 980px) {
+  .sheet-actions { align-self: start; }
+  .pin .card { --w: 7.4rem; }
+  .pin .unpin { opacity: 1; }
+  .portal { display: none; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>
@@ -545,6 +607,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
+      <button type="button" class="tool" data-view="tearsheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v9l3 3M18 4v9l-3 3M4 20h16M8 16h8"/></svg><span class="lbl" id="sheetLabel">Tear sheet</span><span class="count" id="pincount">0</span></button>
       <button type="button" class="tool" id="soundBtn" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="soundWave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11" opacity=".25"/></svg><span class="lbl" id="soundLbl">Sound off</span></button>
       <button type="button" class="tool menu" id="openMenu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
@@ -651,9 +714,18 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     </div>
   </section>
 
+  <section class="view page band" data-view="tearsheet" aria-labelledby="h-sheet" hidden>
+    <div class="wrap">
+      <div class="page-head"><div><p class="kicker" id="sheetKicker">Tear sheet</p><h2 class="h-lg" id="h-sheet"><span id="sheetH2">Your <em>tear sheet.</em></span></h2><p class="lede" id="sheetLede"></p></div>
+        <div class="sheet-actions"><button type="button" class="btn" id="sheetSave">Save as image</button><button type="button" class="link" id="sheetClear">Clear</button></div></div>
+      <div class="board" id="board"></div>
+      <p class="board-empty" id="boardEmpty" hidden></p>
+    </div>
+  </section>
   </main>
 
 <footer class="colophon band">
+  <div class="frieze" id="frieze"><svg id="friezeSvg" viewBox="0 0 1200 100" preserveAspectRatio="xMidYMax slice" aria-label="A frieze of figures crossing the page; tap one to open it"></svg></div>
   <div class="wrap">
     <span class="wm" data-t="colophonWm">The Fashion Elements</span>
     <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes and drawings are ours.</p>
@@ -662,6 +734,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 </footer>
 
 <div class="peek" id="peek" aria-hidden="true"></div>
+<div class="portal" id="portal" aria-hidden="true"><div class="portal-strip" id="portalStrip"></div><p class="portal-t" id="portalT"></p></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <dialog class="sheet" id="sheet" aria-label="Element"><div class="exhibit" id="exhibit"></div></dialog>
@@ -677,6 +750,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="mi" data-view="lab"><i>i.</i>The Lab</button>
     <button type="button" class="mi" data-view="families"><i>ii.</i>Families</button>
     <button type="button" class="mi" data-view="sources"><i>iii.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="tearsheet"><i>iv.</i><span data-sheet-tool>Tear sheet</span> <span class="count" data-pincount>0</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
 </dialog>
@@ -830,7 +904,7 @@ function fig(id, o) {
   if (h === "short" || h === "buzz") S("M-10,-61.5 C-10.5,-74 10.5,-74 10,-61.5 C7,-66 -7,-66 -10,-61.5Z", hc);
   else if (h !== "none") S("M-10.2,-60 C-10.8,-74.5 10.8,-74.5 10.2,-60 C7,-67 -2,-68 -10.2,-60Z", hc);
   // Face
-  g.push(`<circle cx="-3.3" cy="-60" r="0.95" fill="${P.ink}"/><circle cx="3.3" cy="-60" r="0.95" fill="${P.ink}"/>`);
+  g.push(`<circle class="pupil" cx="-3.3" cy="-60" r="0.95" fill="${P.ink}"/><circle class="pupil" cx="3.3" cy="-60" r="0.95" fill="${P.ink}"/>`);
   g.push(`<circle cx="-5.7" cy="-56.8" r="1.6" fill="${P.pink}" opacity=".6"/><circle cx="5.7" cy="-56.8" r="1.6" fill="${P.pink}" opacity=".6"/>`);
   g.push(`<path d="M-1.7,-56.3 Q0,-54.8 1.7,-56.3" fill="none" stroke="${P.ink}" stroke-width="0.7" stroke-linecap="round"/>`);
   if (o.beard) S("M-8,-58 Q0,-48 8,-58 Q0,-53 -8,-58Z", hc);
@@ -1146,11 +1220,11 @@ const JUNK = {
   sweeper: (x = 50) => fig("sw" + x, { x, s: .8, top: "blouse", c: "orange", low: "saree", l: "orange", lay: ["pallu"], y: "orange", h: "bun", sk: "skin2", shoe: "kolhapuri" }) + `<path d="M${x + 12},94 L${x + 2},62" stroke="${P.kaapi}" stroke-width="1"/><path d="M${x + 8},94 q6,-4 10,0 l-4,-10Z" fill="${P.yellow}" ${OL}/>`,
   istri: (x = 50) => fig("is" + x, { x, s: .8, top: "shirt", c: "white", low: "palazzo", l: "beige", h: "buzz", sk: "skin2", shoe: "kolhapuri" }),
   // Animals and people who use the above
-  cow: (x = 50, c = "white", sc = .85) => `<g transform="translate(${x} 84) scale(${sc})"><path d="M-18,0 V-12 M-12,0 V-12 M10,0 V-12 M16,0 V-12" stroke="${col(c)}" stroke-width="3.4" stroke-linecap="round"/><path d="M-18,0 V-12 M-12,0 V-12 M10,0 V-12 M16,0 V-12" stroke="${P.ink}" stroke-width="4.4" stroke-linecap="round" opacity=".12"/><path d="M-20,-12 Q-22,-30 -8,-30 H12 Q22,-30 20,-12Z" fill="${col(c)}" ${OL}/><path d="M18,-28 Q22,-22 20,-16 Q24,-12 30,-14 Q32,-26 24,-30Z" fill="${col(c)}" ${OL}/><path d="M22,-30 q-2,-6 2,-7 M28,-30 q4,-5 1,-8" fill="none" stroke="${P.ink}" stroke-width="1"/><circle cx="26" cy="-24" r=".9" fill="${P.ink}"/><path d="M-20,-14 q-4,8 -2,14" fill="none" stroke="${P.ink}" stroke-width="1"/><path d="M-10,-26 q4,4 8,0 M2,-20 q3,3 6,0" fill="none" stroke="${P.grey}" stroke-width="2"/><ellipse cx="-4" cy="-12" rx="6" ry="3" fill="${P.pink}" ${OL}/><path d="M24,-12 h12" stroke="${P.kaapi}" stroke-width=".8"/></g>`,
-  dog: (x = 50, c = "beige", sc = .7) => `<g transform="translate(${x} 84) scale(${sc})"><path d="M-14,0 Q-16,-12 -4,-12 H10 Q18,-12 16,0Z" fill="${col(c)}" ${OL}/><path d="M10,-12 Q12,-18 18,-18 Q24,-18 24,-12 Q22,-6 16,-6Z" fill="${col(c)}" ${OL}/><path d="M18,-18 l-2,-5 l4,3" fill="${col(c)}" ${OL}/><circle cx="21" cy="-13" r=".8" fill="${P.ink}"/><path d="M-14,-4 q-8,-6 -6,-14" fill="none" stroke="${col(c)}" stroke-width="2"/><path d="M-10,0 v-3 M0,0 v-3 M8,0 v-3" stroke="${P.ink}" stroke-width=".6"/><path d="M-6,-12 q6,-6 12,0" fill="none" stroke="${P.ink}" stroke-width=".4" stroke-dasharray="1 1"/></g>`,
-  crow: (x = 50, y = 40, sc = .6) => `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-6,0 Q-4,-6 2,-6 Q6,-6 6,-2 L10,-3 L6,0 Q4,2 -6,2 L-12,4 L-8,0Z" fill="${P.black}" ${OL}/><circle cx="3.5" cy="-3.5" r=".6" fill="#fff"/><path d="M-2,2 v4 M1,2 v4" stroke="${P.ink}" stroke-width=".8"/></g>`,
+  cow: (x = 50, c = "white", sc = .85) => `<g transform="translate(${x} 84) scale(${sc})"><path d="M-18,0 V-12 M-12,0 V-12 M10,0 V-12 M16,0 V-12" stroke="${col(c)}" stroke-width="3.4" stroke-linecap="round"/><path d="M-18,0 V-12 M-12,0 V-12 M10,0 V-12 M16,0 V-12" stroke="${P.ink}" stroke-width="4.4" stroke-linecap="round" opacity=".12"/><path d="M-20,-12 Q-22,-30 -8,-30 H12 Q22,-30 20,-12Z" fill="${col(c)}" ${OL}/><path d="M18,-28 Q22,-22 20,-16 Q24,-12 30,-14 Q32,-26 24,-30Z" fill="${col(c)}" ${OL}/><path d="M22,-30 q-2,-6 2,-7 M28,-30 q4,-5 1,-8" fill="none" stroke="${P.ink}" stroke-width="1"/><circle class="pupil" cx="26" cy="-24" r=".9" fill="${P.ink}"/><path d="M-20,-14 q-4,8 -2,14" fill="none" stroke="${P.ink}" stroke-width="1"/><path d="M-10,-26 q4,4 8,0 M2,-20 q3,3 6,0" fill="none" stroke="${P.grey}" stroke-width="2"/><ellipse cx="-4" cy="-12" rx="6" ry="3" fill="${P.pink}" ${OL}/><path d="M24,-12 h12" stroke="${P.kaapi}" stroke-width=".8"/></g>`,
+  dog: (x = 50, c = "beige", sc = .7) => `<g transform="translate(${x} 84) scale(${sc})"><path d="M-14,0 Q-16,-12 -4,-12 H10 Q18,-12 16,0Z" fill="${col(c)}" ${OL}/><path d="M10,-12 Q12,-18 18,-18 Q24,-18 24,-12 Q22,-6 16,-6Z" fill="${col(c)}" ${OL}/><path d="M18,-18 l-2,-5 l4,3" fill="${col(c)}" ${OL}/><circle class="pupil" cx="21" cy="-13" r=".8" fill="${P.ink}"/><path d="M-14,-4 q-8,-6 -6,-14" fill="none" stroke="${col(c)}" stroke-width="2"/><path d="M-10,0 v-3 M0,0 v-3 M8,0 v-3" stroke="${P.ink}" stroke-width=".6"/><path d="M-6,-12 q6,-6 12,0" fill="none" stroke="${P.ink}" stroke-width=".4" stroke-dasharray="1 1"/></g>`,
+  crow: (x = 50, y = 40, sc = .6) => `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-6,0 Q-4,-6 2,-6 Q6,-6 6,-2 L10,-3 L6,0 Q4,2 -6,2 L-12,4 L-8,0Z" fill="${P.black}" ${OL}/><circle class="pupil" cx="3.5" cy="-3.5" r=".6" fill="#fff"/><path d="M-2,2 v4 M1,2 v4" stroke="${P.ink}" stroke-width=".8"/></g>`,
   crows: (x = 50, y = 40) => JUNK.crow(x - 10, y) + JUNK.crow(x + 12, y + 3),
-  pigeon: (x = 50, y = 40, sc = .6) => `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-6,0 Q-4,-5 2,-5 Q6,-5 6,-2 L8,-2.5 L6,0 Q3,2 -6,2 L-10,3 L-7,0Z" fill="${P.grey}" ${OL}/><circle cx="3.5" cy="-3" r=".5" fill="${P.ink}"/><path d="M-1,2 v3 M2,2 v3" stroke="${P.rust}" stroke-width=".8"/></g>`,
+  pigeon: (x = 50, y = 40, sc = .6) => `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-6,0 Q-4,-5 2,-5 Q6,-5 6,-2 L8,-2.5 L6,0 Q3,2 -6,2 L-10,3 L-7,0Z" fill="${P.grey}" ${OL}/><circle class="pupil" cx="3.5" cy="-3" r=".5" fill="${P.ink}"/><path d="M-1,2 v3 M2,2 v3" stroke="${P.rust}" stroke-width=".8"/></g>`,
   puddle: (x = 50, c = "sky", w = 18) => `<ellipse cx="${x}" cy="85" rx="${w}" ry="3" fill="${col(c)}" opacity=".8"/><ellipse cx="${x - 3}" cy="84.5" rx="${w * .4}" ry="1" fill="#fff" opacity=".5"/>`,
   sitter: (x = 50, s = .78) => fig("sit" + x, { x, s, top: "shirt", c: "sky", low: "jeans", l: "denim", h: "buzz", sk: "skin2", shoe: "sneaker", hold: "coffee", hc2: "white" }),
 };
@@ -2349,12 +2423,16 @@ const ED = isG ? {
   key: "garbage", name: "The Garbage Elements", noun: "Find", nouns: "finds",
   flag: { label: "Peak Bangalore", short: "PEAK BLR", led: "Peak Bangalore" },
   tipLabel: "Field tip", srcLabel: "Spotted", via: (src) => `Spotted in ${src[0]}, ${src[3]}`, seen: (src) => `SPOTTED IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
-  word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table",
+  word: "KASA", flagSearch: "peak bangalore blr", other: "fashion", otherLabel: "See the fashion table", otherTitle: "The Periodic Table of Indian Fashion",
+  dyeLabel: "Season", dyeNote: "Same find, another Bangalore month.",
+  sheet: { tool: "The skip", kicker: "The skip", h2: "Your <em>skip.</em>", lede: "Everything you threw in, from any card. Drag it around, pile it up, then save the mess as an image.", empty: "The skip is empty. Open any find and press “Throw in”.", pin: "Throw in the skip", unpin: "Take it out", file: "the-skip" },
 } : {
   key: "fashion", name: "The Fashion Elements", noun: "Trend", nouns: "trends",
   flag: { label: "Gen Z", short: "GEN Z", led: "Gen Z-led" },
   tipLabel: "Try it", srcLabel: "Source", via: (src) => `As reported by <a href="${src[2]}" target="_blank" rel="noopener">${src[0]}</a>, ${src[3]}`, seen: (src) => `AS SEEN IN ${src[0].toUpperCase()} · ${src[3].toUpperCase()}`,
-  word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table",
+  word: "ELEMENTAL", flagSearch: "gen z genz", other: "garbage", otherLabel: "See the garbage table", otherTitle: "The Periodic Table of Bangalore Garbage",
+  dyeLabel: "Colourways", dyeNote: "The season's colours, each one named by the press.",
+  sheet: { tool: "Tear sheet", kicker: "Tear sheet", h2: "Your <em>tear sheet.</em>", lede: "Pull cards off the table and lay them out the way a stylist tears pages from a magazine. Drag to arrange, then save it as an image.", empty: "Nothing pinned yet. Open any card and press “Pin to tear sheet”.", pin: "Pin to tear sheet", unpin: "Unpin", file: "tear-sheet" },
 };
 document.documentElement.dataset.ed = ED.key;
 document.title = isG ? "The Periodic Table of Bangalore Garbage" : "The Periodic Table of Indian Fashion";
@@ -2374,16 +2452,17 @@ if (isG) for (const el of document.querySelectorAll("[data-t]")) { const v = G_C
 if (isG) for (const el of document.querySelectorAll("[data-t-ph]")) { const v = G_COPY[el.dataset.tPh]; if (v != null) el.placeholder = v; }
 document.querySelectorAll("[data-ed]").forEach(b => b.setAttribute("aria-pressed", String(chosen && b.dataset.ed === ED.key)));
 document.querySelectorAll("[data-ed-switch]").forEach(b => { b.textContent = ""; b.setAttribute("aria-label", ED.otherLabel); b.insertAdjacentHTML("beforeend", `${b.classList.contains("edflip") ? ED.other.charAt(0).toUpperCase() + ED.other.slice(1) + " edition" : ED.otherLabel} <span class="arr">→</span>`); });
-function switchEdition(key) {
+function switchEdition(key, from) {
   if (!ED_KEYS.includes(key) || key === ED.key) return;
   try { localStorage.setItem("ptif-edition", key); } catch (err) {}
   const u = new URL(location.href); u.searchParams.set("ed", key); u.hash = "";
+  const wait = portalGrow(from);
   document.documentElement.classList.add("switching");
-  setTimeout(() => location.assign(u.toString()), 260);
+  setTimeout(() => location.assign(u.toString()), wait);
 }
 document.addEventListener("click", ev => {
   const b = ev.target.closest("[data-ed], [data-ed-switch]"); if (!b) return;
-  switchEdition(b.dataset.ed || ED.other);
+  switchEdition(b.dataset.ed || ED.other, b);
 });
 
 const ELEMENTS_IN = isG ? GARBAGE : ELEMENTS;
@@ -2398,6 +2477,58 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (err) {} },
 };
 
+// ---------- Colourways (fashion) and seasons (garbage) ----------
+// Each fashion dye is a colour the press named this season; `by` points at the element whose source said so.
+const DYES = isG ? [
+  { k: "monsoon", name: "Monsoon", when: "July to September", scene: { bg: "grey", gr: "kaapi" }, add: [["puddle", 36, "sky", 20], ["puddle", 72, "sky", 12]] },
+  { k: "summer", name: "Summer", when: "March to May", scene: { bg: "peach", gr: "beige" }, add: [["sun", "yellow", 82, 18]] },
+  { k: "tabebuia", name: "Tabebuia week", when: "late January", scene: { bg: "sky", gr: "grey" }, add: [["tabebuia", 20], ["petals", 50]] },
+  { k: "diwali", name: "Diwali night", when: "October", scene: { bg: "night", gr: "black" }, add: ["stars", "diyas", ["sparkles", "yellow"]] },
+  { k: "winter", name: "Winter morning", when: "December, before the fog lifts", scene: { bg: "lav", gr: "grey" }, add: [["moon", 82, 18]] },
+] : [
+  { k: "cloud", name: "Cloud Dancer", hex: "#EFECE4", by: "Cl" },
+  { k: "cherry", name: "Cherry Red", hex: "#A8182C", by: "Cn" },
+  { k: "butter", name: "Butter Yellow", hex: "#F2DF8E", by: "Yb" },
+  { k: "mocha", name: "Mocha", hex: "#8E6652", by: "Ca" },
+  { k: "cobalt", name: "Cobalt", hex: "#2E4EA3", by: "Ce" },
+  { k: "teal", name: "Teal Luxe", hex: "#1F6B74", by: "Tl" },
+  { k: "burgundy", name: "Burgundy", hex: "#6B1F30", src: typeof S_ELLE_PALETTE !== "undefined" ? S_ELLE_PALETTE : null },
+  { k: "pistachio", name: "Pistachio", hex: "#BBD39A", by: "Pm" },
+  { k: "lilac", name: "Lilac", hex: "#B59AD4", by: "Lv" },
+];
+const dyeState = new Map();
+const dyeOf = (e) => DYES.find(d => d.k === dyeState.get(e.sym)) || null;
+function artOf(e) {
+  const d = dyeOf(e);
+  if (!d) return e.art;
+  const a = JSON.parse(JSON.stringify(e.art));
+  if (isG) { Object.assign(a, d.scene); a.set = [...(a.set || []), ...d.add]; return a; }
+  for (const f of a.figs || []) { f.c = d.hex; f.l = d.hex; f.y = d.hex; if (f.hc2) f.hc2 = d.hex; }
+  return a;
+}
+const dyeSource = (d) => d.src || (d.by && get(d.by) && get(d.by).src) || null;
+function dyesHTML(e) {
+  const cur = dyeState.get(e.sym) || "";
+  const sw = (d) => `<button type="button" class="dye${cur === d.k ? " on" : ""}" data-dye="${d.k}" aria-pressed="${cur === d.k}" aria-label="${d.name}" title="${d.name}" style="--d:${d.hex || "transparent"}">${d.hex ? "" : `<i class="s-${d.k}"></i>`}</button>`;
+  return `<div class="dyes"><button type="button" class="dye orig${cur ? "" : " on"}" data-dye="" aria-pressed="${!cur}" aria-label="As drawn" title="As drawn"></button>${DYES.map(sw).join("")}</div><p class="dye-note">${dyeNote(e)}</p>`;
+}
+function dyeNote(e) {
+  const d = dyeOf(e);
+  if (!d) return ED.dyeNote;
+  if (isG) return `${d.name}, ${d.when}.`;
+  const s = dyeSource(d);
+  return `<b>${d.name}.</b> ${s ? `As reported by ${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}.` : ""}`;
+}
+function setDye(e, key) {
+  if (key) dyeState.set(e.sym, key); else dyeState.delete(e.sym);
+  const svg = exhibit.querySelector(".frame svg");
+  if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); }
+  exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
+  const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
+  flick();
+  renderSheetIfOpen();
+}
+
 // ---------- Images ----------
 const imgCache = new Map();
 function specImg(id, spec, vb = "6 10 88 88") {
@@ -2405,7 +2536,7 @@ function specImg(id, spec, vb = "6 10 88 88") {
   if (!imgCache.has(key)) imgCache.set(key, "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" preserveAspectRatio="xMidYMid slice">${scene("i" + id.replace(/\W/g, ""), spec)}</svg>`));
   return imgCache.get(key);
 }
-const sceneImg = (e, vb) => specImg(e.sym, e.art, vb);
+const sceneImg = (e, vb) => { const d = dyeOf(e); return specImg(e.sym + (d ? "-" + d.k : ""), artOf(e), vb); };
 
 // ---------- Hotspots: where each key piece sits on the figure ----------
 const PIECE_WORDS = {
@@ -2448,15 +2579,18 @@ function hotspots(e) {
 // ---------- Shared markup ----------
 const tileHTML = (e, id) => `${e.z ? `<span class="zdot" title="${ED.flag.label}"></span>` : ""}<span class="top"><span class="num">${e.n}</span><span class="sym">${e.sym}</span></span><svg class="art" viewBox="6 10 88 88" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${scene(id, e.art)}</svg><span class="nm">${e.trend}</span>`;
 let uid = 0;
+function hotHTML(e) {
+  const hs = hotspots(e);
+  return hs.length ? `<g class="hot">${hs.map(h => `<g data-i="${h.i}" tabindex="0" role="button" aria-label="${h.p}"><circle class="pulse" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/><circle class="dot" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/></g>`).join("")}</g>` : "";
+}
 function cardHTML(e, opts = {}) {
-  const hs = opts.hot ? hotspots(e) : [];
-  const hot = hs.length ? `<g class="hot">${hs.map(h => `<g data-i="${h.i}" tabindex="0" role="button" aria-label="${h.p}"><circle class="pulse" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/><circle class="dot" cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="2.2"/></g>`).join("")}</g>` : "";
+  const hot = opts.hot ? hotHTML(e) : "";
   return `<div class="card ${e.fam}"${opts.attrs || ""}>
     <div class="card-in">
       <div class="idx tl"><b>${e.sym}</b><span>${e.n}</span></div>
       <div class="idx br"><b>${e.sym}</b><span>${e.n}</span></div>
       <div class="banner">${e.el}</div>
-      <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="${opts.hot ? "false" : "true"}">${scene("c" + (uid++) + e.sym, e.art)}${hot}</svg></div>
+      <div class="frame"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" aria-hidden="${opts.hot ? "false" : "true"}">${scene("c" + (uid++) + e.sym, artOf(e))}${hot}</svg></div>
       <p class="cap">${e.trend}</p>
     </div>
     <div class="glare"></div>
@@ -2941,11 +3075,13 @@ function render(e) {
       <dl class="facts">
         <dt>On view</dt><dd><ul class="pieces">${e.pieces.split(",").map((p, i) => `<li data-i="${i}">${p.trim()}</li>`).join("")}</ul></dd>
         <dt>${ED.tipLabel}</dt><dd>${e.tip}</dd>
+        <dt>${ED.dyeLabel}</dt><dd>${dyesHTML(e)}</dd>
         ${s ? `<dt>${ED.srcLabel}</dt><dd>${s[2] ? `<a href="${s[2]}" target="_blank" rel="noopener">${s[0]}</a>` : s[0]}, ${s[3]}${e.z ? " · " + ED.flag.led : ""}</dd>` : ""}
       </dl>
-      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="link" data-copy>Copy</button></div>
+      <div class="ex-actions"><button type="button" class="btn ghost" data-share>Share image</button><button type="button" class="btn ghost" data-pin>${isPinned(e) ? ED.sheet.unpin : ED.sheet.pin}</button><button type="button" class="link" data-copy>Copy</button></div>
       <div class="ex-nav"><button type="button" class="link" data-go="-1"><span class="arr">←</span> Previous</button><button type="button" class="link" data-go="1">Next <span class="arr">→</span></button><button type="button" class="link" data-go="r">Shuffle</button><span class="count">${String(e.n).padStart(3, "0")} / 118</span></div>
     </div>`;
+  exhibit.style.setProperty("--tint", famColor(e));
   flick();
   const flipper = exhibit.querySelector(".flipper"), c3d = exhibit.querySelector(".c3d"), glare = exhibit.querySelector(".glare");
   flipper.addEventListener("animationend", () => flipper.classList.remove("flip"), { once: true });
@@ -2956,7 +3092,11 @@ function render(e) {
     glare.style.setProperty("--gx", `${x * 100}%`); glare.style.setProperty("--gy", `${y * 100}%`);
   });
   c3d.addEventListener("pointerleave", () => flipper.style.transform = "");
-  // Hotspots and the list of pieces light each other up
+  bindHots();
+  eyesWake();
+}
+// Hotspots and the list of pieces light each other up
+function bindHots() {
   const lis = [...exhibit.querySelectorAll(".pieces li")], hots = [...exhibit.querySelectorAll(".hot g")];
   const light = (i) => { lis.forEach(l => l.classList.toggle("on", l.dataset.i === String(i))); hots.forEach(h => h.classList.toggle("on", h.dataset.i === String(i))); };
   hots.forEach(h => { ["pointerenter", "focus", "click"].forEach(t => h.addEventListener(t, () => light(h.dataset.i))); });
@@ -2967,6 +3107,8 @@ exhibit.addEventListener("click", ev => {
   if (t.hasAttribute("data-close")) return sheet.close();
   if (t.hasAttribute("data-copy")) return copyTrend(current);
   if (t.hasAttribute("data-share")) return shareImage(current);
+  if (t.hasAttribute("data-pin")) { togglePin(current); t.textContent = isPinned(current) ? ED.sheet.unpin : ED.sheet.pin; return; }
+  if (t.dataset.dye != null) return setDye(current, t.dataset.dye);
   if (t.dataset.go) return go(t.dataset.go);
 });
 function open(e) { if (!e) return; render(e); if (!sheet.open) sheet.showModal(); }
@@ -2975,6 +3117,7 @@ function go(dir) {
   render(els[(current.n - 1 + Number(dir) + els.length) % els.length]);
 }
 sheet.addEventListener("click", ev => { if (ev.target === sheet) sheet.close(); });
+sheet.addEventListener("close", eyesSleep);
 document.addEventListener("keydown", ev => {
   if (!sheet.open) return;
   if (ev.key === "ArrowRight") go(1);
@@ -2988,28 +3131,49 @@ function wrap(ctx, text, x, y, maxW, lh) {
   for (const w of words) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > maxW && line) { ctx.fillText(line, x, y); y += lh; line = w; } else line = t; }
   ctx.fillText(line, x, y); return y;
 }
+// Draw one card on a canvas: top-left (x, y), width w, optional rotation about its centre.
+async function drawCard(ctx, e, x, y, w, rot = 0) {
+  const h = w * 1.4, col = famColor(e);
+  const art = await loadImg(sceneImg(e, "0 0 100 100"));
+  ctx.save();
+  if (rot) { ctx.translate(x + w / 2, y + h / 2); ctx.rotate(rot * Math.PI / 180); ctx.translate(-(x + w / 2), -(y + h / 2)); }
+  ctx.shadowColor = "rgba(21,21,21,.18)"; ctx.shadowBlur = w * .06; ctx.shadowOffsetY = w * .02;
+  ctx.fillStyle = "#FBF7EE"; ctx.fillRect(x, y, w, h);
+  ctx.shadowColor = "transparent";
+  ctx.strokeStyle = "#151515"; ctx.lineWidth = Math.max(1, w * .004); ctx.strokeRect(x + w * .033, y + w * .033, w - w * .066, h - w * .066);
+  const ax = x + w * .14, ay = y + w * .19, aw = w * .72, ah = h - w * .42;
+  ctx.save(); ctx.beginPath(); ctx.rect(ax, ay, aw, ah); ctx.clip();
+  const sc = Math.max(aw / art.width, ah / art.height);
+  ctx.drawImage(art, ax + (aw - art.width * sc) / 2, ay + ah - art.height * sc, art.width * sc, art.height * sc);
+  ctx.restore(); ctx.lineWidth = Math.max(1, w * .0026); ctx.strokeRect(ax, ay, aw, ah);
+  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = `600 ${w * .118}px Caudex, serif`; ctx.fillText(e.sym, x + w * .064, y + w * .164);
+  ctx.fillStyle = "#151515"; ctx.font = `600 ${w * .031}px Caudex, serif`; ctx.fillText(String(e.n), x + w * .069, y + w * .205);
+  ctx.textAlign = "center"; ctx.font = `600 ${w * .033}px Caudex, serif`; ctx.fillText(e.el.toUpperCase(), x + w / 2 + w * .05, y + w * .133);
+  ctx.font = `italic ${w * .056}px Caudex, serif`; ctx.fillText(e.trend, x + w / 2, y + h - w * .115);
+  ctx.restore();
+}
+function offerImage(c, name, label) {
+  c.toBlob(async blob => {
+    if (!blob) return toast("Couldn't make the image");
+    const url = URL.createObjectURL(blob), file = new File([blob], name, { type: "image/png" });
+    const canShare = navigator.canShare && navigator.canShare({ files: [file] });
+    $("shareIn").innerHTML = `<p class="kicker">${label}</p><img src="${url}" alt="${label}"><p>If the download doesn't start, press and hold (or right-click) the image to save it.</p>
+      <div class="ex-actions"><a class="btn" href="${url}" download="${file.name}">Download</a>${canShare ? `<button type="button" class="btn ghost" id="nativeShare">Share</button>` : ""}<button type="button" class="link" id="closeShare">Close</button></div>`;
+    $("closeShare").addEventListener("click", () => $("sharebox").close());
+    if (canShare) $("nativeShare").addEventListener("click", () => navigator.share({ files: [file], title: label }).catch(() => {}));
+    $("sharebox").showModal();
+  }, "image/png");
+}
 async function shareImage(e) {
   const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H;
-  const ctx = c.getContext("2d"), col = famColor(e);
+  const ctx = c.getContext("2d");
   if (document.fonts) await document.fonts.ready;
   ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#151515"; ctx.textAlign = "center";
   ctx.font = '600 26px Caudex, serif'; ctx.fillText(`${ED.name.toUpperCase()}  ·  ISSUE 01`, W / 2, 120);
   ctx.fillRect(90, 150, W - 180, 2);
-  // Card
   const cx = 150, cy = 220, cw = W - 300, ch = cw * 1.4;
-  ctx.fillStyle = "#FBF7EE"; ctx.fillRect(cx, cy, cw, ch);
-  ctx.strokeStyle = "#151515"; ctx.lineWidth = 3; ctx.strokeRect(cx + 26, cy + 26, cw - 52, ch - 52);
-  const art = await loadImg(sceneImg(e, "0 0 100 100"));
-  const ax = cx + 110, ay = cy + 150, aw = cw - 220, ah = ch - 330;
-  ctx.save(); ctx.beginPath(); ctx.rect(ax, ay, aw, ah); ctx.clip();
-  const sc = Math.max(aw / art.width, ah / art.height);
-  ctx.drawImage(art, ax + (aw - art.width * sc) / 2, ay + ah - art.height * sc, art.width * sc, art.height * sc);
-  ctx.restore(); ctx.lineWidth = 2; ctx.strokeRect(ax, ay, aw, ah);
-  ctx.fillStyle = col; ctx.textAlign = "left"; ctx.font = '600 92px Caudex, serif'; ctx.fillText(e.sym, cx + 50, cy + 128);
-  ctx.fillStyle = "#151515"; ctx.font = '600 24px Caudex, serif'; ctx.fillText(String(e.n), cx + 54, cy + 160);
-  ctx.textAlign = "center"; ctx.font = '600 26px Caudex, serif'; ctx.fillText(e.el.toUpperCase(), W / 2 + 40, cy + 104);
-  ctx.font = 'italic 44px Caudex, serif'; ctx.fillText(e.trend, W / 2, cy + ch - 90);
+  await drawCard(ctx, e, cx, cy, cw);
   // Placard
   ctx.textAlign = "left"; ctx.fillStyle = "#151515";
   ctx.font = '400 84px Caudex, serif';
@@ -3017,17 +3181,10 @@ async function shareImage(e) {
   ctx.font = 'italic 42px Caudex, serif'; ctx.fillStyle = "#3A3833";
   y = wrap(ctx, e.desc, 90, y + 70, W - 180, 52);
   ctx.font = '600 24px Caudex, serif'; ctx.fillStyle = "#77716A";
+  const d = dyeOf(e);
+  if (d) { ctx.fillText(`${ED.dyeLabel.toUpperCase()} · ${d.name.toUpperCase()}`, 90, Math.min(H - 110, y + 80)); y += 40; }
   if (e.src) ctx.fillText(ED.seen(e.src), 90, Math.min(H - 70, y + 80));
-  c.toBlob(async blob => {
-    if (!blob) return toast("Couldn't make the image");
-    const url = URL.createObjectURL(blob), file = new File([blob], `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, { type: "image/png" });
-    const canShare = navigator.canShare && navigator.canShare({ files: [file] });
-    $("shareIn").innerHTML = `<p class="kicker">Share image · ${e.sym}</p><img src="${url}" alt="${e.trend} card image"><p>If the download doesn't start, press and hold (or right-click) the image to save it.</p>
-      <div class="ex-actions"><a class="btn" href="${url}" download="${file.name}">Download</a>${canShare ? `<button type="button" class="btn ghost" id="nativeShare">Share</button>` : ""}<button type="button" class="link" id="closeShare">Close</button></div>`;
-    $("closeShare").addEventListener("click", () => $("sharebox").close());
-    if (canShare) $("nativeShare").addEventListener("click", () => navigator.share({ files: [file], title: e.trend }).catch(() => {}));
-    $("sharebox").showModal();
-  }, "image/png");
+  offerImage(c, `${e.sym}-${e.trend.replace(/\W+/g, "-")}.png`, `Share image · ${e.sym}`);
 }
 
 // ---------- Search palette ----------
@@ -3072,7 +3229,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "lab", "families", "sources"];
+const VIEWS = ["cover", "table", "lab", "families", "sources", "tearsheet"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);
@@ -3082,6 +3239,7 @@ function show(v, opts = {}) {
   v === "cover" ? orbitStart() : orbitStop();
   v === "families" ? requestAnimationFrame(inkStart) : inkStop();
   if (v !== "table") stopPlay();
+  if (v === "tearsheet") renderSheet();
   try { history.replaceState(null, "", v === "cover" ? location.pathname + location.search : location.search + "#" + v); } catch (err) {}
 }
 document.addEventListener("click", ev => {
@@ -3110,7 +3268,7 @@ function curtain() {
   const finish = () => { if (done) return; done = true; num.textContent = "118"; el.classList.add("out"); setTimeout(() => { el.hidden = true; el.classList.remove("out"); }, 1000); };
   (function step(t) {
     if (done) return;
-    const p = Math.min(1, (t - t0) / dur), eased = 1 - Math.pow(1 - p, 3);
+    const p = Math.max(0, Math.min(1, (t - t0) / dur)), eased = 1 - Math.pow(1 - p, 3);
     num.textContent = String(Math.round(eased * 118)).padStart(3, "0");
     p < 1 ? requestAnimationFrame(step) : setTimeout(finish, 250);
   })(t0);
@@ -3123,6 +3281,215 @@ const fromHash = h && !VIEWS.includes(h) && get(h);
 show(fromHash ? "table" : (VIEWS.includes(h) ? h : "cover"), { keepScroll: true });
 if (fromHash) open(fromHash);
 else if (!h || h === "cover") curtain();
+
+// Extras: colourways, eyes that follow you, the tear sheet, the living colophon,
+// the portal between editions and the brocade in the cover title.
+
+// ---------- Eyes that follow the cursor ----------
+let eyeRAF = 0, blinkTimer = 0, lastLook = null;
+function lookAt(cx, cy) {
+  for (const p of exhibit.querySelectorAll(".pupil")) {
+    const r = p.getBoundingClientRect();
+    if (!r.width) continue;
+    let dx = cx - (r.left + r.width / 2), dy = cy - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy) || 1;
+    const m = p.getCTM(), sx = m && m.a < 0 ? -1 : 1;
+    const reach = Math.min(1, d / 160);
+    p.setAttribute("transform", `translate(${(dx / d * 1.1 * reach * sx).toFixed(2)} ${(dy / d * 0.8 * reach).toFixed(2)})`);
+  }
+}
+function onLook(ev) {
+  lastLook = [ev.clientX, ev.clientY];
+  if (!eyeRAF) eyeRAF = requestAnimationFrame(() => { eyeRAF = 0; if (lastLook) lookAt(...lastLook); });
+}
+function blink() {
+  const ps = [...exhibit.querySelectorAll(".pupil")];
+  ps.forEach(p => { p.dataset.r = p.dataset.r || p.getAttribute("r"); p.setAttribute("r", (+p.dataset.r * .22).toFixed(2)); });
+  setTimeout(() => ps.forEach(p => p.setAttribute("r", p.dataset.r)), 120);
+  blinkTimer = setTimeout(blink, 2600 + Math.random() * 3200);
+}
+function eyesWake() {
+  if (reduced) return;
+  document.removeEventListener("pointermove", onLook);
+  document.addEventListener("pointermove", onLook);
+  clearTimeout(blinkTimer); blinkTimer = setTimeout(blink, 1200 + Math.random() * 2000);
+  if (lastLook) lookAt(...lastLook);
+}
+function eyesSleep() { document.removeEventListener("pointermove", onLook); clearTimeout(blinkTimer); }
+
+// ---------- The tear sheet (fashion) / the skip (garbage) ----------
+const PIN_KEY = "ptif-pins-" + ED.key;
+let pins = store.get(PIN_KEY, []).filter(p => get(p.s));
+const isPinned = (e) => pins.some(p => p.s === e.sym);
+function savePins() { store.set(PIN_KEY, pins); $("pincount").textContent = pins.length; document.querySelectorAll("[data-pincount]").forEach(n => n.textContent = pins.length); }
+function togglePin(e) {
+  if (isPinned(e)) { pins = pins.filter(p => p.s !== e.sym); toast(`${e.sym} taken off the ${ED.sheet.tool.toLowerCase()}`); }
+  else {
+    const n = pins.length;
+    pins.push({ s: e.sym, x: 8 + (n * 17) % 70 + Math.random() * 6, y: 6 + ((n * 23) % 50) + Math.random() * 8, r: Math.round((Math.random() - .5) * 16), d: dyeState.get(e.sym) || "" });
+    toast(`${e.sym} ${isG ? "thrown in" : "pinned"}`);
+  }
+  savePins(); renderSheetIfOpen();
+}
+const board = $("board");
+function renderSheetIfOpen() { if (!document.querySelector('[data-view="tearsheet"]').hidden) renderSheet(); }
+function renderSheet() {
+  savePins();
+  $("boardEmpty").hidden = pins.length > 0;
+  board.innerHTML = pins.map((p, i) => {
+    const e = get(p.s); if (p.d) dyeState.set(e.sym, p.d);
+    return `<div class="pin ${e.fam}" data-i="${i}" style="left:${p.x}%;top:${p.y}%;--r:${p.r}deg">${cardHTML(e)}<button type="button" class="unpin" aria-label="Remove ${e.trend}">×</button></div>`;
+  }).join("");
+}
+// Drag the pinned cards around with the pointer; a tap opens the card.
+let pinDrag = null;
+board.addEventListener("pointerdown", ev => {
+  const pin = ev.target.closest(".pin"); if (!pin || ev.target.closest(".unpin")) return;
+  const r = board.getBoundingClientRect(), p = pins[+pin.dataset.i];
+  pinDrag = { pin, p, r, x0: ev.clientX, y0: ev.clientY, px: p.x, py: p.y, moved: false };
+  pin.setPointerCapture(ev.pointerId); pin.classList.add("lift");
+  board.append(pin);
+});
+board.addEventListener("pointermove", ev => {
+  if (!pinDrag) return;
+  const { pin, p, r } = pinDrag, dx = ev.clientX - pinDrag.x0, dy = ev.clientY - pinDrag.y0;
+  if (Math.hypot(dx, dy) > 4) pinDrag.moved = true;
+  p.x = Math.max(-5, Math.min(92, pinDrag.px + dx / r.width * 100)); p.y = Math.max(-5, Math.min(92, pinDrag.py + dy / r.height * 100));
+  pin.style.left = p.x + "%"; pin.style.top = p.y + "%";
+});
+board.addEventListener("pointerup", ev => {
+  if (!pinDrag) return;
+  const { pin, p, moved } = pinDrag; pinDrag = null; pin.classList.remove("lift");
+  if (moved) { p.r = Math.round((Math.random() - .5) * 14); pins.splice(pins.indexOf(p), 1); pins.push(p); savePins(); renderSheet(); }
+  else open(get(p.s));
+});
+board.addEventListener("pointercancel", () => { if (pinDrag) { pinDrag.pin.classList.remove("lift"); pinDrag = null; } });
+board.addEventListener("click", ev => {
+  const b = ev.target.closest(".unpin"); if (!b) return;
+  const pin = b.closest(".pin"); pins.splice(+pin.dataset.i, 1); savePins(); renderSheet();
+});
+$("sheetClear").addEventListener("click", () => { if (!pins.length) return; pins = []; savePins(); renderSheet(); toast(isG ? "Skip emptied" : "Tear sheet cleared"); });
+$("sheetSave").addEventListener("click", async () => {
+  if (!pins.length) return toast(ED.sheet.empty);
+  const W = 1600, H = 1000, c = document.createElement("canvas"); c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  if (document.fonts) await document.fonts.ready;
+  ctx.fillStyle = "#F4EFE5"; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = "#151515"; ctx.textAlign = "center"; ctx.font = "600 22px Caudex, serif";
+  ctx.fillText(`${ED.name.toUpperCase()}  ·  ${ED.sheet.tool.toUpperCase()}`, W / 2, 56);
+  ctx.fillRect(60, 78, W - 120, 1.5);
+  const cw = 320;
+  for (const p of pins) await drawCard(ctx, get(p.s), 60 + p.x / 100 * (W - 120 - cw), 100 + p.y / 100 * (H - 160 - cw * 1.4), cw, p.r);
+  ctx.fillStyle = "#77716A"; ctx.textAlign = "right"; ctx.font = "600 18px Caudex, serif"; ctx.fillText("ISSUE 01 · 2026", W - 60, H - 36);
+  offerImage(c, `${ED.sheet.file}.png`, ED.sheet.tool);
+});
+$("sheetLabel").textContent = ED.sheet.tool;
+$("sheetKicker").textContent = ED.sheet.kicker; $("sheetH2").innerHTML = ED.sheet.h2; $("sheetLede").textContent = ED.sheet.lede; $("boardEmpty").textContent = ED.sheet.empty;
+document.querySelectorAll("[data-sheet-tool]").forEach(n => n.textContent = ED.sheet.tool);
+savePins();
+
+// ---------- The living colophon: a frieze under the credits ----------
+const fz = $("friezeSvg"), FZW = 1200;
+let walkers = [], fzRAF = 0, fzT = 0, fzNext = 0, fzHover = false;
+const WALK_G = [
+  { name: "tipper", v: 58, draw: () => OBJ.tipper(0) },
+  { name: "cow", v: 16, draw: () => OBJ.cow(0, "white") },
+  { name: "cow", v: 14, draw: () => OBJ.cow(0, "black") },
+  { name: "dog", v: 34, draw: () => OBJ.dog(0, "beige") },
+  { name: "crow", v: 92, draw: () => OBJ.crow(0, 36, .8), fly: true },
+  { name: "pigeon", v: 70, draw: () => OBJ.pigeon(0, 52, .8), fly: true },
+  { name: "sweeper", v: 20, draw: () => `<g transform="translate(0 -10)">${OBJ.sweeper(0)}</g>` },
+];
+function fzBase() {
+  const back = isG ? `<g opacity=".55" transform="translate(0 0)">${[0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100].map(x => `<g transform="translate(${x} 0)">${SET.skyline("grey")}</g>`).join("")}</g><g transform="translate(140 0)">${OBJ.bescom(0)}</g><g transform="translate(980 0)">${OBJ.bescom(0)}</g>` : "";
+  const ground = `<path d="M0,84 H${FZW}" stroke="${P.ink}" stroke-width=".8"/>`;
+  const props = isG ? `<g transform="translate(300 0)">${OBJ.bins(0)}</g><g transform="translate(640 0)">${OBJ.pothole(0)}</g><g transform="translate(860 0)">${OBJ.bags(0)}</g>` : `<path d="M0,84 H${FZW}" stroke="${P.rani}" stroke-width=".6" stroke-dasharray="6 18" opacity=".6"/>`;
+  return `<g class="fz-base">${back}${ground}${props}</g><g class="fz-walkers" id="fzWalkers"></g>`;
+}
+function fzSpawn(x) {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  g.setAttribute("class", "walker");
+  let w;
+  if (isG) {
+    const k = WALK_G[Math.floor(Math.random() * WALK_G.length)];
+    const owner = els.find(e => (e.art.obj || []).some(o => (Array.isArray(o) ? o[0] : o) === k.name)) || els[Math.floor(Math.random() * els.length)];
+    w = { g, x, v: k.v, e: owner, fly: k.fly, bob: Math.random() * 6.28 };
+    g.innerHTML = `<g class="ob">${k.draw()}</g>`;
+  } else {
+    const e = els.filter(e => e.art.figs && e.art.figs.length)[Math.floor(Math.random() * 90)];
+    const f = { ...e.art.figs[0], x: 0, s: (e.art.figs[0].s || 1) * .95 };
+    w = { g, x, v: 22 + Math.random() * 12, e, bob: Math.random() * 6.28 };
+    g.innerHTML = `<g transform="translate(0 -10)">${fig("fz" + e.sym + Math.floor(Math.random() * 1e4), f)}</g>`;
+  }
+  g.setAttribute("aria-label", w.e.trend); g.setAttribute("role", "button"); g.setAttribute("tabindex", "0");
+  g.addEventListener("click", () => open(w.e));
+  g.addEventListener("keydown", ev => { if (ev.key === "Enter") open(w.e); });
+  $("fzWalkers").append(g);
+  walkers.push(w);
+}
+function fzFrame(t) {
+  const dt = Math.min(.05, (t - fzT) / 1000 || 0); fzT = t;
+  if (!fzHover) {
+    for (const w of walkers) { w.x += w.v * dt; w.bob += dt * (w.fly ? 9 : 6); }
+    walkers = walkers.filter(w => { if (w.x > FZW + 80) { w.g.remove(); return false; } return true; });
+    if (t > fzNext && walkers.length < 6) { fzSpawn(-70); fzNext = t + 2200 + Math.random() * 3200; }
+  }
+  for (const w of walkers) w.g.setAttribute("transform", `translate(${w.x.toFixed(1)} ${(w.fly ? Math.sin(w.bob) * 4 : Math.abs(Math.sin(w.bob)) * -1.4).toFixed(2)})`);
+  fzRAF = requestAnimationFrame(fzFrame);
+}
+function fzStart() { if (fzRAF || reduced) return; fzT = performance.now(); fzRAF = requestAnimationFrame(fzFrame); }
+function fzStop() { cancelAnimationFrame(fzRAF); fzRAF = 0; }
+fz.innerHTML = fzBase();
+if (reduced) { [120, 380, 620, 900, 1080].forEach(x => fzSpawn(x)); walkers.forEach(w => w.g.setAttribute("transform", `translate(${w.x} 0)`)); }
+else { [200, 700].forEach(x => fzSpawn(x)); fzNext = performance.now() + 1500; }
+fz.addEventListener("pointerenter", () => fzHover = true);
+fz.addEventListener("pointerleave", () => fzHover = false);
+new IntersectionObserver(en => en[0].isIntersecting ? fzStart() : fzStop(), { threshold: .1 }).observe(fz);
+
+// ---------- The portal: a window into the other edition ----------
+const portal = $("portal");
+let portalBuilt = false, portalHide = 0;
+function portalBuild() {
+  if (portalBuilt) return; portalBuilt = true;
+  const other = isG ? ELEMENTS : GARBAGE;
+  const picks = [...other].sort(() => Math.random() - .5).slice(0, 14).map(([n, sym, el, trend, d, p, t, art]) => `<img src="${specImg("p" + sym, art)}" alt="">`).join("");
+  $("portalStrip").innerHTML = picks + picks;
+  $("portalT").textContent = ED.otherTitle;
+}
+function portalAt(btn) {
+  const r = btn.getBoundingClientRect();
+  const w = 300, h = 180;
+  let left = r.left, top = r.bottom + 10;
+  if (left + w > innerWidth - 12) left = innerWidth - 12 - w;
+  if (top + h > innerHeight - 12) top = r.top - h - 10;
+  portal.style.left = Math.max(12, left) + "px"; portal.style.top = Math.max(12, top) + "px";
+}
+document.querySelectorAll(".mast-left .edflip").forEach(btn => {
+  btn.addEventListener("pointerenter", ev => { if (ev.pointerType !== "mouse") return; portalBuild(); portalAt(btn); clearTimeout(portalHide); portal.classList.add("on"); });
+  btn.addEventListener("pointerleave", () => { portalHide = setTimeout(() => portal.classList.remove("on"), 160); });
+});
+function portalGrow(from) {
+  if (reduced) return 200;
+  portalBuild();
+  if (!portal.classList.contains("on")) { portalAt(from || document.querySelector(".mast-left .edflip")); portal.classList.add("on"); }
+  clearTimeout(portalHide);
+  requestAnimationFrame(() => portal.classList.add("grow"));
+  return 820;
+}
+
+// ---------- Brocade through the cover title ----------
+const coverEm = document.querySelector(".cover-title h1 em");
+if (coverEm && fine) {
+  coverEm.addEventListener("pointermove", ev => {
+    const r = coverEm.getBoundingClientRect();
+    coverEm.style.setProperty("--mx", (ev.clientX - r.left) + "px"); coverEm.style.setProperty("--my", (ev.clientY - r.top) + "px");
+    coverEm.classList.add("lit");
+  });
+  coverEm.addEventListener("pointerleave", () => coverEm.classList.remove("lit"));
+}
+
+// Deep link straight to the sheet
+if (location.hash === "#tearsheet") show("tearsheet", { keepScroll: true });
 
 </script>
 </body>

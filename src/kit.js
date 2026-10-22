@@ -146,7 +146,7 @@ function fig(id, o) {
   if (h === "short" || h === "buzz") S("M-10,-61.5 C-10.5,-74 10.5,-74 10,-61.5 C7,-66 -7,-66 -10,-61.5Z", hc);
   else if (h !== "none") S("M-10.2,-60 C-10.8,-74.5 10.8,-74.5 10.2,-60 C7,-67 -2,-68 -10.2,-60Z", hc);
   // Face
-  g.push(`<circle cx="-3.3" cy="-60" r="0.95" fill="${P.ink}"/><circle cx="3.3" cy="-60" r="0.95" fill="${P.ink}"/>`);
+  g.push(`<circle class="pupil" cx="-3.3" cy="-60" r="0.95" fill="${P.ink}"/><circle class="pupil" cx="3.3" cy="-60" r="0.95" fill="${P.ink}"/>`);
   g.push(`<circle cx="-5.7" cy="-56.8" r="1.6" fill="${P.pink}" opacity=".6"/><circle cx="5.7" cy="-56.8" r="1.6" fill="${P.pink}" opacity=".6"/>`);
   g.push(`<path d="M-1.7,-56.3 Q0,-54.8 1.7,-56.3" fill="none" stroke="${P.ink}" stroke-width="0.7" stroke-linecap="round"/>`);
   if (o.beard) S("M-8,-58 Q0,-48 8,-58 Q0,-53 -8,-58Z", hc);

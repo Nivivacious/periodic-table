@@ -81,7 +81,6 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .edflip:hover { color: var(--accent); }
 .edflip:hover .arr { transform: translateX(3px); }
 html[data-ed="garbage"] { --accent: #2F6B4F; }
-html.switching body { opacity: 0; transition: opacity .25s ease; }
 .menu-ed { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); display: grid; gap: .6rem; justify-items: start; }
 .menu-ed .edflip { border-left: 0; padding-left: 0; }
 .src .note { color: var(--ink-2); }
@@ -525,6 +524,69 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
   .today { max-width: none; }
   .drag-hint { display: none; }
 }
+
+/* ---------- Extras: colourways, tinted exhibit, tear sheet, frieze, portal, brocade ---------- */
+.exhibit { --tint: var(--ink); background: color-mix(in oklab, var(--paper) 94%, var(--tint)); transition: background .7s var(--ease); }
+.wall { background: color-mix(in oklab, var(--paper-2) 88%, var(--tint)); transition: background .7s var(--ease); }
+.placard .no { border-left-color: var(--c); }
+.dyes { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; }
+.dye { --d: transparent; width: 1.35rem; height: 1.35rem; border-radius: 50%; border: 1px solid var(--ink); background: var(--d); cursor: pointer; padding: 0; position: relative; box-shadow: inset 0 0 0 2px var(--paper); transition: transform .3s var(--ease); overflow: hidden; }
+.dye:hover { transform: translateY(-2px); }
+.dye.on { box-shadow: inset 0 0 0 2px var(--paper), 0 0 0 1.5px var(--ink); }
+.dye.orig { background: repeating-linear-gradient(135deg, var(--paper) 0 3px, var(--ink) 3px 4px); }
+.dye i { position: absolute; inset: 2px; border-radius: 50%; display: block; }
+.dye .s-monsoon { background: linear-gradient(#A9A6A0, #7A4528); }
+.dye .s-summer { background: linear-gradient(#F3C9A4, #D9C4A3); }
+.dye .s-tabebuia { background: linear-gradient(#A9CBE6 50%, #E58A9B 50%); }
+.dye .s-diwali { background: radial-gradient(circle at 50% 60%, #F2B330 0 25%, #1B2340 30%); }
+.dye .s-winter { background: linear-gradient(#B7A5D8, #A9A6A0); }
+.dye-note { margin: .4rem 0 0; font: italic .95rem/1.35 var(--body); color: var(--muted); }
+.dye-note b { font-style: normal; font-weight: 400; color: var(--ink); }
+.dye-note a { text-decoration: none; border-bottom: 1px solid var(--accent); color: var(--ink); }
+/* Tear sheet */
+.sheet-actions { display: flex; gap: 1.4rem; align-items: center; align-self: end; }
+.board { position: relative; height: clamp(26rem, 70vh, 44rem); border: 1px solid var(--ink); background: var(--card); overflow: hidden; touch-action: none; }
+.board::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: 3rem 3rem; opacity: .35; }
+.pin { position: absolute; --r: 0deg; transform: rotate(var(--r)); cursor: grab; transition: transform .5s var(--ease), box-shadow .3s ease; }
+.pin .card { --w: 9.5rem; box-shadow: 0 8px 18px -10px rgba(21,21,21,.45); }
+.pin.lift { cursor: grabbing; transition: none; z-index: 5; transform: rotate(0deg) scale(1.04); }
+.pin .unpin { position: absolute; top: -.6rem; right: -.6rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid var(--ink); background: var(--paper); font: 600 .9rem/1 var(--sans); cursor: pointer; opacity: 0; transition: opacity .25s ease; }
+.pin:hover .unpin, .pin:focus-within .unpin { opacity: 1; }
+.board-empty { margin: 1rem 0 0; font: italic 1.1rem var(--body); color: var(--muted); text-align: center; }
+/* Frieze */
+.frieze { overflow: hidden; border-bottom: 1px solid var(--rule); }
+.frieze svg { display: block; width: 100%; height: clamp(72px, 9vw, 120px); }
+.frieze .walker { cursor: pointer; }
+.frieze .walker:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.frieze .walker .fg { animation: sway 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.frieze .walker .ob { animation: obob 1.4s ease-in-out infinite; transform-box: fill-box; }
+.frieze:hover .walker .fg, .frieze:hover .walker .ob { animation-play-state: paused; }
+/* Portal */
+.portal { position: fixed; left: 0; top: 0; z-index: 95; width: 300px; height: 180px; border: 1px solid var(--ink); border-radius: 22px; background: var(--paper); overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-6px) scale(.97); transition: opacity .35s ease, transform .45s var(--ease); box-shadow: 0 30px 60px -30px rgba(21,21,21,.6); }
+.portal.on { opacity: 1; transform: none; }
+.portal-strip { position: absolute; left: 0; top: 24px; display: flex; gap: 10px; width: max-content; animation: pstrip 26s linear infinite; }
+.portal-strip img { width: 86px; height: 86px; object-fit: cover; border: 1px solid var(--ink); background: var(--card); }
+@keyframes pstrip { to { transform: translateX(-50%); } }
+.portal-t { position: absolute; left: 0; right: 0; bottom: 14px; margin: 0; text-align: center; font: 600 .6rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); }
+.portal.grow { left: 0 !important; top: 0 !important; width: 100vw; height: 100vh; border-radius: 0; border-color: transparent; transition: left .8s var(--ease), top .8s var(--ease), width .8s var(--ease), height .8s var(--ease), border-radius .8s var(--ease), opacity .35s ease; }
+.portal.grow .portal-strip { top: 50%; transform: translateY(-50%); animation-duration: 40s; }
+.portal.grow .portal-strip img { width: 160px; height: 160px; transition: width .8s var(--ease), height .8s var(--ease); }
+.portal.grow .portal-t { bottom: 18vh; font-size: .8rem; transition: bottom .8s var(--ease); }
+html.switching .mast, html.switching main, html.switching .colophon { opacity: 0; transition: opacity .5s ease .3s; }
+/* Brocade in the title */
+@property --mr { syntax: "<length>"; inherits: false; initial-value: 0px; }
+html[data-ed="fashion"] .cover-title h1 em { --brocade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect width='36' height='36' fill='%238A1446'/%3E%3Cpath d='M18 2 L30 18 L18 34 L6 18Z' fill='%23E9B949'/%3E%3Cpath d='M0 0 L8 18 L0 36Z M36 0 L28 18 L36 36Z' fill='%23E9B949'/%3E%3Ccircle cx='18' cy='18' r='3' fill='%23FBF3DF'/%3E%3Ccircle cx='0' cy='18' r='2' fill='%23FBF3DF'/%3E%3Ccircle cx='36' cy='18' r='2' fill='%23FBF3DF'/%3E%3Ccircle cx='18' cy='0' r='2' fill='%23FBF3DF'/%3E%3Ccircle cx='18' cy='36' r='2' fill='%23FBF3DF'/%3E%3C/svg%3E"); }
+html[data-ed="garbage"] .cover-title h1 em { --brocade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%236F6C66'/%3E%3Cpath d='M0 22H44 M22 0V22 M11 22V44 M33 22V44' stroke='%232A2823' stroke-width='3.5'/%3E%3Cpath d='M3 9h7 M28 13h9 M6 33h6 M34 37h7' stroke='%23C7C3BA' stroke-width='2.2' stroke-linecap='round'/%3E%3Ccircle cx='26' cy='7' r='1.5' fill='%23C7C3BA'/%3E%3Ccircle cx='16' cy='37' r='1.5' fill='%23C7C3BA'/%3E%3C/svg%3E"); }
+@media (pointer: fine) {
+  .cover-title h1 em { pointer-events: auto; --mx: 50%; --my: 50%; --mr: 0px; color: transparent; -webkit-background-clip: text; background-clip: text; background-image: radial-gradient(circle at var(--mx) var(--my), transparent 0, transparent calc(var(--mr) * .5), var(--accent) var(--mr)), var(--brocade); background-size: auto, 36px 36px; transition: --mr .6s var(--ease); }
+  .cover-title h1 em.lit { --mr: 170px; }
+}
+@media (max-width: 980px) {
+  .sheet-actions { align-self: start; }
+  .pin .card { --w: 7.4rem; }
+  .pin .unpin { opacity: 1; }
+  .portal { display: none; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 
@@ -538,6 +600,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="wordmark" data-view="cover">The Elements</button>
     <div class="mast-tools">
       <button type="button" class="tool" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Search</span></button>
+      <button type="button" class="tool" data-view="tearsheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v9l3 3M18 4v9l-3 3M4 20h16M8 16h8"/></svg><span class="lbl" id="sheetLabel">Tear sheet</span><span class="count" id="pincount">0</span></button>
       <button type="button" class="tool" id="soundBtn" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="soundWave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11" opacity=".25"/></svg><span class="lbl" id="soundLbl">Sound off</span></button>
       <button type="button" class="tool menu" id="openMenu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
@@ -644,9 +707,18 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     </div>
   </section>
 
+  <section class="view page band" data-view="tearsheet" aria-labelledby="h-sheet" hidden>
+    <div class="wrap">
+      <div class="page-head"><div><p class="kicker" id="sheetKicker">Tear sheet</p><h2 class="h-lg" id="h-sheet"><span id="sheetH2">Your <em>tear sheet.</em></span></h2><p class="lede" id="sheetLede"></p></div>
+        <div class="sheet-actions"><button type="button" class="btn" id="sheetSave">Save as image</button><button type="button" class="link" id="sheetClear">Clear</button></div></div>
+      <div class="board" id="board"></div>
+      <p class="board-empty" id="boardEmpty" hidden></p>
+    </div>
+  </section>
   </main>
 
 <footer class="colophon band">
+  <div class="frieze" id="frieze"><svg id="friezeSvg" viewBox="0 0 1200 100" preserveAspectRatio="xMidYMax slice" aria-label="A frieze of figures crossing the page; tap one to open it"></svg></div>
   <div class="wrap">
     <span class="wm" data-t="colophonWm">The Fashion Elements</span>
     <p data-t="colophonP">The symbols, numbers and families are the real periodic table. Every trend was named in 2025–26 fashion coverage, listed under Sources. Notes and drawings are ours.</p>
@@ -655,6 +727,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 </footer>
 
 <div class="peek" id="peek" aria-hidden="true"></div>
+<div class="portal" id="portal" aria-hidden="true"><div class="portal-strip" id="portalStrip"></div><p class="portal-t" id="portalT"></p></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <dialog class="sheet" id="sheet" aria-label="Element"><div class="exhibit" id="exhibit"></div></dialog>
@@ -670,6 +743,7 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
     <button type="button" class="mi" data-view="lab"><i>i.</i>The Lab</button>
     <button type="button" class="mi" data-view="families"><i>ii.</i>Families</button>
     <button type="button" class="mi" data-view="sources"><i>iii.</i><span data-t="menuSources">Sources</span></button>
+    <button type="button" class="mi" data-view="tearsheet"><i>iv.</i><span data-sheet-tool>Tear sheet</span> <span class="count" data-pincount>0</span></button>
     <div class="menu-ed"><p class="kicker">Edition</p><button type="button" class="edflip" data-ed-switch></button></div>
   </div>
 </dialog>
@@ -681,4 +755,5 @@ dialog.menu-sheet { border: 0; padding: 0; margin: 0; width: 100%; height: 100%;
 /*GARBAGE*/
 /*CHEM*/
 /*APP*/
+/*EXTRAS*/
 </script>
