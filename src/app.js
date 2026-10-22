@@ -150,6 +150,7 @@ function setDye(e, key) {
   const previousArt = svg && !reduced ? svg.cloneNode(true) : null;
   if (svg) { svg.innerHTML = scene("c" + (uid++) + e.sym, artOf(e)) + hotHTML(e); bindHots(); eyesWake(); playSceneMoment(e, 150); bindSceneInteractions(e); colourReveal(svg, previousArt, key); }
   exhibit.querySelectorAll(".dye").forEach(b => { const on = (b.dataset.dye || "") === (key || ""); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
+  const reverseArt = exhibit.querySelector(".card-reverse img"); if (reverseArt) reverseArt.src = sceneImg(e, "0 0 100 100");
   const note = exhibit.querySelector(".dye-note"); if (note) note.innerHTML = dyeNote(e);
   flick();
 }
@@ -679,7 +680,7 @@ function renderCulturalMix() {
   result.hidden = mix.length < 2;
   if (result.hidden) { result.innerHTML = ""; return; }
   const out = culturalMix(mix);
-  result.innerHTML = `<p class="kicker">${isG ? "Your street sculpture" : "Your outfit study"} · ${mix.map(e => e.sym).join(" + ")}</p><svg class="mix-art" viewBox="0 0 100 100" role="img" aria-label="${isG ? "Sculpture" : "Outfit"} combining ${mix.map(e=>e.trend).join(", ")}">${out.drawing}</svg><h3>${out.title}</h3><p>${out.caption}</p><ol>${out.notes.map(n=>`<li>${n}</li>`).join("")}</ol>`;
+  result.innerHTML = `<p class="kicker">${isG ? "Your street sculpture" : "Your outfit study"} · ${mix.map(e => e.sym).join(" + ")}</p><svg class="mix-art" viewBox="0 0 100 100" role="img" aria-label="${isG ? "Sculpture" : "Outfit"} combining ${mix.map(e=>e.trend).join(", ")}">${out.drawing}</svg><h3 class="mix-stamp"><span class="kicker">Composition complete</span>${out.title}<small>${mix.map(e=>e.sym).join(" + ")}</small></h3><p>${out.caption}</p><ol>${out.notes.map(n=>`<li>${n}</li>`).join("")}</ol>`;
 }
 function chemHTML(r) {
   if (!r) return "";
@@ -1144,6 +1145,7 @@ function render(e, direction = 0) {
   revealExhibit(direction);
   playSceneMoment(e, direction ? 150 : 250);
   bindSceneInteractions(e);
+  enhanceExhibit(e);
 }
 // Hotspots and the list of pieces light each other up
 function bindHots() {
@@ -1230,7 +1232,7 @@ sheet.addEventListener("click", ev => { if (ev.target === sheet) closeExhibit();
 sheet.addEventListener("cancel", ev => { ev.preventDefault(); closeExhibit(); });
 sheet.addEventListener("close", () => { interactionCleanup(); stopSceneMotion(); exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = []; clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
 document.addEventListener("keydown", ev => {
-  if (!sheet.open || ev.target.matches("input, textarea, select") || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+  if (!sheet.open || document.querySelector(".comparison[open]") || ev.target.matches("input, textarea, select") || ev.altKey || ev.ctrlKey || ev.metaKey) return;
   if (ev.key === "ArrowRight") { ev.preventDefault(); go(1); }
   if (ev.key === "ArrowLeft") { ev.preventDefault(); go(-1); }
   if (ev.key.toLowerCase() === "r") replayScene();
@@ -1411,3 +1413,4 @@ const fromHash = h && !VIEWS.includes(h) && get(h);
 show(fromHash ? "table" : (VIEWS.includes(h) ? h : "cover"), { keepScroll: true });
 if (fromHash) requestAnimationFrame(() => open(fromHash));
 else if (!h || h === "cover") curtain();
+
