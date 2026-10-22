@@ -80,6 +80,9 @@ document.addEventListener("click", ev => {
   switchEdition(b.dataset.ed || ED.other);
 });
 
+// The slang section belongs to the fashion edition only.
+if (isG) document.querySelectorAll('[data-view="genz"]').forEach(el => el.remove());
+
 const ELEMENTS_IN = isG ? GARBAGE : ELEMENTS;
 const els = ELEMENTS_IN.map(([n, sym, el, trend, desc, pieces, tip, art, meta = {}]) => ({ n, sym, el, trend, desc, pieces, tip, art, fam: family(n), z: !!meta.z, src: meta.src || null }));
 const bySym = new Map(els.map(e => [e.sym.toLowerCase(), e]));
@@ -518,7 +521,8 @@ const F_SLANG = [
   ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Li", "Lowkey carrying a real paperback everywhere."],
   ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "B", "Football jersey plus hair bow: blokette, the newest core."],
 ];
-const SLANG = isG ? G_SLANG : F_SLANG;
+if (!isG) {
+const SLANG = F_SLANG;
 const slangEl = $("slang");
 slangEl.innerHTML = SLANG.map(([w, pos, origin, mean, sym, line], i) => {
   const e = get(sym);
@@ -552,6 +556,7 @@ $("flipAll").addEventListener("click", ev => {
   document.querySelectorAll(".ccard").forEach(c => c.addEventListener("click", () => open(get(c.dataset.sym))));
 }
 
+}
 // ---------- Families ----------
 $("halls").innerHTML = Object.entries(FAMILIES).map(([k, name], i) => {
   const m = els.filter(e => e.fam === k), show3 = [m[0], m[Math.floor(m.length / 2)], m[m.length - 1]];
@@ -760,7 +765,7 @@ $("openMenu").addEventListener("click", () => menuSheet.showModal());
 $("closeMenu").addEventListener("click", () => menuSheet.close());
 
 // ---------- Views ----------
-const VIEWS = ["cover", "table", "lab", "genz", "families", "sources"];
+const VIEWS = isG ? ["cover", "table", "lab", "families", "sources"] : ["cover", "table", "lab", "genz", "families", "sources"];
 function show(v, opts = {}) {
   if (!VIEWS.includes(v)) v = "cover";
   document.querySelectorAll(".view").forEach(s => s.hidden = s.dataset.view !== v);

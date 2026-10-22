@@ -368,36 +368,12 @@ const G_STORY = [
   { title: "The city kept building. The city kept <em>not finishing.</em>", text: "Rebar at ankle height. A barricade from 2019. A slab that tilts. Nothing is done, and nothing is removed.", syms: ["Ir", "Mt", "F"], ba: [{ bg: "beige", gr: "grey", set: ["skyline"], obj: [["cone", 70, "orange", .8]] }, "F", "Footpath", "Trapdoor"] },
 ];
 
-// Slang, translated into garbage
-const G_SLANG = [
-  ["Ate", "verb", "Internet", "Did it perfectly. If it was really good, they 'left no crumbs'.", "He", "Midnight cake on the flyover. They ate. They left crumbs."],
-  ["Main character energy", "noun", "Internet", "Acting like the whole story is about you.", "Fl", "Thirty feet of your own face across the junction. Main character energy."],
-  ["Delulu", "adjective", "Internet", "Lovingly delusional. Dreaming big on purpose.", "Np", "A plank that says NO PARKING, with a car on it. Delulu."],
-  ["It's giving…", "phrase", "Internet", "It's evoking something. Finish the sentence with the vibe.", "S", "Sofa, spring up, man eating lunch on it? It's giving living room."],
-  ["No cap", "phrase", "Internet", "No lie. Completely serious.", "Ba", "No cap, the bottle has a cap. Take it off before the bin."],
-  ["Era", "noun", "Internet", "A phase you're fully committed to.", "Dy", "Lights on till January 7. Christmas tree is in its leaning era."],
-  ["Jugaad", "noun", "Desi", "A clever, make-it-work hack.", "P", "Lorry did not come. The sack is a stool now. Jugaad."],
-  ["Aura points", "noun", "Internet", "An invisible score for how cool you seem.", "O", "Finished the bottle, screwed the cap back on, placed it upright. Plus a thousand aura."],
-  ["Rizz", "noun", "Internet", "Charm. The ability to pull people in.", "Mn", "A drift of last night's mallige at 5 am. The whole lane has rizz."],
-  ["Understood the assignment", "phrase", "Internet", "Got the brief exactly right.", "Db", "Plastic in the green bin, peels in the blue. Did not understand the assignment."],
-  ["Girl math", "noun", "Internet", "Logic that makes a purchase feel free.", "Pb", "A banana, delivered in ten minutes. Girl math says the bag was free."],
-  ["Mogging", "verb", "Internet", "Outshining everyone standing next to you.", "H", "Bare frame, no ad, two crows. Still mogging the whole flyover."],
-  ["Pookie", "noun", "Internet", "Someone or something sweet and lovable.", "Fr", "Fridge door open, dog asleep in the cold. Pookie behaviour."],
-  ["Slay", "verb", "Internet", "To do something brilliantly, usually with style.", "Pa", "Mouth height, from a moving bike, onto the sign. Slay. Unfortunately."],
-  ["Drip", "noun", "Internet", "A seriously good outfit or set of accessories.", "Ac", "Copper pipe, still dripping. That's drip. Literally."],
-  ["Paisa vasool", "phrase", "Desi", "Worth every rupee you paid.", "Sr", "Copper, ask. Paper, 14. The raddi board is the only honest market."],
-  ["Fit check", "noun", "Internet", "Showing off today's outfit, usually on camera.", "Tb", "Fit check: pink petals, bike, 6 am. Jayanagar in February."],
-  ["Bindaas", "adjective", "Desi", "Carefree and fearless.", "Bh", "Rode off without the helmet. Bindaas. Also, the problem."],
-  ["Lowkey", "adverb", "Internet", "Quietly. Without making a big deal of it.", "Tm", "Steel tiffin on a wall since Monday. Lowkey the scariest thing in JP Nagar."],
-  ["-core", "suffix", "Internet", "Turns anything into an aesthetic.", "Th", "Packing foam blowing down the lane. Snowcore, Whitefield edition."],
-];
-
 const G_PICKS = ["S", "Be", "Tm", "Np", "Rb", "Fl", "Db", "Og"];
 
 // Copy that changes with the edition. Keys match data-t attributes in the page.
 const G_COPY = {
   curtainOf: "elements of Bangalore garbage",
-  navGenz: "Slang", navSources: "Field Notes", menuGenz: "Slang", menuSources: "Field Notes",
+  navSources: "Field Notes", menuSources: "Field Notes",
   coverKicker: "The cover story · 118 finds",
   coverH1: 'The Periodic Table <span class="l2">of <em>Bangalore Garbage</em></span>',
   coverLede: "Every real element symbol, matched to something we found on a Bangalore footpath in 2025 and 2026.",
@@ -406,8 +382,6 @@ const G_COPY = {
   storyLede: "Five things we kept finding on footpaths between 2025 and 2026. Scroll through them, drag the comparisons, and open any card.",
   labH2: "Mix your own <em>pile.</em>",
   labLede: "Drop up to three elements into the flask. We'll write the formula and name the pile.",
-  genzKicker: "Slang",
-  genzLede: "Twenty words, translated into garbage. Tap a card to flip it. The meanings and examples are ours. The finds are real.",
   famH2: "Ten halls, <em>one footpath.</em>",
   srcKicker: "Field Notes",
   srcH2: "Where we <em>saw it.</em>",
