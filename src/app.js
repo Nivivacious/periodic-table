@@ -549,8 +549,12 @@ flaskWrap.addEventListener("dragover", ev => { ev.preventDefault(); flaskWrap.cl
 flaskWrap.addEventListener("dragleave", () => flaskWrap.classList.remove("over"));
 flaskWrap.addEventListener("drop", ev => { ev.preventDefault(); flaskWrap.classList.remove("over"); const e = get(ev.dataTransfer.getData("text/plain") || ""); if (e) addToMix(e); });
 let shelfFamily = "";
+let shelfAnimations = [];
+
 function filterShelf() {
   const t = $("shelfQ").value.trim().toLowerCase();
+  shelfAnimations.forEach(a => a.cancel()); shelfAnimations = [];
+  const before = new Map([...shelf.querySelectorAll(".sh:not(.hide)")].map(b => [b, b.getBoundingClientRect()]));
   let count = 0;
   shelf.querySelectorAll(".sh").forEach(b => {
     const e = get(b.dataset.sym);
@@ -558,14 +562,36 @@ function filterShelf() {
     b.classList.toggle("hide", !visible);
     if (visible) count++;
   });
+  if (!reduced) shelf.querySelectorAll(".sh:not(.hide)").forEach((b, i) => {
+    const old = before.get(b), now = b.getBoundingClientRect();
+    shelfAnimations.push(b.animate(old ? [{transform:`translate(${old.left-now.left}px,${old.top-now.top}px)`},{transform:"none"}] : [{opacity:0,transform:"translateY(12px) scale(.9)"},{opacity:1,transform:"none"}], {duration:440,delay:old ? 0 : Math.min(i*18,160),easing:"cubic-bezier(.22,1,.36,1)"}));
+  });
   $("shelfCount").textContent = `${count} of ${els.length} elements${shelfFamily ? " · " + FAMILIES[shelfFamily] : " · All families"}`;
   $("shelfEmpty").hidden = count > 0;
 }
 $("shelfQ").addEventListener("input", filterShelf);
+let mixRevealTimer = 0, randomMixTimers = [], mixFlights = [];
+function cancelMixSequence() {
+  clearTimeout(mixRevealTimer);
+  mixFlights.forEach(node => node.remove()); mixFlights = [];
+  flaskWrap.classList.remove("mixing");
+}
+function animateIngredient(e) {
+  if (reduced) return;
+  const source = shelf.querySelector(`[data-sym="${e.sym}"]`), target = flaskWrap.getBoundingClientRect();
+  const from = source && source.getBoundingClientRect();
+  if (!from || source.classList.contains("hide") || from.bottom < 0 || from.top > innerHeight) return;
+  const ghost = document.createElement("img"); ghost.src = sceneImg(e); ghost.alt = ""; ghost.className = "mix-flight";
+  ghost.style.cssText = `left:${from.left}px;top:${from.top}px;width:${from.width}px;height:${from.width}px`;
+  document.body.appendChild(ghost); mixFlights.push(ghost);
+  const flight = ghost.animate([{transform:"none",opacity:1},{transform:`translate(${target.left+target.width/2-from.left-from.width/2}px,${target.top+target.height*.55-from.top}px) scale(.15) rotate(25deg)`,opacity:0}], {duration:580,easing:"cubic-bezier(.5,0,.3,1)",fill:"forwards"});
+  flight.finished.then(()=>{ghost.remove();mixFlights=mixFlights.filter(n=>n!==ghost);}).catch(()=>{});
+}
 function addToMix(e) {
   if (mix.includes(e)) { toast(`${e.sym} is already in the flask`); return; }
   if (mix.length >= 3) mix.shift();
   mix.push(e);
+  animateIngredient(e);
   flaskWrap.classList.remove("shake"); void flaskWrap.offsetWidth; flaskWrap.classList.add("shake");
   flick();
   renderMix();
@@ -644,7 +670,13 @@ function renderMix() {
   const r = mix.length ? react(mix) : null;
   $("formula").innerHTML = !mix.length ? "·" : (r.none || mix.length === 1) ? mix.map(e => `<span class="${e.fam}">${e.sym}</span>`).join("<i>+</i>") : sub(r.f);
   $("chem").innerHTML = chemHTML(r);
-  renderCulturalMix();
+  clearTimeout(mixRevealTimer);
+  if (mix.length > 1 && !reduced) {
+    $("mixResult").hidden = true;
+    flaskWrap.classList.add("mixing");
+    $("mixStatus").textContent = "Combining your ingredients…";
+    mixRevealTimer = setTimeout(() => { flaskWrap.classList.remove("mixing"); renderCulturalMix(); $("mixStatus").textContent = isG ? "Your street sculpture is ready." : "Your outfit study is ready."; }, 850);
+  } else { flaskWrap.classList.remove("mixing"); renderCulturalMix(); $("mixStatus").textContent = mix.length ? "Add another ingredient to see the result." : ""; }
   const ln = $("lookname");
   ln.textContent = mix.length ? (isG ? lookName(mix) : `“${lookName(mix)}”`) : "Pick up to three elements from the shelf.";
   ln.classList.toggle("empty", !mix.length);
@@ -652,8 +684,8 @@ function renderMix() {
   $("slots").innerHTML = mix.map(e => `<button type="button" class="slot ${e.fam}" data-sym="${e.sym}" aria-label="Remove ${e.trend}"><img src="${sceneImg(e)}" alt=""><span>${e.sym}</span></button>`).join("");
   $("slots").querySelectorAll(".slot").forEach(s => s.addEventListener("click", () => { mix = mix.filter(e => e.sym !== s.dataset.sym); renderMix(); }));
 }
-$("labRandom").addEventListener("click", () => { mix = []; [...els].sort(() => Math.random() - .5).slice(0, 3).forEach((e, i) => setTimeout(() => addToMix(e), i * 300)); });
-$("labClear").addEventListener("click", () => { mix = []; renderMix(); });
+$("labRandom").addEventListener("click", () => { randomMixTimers.forEach(clearTimeout); cancelMixSequence(); mix = []; renderMix(); const pool = [...els]; for (let i=pool.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; } randomMixTimers = pool.slice(0,3).map((e,i)=>setTimeout(()=>addToMix(e),i*400)); });
+$("labClear").addEventListener("click", () => { randomMixTimers.forEach(clearTimeout); cancelMixSequence(); mix = []; renderMix(); });
 $("labCopy").addEventListener("click", async () => {
   if (!mix.length) return toast("Add an element first");
   const r = react(mix);
@@ -693,6 +725,7 @@ function chooseShelfFamily(value) {
   shelfFamily = value;
   shelfFamilySelect.value = value;
   $("familyNote").textContent = value ? HALL_NOTES[value] : "Ten chemical families, each with its own character. Explore one, then switch families to build your mix.";
+  $("familyNote").parentElement.style.setProperty("--family-col", value ? getComputedStyle(document.documentElement).getPropertyValue(`--${value}`).trim() : "#151515");
   $("familyDot").style.setProperty("--family-col", value ? getComputedStyle(document.documentElement).getPropertyValue(`--${value}`).trim() : "#151515");
   $("familyReset").hidden = !value;
   filterShelf();
@@ -935,7 +968,7 @@ function bindSceneInteractions(e) {
     layersOn = on; exhibit.classList.toggle("layers-open",on);
     controls.querySelector("[data-layers]").setAttribute("aria-pressed",String(on));
     sceneAnimations.forEach(a => on ? a.pause() : (motionPaused || document.hidden ? a.pause() : a.play()));
-    hint.textContent = on ? "Backdrop · subject · foreground" : "Drag an object · hold Inspect to zoom · hold Layers to separate";
+    hint.textContent = on ? "Backdrop · subject · foreground" : "Drag an object · swipe beside the illustration to browse · hold Inspect or Layers";
   };
   const setLens = on => {
     lensOn = on; if(on && layersOn) setLayers(false);
@@ -1012,7 +1045,7 @@ function render(e, direction = 0) {
   const s = e.src;
   exhibit.innerHTML = `
     <button type="button" class="close" data-close>Close <span>×</span></button>
-    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div><div class="art-tools"><button type="button" class="moment-control" data-lens aria-pressed="false">Inspect</button><button type="button" class="moment-control" data-layers aria-pressed="false">Layers</button></div><p class="art-hint">Drag an object · hold Inspect to zoom · hold Layers to separate</p></div>
+    <div class="wall"><div class="c3d"><div class="flipper">${cardHTML(e, { hot: true })}</div></div><div class="motion-controls"${reduced ? " hidden" : ""}><button type="button" class="moment-control" data-replay aria-label="Replay the illustration animation"><span aria-hidden="true">↻</span> Replay</button><button type="button" class="moment-control" data-motion aria-pressed="${motionPaused}" aria-label="${motionPaused ? "Resume illustration motion" : "Pause illustration motion"}">${motionPaused ? "Play" : "Pause"}</button></div><div class="art-tools"><button type="button" class="moment-control" data-lens aria-pressed="false">Inspect</button><button type="button" class="moment-control" data-layers aria-pressed="false">Layers</button></div><p class="art-hint">Drag an object · swipe beside the illustration to browse · hold Inspect or Layers</p></div>
     <div class="placard ${e.fam}">
       <p class="no">No. ${e.n} · ${e.el} · <b>${FAMILIES[e.fam]}</b></p>
       <h2>${e.trend}</h2>
@@ -1092,8 +1125,18 @@ function open(e, source = null) {
     if (animation) animation.finished.then(() => { animation.cancel(); if (liftAnimation === animation) { liftAnimation = null; sheet.classList.remove("travelling"); } }).catch(() => {});
   }
 }
-function go(dir) {
-  if (closingExhibit) return;
+let cardNavigating = false;
+async function go(dir) {
+  if (closingExhibit || cardNavigating) return;
+  cardNavigating = true;
+  if (!reduced) {
+    const direction = dir === "r" ? 1 : Number(dir);
+    const departing = exhibit.querySelectorAll(".flipper, .placard");
+    const animations = [...departing].map(node => node.animate([{opacity:1,transform:"none"},{opacity:0,transform:`translateX(${-direction*45}px)`}],{duration:180,easing:"ease-in",fill:"forwards"}));
+    await Promise.all(animations.map(a=>a.finished.catch(()=>{})));
+    animations.forEach(a=>a.cancel());
+  }
+  if (!sheet.open || closingExhibit) { cardNavigating=false; return; }
   const focused = document.activeElement && document.activeElement.dataset.go;
   clearLift(); liftedFrom = null;
   let next;
@@ -1102,8 +1145,21 @@ function go(dir) {
   render(next, dir === "r" ? 1 : Number(dir));
   const control = focused && exhibit.querySelector(`[data-go="${focused}"]`);
   if (control) control.focus({ preventScroll: true });
+  cardNavigating = false;
 }
 
+// Swipe the surrounding card surface; illustrated objects keep their own drag interaction.
+let cardSwipe = null;
+exhibit.addEventListener("pointerdown", ev => {
+  if (ev.button !== 0 || ev.target.closest("button, a, input, .frame, .dyes, .pieces")) return;
+  cardSwipe = {id:ev.pointerId,x:ev.clientX,y:ev.clientY};
+});
+exhibit.addEventListener("pointerup", ev => {
+  if (!cardSwipe || cardSwipe.id !== ev.pointerId) return;
+  const dx=ev.clientX-cardSwipe.x, dy=ev.clientY-cardSwipe.y; cardSwipe=null;
+  if (Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.5) go(dx<0 ? "1" : "-1");
+});
+exhibit.addEventListener("pointercancel",()=>{cardSwipe=null;});
 sheet.addEventListener("click", ev => { if (ev.target === sheet) closeExhibit(); });
 sheet.addEventListener("cancel", ev => { ev.preventDefault(); closeExhibit(); });
 sheet.addEventListener("close", () => { interactionCleanup(); stopSceneMotion(); exhibitAnimations.forEach(a => a.cancel()); exhibitAnimations = []; clearLift(); eyesSleep(); if (liftedFrom && liftedFrom.isConnected) liftedFrom.focus({ preventScroll: true }); liftedFrom = null; });
